@@ -112,6 +112,6 @@
   <Import Project="$(MSBuildBinPath)\Microsoft.CSharp.targets" />
   <Import Project="$(MSBuildBinPath)\Microsoft.WinFX.targets" />
   <PropertyGroup>
-    <PreBuildEvent>xcopy .\AppIcon.ico $(OutDir) /y</PreBuildEvent>
+    <PreBuildEvent>xcopy ..\..\AppIcon.ico .\ /y</PreBuildEvent>
   </PropertyGroup>
 </Project>
