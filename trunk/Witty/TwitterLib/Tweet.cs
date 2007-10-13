@@ -54,7 +54,7 @@ namespace TwitterLib
                 {
                     dateCreated = value;
                     OnPropertyChanged("DateCreated");
-                    OnPropertyChanged("RelativeTime");
+                    UpdateRelativeTime();
                 }
             }
         }
@@ -113,6 +113,8 @@ namespace TwitterLib
             }
         }
 
+        private string relativeTime;
+
         /// <summary>
         /// How long ago the tweet was added based on DatedCreated and DateTime.Now
         /// </summary>
@@ -120,41 +122,14 @@ namespace TwitterLib
         {
             get
             {
-                if (!dateCreated.HasValue)
-                    return string.Empty;
-
-                DateTime StatusCreatedDate = (DateTime)dateCreated;
-
-                TimeSpan ts = new TimeSpan(DateTime.Now.Ticks - StatusCreatedDate.Ticks);
-                double delta = ts.TotalSeconds;
-
-                if (delta < 60)
+                return relativeTime;
+            }
+            set
+            {
+                if (value != relativeTime)
                 {
-                    return ts.Seconds + " seconds ago";
-                }
-                else if (delta < 120)
-                {
-                    return "about a minute ago";
-                }
-                else if (delta < (45 * 60))
-                {
-                    return ts.Minutes + " minutes ago";
-                }
-                else if (delta < (90 * 60))
-                {
-                    return "about an hour ago";
-                }
-                else if (delta < (24 * 60 * 60))
-                {
-                    return "about " + ts.Hours + " hours ago";
-                }
-                else if (delta < (48 * 60 * 60))
-                {
-                    return "1 day ago";
-                }
-                else
-                {
-                    return ts.Days + " days ago";
+                    relativeTime = value;
+                    OnPropertyChanged("Relativetime");
                 }
             }
         }
@@ -191,6 +166,50 @@ namespace TwitterLib
         }
 
         #endregion
+
+        public void UpdateRelativeTime()
+        {
+            if (!dateCreated.HasValue)
+                RelativeTime = string.Empty;
+
+            DateTime StatusCreatedDate = (DateTime)dateCreated;
+
+            TimeSpan ts = new TimeSpan(DateTime.Now.Ticks - StatusCreatedDate.Ticks);
+            double delta = ts.TotalSeconds;
+
+            string relativeTime = string.Empty;
+
+            if (delta < 60)
+            {
+                relativeTime = ts.Seconds + " seconds ago";
+            }
+            else if (delta < 120)
+            {
+                relativeTime = "about a minute ago";
+            }
+            else if (delta < (45 * 60))
+            {
+                relativeTime = ts.Minutes + " minutes ago";
+            }
+            else if (delta < (90 * 60))
+            {
+                relativeTime = "about an hour ago";
+            }
+            else if (delta < (24 * 60 * 60))
+            {
+                relativeTime = "about " + ts.Hours + " hours ago";
+            }
+            else if (delta < (48 * 60 * 60))
+            {
+                relativeTime = "1 day ago";
+            }
+            else
+            {
+                relativeTime = ts.Days + " days ago";
+            }
+
+            RelativeTime = relativeTime;
+        }
     }
 
     /// <summary>
@@ -241,12 +260,10 @@ namespace TwitterLib
         {
             try
             {
-                                    XmlWriterSettings settings = new XmlWriterSettings();
-                    settings.Indent = true;
+                XmlWriterSettings settings = new XmlWriterSettings();
+                settings.Indent = true;
                 using (XmlWriter writer = XmlWriter.Create(SaveFileAbsolutePath, settings))
                 {
-
-
                     XamlWriter.Save(this, writer);
                     writer.Close();
                 }
@@ -272,30 +289,11 @@ namespace TwitterLib
 
             Tweets tweets;
 
-            //try
-            //{
-                //XmlSerializer xml = new XmlSerializer(typeof(Tweets));
-                //using (Stream stream = new FileStream(SaveFileAbsolutePath,
-                //    FileMode.Open, FileAccess.Read, FileShare.Read))
-                //{
-                //    //Tweets tweets2 = (Tweets)xml.Deserialize(stream);
-
-                //    stream.Close();
-                //}
-
-                //return new Tweets();
-
             XmlReader xmlReader = XmlReader.Create(SaveFileAbsolutePath);
             tweets = XamlReader.Load(xmlReader) as Tweets;
             xmlReader.Close();
 
             return tweets;
-            //}
-            //catch (Exception ex)
-            //{
-            //    System.Diagnostics.Debug.WriteLine(ex.Message);
-            //    return new Tweets();
-            //}
         }
 
         #endregion
