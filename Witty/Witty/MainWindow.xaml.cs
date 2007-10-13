@@ -56,6 +56,9 @@ namespace Witty
 #endif
             #endregion
 
+            // Set the datacontext
+            LayoutRoot.DataContext = tweets;
+
             // Does the user need to login
             if (string.IsNullOrEmpty(AppSettings.Username))
             {
@@ -69,7 +72,6 @@ namespace Witty
                 AppSettings.LastUpdated = string.Empty;
 
                 twitter = new TwitterNet(AppSettings.Username, AppSettings.Password);
-                LayoutRoot.DataContext = tweets;
                 DelegateFetch();
 
                 // Setup refresh timer
@@ -84,7 +86,7 @@ namespace Witty
         // Main collection of tweets
         public static Tweets tweets = new Tweets();
 
-        // Main TwitterNet object
+        // Main TwitterNet object used to make Twitter API calls
         private TwitterNet twitter;
 
         // Timer used for automatic tweet updates
@@ -139,7 +141,7 @@ namespace Witty
                 // Schedule the update function in the UI thread.
                 LayoutRoot.Dispatcher.BeginInvoke(
                     System.Windows.Threading.DispatcherPriority.Normal,
-                    new OneArgDelegate(UpdateUserInterface), twitter.GetFriendsTimeline(AppSettings.LastUpdated));
+                    new OneArgDelegate(UpdateUserInterface), twitter.GetFriendsTimeline());
             }
             catch (WebException ex)
             {
@@ -152,8 +154,7 @@ namespace Witty
         private void UpdateUserInterface(Tweets newTweets)
         {
             // Refresh the grid so that relativeTime updates
-            LayoutRoot.DataContext = null;
-            LayoutRoot.DataContext = tweets;
+            //LayoutRoot.DataContext = newTweets;
 
             DateTime lastUpdated = DateTime.Now;
             StatusTextBlock.Text = "Last Updated: " + lastUpdated.ToString();
@@ -170,6 +171,11 @@ namespace Witty
                 {
                     tweets.Insert(0, tweet);
                     tweetAdded++;
+                }
+                else
+                {
+                    // update the relativetime for existing tweets
+                    tweets[i].UpdateRelativeTime();
                 }
             }
 
@@ -250,9 +256,6 @@ namespace Witty
         private void LoginControl_Login(object sender, RoutedEventArgs e)
         {
             twitter = new TwitterNet(AppSettings.Username, AppSettings.Password);
-
-            // Set the datacontext
-            LayoutRoot.DataContext = tweets;
 
             // fetch new tweets
             DelegateFetch();
