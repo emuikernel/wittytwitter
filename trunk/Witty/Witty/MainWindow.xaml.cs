@@ -170,6 +170,7 @@ namespace Witty
                 if (!tweets.Contains(tweet))
                 {
                     tweets.Insert(0, tweet);
+                    tweet.IsNew = true;
                     tweetAdded++;
                 }
                 else
