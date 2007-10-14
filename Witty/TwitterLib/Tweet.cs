@@ -19,9 +19,11 @@ namespace TwitterLib
 
         private double id;
         private DateTime? dateCreated;
+        private string relativeTime; 
         private string text;
         private string source;
         private User user;
+        private bool isNew;	
 
         #endregion
 
@@ -113,8 +115,6 @@ namespace TwitterLib
             }
         }
 
-        private string relativeTime;
-
         /// <summary>
         /// How long ago the tweet was added based on DatedCreated and DateTime.Now
         /// </summary>
@@ -132,6 +132,12 @@ namespace TwitterLib
                     OnPropertyChanged("Relativetime");
                 }
             }
+        }
+
+        public bool IsNew
+        {
+            get { return isNew; }
+            set { isNew = value; }
         }
 
         #endregion

@@ -2,43 +2,58 @@
 	xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
 	xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml">
 
-	<SolidColorBrush x:Key="SecondaryBackgroundBrush" Color="#FFA8B9C6"/>
+    <SolidColorBrush x:Key="SecondaryBackgroundBrush" Color="#FFA8B9C6"/>
 
-	<SolidColorBrush x:Key="BackgroundBrush" Color="#FFC4D8E3"/>
-	<SolidColorBrush x:Key="PrimaryBackgroundBrush" Color="#FF52626F"/>
-	<SolidColorBrush x:Key="PrimaryBorderBrush" Color="#FF222B34"/>
+    <SolidColorBrush x:Key="BackgroundBrush" Color="#FFC4D8E3"/>
+    <SolidColorBrush x:Key="PrimaryBackgroundBrush" Color="#FF52626F"/>
+    <SolidColorBrush x:Key="PrimaryBorderBrush" Color="#FF222B34"/>
 
-	<SolidColorBrush x:Key="ImageBorderBrush" Color="#FF52626F"/>
+    <SolidColorBrush x:Key="ImageBorderBrush" Color="#FF52626F"/>
 
     <DataTemplate x:Key="TweetsTemplate">
-		<Grid>
-			<Grid.ColumnDefinitions>
-				<ColumnDefinition Width="60"/>
-				<ColumnDefinition Width="*"/>
-			</Grid.ColumnDefinitions>
-			<Grid.RowDefinitions>
-				<RowDefinition Height="Auto"/>
-				<RowDefinition Height="*"/>
-			</Grid.RowDefinitions>
-			<DockPanel Grid.Row="0" Grid.Column="1" VerticalAlignment="Top" >
-				<TextBlock Text="{Binding Path=User.ScreenName, FallbackValue=Screen Name}" FontWeight="Bold" FontSize="16" VerticalAlignment="Bottom" HorizontalAlignment="Left" x:Name="ScreenName" Cursor="Hand"/>
-				<TextBlock Text="{Binding Path=RelativeTime, FallbackValue=1 minute ago}"
-                           ToolTip="{Binding Path=Source, FallbackValue=from web}"
-                           Margin="8,0,0,1" VerticalAlignment="Bottom" HorizontalAlignment="Left" FontStyle="Italic" TextTrimming="CharacterEllipsis"/>
-			</DockPanel>
-			<TextBlock x:Name="TweetText" Grid.Row="1" Grid.Column="1" Text="{Binding Path=Text, FallbackValue=Tweet Text}" TextWrapping="Wrap" />
-			<Border Width="50" Height="50" Grid.RowSpan="2" BorderBrush="{DynamicResource ImageBorderBrush}" BorderThickness="2" HorizontalAlignment="Center" VerticalAlignment="Top" Margin="0,5,0,0">
-				<Image Width="48" Height="48" Source="{Binding Path=User.ImageUrl}" x:Name="UserImage"/>
-			</Border>
-		</Grid>
+        <DataTemplate.Resources>
+            <Storyboard x:Key="YellowFade">
+                <ColorAnimationUsingKeyFrames BeginTime="00:00:00" Storyboard.TargetName="grid" Storyboard.TargetProperty="(Panel.Background).(SolidColorBrush.Color)">
+                    <SplineColorKeyFrame KeyTime="00:00:00" Value="#FFFEFF76"/>
+                    <SplineColorKeyFrame KeyTime="00:00:01" Value="#19FEFF76"/>
+                </ColorAnimationUsingKeyFrames>
+            </Storyboard>
+        </DataTemplate.Resources>
+        <Grid x:Name="grid" Background="#01FFFFFF">
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition Width="60"/>
+                <ColumnDefinition Width="*"/>
+            </Grid.ColumnDefinitions>
+            <Grid.RowDefinitions>
+                <RowDefinition Height="Auto"/>
+                <RowDefinition Height="*"/>
+            </Grid.RowDefinitions>
+            <DockPanel Grid.Row="0" Grid.Column="1" VerticalAlignment="Top" >
+                <TextBlock Text="{Binding Path=User.ScreenName, FallbackValue=Screen Name}" FontWeight="Bold" FontSize="16" VerticalAlignment="Bottom" HorizontalAlignment="Left" x:Name="ScreenName" Cursor="Hand"/>
+                <TextBlock Text="{Binding Path=RelativeTime, FallbackValue=1 minute ago}"
+                    ToolTip="{Binding Path=Source, FallbackValue=from web}"
+                    Margin="8,0,0,1" VerticalAlignment="Bottom" HorizontalAlignment="Left" FontStyle="Italic" TextTrimming="CharacterEllipsis"/>
+            </DockPanel>
+            <TextBlock x:Name="TweetText" Grid.Row="1" Grid.Column="1" Text="{Binding Path=Text, FallbackValue=Tweet Text}" TextWrapping="Wrap" />
+            <Border Width="50" Height="50" Grid.RowSpan="2" BorderBrush="{DynamicResource ImageBorderBrush}" BorderThickness="2" HorizontalAlignment="Center" VerticalAlignment="Top" Margin="0,5,0,0">
+                <Image Width="48" Height="48" Source="{Binding Path=User.ImageUrl}" x:Name="UserImage"/>
+            </Border>
+        </Grid>
+        <DataTemplate.Triggers>
+            <DataTrigger Binding="{Binding Path=IsNew}" Value="True">
+                <DataTrigger.EnterActions>
+                    <BeginStoryboard Storyboard="{StaticResource YellowFade}"/>
+                </DataTrigger.EnterActions>
+            </DataTrigger>
+        </DataTemplate.Triggers>
     </DataTemplate>
-	<SolidColorBrush x:Key="ForegroundBrush" Color="#FF000000"/>
-	<SolidColorBrush x:Key="HeaderForegroundBrush" Color="#FFFFFFFF"/>
+    <SolidColorBrush x:Key="ForegroundBrush" Color="#FF000000"/>
+    <SolidColorBrush x:Key="HeaderForegroundBrush" Color="#FFFFFFFF"/>
 
-	<SolidColorBrush x:Key="SelectedBackgroundBrush" Color="#0052A8A8" />
+    <SolidColorBrush x:Key="SelectedBackgroundBrush" Color="#0052A8A8" />
     <SolidColorBrush x:Key="DisabledForegroundBrush" Color="#888" />
 
-	<SolidColorBrush x:Key="HoverBrush" Color="#FFC4D8E3" />
+    <SolidColorBrush x:Key="HoverBrush" Color="#FFC4D8E3" />
 
     <Style x:Key="{x:Type ListBoxItem}" TargetType="ListBoxItem">
         <Setter Property="SnapsToDevicePixels" Value="true"/>
@@ -50,8 +65,8 @@
 						x:Name="Border"
 						Padding="2"
 						SnapsToDevicePixels="true" BorderThickness="0,0,0,1" BorderBrush="{DynamicResource LightBorderBrush}">
-						<ContentPresenter />
-					</Border>
+                        <ContentPresenter />
+                    </Border>
                     <ControlTemplate.Triggers>
                         <Trigger Property="IsSelected" Value="true">
                             <Setter TargetName="Border" Property="Background"
@@ -70,8 +85,8 @@
             </Setter.Value>
         </Setter>
     </Style>
-	<LinearGradientBrush x:Key="LoginBackgroundBrush" EndPoint="0.5,1.093" StartPoint="0.5,0.644">
-		<GradientStop Color="#FFFFFFFF" Offset="0"/>
-		<GradientStop Color="#FFC4D8E3" Offset="1"/>
-	</LinearGradientBrush>
+    <LinearGradientBrush x:Key="LoginBackgroundBrush" EndPoint="0.5,1.093" StartPoint="0.5,0.644">
+        <GradientStop Color="#FFFFFFFF" Offset="0"/>
+        <GradientStop Color="#FFC4D8E3" Offset="1"/>
+    </LinearGradientBrush>
 </ResourceDictionary>
