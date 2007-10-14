@@ -297,19 +297,29 @@ namespace Witty
             if (e.MouseDevice.DirectlyOver.GetType() == typeof(TextBlock))
             {
                 TextBlock textBlock = (TextBlock)e.MouseDevice.DirectlyOver;
-                if (textBlock.Name == "TweetText")
-                {
-                    if (TweetsListBox.SelectedValue != null && !string.IsNullOrEmpty(TweetsListBox.SelectedValue.ToString()))
-                        System.Diagnostics.Process.Start(TweetsListBox.SelectedValue.ToString());
-                }
 
-                if (textBlock.Name == "ScreenName")
+                try
                 {
-                    if (TweetsListBox.SelectedItem != null)
+                    if (textBlock.Name == "TweetText")
                     {
-                        Tweet tweet = (Tweet)TweetsListBox.SelectedItem;
-                        System.Diagnostics.Process.Start(tweet.User.TwitterUrl);
+                        if (TweetsListBox.SelectedValue != null && !string.IsNullOrEmpty(TweetsListBox.SelectedValue.ToString()))
+                            System.Diagnostics.Process.Start(TweetsListBox.SelectedValue.ToString());
                     }
+
+                    if (textBlock.Name == "ScreenName")
+                    {
+                        if (TweetsListBox.SelectedItem != null)
+                        {
+                            Tweet tweet = (Tweet)TweetsListBox.SelectedItem;
+                            System.Diagnostics.Process.Start(tweet.User.TwitterUrl);
+                        }
+                    }
+                }
+                catch (Win32Exception ex)
+                {
+#if DEBUG
+                    MessageBox.Show(ex.ToString());
+#endif
                 }
             }
         }
