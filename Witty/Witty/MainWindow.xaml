@@ -8,7 +8,7 @@
     xmlns:Witty="clr-namespace:Witty"
 	x:Class="Witty.MainWindow"
 	x:Name="Window"
-	Title="Witty"
+	Title="Witty 0.1.1"
 	Width="325" Height="450" WindowStyle="SingleBorderWindow"
     Icon="AppIcon.ico"
     >
