@@ -4,6 +4,7 @@
 = List of todos =
 
   * display rate limit errors
+   # Maybe keep track of api rate and throttle the api calls.
   * add validation for logins
   * create separate thread for People You Follow
   * make People you follow more useful
