@@ -14,3 +14,6 @@
   * use icons for buttons
   * ~~remember window position~~
   * Make a better Application icon
+  * display links as hyperlinks
+   # Make only the hyperlink clickable
+  * Add User Timeline section
