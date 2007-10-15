@@ -4,7 +4,6 @@
 
     <SolidColorBrush x:Key="SecondaryBackgroundBrush" Color="#FFA8B9C6"/>
 
-    <SolidColorBrush x:Key="BackgroundBrush" Color="#FFC4D8E3"/>
     <SolidColorBrush x:Key="PrimaryBackgroundBrush" Color="#FF52626F"/>
     <SolidColorBrush x:Key="PrimaryBorderBrush" Color="#FF222B34"/>
 
@@ -85,8 +84,4 @@
             </Setter.Value>
         </Setter>
     </Style>
-    <LinearGradientBrush x:Key="LoginBackgroundBrush" EndPoint="0.5,1.093" StartPoint="0.5,0.644">
-        <GradientStop Color="#FFFFFFFF" Offset="0"/>
-        <GradientStop Color="#FFC4D8E3" Offset="1"/>
-    </LinearGradientBrush>
 </ResourceDictionary>
