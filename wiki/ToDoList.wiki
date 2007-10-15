@@ -12,4 +12,4 @@
   * add list of wpf features
   * write blog posts about Witty
   * use icons for refresh
-  * remember window position
+  * ~~remember window position~~
