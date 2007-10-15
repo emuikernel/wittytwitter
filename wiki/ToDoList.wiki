@@ -1,0 +1,9 @@
+#summary One-sentence summary of this page.
+#labels Phase-Design
+
+= List of todos =
+
+  * display rate limit errors
+  * add validation for logins
+  * create separate thread for People You Follow
+  * make People you follow more useful
