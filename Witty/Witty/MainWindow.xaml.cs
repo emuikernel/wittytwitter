@@ -397,6 +397,16 @@ namespace Witty
             }
         }
 
+        private void Friends_MouseLeftButtonUp(object sender, System.Windows.Input.MouseButtonEventArgs e)
+        {
+            if (isLoggedIn)
+            {
+                StatusTextBlock.Text = "Loading People You Follow...";
+
+                PeopleYouFollow peopleYouFollow = new PeopleYouFollow();
+                peopleYouFollow.Show();
+            }
+        }
         #endregion
 
         #region Minimize to Tray
@@ -500,16 +510,5 @@ namespace Witty
             Environment.Exit(0);
         }
         #endregion
-
-        private void Friends_MouseLeftButtonUp(object sender, System.Windows.Input.MouseButtonEventArgs e)
-        {
-            if (isLoggedIn)
-            {
-                StatusTextBlock.Text = "Loading People You Follow...";
-
-                PeopleYouFollow peopleYouFollow = new PeopleYouFollow();
-                peopleYouFollow.Show();
-            }
-        }
     }
 }
