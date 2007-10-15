@@ -505,6 +505,8 @@ namespace Witty
         {
             if (isLoggedIn)
             {
+                StatusTextBlock.Text = "Loading People You Follow...";
+
                 PeopleYouFollow peopleYouFollow = new PeopleYouFollow();
                 peopleYouFollow.Show();
             }
