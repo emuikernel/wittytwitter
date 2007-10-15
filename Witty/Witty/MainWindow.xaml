@@ -117,6 +117,7 @@
         <Border DockPanel.Dock="Top" Height="40" Padding="10,0,10,0" Background="{DynamicResource PrimaryBackgroundBrush}" x:Name="Header">
             <DockPanel LastChildFill="False">
                 <TextBlock Text="Witty" VerticalAlignment="Center" HorizontalAlignment="Center" FontSize="18" FontWeight="Bold" Foreground="{DynamicResource HeaderForegroundBrush}"/>
+            	<Rectangle Fill="#FF52626F" Width="20" Height="20" DockPanel.Dock="Right" x:Name="Friends" MouseLeftButtonUp="Friends_MouseLeftButtonUp"/>
             </DockPanel>
         </Border>
         <Border DockPanel.Dock="Bottom" Padding="5,2,5,2" Background="{DynamicResource PrimaryBackgroundBrush}" x:Name="StatusBar">
