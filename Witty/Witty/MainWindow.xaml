@@ -61,7 +61,7 @@
                 <SplineDoubleKeyFrame KeyTime="00:00:00.4000000" Value="225"/>
                 <SplineDoubleKeyFrame KeyTime="00:00:00.6000000" Value="0"/>
             </DoubleAnimationUsingKeyFrames>
-            <DoubleAnimationUsingKeyFrames BeginTime="00:00:00" Storyboard.TargetName="Content" Storyboard.TargetProperty="(UIElement.Opacity)">
+            <DoubleAnimationUsingKeyFrames BeginTime="00:00:00" Storyboard.TargetName="Recent" Storyboard.TargetProperty="(UIElement.Opacity)">
                 <SplineDoubleKeyFrame KeyTime="00:00:00" Value="0"/>
                 <SplineDoubleKeyFrame KeyTime="00:00:00.5000000" Value="1"/>
             </DoubleAnimationUsingKeyFrames>
@@ -117,9 +117,9 @@
 			<Border DockPanel.Dock="Bottom" Padding="5,2,5,2" Background="{DynamicResource PrimaryBackgroundBrush}" x:Name="StatusBar">
 				<TextBlock x:Name="StatusTextBlock" TextWrapping="NoWrap" Foreground="#FFE4E4E4" Text="Login" TextTrimming="CharacterEllipsis" />
 			</Border>
-			<TabControl IsSynchronizedWithCurrentItem="True" DockPanel.Dock="Top">
+        	<TabControl IsSynchronizedWithCurrentItem="True" DockPanel.Dock="Top" x:Name="Content">
 				<TabItem Header="Recent">
-					<Grid x:Name="Content">
+					<Grid x:Name="Recent">
 						<ListBox ScrollViewer.CanContentScroll="False" IsSynchronizedWithCurrentItem="True" ItemTemplate="{DynamicResource TweetsTemplate}" ItemsSource="{Binding Mode=OneWay}" SelectedValuePath="Hyperlink" ScrollViewer.HorizontalScrollBarVisibility="Disabled" Margin="0,0,0,20" x:Name="TweetsListBox" MouseLeftButtonUp="TweetsListBox_MouseLeftButtonUp" BorderThickness="0,0,0,0" />
 						<Border Height="21" Background="#FFA8B9C6" VerticalAlignment="Bottom" Padding="10,0,10,0" x:Name="Update" MouseLeftButtonUp="Update_MouseLeftButtonUp" BorderBrush="{DynamicResource PrimaryBackgroundBrush}" BorderThickness="0,0,0,1">
 							<DockPanel OpacityMask="#FF000000" x:Name="dockPanel">
