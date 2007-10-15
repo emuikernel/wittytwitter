@@ -58,6 +58,7 @@ namespace Witty
 
             // Set the datacontext
             LayoutRoot.DataContext = tweets;
+            RepliesListBox.ItemsSource = replies;
 
             // Does the user need to login
             if (string.IsNullOrEmpty(AppSettings.Username))
@@ -84,7 +85,12 @@ namespace Witty
         #region Fields and Properties
 
         // Main collection of tweets
-        public static Tweets tweets = new Tweets();
+        private Tweets tweets = new Tweets();
+
+        // Main collection of replies
+        private Tweets replies = new Tweets();
+
+        private DateTime repliesLastUpdated;
 
         // Main TwitterNet object used to make Twitter API calls
         private TwitterNet twitter;
@@ -153,9 +159,6 @@ namespace Witty
 
         private void UpdateUserInterface(Tweets newTweets)
         {
-            // Refresh the grid so that relativeTime updates
-            //LayoutRoot.DataContext = newTweets;
-
             DateTime lastUpdated = DateTime.Now;
             StatusTextBlock.Text = "Last Updated: " + lastUpdated.ToString();
 
@@ -194,12 +197,15 @@ namespace Witty
 
         private void UpdateButton_Click(object sender, RoutedEventArgs e)
         {
-            // Schedule posting the tweet
-            UpdateButton.Dispatcher.BeginInvoke(
-                System.Windows.Threading.DispatcherPriority.Normal,
-                new AddTweetDelegate(AddTweet), TweetTextBox.Text);
-            TweetTextBox.Clear();
-            TweetTextBox.Focus();
+            if (!string.IsNullOrEmpty(TweetTextBox.Text))
+            {
+                // Schedule posting the tweet
+                UpdateButton.Dispatcher.BeginInvoke(
+                    System.Windows.Threading.DispatcherPriority.Normal,
+                    new AddTweetDelegate(AddTweet), TweetTextBox.Text);
+                TweetTextBox.Clear();
+                TweetTextBox.Focus();
+            }
         }
 
         private void AddTweet(string text)
@@ -252,6 +258,72 @@ namespace Witty
 
         #endregion
 
+        #region Replies
+        private void Tabs_SelectionChanged(object sender, SelectionChangedEventArgs e)
+        {
+            TabControl tabs = (TabControl)sender;
+            if (tabs.SelectedIndex == 1 && isLoggedIn)
+            {
+                // Throttle updating replies
+                long ticks = DateTime.Now.Ticks - repliesLastUpdated.Ticks;
+                TimeSpan ts = new TimeSpan(ticks);
+                if (ts.TotalMinutes > 1)
+                {
+                    // Let the user know what's going on
+                    StatusTextBlock.Text = "Retrieving replies...";
+
+                    PlayStoryboard("Fetching");
+
+                    // Create a Dispatcher to fetching new tweets
+                    NoArgDelegate fetcher = new NoArgDelegate(
+                        this.GetReplies);
+
+                    fetcher.BeginInvoke(null, null);
+                }
+            }
+        }
+
+        private void GetReplies()
+        {
+            try
+            {
+                // Schedule the update function in the UI thread.
+                LayoutRoot.Dispatcher.BeginInvoke(
+                    System.Windows.Threading.DispatcherPriority.Normal,
+                    new OneArgDelegate(UpdateRepliesInterface), twitter.GetReplies());
+            }
+            catch (WebException ex)
+            {
+#if DEBUG
+                MessageBox.Show("There was a problem fetching your replies from Twitter.com. " + ex.Message);
+#endif
+            }
+        }
+
+        private void UpdateRepliesInterface(Tweets newReplies)
+        {
+            repliesLastUpdated = DateTime.Now;
+            StatusTextBlock.Text = "Replies Updated: " + repliesLastUpdated.ToString();
+
+            for (int i = newReplies.Count - 1; i >= 0; i--)
+            {
+                Tweet reply = newReplies[i];
+                if (!replies.Contains(reply))
+                {
+                    replies.Insert(0, reply);
+                    reply.IsNew = true;
+                }
+                else
+                {
+                    // update the relativetime for existing tweets
+                    replies[i].UpdateRelativeTime();
+                }
+            }
+
+            StopStoryboard("Fetching");
+        }
+        #endregion
+
         #region Misc Methods and Event Handlers
 
         private void LoginControl_Login(object sender, RoutedEventArgs e)
@@ -300,17 +372,18 @@ namespace Witty
 
                 try
                 {
+                    ListBox listbox = (ListBox)sender;
                     if (textBlock.Name == "TweetText")
                     {
-                        if (TweetsListBox.SelectedValue != null && !string.IsNullOrEmpty(TweetsListBox.SelectedValue.ToString()))
-                            System.Diagnostics.Process.Start(TweetsListBox.SelectedValue.ToString());
+                        if (listbox.SelectedValue != null && !string.IsNullOrEmpty(listbox.SelectedValue.ToString()))
+                            System.Diagnostics.Process.Start(listbox.SelectedValue.ToString());
                     }
 
                     if (textBlock.Name == "ScreenName")
                     {
-                        if (TweetsListBox.SelectedItem != null)
+                        if (listbox.SelectedItem != null)
                         {
-                            Tweet tweet = (Tweet)TweetsListBox.SelectedItem;
+                            Tweet tweet = (Tweet)listbox.SelectedItem;
                             System.Diagnostics.Process.Start(tweet.User.TwitterUrl);
                         }
                     }

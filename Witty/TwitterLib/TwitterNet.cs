@@ -519,6 +519,11 @@ namespace TwitterLib
             return users;
         }
 
+        public Tweets GetReplies()
+        {
+            return RetrieveTimeline(Timeline.Replies);
+        }
+
         #endregion
 
         #region Private Methods
@@ -565,6 +570,9 @@ namespace TwitterLib
                 case Timeline.User:
                     timelineUrl = UserTimelineUrl;
                     break;
+                case Timeline.Replies:
+                    timelineUrl = RepliesTimelineUrl;
+                    break;
                 default:
                     timelineUrl = PublicTimelineUrl;
                     break;
@@ -591,8 +599,8 @@ namespace TwitterLib
             // Create the web request
             HttpWebRequest request = WebRequest.Create(timelineUrl) as HttpWebRequest;
 
-            // Friends timeline request need to be authenticated
-            if (timeline == Timeline.Friends)
+            // Friends and Replies timeline requests need to be authenticated
+            if (timeline == Timeline.Friends || timeline == Timeline.Replies)
             {
                 // Add credendtials to request  
                 request.Credentials = new NetworkCredential(username, password);
