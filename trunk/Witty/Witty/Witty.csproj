@@ -99,6 +99,7 @@
     </Compile>
     <Compile Include="SingleInstanceManager.cs" />
     <Compile Include="ValueConverters.cs" />
+    <Compile Include="WindowSettings.cs" />
     <None Include="app.config" />
     <None Include="Properties\Settings.settings">
       <Generator>SettingsSingleFileGenerator</Generator>
