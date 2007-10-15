@@ -11,5 +11,5 @@
   * add documentation
   * add list of wpf features
   * write blog posts about Witty
-  * use icons for refresh
+  * use icons for buttons
   * ~~remember window position~~
