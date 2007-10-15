@@ -20,6 +20,8 @@ namespace TwitterLib
         private string publicTimelineUrl;
         private string friendsTimelineUrl;
         private string userTimelineUrl;
+        private string repliesTimelineUrl;
+        private string directMessagesUrl; 
         private string updateUrl;
         private string friendsUrl;
         private string followersUrl;
@@ -100,12 +102,49 @@ namespace TwitterLib
         {
             get
             {
-                if (string.IsNullOrEmpty(friendsTimelineUrl))
+                if (string.IsNullOrEmpty(userTimelineUrl))
                     return "http://twitter.com/statuses/user_timeline";
                 else
                     return userTimelineUrl;
             }
             set { userTimelineUrl = value; }
+        }
+
+        /// <summary>
+        /// Url to the 20 most recent replies (status updates prefixed with @username posted by users who are friends with the user being replied to) to the authenticating user. 
+        /// Defaults to http://twitter.com/statuses/user_timeline
+        /// </summary>
+        /// <remarks>
+        /// This value should only be changed if Twitter API urls have been changed on http://groups.google.com/group/twitter-development-talk/web/api-documentation
+        /// </remarks>
+        public string RepliesTimelineUrl
+        {
+            get
+            {
+                if (string.IsNullOrEmpty(repliesTimelineUrl))
+                    return "http://twitter.com/statuses/replies";
+                else
+                    return repliesTimelineUrl;
+            }
+            set { repliesTimelineUrl = value; }
+        }
+
+        /// <summary>
+        /// Url to the list of the 20 most recent direct messages sent to the authenticating user.  Defaults to http://twitter.com/direct_messages
+        /// </summary>
+        /// <remarks>
+        /// This value should only be changed if Twitter API urls have been changed on http://groups.google.com/group/twitter-development-talk/web/api-documentation
+        /// </remarks>
+        public string DirectMessagesUrl
+        {
+            get
+            {
+                if (string.IsNullOrEmpty(directMessagesUrl))
+                    return "http://twitter.com/direct_messages";
+                else
+                    return directMessagesUrl;
+            }
+            set { directMessagesUrl = value; }
         }
 
         /// <summary>
@@ -180,8 +219,7 @@ namespace TwitterLib
                     return userShowUrl;
             }
             set { userShowUrl = value; }
-        }
-	
+        }	
 
         /// <summary>
         /// The format of the results from the twitter API. Ex: .xml, .json, .rss, .atom. Defaults to ".xml"
@@ -638,6 +676,7 @@ namespace TwitterLib
     {
         Public,
         Friends,
-        User
+        User,
+        Replies
     }
 }

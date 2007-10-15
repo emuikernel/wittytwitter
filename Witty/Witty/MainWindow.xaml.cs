@@ -118,7 +118,7 @@ namespace Witty
         private void DelegateFetch()
         {
             // Let the user know what's going on
-            StatusTextBlock.Text = "Fetching new tweets...";
+            StatusTextBlock.Text = "Retrieving tweets...";
 
             PlayStoryboard("Fetching");
 
