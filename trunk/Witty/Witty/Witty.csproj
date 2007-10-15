@@ -57,6 +57,7 @@
     <Reference Include="System.IdentityModel" />
     <Page Include="LoginControl.xaml" />
     <Page Include="MainWindow.xaml" />
+    <Page Include="PeopleYouFollow.xaml" />
     <Page Include="Resources\CustomStyles.xaml" />
     <Page Include="Resources\WittyResources.xaml" />
     <Compile Include="LoginControl.xaml.cs">
@@ -74,6 +75,13 @@
     </Compile>
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="FlipTile3D\Code.cs" />
+    <Compile Include="FlipTile3D\FileTile3D.cs" />
+    <Compile Include="FlipTile3D\TileData.cs" />
+    <Compile Include="PeopleYouFollow.xaml.cs">
+      <SubType>Code</SubType>
+      <DependentUpon>PeopleYouFollow.xaml</DependentUpon>
+    </Compile>
     <Compile Include="Properties\AssemblyInfo.cs" />
     <EmbeddedResource Include="Properties\Resources.resx">
       <Generator>ResXFileCodeGenerator</Generator>

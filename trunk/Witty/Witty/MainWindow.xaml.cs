@@ -500,5 +500,14 @@ namespace Witty
             Environment.Exit(0);
         }
         #endregion
+
+        private void Friends_MouseLeftButtonUp(object sender, System.Windows.Input.MouseButtonEventArgs e)
+        {
+            if (isLoggedIn)
+            {
+                PeopleYouFollow peopleYouFollow = new PeopleYouFollow();
+                peopleYouFollow.Show();
+            }
+        }
     }
 }

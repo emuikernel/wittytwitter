@@ -1,0 +1,19 @@
+﻿<Window
+    xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+    xmlns:local="clr-namespace:Witty" x:Class="Witty.PeopleYouFollow"
+    Title="Witty - People You Follow"
+    Height="650" Width="650"
+    Icon="AppIcon.ico"
+    >
+    <Window.Background>
+        <LinearGradientBrush EndPoint="0,0.5" StartPoint="0,0.95">
+            <GradientStop Color="#F999" Offset="0"/>
+            <GradientStop Color="#FFFFFFFF" Offset="1"/>
+        </LinearGradientBrush>
+    </Window.Background>
+	<DockPanel>
+		<TextBlock Text="People You Are Following" TextWrapping="Wrap" DockPanel.Dock="Top" HorizontalAlignment="Center" Margin="0,10,0,0" FontSize="18" FontWeight="Bold" Foreground="#FF666666"/>
+		<local:FlipTile3D Width="500" Height="500"/>
+	</DockPanel>
+</Window>
