@@ -8,3 +8,6 @@
   * add validation for logins
   * create separate thread for People You Follow
   * make People you follow more useful
+  * add documentation
+  * add list of wpf features
+  * write blog posts about Witty
