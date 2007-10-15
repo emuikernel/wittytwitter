@@ -50,6 +50,9 @@
                 <SplineDoubleKeyFrame KeyTime="00:00:00.5000000" Value="0" KeySpline="0,0,0,1"/>
                 <SplineDoubleKeyFrame KeyTime="00:00:00.7000000" Value="225" KeySpline="0,0,0,1"/>
             </DoubleAnimationUsingKeyFrames>
+        	<BooleanAnimationUsingKeyFrames BeginTime="00:00:00" Duration="00:00:00.0010000" Storyboard.TargetName="Tabs" Storyboard.TargetProperty="(UIElement.IsEnabled)">
+        		<DiscreteBooleanKeyFrame KeyTime="00:00:00" Value="False"/>
+        	</BooleanAnimationUsingKeyFrames>
         </Storyboard>
         <Storyboard x:Key="HideLogin">
             <DoubleAnimationUsingKeyFrames BeginTime="00:00:00" Storyboard.TargetName="LoginControl" Storyboard.TargetProperty="(FrameworkElement.Height)">
@@ -66,12 +69,16 @@
                 <SplineDoubleKeyFrame KeyTime="00:00:00.5000000" Value="1"/>
             </DoubleAnimationUsingKeyFrames>
             <ObjectAnimationUsingKeyFrames BeginTime="00:00:00" Storyboard.TargetName="LoginControl" Storyboard.TargetProperty="(UIElement.Visibility)">
+                <DiscreteObjectKeyFrame KeyTime="00:00:00" Value="{x:Static Visibility.Visible}"/>
                 <DiscreteObjectKeyFrame KeyTime="00:00:00.4000000" Value="{x:Static Visibility.Hidden}"/>
                 <DiscreteObjectKeyFrame KeyTime="00:00:00.6000000" Value="{x:Static Visibility.Hidden}"/>
             </ObjectAnimationUsingKeyFrames>
             <BooleanAnimationUsingKeyFrames BeginTime="00:00:00" Duration="00:00:00.0010000" Storyboard.TargetName="RefreshButton" Storyboard.TargetProperty="(UIElement.IsEnabled)">
                 <DiscreteBooleanKeyFrame KeyTime="00:00:00" Value="True"/>
             </BooleanAnimationUsingKeyFrames>
+        	<BooleanAnimationUsingKeyFrames BeginTime="00:00:00" Storyboard.TargetName="Tabs" Storyboard.TargetProperty="(UIElement.IsEnabled)" Duration="00:00:00.0010000">
+					<DiscreteBooleanKeyFrame KeyTime="00:00:00" Value="True"/>
+				</BooleanAnimationUsingKeyFrames>
         </Storyboard>
         <Storyboard x:Key="UpdateMouseEnter">
             <ColorAnimationUsingKeyFrames BeginTime="00:00:00" Storyboard.TargetName="Update" Storyboard.TargetProperty="(Panel.Background).(SolidColorBrush.Color)">
@@ -106,46 +113,46 @@
     </Window.Triggers>
 
     <!--<Grid x:Name="LayoutRoot" DataContext="{Binding Mode=OneWay, Source={StaticResource TweetsDS}}">-->
-    <Grid x:Name="LayoutRoot">
-        <DockPanel Background="{DynamicResource BackgroundBrush}">
-			<Border DockPanel.Dock="Top" Height="40" Padding="10,0,10,0" Background="{DynamicResource PrimaryBackgroundBrush}" x:Name="Header">
-				<DockPanel LastChildFill="False">
-					<TextBlock Text="Witty" VerticalAlignment="Center" HorizontalAlignment="Center" FontSize="18" FontWeight="Bold" Foreground="{DynamicResource HeaderForegroundBrush}"/>
-					<Button Content="Refresh" DockPanel.Dock="Right" Height="20" x:Name="RefreshButton" Click="RefreshButton_Click" IsEnabled="False" MinWidth="25" MinHeight="20" FontSize="9"/>
-				</DockPanel>
-			</Border>
-			<Border DockPanel.Dock="Bottom" Padding="5,2,5,2" Background="{DynamicResource PrimaryBackgroundBrush}" x:Name="StatusBar">
-				<TextBlock x:Name="StatusTextBlock" TextWrapping="NoWrap" Foreground="#FFE4E4E4" Text="Login" TextTrimming="CharacterEllipsis" />
-			</Border>
-        	<TabControl IsSynchronizedWithCurrentItem="True" DockPanel.Dock="Top" x:Name="Content">
-				<TabItem Header="Recent">
-					<Grid x:Name="Recent">
-						<ListBox ScrollViewer.CanContentScroll="False" IsSynchronizedWithCurrentItem="True" ItemTemplate="{DynamicResource TweetsTemplate}" ItemsSource="{Binding Mode=OneWay}" SelectedValuePath="Hyperlink" ScrollViewer.HorizontalScrollBarVisibility="Disabled" Margin="0,0,0,20" x:Name="TweetsListBox" MouseLeftButtonUp="TweetsListBox_MouseLeftButtonUp" BorderThickness="0,0,0,0" />
-						<Border Height="21" Background="#FFA8B9C6" VerticalAlignment="Bottom" Padding="10,0,10,0" x:Name="Update" MouseLeftButtonUp="Update_MouseLeftButtonUp" BorderBrush="{DynamicResource PrimaryBackgroundBrush}" BorderThickness="0,0,0,1">
-							<DockPanel OpacityMask="#FF000000" x:Name="dockPanel">
-								<TextBlock HorizontalAlignment="Center" DockPanel.Dock="Top" Text="Update" TextWrapping="Wrap" Height="20" VerticalAlignment="Top" x:Name="UpdateTextBlock"/>
-								<Grid Margin="0,10,0,10">
-									<Grid.ColumnDefinitions>
-										<ColumnDefinition Width="*"/>
-										<ColumnDefinition Width="100"/>
-									</Grid.ColumnDefinitions>
-									<TextBox Text="" TextWrapping="Wrap" x:Name="TweetTextBox" SpellCheck.IsEnabled="True" MaxLength="140"/>
-									<TextBlock Text="{Binding Path=Text.Length, Converter={StaticResource CharRemainingConverter}, ElementName=TweetTextBox, Mode=Default}" FontSize="18" Grid.Column="1" VerticalAlignment="Top" HorizontalAlignment="Left" Margin="10,0,0,0" FontFamily="Georgia" x:Name="CharRemainingCounter" Foreground="#FF52626F" />
-									<Button VerticalAlignment="Bottom" Width="75" Height="23" Content="Update" Grid.Column="1" x:Name="UpdateButton" Click="UpdateButton_Click"/>
-								</Grid>
-							</DockPanel>
-						</Border>
-					</Grid>
-				</TabItem>
-				<TabItem Header="Replies">
-					<Grid/>
-				</TabItem>
-			</TabControl>
-		</DockPanel>
-        <Witty:LoginControl HorizontalAlignment="Center" VerticalAlignment="Center" x:Name="LoginControl" Visibility="Visible" Login="LoginControl_Login" d:IsHidden="True">
-            <Witty:LoginControl.BitmapEffect>
-                <OuterGlowBitmapEffect GlowColor="#FF000000" Opacity="0.75"/>
-            </Witty:LoginControl.BitmapEffect>
-        </Witty:LoginControl>
-    </Grid>
+    <DockPanel x:Name="LayoutRoot" Background="{DynamicResource SecondaryBackgroundBrush}">
+        <Border DockPanel.Dock="Top" Height="40" Padding="10,0,10,0" Background="{DynamicResource PrimaryBackgroundBrush}" x:Name="Header">
+            <DockPanel LastChildFill="False">
+                <TextBlock Text="Witty" VerticalAlignment="Center" HorizontalAlignment="Center" FontSize="18" FontWeight="Bold" Foreground="{DynamicResource HeaderForegroundBrush}"/>
+            </DockPanel>
+        </Border>
+        <Border DockPanel.Dock="Bottom" Padding="5,2,5,2" Background="{DynamicResource PrimaryBackgroundBrush}" x:Name="StatusBar">
+            <TextBlock x:Name="StatusTextBlock" TextWrapping="NoWrap" Foreground="#FFE4E4E4" Text="Login" TextTrimming="CharacterEllipsis" />
+        </Border>
+        <Grid x:Name="Content">
+            <TabControl x:Name="Tabs" IsSynchronizedWithCurrentItem="True" DockPanel.Dock="Top" SelectionChanged="Tabs_SelectionChanged">
+                <TabItem Header="Recent">
+                    <Grid x:Name="Recent">
+                        <ListBox x:Name="TweetsListBox" ScrollViewer.CanContentScroll="False" IsSynchronizedWithCurrentItem="True" ItemTemplate="{DynamicResource TweetsTemplate}" ItemsSource="{Binding Mode=OneWay}" SelectedValuePath="Hyperlink" ScrollViewer.HorizontalScrollBarVisibility="Disabled" Margin="0,0,0,20" MouseLeftButtonUp="TweetsListBox_MouseLeftButtonUp" BorderThickness="0,0,0,0" />
+                        <Border Height="21" Background="#FFA8B9C6" VerticalAlignment="Bottom" Padding="10,0,10,0" x:Name="Update" MouseLeftButtonUp="Update_MouseLeftButtonUp" BorderBrush="{DynamicResource PrimaryBackgroundBrush}" BorderThickness="0,0,0,1">
+                            <DockPanel OpacityMask="#FF000000" x:Name="dockPanel">
+                                <TextBlock HorizontalAlignment="Center" DockPanel.Dock="Top" Text="Update" TextWrapping="Wrap" Height="20" VerticalAlignment="Top" x:Name="UpdateTextBlock"/>
+                                <Grid Margin="0,10,0,10">
+                                    <Grid.ColumnDefinitions>
+                                        <ColumnDefinition Width="*"/>
+                                        <ColumnDefinition Width="100"/>
+                                    </Grid.ColumnDefinitions>
+                                    <TextBox Text="" TextWrapping="Wrap" x:Name="TweetTextBox" SpellCheck.IsEnabled="True" MaxLength="140"/>
+                                    <TextBlock Text="{Binding Path=Text.Length, Converter={StaticResource CharRemainingConverter}, ElementName=TweetTextBox, Mode=Default}" FontSize="18" Grid.Column="1" VerticalAlignment="Top" HorizontalAlignment="Left" Margin="10,0,0,0" FontFamily="Georgia" x:Name="CharRemainingCounter" Foreground="#FF52626F" />
+                                    <Button VerticalAlignment="Bottom" Width="75" Height="23" Content="Update" Grid.Column="1" x:Name="UpdateButton" Click="UpdateButton_Click"/>
+                                </Grid>
+                            </DockPanel>
+                        </Border>
+                    </Grid>
+                </TabItem>
+                <TabItem Header="Replies">
+                    <ListBox x:Name="RepliesListBox" ScrollViewer.CanContentScroll="False" IsSynchronizedWithCurrentItem="True" ItemTemplate="{DynamicResource TweetsTemplate}" SelectedValuePath="Hyperlink" ScrollViewer.HorizontalScrollBarVisibility="Disabled" MouseLeftButtonUp="TweetsListBox_MouseLeftButtonUp" BorderThickness="0,0,0,0" />
+                </TabItem>
+            </TabControl>
+            <Witty:LoginControl HorizontalAlignment="Center" VerticalAlignment="Center" x:Name="LoginControl" Login="LoginControl_Login">
+                <Witty:LoginControl.BitmapEffect>
+                    <OuterGlowBitmapEffect GlowColor="#FF000000" Opacity="0.75"/>
+                </Witty:LoginControl.BitmapEffect>
+            </Witty:LoginControl>
+        	<Button Content="Refresh" Height="20" x:Name="RefreshButton" Click="RefreshButton_Click" IsEnabled="False" MinWidth="25" MinHeight="20" FontSize="9" HorizontalAlignment="Right" VerticalAlignment="Top" Width="35.657" Margin="0,5,10,0"/>
+        </Grid>
+    </DockPanel>
 </Window>

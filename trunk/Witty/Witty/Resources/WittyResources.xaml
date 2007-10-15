@@ -29,7 +29,7 @@
                 <RowDefinition Height="*"/>
             </Grid.RowDefinitions>
             <DockPanel Grid.Row="0" Grid.Column="1" VerticalAlignment="Top" >
-                <TextBlock Text="{Binding Path=User.ScreenName, FallbackValue=Screen Name}" FontWeight="Bold" FontSize="16" VerticalAlignment="Bottom" HorizontalAlignment="Left" x:Name="ScreenName" Cursor="Hand"/>
+                <TextBlock Text="{Binding Path=User.ScreenName, FallbackValue=Screen Name}" FontWeight="Bold" FontSize="16" VerticalAlignment="Bottom" HorizontalAlignment="Left" x:Name="ScreenName" Cursor="Hand" ToolTip="{Binding Path=User.TwitterUrl, Mode=Default}"/>
                 <TextBlock Text="{Binding Path=RelativeTime, FallbackValue=1 minute ago}"
                     ToolTip="{Binding Path=Source, FallbackValue=from web}"
                     Margin="8,0,0,1" VerticalAlignment="Bottom" HorizontalAlignment="Left" FontStyle="Italic" TextTrimming="CharacterEllipsis"/>
