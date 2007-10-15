@@ -8,7 +8,7 @@
 	x:Name="UserControl"
     Width="225" Height="270">
 
-	<Border x:Name="LayoutRoot" CornerRadius="5,5,5,5" BorderBrush="{DynamicResource PrimaryBorderBrush}" BorderThickness="1,0,1,1" Background="{DynamicResource LoginBackgroundBrush}">
+	<Border x:Name="LayoutRoot" CornerRadius="5,5,5,5" BorderBrush="{DynamicResource PrimaryBorderBrush}" BorderThickness="1,0,1,1" Background="{DynamicResource NormalBrush}">
 		<StackPanel Width="150" VerticalAlignment="Center">
 			<Label Content="Username:"/>
 			<TextBox HorizontalAlignment="Stretch" Margin="5,0,0,0" x:Name="UsernameTextBox" TextWrapping="Wrap"/>

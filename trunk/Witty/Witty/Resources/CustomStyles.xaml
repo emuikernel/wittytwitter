@@ -9,7 +9,7 @@
         <GradientBrush.GradientStops>
             <GradientStopCollection>
                 <GradientStop Color="#FFF" Offset="0.0"/>
-                <GradientStop Color="#FFC4D8E3" Offset="1.0"/>
+                <GradientStop Color="#CCC" Offset="1.0"/>
             </GradientStopCollection>
         </GradientBrush.GradientStops>
     </LinearGradientBrush>
