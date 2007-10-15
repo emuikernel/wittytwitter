@@ -13,3 +13,4 @@
   * write blog posts about Witty
   * use icons for buttons
   * ~~remember window position~~
+  * Make a better Application icon
