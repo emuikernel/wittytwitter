@@ -18,3 +18,4 @@
    # Make only the hyperlink clickable
   * Add User Timeline section
   * don't clear the update textbox when update fails.
+  * add keyboard shortcuts
