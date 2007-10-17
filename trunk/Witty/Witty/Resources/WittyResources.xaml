@@ -39,7 +39,7 @@
                 </Button>
             </DockPanel>
             <WrapPanel Grid.Column="1" Grid.Row="1">
-                <TextBlock x:Name="TweetText" Text="{Binding Path=Text, FallbackValue=Tweet Text}" ToolTip="{Binding Path=Hyperlink}" TextWrapping="Wrap" Margin="0,0,5,0" />
+                <TextBlock x:Name="TweetText" Text="{Binding Path=Text, FallbackValue=Tweet Text}" TextWrapping="Wrap" Margin="0,0,5,0"/>
                 <TextBlock Text="{Binding Path=RelativeTime, FallbackValue=1 minute ago}"
                     FontStyle="Italic" Margin="0,0,3.5,0" Foreground="{DynamicResource SubForegroundBrush}" ToolTip="{Binding Path=DateCreated, Mode=Default}"/>
                 <TextBlock Text="{Binding Path=Source, Mode=Default, FallbackValue=from web}"
