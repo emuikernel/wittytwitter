@@ -9,7 +9,7 @@
 
     <SolidColorBrush x:Key="ImageBorderBrush" Color="#FF52626F"/>
 
-	<SolidColorBrush x:Key="SubForegroundBrush" Color="#FF999999"/>
+    <SolidColorBrush x:Key="SubForegroundBrush" Color="#FF999999"/>
 
     <DataTemplate x:Key="TweetsTemplate">
         <DataTemplate.Resources>
@@ -20,32 +20,32 @@
                 </ColorAnimationUsingKeyFrames>
             </Storyboard>
         </DataTemplate.Resources>
-    	<Grid x:Name="grid" Background="#01FFFFFF">
-    		<Grid.ColumnDefinitions>
-    			<ColumnDefinition Width="65"/>
-    			<ColumnDefinition Width="*"/>
-    		</Grid.ColumnDefinitions>
-    		<Grid.RowDefinitions>
-    			<RowDefinition Height="Auto"/>
-    			<RowDefinition Height="*"/>
-    		</Grid.RowDefinitions>
-    		<Border Width="50" Height="50" Grid.RowSpan="2" BorderBrush="{DynamicResource ImageBorderBrush}" BorderThickness="2" HorizontalAlignment="Left" VerticalAlignment="Top" Margin="5,5,0,0">
-					<Image Width="48" Height="48" Source="{Binding Path=User.ImageUrl}" x:Name="UserImage"/>
-				</Border>
-    		<DockPanel Grid.Row="0" Grid.Column="1" VerticalAlignment="Top" >
-    			<TextBlock Text="{Binding Path=User.ScreenName, FallbackValue=Screen Name}" FontWeight="Bold" FontSize="16" VerticalAlignment="Bottom" HorizontalAlignment="Left" x:Name="ScreenName" Cursor="Hand" ToolTip="{Binding Path=User.TwitterUrl, Mode=Default}"/>
-    			<Button Width="20" Height="20" HorizontalAlignment="Right" Margin="0,0,5,0" Visibility="Collapsed" x:Name="ReplyButton">
-						<TextBlock TextWrapping="Wrap" Text="@" VerticalAlignment="Center" Foreground="{DynamicResource SubForegroundBrush}"/>
-					</Button>
-    		</DockPanel>
-    		<WrapPanel Grid.Column="1" Grid.Row="1">
-					<TextBlock x:Name="TweetText" Text="{Binding Path=Text, FallbackValue=Tweet Text}" TextWrapping="Wrap" Margin="0,0,5,0" />
-					<TextBlock Text="{Binding Path=RelativeTime, FallbackValue=1 minute ago}"
-						FontStyle="Italic" Margin="0,0,3.5,0" Foreground="{DynamicResource SubForegroundBrush}" ToolTip="{Binding Path=DateCreated, Mode=Default}"/>
-					<TextBlock Text="{Binding Path=Source, Mode=Default, FallbackValue=from web}"
-						FontStyle="Italic" TextTrimming="CharacterEllipsis" Foreground="{DynamicResource SubForegroundBrush}"/>
-				</WrapPanel>
-    	</Grid>
+        <Grid x:Name="grid" Background="#01FFFFFF">
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition Width="65"/>
+                <ColumnDefinition Width="*"/>
+            </Grid.ColumnDefinitions>
+            <Grid.RowDefinitions>
+                <RowDefinition Height="Auto"/>
+                <RowDefinition Height="*"/>
+            </Grid.RowDefinitions>
+            <Border Width="50" Height="50" Grid.RowSpan="2" BorderBrush="{DynamicResource ImageBorderBrush}" BorderThickness="2" HorizontalAlignment="Left" VerticalAlignment="Top" Margin="5,5,0,0">
+                <Image Width="48" Height="48" Source="{Binding Path=User.ImageUrl}" x:Name="UserImage"/>
+            </Border>
+            <DockPanel Grid.Row="0" Grid.Column="1" VerticalAlignment="Top" >
+                <TextBlock Text="{Binding Path=User.ScreenName, FallbackValue=Screen Name}" FontWeight="Bold" FontSize="16" VerticalAlignment="Bottom" HorizontalAlignment="Left" x:Name="ScreenName" Cursor="Hand" ToolTip="{Binding Path=User.TwitterUrl, Mode=Default}"/>
+                <Button Width="20" Height="20" HorizontalAlignment="Right" Margin="0,0,5,0" Visibility="Collapsed" x:Name="ReplyButton">
+                    <TextBlock TextWrapping="Wrap" Text="@" VerticalAlignment="Center" Foreground="{DynamicResource SubForegroundBrush}"/>
+                </Button>
+            </DockPanel>
+            <WrapPanel Grid.Column="1" Grid.Row="1">
+                <TextBlock x:Name="TweetText" Text="{Binding Path=Text, FallbackValue=Tweet Text}" ToolTip="{Binding Path=Hyperlink}" TextWrapping="Wrap" Margin="0,0,5,0" />
+                <TextBlock Text="{Binding Path=RelativeTime, FallbackValue=1 minute ago}"
+                    FontStyle="Italic" Margin="0,0,3.5,0" Foreground="{DynamicResource SubForegroundBrush}" ToolTip="{Binding Path=DateCreated, Mode=Default}"/>
+                <TextBlock Text="{Binding Path=Source, Mode=Default, FallbackValue=from web}"
+                    FontStyle="Italic" TextTrimming="CharacterEllipsis" Foreground="{DynamicResource SubForegroundBrush}"/>
+            </WrapPanel>
+        </Grid>
         <DataTemplate.Triggers>
             <DataTrigger Binding="{Binding Path=IsNew}" Value="True">
                 <DataTrigger.EnterActions>

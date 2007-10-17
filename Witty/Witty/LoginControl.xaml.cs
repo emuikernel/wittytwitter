@@ -25,8 +25,8 @@ namespace Witty
         private void LoginButton_Click(object sender, RoutedEventArgs e)
         {
             TwitterNet twitterNet = new TwitterNet(UsernameTextBox.Text, PasswordTextBox.Password);
-            User user = twitterNet.Login();
-            if (user != null)
+            App.LoggedInUser = twitterNet.Login();
+            if (App.LoggedInUser != null)
             {
                 AppSettings.Username = UsernameTextBox.Text;
                 AppSettings.Password = PasswordTextBox.Password;

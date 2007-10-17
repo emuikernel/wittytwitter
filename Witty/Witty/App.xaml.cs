@@ -3,6 +3,7 @@ using System.Windows;
 using System.Data;
 using System.Xml;
 using System.Configuration;
+using TwitterLib;
 
 namespace Witty
 {
@@ -12,6 +13,7 @@ namespace Witty
 
     public partial class App : System.Windows.Application
     {
+        public static User LoggedInUser = null;
 
     }
 }
