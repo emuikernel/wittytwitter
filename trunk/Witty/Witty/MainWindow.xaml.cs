@@ -73,6 +73,8 @@ namespace Witty
                 AppSettings.LastUpdated = string.Empty;
 
                 twitter = new TwitterNet(AppSettings.Username, AppSettings.Password);
+                App.LoggedInUser = twitter.Login(); 
+                
                 DelegateFetch();
 
                 // Setup refresh timer
@@ -416,6 +418,15 @@ namespace Witty
                 peopleYouFollow.Show();
             }
         }
+
+        void AlwaysOnTop_Click(object sender, RoutedEventArgs e)
+        {
+            if (((MenuItem)sender).IsChecked)
+                this.Topmost = true;
+            else
+                this.Topmost = false;
+        }
+
         #endregion
 
         #region Minimize to Tray

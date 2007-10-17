@@ -118,6 +118,11 @@
     <!--<Grid x:Name="LayoutRoot" DataContext="{Binding Mode=OneWay, Source={StaticResource TweetsDS}}">-->
     <DockPanel x:Name="LayoutRoot" Background="{DynamicResource SecondaryBackgroundBrush}">
         <Border DockPanel.Dock="Top" Height="30" Padding="10,0,10,0" Background="{DynamicResource PrimaryBackgroundBrush}" x:Name="Header">
+        	<Border.ContextMenu>
+        		<ContextMenu>
+					<MenuItem x:Name="AlwaysOnTopMenuItem" Header="Always on Top" IsCheckable="True" Click="AlwaysOnTop_Click" />
+				</ContextMenu>
+        	</Border.ContextMenu>
         	<DockPanel LastChildFill="False">
         		<TextBlock Text="Witty" VerticalAlignment="Center" HorizontalAlignment="Center" FontSize="18" FontWeight="Bold" Foreground="{DynamicResource HeaderForegroundBrush}"/>
         		<Rectangle Fill="#FF52626F" Width="15" Height="15" DockPanel.Dock="Right" x:Name="Friends" MouseLeftButtonUp="Friends_MouseLeftButtonUp"/>
