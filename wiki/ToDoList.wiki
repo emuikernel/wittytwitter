@@ -19,3 +19,5 @@
   * add keyboard shortcuts
   * display rate limit errors
    # Maybe keep track of api rate and throttle the api calls.
+  * add tooltips to all buttons
+  * restyle buttons
