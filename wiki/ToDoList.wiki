@@ -24,3 +24,4 @@
   * cache user images
   * add always on top feature
   * add screensaver mode
+  * display new tweet updates right away
