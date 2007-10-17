@@ -206,16 +206,16 @@ namespace Witty
             }
         }
 
-        private void AddTweet(string text)
+        private void AddTweet(string tweetText)
         {
             try
             {
-                twitter.AddTweet(text);
+                twitter.AddTweet(tweetText);
 
                 // Schedule the update function in the UI thread.
                 LayoutRoot.Dispatcher.BeginInvoke(
                     System.Windows.Threading.DispatcherPriority.Normal,
-                    new AddTweetDelegate(UpdatePostUserInterface), text);
+                    new AddTweetDelegate(UpdatePostUserInterface), tweetText);
             }
             catch (WebException ex)
             {
@@ -227,13 +227,22 @@ namespace Witty
             }
         }
 
-        private void UpdatePostUserInterface(string text)
+        private void UpdatePostUserInterface(string tweetText)
         {
             UpdateTextBlock.Text = "Status Updated!";
 
             PlayStoryboard("CollapseUpdate");
 
             TweetTextBox.Clear();
+
+            Tweet newlyAdded = new Tweet();
+            newlyAdded.DateCreated = DateTime.Now;
+            newlyAdded.Source = "Witty";
+            newlyAdded.Text = tweetText;
+            newlyAdded.User = App.LoggedInUser;
+
+            tweets.Insert(0, newlyAdded);
+            newlyAdded.IsNew = true;
         }
 
         private void Update_MouseLeftButtonUp(object sender, System.Windows.Input.MouseButtonEventArgs e)
