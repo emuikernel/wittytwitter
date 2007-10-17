@@ -5,6 +5,7 @@ using System.Net;
 using System.IO;
 using System.Globalization;
 using System.Web;
+using System.Text.RegularExpressions;
 
 namespace TwitterLib
 {
@@ -628,7 +629,9 @@ namespace TwitterLib
                         Tweet tweet = new Tweet();
                         tweet.Id = double.Parse(node.SelectSingleNode("id").InnerText);
                         tweet.Text = HttpUtility.HtmlDecode(node.SelectSingleNode("text").InnerText);
-                        tweet.Source = HttpUtility.HtmlDecode(node.SelectSingleNode("source").InnerText);
+                        string source = HttpUtility.HtmlDecode(node.SelectSingleNode("source").InnerText);
+                        if (!string.IsNullOrEmpty(source))
+                            tweet.Source = Regex.Replace(source, @"<(.|\n)*?>", string.Empty);
 
                         string dateString = node.SelectSingleNode("created_at").InnerText;
                         if (!string.IsNullOrEmpty(dateString))

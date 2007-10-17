@@ -160,7 +160,7 @@ namespace Witty
         private void UpdateUserInterface(Tweets newTweets)
         {
             DateTime lastUpdated = DateTime.Now;
-            StatusTextBlock.Text = "Last Updated: " + lastUpdated.ToString();
+            StatusTextBlock.Text = "Last Updated: " + lastUpdated.ToLongTimeString();
 
             AppSettings.LastUpdated = lastUpdated.ToString();
             AppSettings.Save();
@@ -203,8 +203,6 @@ namespace Witty
                 UpdateButton.Dispatcher.BeginInvoke(
                     System.Windows.Threading.DispatcherPriority.Normal,
                     new AddTweetDelegate(AddTweet), TweetTextBox.Text);
-                TweetTextBox.Clear();
-                TweetTextBox.Focus();
             }
         }
 
@@ -231,9 +229,11 @@ namespace Witty
 
         private void UpdatePostUserInterface(string text)
         {
-            UpdateTextBlock.Text = "Updated!";
+            UpdateTextBlock.Text = "Status Updated!";
 
             PlayStoryboard("CollapseUpdate");
+
+            TweetTextBox.Clear();
         }
 
         private void Update_MouseLeftButtonUp(object sender, System.Windows.Input.MouseButtonEventArgs e)
@@ -303,7 +303,7 @@ namespace Witty
         private void UpdateRepliesInterface(Tweets newReplies)
         {
             repliesLastUpdated = DateTime.Now;
-            StatusTextBlock.Text = "Replies Updated: " + repliesLastUpdated.ToString();
+            StatusTextBlock.Text = "Replies Updated: " + repliesLastUpdated.ToLongTimeString();
 
             for (int i = newReplies.Count - 1; i >= 0; i--)
             {
