@@ -1,15 +1,13 @@
 #summary One-sentence summary of this page.
-#labels Phase-Design
+#labels Phase-Design,Featured
 
-= List of todos =
+= List of Todos =
 
-  * display rate limit errors
-   # Maybe keep track of api rate and throttle the api calls.
   * add validation for logins
-  * create separate thread for People You Follow
+  * create separate dispatch thread for People You Follow
   * make People you follow more useful
   * add documentation
-  * add list of wpf features
+  * ~~add list of wpf code features~~
   * write blog posts about Witty
   * use icons for buttons
   * ~~remember window position~~
@@ -19,3 +17,5 @@
   * Add User Timeline section
   * don't clear the update textbox when update fails.
   * add keyboard shortcuts
+  * display rate limit errors
+   # Maybe keep track of api rate and throttle the api calls.
