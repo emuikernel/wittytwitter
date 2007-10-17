@@ -36,6 +36,8 @@ namespace Witty
 
                 RaiseEvent(new RoutedEventArgs(LoginEvent));
             }
+            else
+                MessageBox.Show("Incorrect username or password. Please try again");
         }
 
         public static readonly RoutedEvent LoginEvent =
