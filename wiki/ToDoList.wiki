@@ -27,3 +27,4 @@
   * ~~display new tweet updates right away~~
   * use InfoTextBox for textboxes
   * fix "1 seconds ago" grammar
+  * add source param when posting to twitter
