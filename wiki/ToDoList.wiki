@@ -26,7 +26,7 @@
   * add screensaver mode
   * ~~display new tweet updates right away~~
   * use InfoTextBox for textboxes
-  * fix "1 seconds ago" grammar
+  * ~~fix "1 seconds ago" grammar~~
   * add source param when posting to twitter
   * add options page
    # make refresh interval configurable
