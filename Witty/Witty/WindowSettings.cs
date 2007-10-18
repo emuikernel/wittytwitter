@@ -58,6 +58,23 @@ namespace Witty
                 }
             }
 
+            [UserScopedSetting]
+            public bool IsTopMost
+            {
+                get
+                {
+                    if (this["IsTopMost"] != null)
+                    {
+                        return (bool)this["IsTopMost"];
+                    }
+                    return false;
+                }
+                set
+                {
+                    this["IsTopMost"] = value;
+                }
+            }
+
         }
         #endregion
 
@@ -115,6 +132,7 @@ namespace Witty
                 this.window.Top = this.Settings.Location.Top;
                 this.window.Width = this.Settings.Location.Width;
                 this.window.Height = this.Settings.Location.Height;
+                this.window.Topmost = this.Settings.IsTopMost;
             }
 
             if (this.Settings.WindowState != WindowState.Maximized)
@@ -131,6 +149,7 @@ namespace Witty
         {
             this.Settings.WindowState = this.window.WindowState;
             this.Settings.Location = this.window.RestoreBounds;
+            this.Settings.IsTopMost = this.window.Topmost;
             this.Settings.Save();
         }
         #endregion
