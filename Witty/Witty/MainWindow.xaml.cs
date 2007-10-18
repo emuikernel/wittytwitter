@@ -352,9 +352,12 @@ namespace Witty
 
         #region User Timline
 
-        private void DeleteUserTimelineFetch(string userId)
+        private void DelegateUserTimelineFetch(string userId)
         {
             displayUser = userId;
+
+            UserTab.IsSelected = true;
+            userTweets.Clear();
 
             // Let the user know what's going on
             StatusTextBlock.Text = "Retrieving user's tweets...";
@@ -365,8 +368,6 @@ namespace Witty
             LayoutRoot.Dispatcher.BeginInvoke(
                 System.Windows.Threading.DispatcherPriority.Normal,
                 new OneStringArgDelegate(GetUserTimeline), userId);
-
-            UserTab.IsSelected = true;
         }
 
         private void GetUserTimeline(string userId)
@@ -425,7 +426,7 @@ namespace Witty
                     DelegateRepliesFetch();
                     break;
                 case CurrentView.User:
-                    DeleteUserTimelineFetch(displayUser);
+                    DelegateUserTimelineFetch(displayUser);
                     break;
             }
         }
@@ -454,7 +455,7 @@ namespace Witty
 
             if (tabs.SelectedIndex == 2 && string.IsNullOrEmpty(displayUser))
             {
-                DeleteUserTimelineFetch(AppSettings.Username);
+                DelegateUserTimelineFetch(AppSettings.Username);
             }
         }
 
@@ -517,7 +518,7 @@ namespace Witty
                         {
                             Tweet tweet = (Tweet)listbox.SelectedItem;
                             //System.Diagnostics.Process.Start(tweet.User.TwitterUrl);
-                            DeleteUserTimelineFetch(tweet.User.ScreenName);
+                            DelegateUserTimelineFetch(tweet.User.ScreenName);
                         }
                     }
                 }

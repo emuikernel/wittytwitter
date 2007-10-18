@@ -105,19 +105,19 @@
                 </ColorAnimationUsingKeyFrames>
             </Storyboard>
         </DataTemplate.Resources>
-        <Grid x:Name="grid" Background="#01FFFFFF" Margin="5,0,5,5">
-            <Grid.RowDefinitions>
-                <RowDefinition Height="Auto"/>
-                <RowDefinition Height="*"/>
-            </Grid.RowDefinitions>
-            <TextBlock x:Name="TweetText" Text="{Binding Path=Text, FallbackValue=Tweet Text}" TextWrapping="Wrap"/>
-            <StackPanel Grid.Column="0" Grid.Row="1" Orientation="Horizontal" Margin="0,3,0,0">
-                <TextBlock Text="{Binding Path=RelativeTime, FallbackValue=1 minute ago}"
-                    FontStyle="Italic" Foreground="{DynamicResource SubForegroundBrush}" ToolTip="{Binding Path=DateCreated, Mode=Default}" Margin="0,0,3,0"/>
-                <TextBlock Text="{Binding Path=Source, Mode=Default, FallbackValue=from web}"
-                    FontStyle="Italic" TextTrimming="CharacterEllipsis" Foreground="{DynamicResource SubForegroundBrush}"/>
-            </StackPanel>
-        </Grid>
+        <Grid x:Name="grid" Background="#01FFFFFF" Margin="5,3,5,5">
+				<Grid.RowDefinitions>
+					<RowDefinition Height="Auto"/>
+					<RowDefinition Height="*"/>
+				</Grid.RowDefinitions>
+				<TextBlock x:Name="TweetText" Text="{Binding Path=Text, FallbackValue=Tweet Text}" TextWrapping="Wrap"/>
+				<StackPanel Grid.Column="0" Grid.Row="1" Orientation="Horizontal">
+					<TextBlock Text="{Binding Path=RelativeTime, FallbackValue=1 minute ago}"
+						FontStyle="Italic" Foreground="{DynamicResource SubForegroundBrush}" ToolTip="{Binding Path=DateCreated, Mode=Default}" Margin="0,0,3,0"/>
+					<TextBlock Text="{Binding Path=Source, Mode=Default, FallbackValue=from web}"
+						FontStyle="Italic" TextTrimming="CharacterEllipsis" Foreground="{DynamicResource SubForegroundBrush}"/>
+				</StackPanel>
+			</Grid>
         <DataTemplate.Triggers>
             <DataTrigger Binding="{Binding Path=IsNew}" Value="True">
                 <DataTrigger.EnterActions>
