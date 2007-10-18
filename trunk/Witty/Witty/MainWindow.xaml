@@ -8,8 +8,8 @@
     xmlns:Witty="clr-namespace:Witty"
 	x:Class="Witty.MainWindow"
 	x:Name="Window"
-	Title="Witty 0.1.2"
-	Width="325" Height="450" 
+	Title="Witty 0.1.3"
+	Width="325" Height="570" 
     MinWidth="200" MinHeight="200"
     WindowStyle="SingleBorderWindow"
     Icon="AppIcon.ico"
@@ -125,7 +125,7 @@
             <TextBlock x:Name="StatusTextBlock" TextWrapping="NoWrap" Foreground="#FFE4E4E4" Text="Login" TextTrimming="CharacterEllipsis" />
         </Border>
         <Grid x:Name="Content">
-            <TabControl x:Name="Tabs" IsSynchronizedWithCurrentItem="True" DockPanel.Dock="Top" SelectionChanged="Tabs_SelectionChanged">
+        	<TabControl x:Name="Tabs" IsSynchronizedWithCurrentItem="True" DockPanel.Dock="Top" SelectionChanged="Tabs_SelectionChanged">
 				<TabItem Header="Recent">
 					<Grid x:Name="Recent">
 						<ListBox x:Name="TweetsListBox" ScrollViewer.CanContentScroll="False" IsSynchronizedWithCurrentItem="True" ItemTemplate="{DynamicResource TweetsTemplate}" ItemsSource="{Binding Mode=OneWay}" SelectedValuePath="Hyperlink" ScrollViewer.HorizontalScrollBarVisibility="Disabled" Margin="0,0,0,20" MouseLeftButtonUp="TweetsListBox_MouseLeftButtonUp" BorderThickness="0,0,0,0" />
@@ -150,26 +150,33 @@
 				</TabItem>
 				<TabItem x:Name="UserTab" Header="User">
 					<DockPanel>
-						<Border DockPanel.Dock="Top" BorderThickness="0,0,0,1" BorderBrush="{DynamicResource SolidBorderBrush}" Padding="0,5,0,5">
+						<Border DockPanel.Dock="Top" BorderThickness="0,0,0,2" BorderBrush="{DynamicResource SolidBorderBrush}" Padding="5,5,5,20">
+							<Border.Background>
+								<LinearGradientBrush EndPoint="0.5,0.899" StartPoint="0.5,0.013">
+									<GradientStop Color="#FF828282" Offset="0"/>
+									<GradientStop Color="#FFFFFFFF" Offset="1"/>
+								</LinearGradientBrush>
+							</Border.Background>
 							<Grid>
 								<Grid.ColumnDefinitions>
-									<ColumnDefinition Width="65"/>
 									<ColumnDefinition Width="*"/>
+									<ColumnDefinition Width="Auto"/>
 								</Grid.ColumnDefinitions>
 								<Grid.RowDefinitions>
 									<RowDefinition Height="Auto"/>
 									<RowDefinition Height="*"/>
 								</Grid.RowDefinitions>
-								<Border Width="50" Height="50" Grid.RowSpan="2" BorderBrush="{DynamicResource ImageBorderBrush}" BorderThickness="2" HorizontalAlignment="Left" VerticalAlignment="Top" Margin="5,5,0,5">
+								<Border Width="50" Height="50" Grid.RowSpan="2" BorderBrush="{DynamicResource ImageBorderBrush}" BorderThickness="2" VerticalAlignment="Top" Margin="5,5,5,5" Grid.Column="1">
 									<Image Width="48" Height="48" Source="{Binding Path=User.ImageUrl}" x:Name="UserImage"/>
 								</Border>
-								<DockPanel Grid.Row="0" Grid.Column="1" VerticalAlignment="Top" >
-									<TextBlock Text="{Binding Path=User.ScreenName, FallbackValue=Screen Name}" FontWeight="Bold" FontSize="16" VerticalAlignment="Bottom" HorizontalAlignment="Left" x:Name="ScreenName" Cursor="Hand" MouseLeftButtonUp="ScreenName_MouseLeftButtonUp" Tag="{Binding Path=User.TwitterUrl, Mode=Default}"/>
-									<Button Width="20" Height="20" HorizontalAlignment="Right" Margin="0,0,5,0" Visibility="Collapsed" x:Name="ReplyButton">
-										<TextBlock TextWrapping="Wrap" Text="@" VerticalAlignment="Center" Foreground="{DynamicResource SubForegroundBrush}"/>
-									</Button>
+								<DockPanel Grid.Row="0" Grid.Column="0" VerticalAlignment="Top" >
+									<TextBlock Text="{Binding Path=User.ScreenName, FallbackValue=Screen Name}" FontWeight="Bold" FontSize="16" VerticalAlignment="Bottom" HorizontalAlignment="Left" x:Name="ScreenName" Cursor="Hand" MouseLeftButtonUp="ScreenName_MouseLeftButtonUp" Tag="{Binding Path=User.TwitterUrl, Mode=Default}" TextWrapping="NoWrap" TextTrimming="CharacterEllipsis" ToolTip="{Binding Path=User.TwitterUrl, Mode=Default}"/>
 								</DockPanel>
-								<TextBlock x:Name="SiteUrl" Text="{Binding Path=User.SiteUrl, Mode=Default, FallbackValue=Site Url}" TextWrapping="Wrap" Grid.Column="1" Grid.Row="1" HorizontalAlignment="Left" VerticalAlignment="Top" MouseLeftButtonUp="SiteUrl_MouseLeftButtonUp" Cursor="Hand"/>
+								<DockPanel Grid.Column="0" Grid.Row="1">
+									<TextBlock x:Name="Description" Text="{Binding Path=User.Description, Mode=Default, FallbackValue=Description}" TextWrapping="Wrap" FontStyle="Italic" DockPanel.Dock="Top"/>
+									<TextBlock x:Name="SiteUrl" Text="{Binding Path=User.SiteUrl, Mode=Default, FallbackValue=Site Url}" TextWrapping="NoWrap" MouseLeftButtonUp="SiteUrl_MouseLeftButtonUp" Cursor="Hand" TextTrimming="CharacterEllipsis" DockPanel.Dock="Top" ToolTip="{Binding Path=User.SiteUrl, Mode=Default}"><Hyperlink NavigateUri="{Binding Path=User.SiteUrl, Mode=Default, FallbackValue=Site Url}"/></TextBlock>
+									<TextBlock x:Name="Location" Text="{Binding Path=User.Location, Mode=Default, FallbackValue=Location}" TextWrapping="NoWrap" TextTrimming="CharacterEllipsis" DockPanel.Dock="Top"/>
+								</DockPanel>
 							</Grid>
 						</Border>
 						<ListBox x:Name="UserTimelineListBox" ItemsSource="{Binding Mode=OneWay}" ScrollViewer.CanContentScroll="False" IsSynchronizedWithCurrentItem="True" ItemTemplate="{DynamicResource UserTimeLineTemplate}" SelectedValuePath="Hyperlink" ScrollViewer.HorizontalScrollBarVisibility="Disabled" MouseLeftButtonUp="TweetsListBox_MouseLeftButtonUp" BorderThickness="0,0,0,0" DockPanel.Dock="Bottom" />

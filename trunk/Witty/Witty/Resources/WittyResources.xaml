@@ -33,9 +33,9 @@
                 <Image Width="48" Height="48" Source="{Binding Path=User.ImageUrl}" x:Name="UserImage"/>
             </Border>
             <DockPanel Grid.Row="0" Grid.Column="1" VerticalAlignment="Top" >
-                <TextBlock Text="{Binding Path=User.ScreenName, FallbackValue=Screen Name}" FontWeight="Bold" FontSize="16" VerticalAlignment="Bottom" HorizontalAlignment="Left" x:Name="ScreenName" Cursor="Hand"/>
+                <TextBlock Text="{Binding Path=User.ScreenName, FallbackValue=Screen Name}" FontWeight="Bold" FontSize="16" VerticalAlignment="Bottom" HorizontalAlignment="Left" x:Name="ScreenName" Cursor="Hand" ToolTip="View this user's recent tweets"/>
                 <Button Width="20" Height="20" HorizontalAlignment="Right" Margin="0,0,5,0" Visibility="Collapsed" x:Name="ReplyButton">
-                    <TextBlock TextWrapping="Wrap" Text="@" VerticalAlignment="Center" Foreground="{DynamicResource SubForegroundBrush}"/>
+                    <TextBlock TextWrapping="Wrap" Text="@" VerticalAlignment="Center"/>
                 </Button>
             </DockPanel>
             <WrapPanel Grid.Column="1" Grid.Row="1">
@@ -52,6 +52,9 @@
                     <BeginStoryboard Storyboard="{StaticResource YellowFade}"/>
                 </DataTrigger.EnterActions>
             </DataTrigger>
+            <!--<Trigger Property="IsMouseOver" Value="True">
+					<Setter Property="Visibility" TargetName="ReplyButton" Value="Visible"/>
+				</Trigger>-->
         </DataTemplate.Triggers>
     </DataTemplate>
     <SolidColorBrush x:Key="ForegroundBrush" Color="#FF000000"/>
@@ -103,18 +106,18 @@
             </Storyboard>
         </DataTemplate.Resources>
         <Grid x:Name="grid" Background="#01FFFFFF" Margin="5,0,5,5">
-				<Grid.RowDefinitions>
-					<RowDefinition Height="Auto"/>
-					<RowDefinition Height="*"/>
-				</Grid.RowDefinitions>
-				<TextBlock x:Name="TweetText" Text="{Binding Path=Text, FallbackValue=Tweet Text}" TextWrapping="Wrap"/>
-				<StackPanel Grid.Column="0" Grid.Row="1" Orientation="Horizontal" Margin="0,3,0,0">
-					<TextBlock Text="{Binding Path=RelativeTime, FallbackValue=1 minute ago}"
-						FontStyle="Italic" Foreground="{DynamicResource SubForegroundBrush}" ToolTip="{Binding Path=DateCreated, Mode=Default}" Margin="0,0,3,0"/>
-					<TextBlock Text="{Binding Path=Source, Mode=Default, FallbackValue=from web}"
-						FontStyle="Italic" TextTrimming="CharacterEllipsis" Foreground="{DynamicResource SubForegroundBrush}"/>
-				</StackPanel>
-			</Grid>
+            <Grid.RowDefinitions>
+                <RowDefinition Height="Auto"/>
+                <RowDefinition Height="*"/>
+            </Grid.RowDefinitions>
+            <TextBlock x:Name="TweetText" Text="{Binding Path=Text, FallbackValue=Tweet Text}" TextWrapping="Wrap"/>
+            <StackPanel Grid.Column="0" Grid.Row="1" Orientation="Horizontal" Margin="0,3,0,0">
+                <TextBlock Text="{Binding Path=RelativeTime, FallbackValue=1 minute ago}"
+                    FontStyle="Italic" Foreground="{DynamicResource SubForegroundBrush}" ToolTip="{Binding Path=DateCreated, Mode=Default}" Margin="0,0,3,0"/>
+                <TextBlock Text="{Binding Path=Source, Mode=Default, FallbackValue=from web}"
+                    FontStyle="Italic" TextTrimming="CharacterEllipsis" Foreground="{DynamicResource SubForegroundBrush}"/>
+            </StackPanel>
+        </Grid>
         <DataTemplate.Triggers>
             <DataTrigger Binding="{Binding Path=IsNew}" Value="True">
                 <DataTrigger.EnterActions>
