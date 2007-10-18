@@ -414,7 +414,6 @@ namespace Witty
 
         #region Misc Methods and Event Handlers
 
-
         private void RefreshButton_Click(object sender, RoutedEventArgs e)
         {
             switch (currentView)

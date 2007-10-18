@@ -405,6 +405,7 @@ namespace TwitterLib
                 user.ImageUrl = userNode.SelectSingleNode("profile_image_url").InnerText;
                 user.SiteUrl = userNode.SelectSingleNode("url").InnerText;
                 user.Location = userNode.SelectSingleNode("location").InnerText;
+                user.Description = userNode.SelectSingleNode("description").InnerText;
                 tweet.User = user;
             }
 
@@ -520,6 +521,7 @@ namespace TwitterLib
                         user.ImageUrl = node.SelectSingleNode("profile_image_url").InnerText;
                         user.SiteUrl = node.SelectSingleNode("url").InnerText;
                         user.Location = node.SelectSingleNode("location").InnerText;
+                        user.Description = node.SelectSingleNode("description").InnerText;
 
                         Tweet tweet = new Tweet();
                         XmlNode statusNode = node.SelectSingleNode("status");
@@ -691,6 +693,7 @@ namespace TwitterLib
                         user.ImageUrl = userNode.SelectSingleNode("profile_image_url").InnerText;
                         user.SiteUrl = userNode.SelectSingleNode("url").InnerText;
                         user.Location = userNode.SelectSingleNode("location").InnerText;
+                        user.Description = userNode.SelectSingleNode("description").InnerText;
                         tweet.User = user;
 
                         tweets.Add(tweet);
