@@ -28,3 +28,7 @@
   * use InfoTextBox for textboxes
   * fix "1 seconds ago" grammar
   * add source param when posting to twitter
+  * add options page
+   # make refresh interval configurable
+  * skinning support
+  * logout feature
