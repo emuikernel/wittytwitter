@@ -1,6 +1,15 @@
 #summary Version History
 #labels Featured
 
+= v0.1.3=
+  * User Timeline section
+  * Options for "always on top" currently available by righting the Witty header
+  * newly added tweets are displayed right away
+  * added more spacing and other UI tweaks
+  * default window size is bigger
+  * bugs fixed
+   # "1 second ago" grammar
+
 = v0.1.2=
   * Now Witty will remember the window location and size 
 
