@@ -14,7 +14,7 @@
   * Make a better Application icon
   * display links as hyperlinks
    # Make only the hyperlink clickable
-  * Add User Timeline section [http://code.google.com/p/wittytwitter/issues/detail?id=1 #1]
+  * ~~Add User Timeline section [http://code.google.com/p/wittytwitter/issues/detail?id=1 #1]~~
   * ~~don't clear the update textbox when update fails.~~
   * add keyboard shortcuts
   * display rate limit errors
