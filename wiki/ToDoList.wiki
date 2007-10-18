@@ -32,3 +32,5 @@
    # make refresh interval configurable
   * skinning support
   * logout feature
+  * Auto-Update feature
+   # maybe deploy as clickonce
