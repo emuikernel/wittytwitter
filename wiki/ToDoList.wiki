@@ -26,4 +26,4 @@
   * add screensaver mode
   * ~~display new tweet updates right away~~
   * use InfoTextBox for textboxes
-  * fix "1 second*s* ago" grammar
+  * fix "1 seconds ago" grammar
