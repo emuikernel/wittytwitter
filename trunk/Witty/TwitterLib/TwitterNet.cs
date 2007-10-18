@@ -355,7 +355,7 @@ namespace TwitterLib
             // Set values for the request back
             request.ContentType = "application/x-www-form-urlencoded";
             string param = "status=" + text;
-            string sourceParam = "&source=Witty";
+            string sourceParam = "&source=witty";
             request.ContentLength = param.Length + sourceParam.Length;
 
             // Write the request paramater
@@ -639,6 +639,12 @@ namespace TwitterLib
                 string sinceDateString = sinceDate.ToString(twitterSinceDateFormat);
 
                 timelineUrl = timelineUrl + "?since=" + sinceDateString;
+            }
+            else
+            {
+                // Twitter caches the timeline, so it doesn't always get the latest tweets
+                // adding a since param will bypass twitter cache.
+                timelineUrl = timelineUrl + "?since=" + DateTime.Now;
             }
 
             // Create the web request
