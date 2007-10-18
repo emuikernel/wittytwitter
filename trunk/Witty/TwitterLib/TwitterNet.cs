@@ -336,10 +336,13 @@ namespace TwitterLib
         /// <summary>
         /// Post new tweet to Twitter
         /// </summary>
-        public bool AddTweet(string text)
+        /// <returns>newly added tweet</returns>
+        public Tweet AddTweet(string text)
         {
             if (string.IsNullOrEmpty(text))
-                return false;
+                return null;
+
+            text = HttpUtility.UrlEncode(text);
 
             // Create the web request  
             HttpWebRequest request = WebRequest.Create(UpdateUrl + Format) as HttpWebRequest;
@@ -359,14 +362,51 @@ namespace TwitterLib
             stOut.Write(param);
             stOut.Close();
 
+            Tweet tweet;
+
             // Do the request to get the response
             using (HttpWebResponse response = request.GetResponse() as HttpWebResponse)
             {
                 // Get the response stream  
                 StreamReader reader = new StreamReader(response.GetResponseStream());
+
+                // Create a new XmlDocument  
+                XmlDocument doc = new XmlDocument();
+
+                // Load data  
+                doc.Load(reader);
+
+                XmlNode node = doc.SelectSingleNode("status");
+
+                tweet = new Tweet();
+
+                tweet.Id = double.Parse(node.SelectSingleNode("id").InnerText);
+                tweet.Text = HttpUtility.HtmlDecode(node.SelectSingleNode("text").InnerText);
+                string source = HttpUtility.HtmlDecode(node.SelectSingleNode("source").InnerText);
+                if (!string.IsNullOrEmpty(source))
+                    tweet.Source = Regex.Replace(source, @"<(.|\n)*?>", string.Empty);
+
+                string dateString = node.SelectSingleNode("created_at").InnerText;
+                if (!string.IsNullOrEmpty(dateString))
+                {
+                    tweet.DateCreated = DateTime.ParseExact(
+                        dateString,
+                        twitterCreatedAtDateFormat,
+                        CultureInfo.CurrentCulture, DateTimeStyles.AllowWhiteSpaces);
+                }
+                tweet.IsNew = true;
+
+                User user = new User();
+                XmlNode userNode = node.SelectSingleNode("user");
+                user.Name = userNode.SelectSingleNode("name").InnerText;
+                user.ScreenName = userNode.SelectSingleNode("screen_name").InnerText;
+                user.ImageUrl = userNode.SelectSingleNode("profile_image_url").InnerText;
+                user.SiteUrl = userNode.SelectSingleNode("url").InnerText;
+                user.Location = userNode.SelectSingleNode("location").InnerText;
+                tweet.User = user;
             }
 
-            return true;
+            return tweet;
         }
 
         /// <summary>

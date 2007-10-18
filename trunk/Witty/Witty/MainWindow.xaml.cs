@@ -22,9 +22,9 @@ namespace Witty
 
             #region Minimize to tray setup
             m_notifyIcon = new System.Windows.Forms.NotifyIcon();
-            m_notifyIcon.BalloonTipText = "Richt-click for more options.";
+            m_notifyIcon.BalloonTipText = "Richt-click for more options";
             m_notifyIcon.BalloonTipTitle = "Witty";
-            m_notifyIcon.Text = "Right-click to exit.";
+            m_notifyIcon.Text = "Witty - The WPF Twitter Client";
             m_notifyIcon.Icon = new System.Drawing.Icon("AppIcon.ico");
             m_notifyIcon.Click += new EventHandler(m_notifyIcon_Click);
             m_notifyIcon.MouseDoubleClick += new System.Windows.Forms.MouseEventHandler(m_notifyIcon_MouseDoubleClick);
@@ -82,6 +82,8 @@ namespace Witty
                 refreshTimer.Tick += new EventHandler(Timer_Elapsed);
                 refreshTimer.Start();
             }
+
+            AlwaysOnTopMenuItem.IsChecked = this.Topmost;
         }
 
         #region Fields and Properties
@@ -108,6 +110,7 @@ namespace Witty
         private delegate void NoArgDelegate();
         private delegate void OneArgDelegate(Tweets arg);
         private delegate void AddTweetDelegate(string arg);
+        private delegate void AddTweetUpdateDelegate(Tweet arg);
 
         // Settings used by the application
         private Properties.Settings AppSettings = Properties.Settings.Default;
@@ -212,12 +215,12 @@ namespace Witty
         {
             try
             {
-                twitter.AddTweet(tweetText);
+                Tweet tweet = twitter.AddTweet(tweetText);
 
                 // Schedule the update function in the UI thread.
                 LayoutRoot.Dispatcher.BeginInvoke(
                     System.Windows.Threading.DispatcherPriority.Normal,
-                    new AddTweetDelegate(UpdatePostUserInterface), tweetText);
+                    new AddTweetUpdateDelegate(UpdatePostUserInterface), tweet);
             }
             catch (WebException ex)
             {
@@ -229,22 +232,19 @@ namespace Witty
             }
         }
 
-        private void UpdatePostUserInterface(string tweetText)
+        private void UpdatePostUserInterface(Tweet newlyAdded)
         {
-            UpdateTextBlock.Text = "Status Updated!";
-
-            PlayStoryboard("CollapseUpdate");
-
-            TweetTextBox.Clear();
-
-            Tweet newlyAdded = new Tweet();
-            newlyAdded.DateCreated = DateTime.Now;
-            newlyAdded.Source = "Witty";
-            newlyAdded.Text = tweetText;
-            newlyAdded.User = App.LoggedInUser;
-
-            tweets.Insert(0, newlyAdded);
-            newlyAdded.IsNew = true;
+            if (newlyAdded != null)
+            {
+                UpdateTextBlock.Text = "Status Updated!";
+                PlayStoryboard("CollapseUpdate");
+                TweetTextBox.Clear();
+                tweets.Insert(0, newlyAdded);
+            }
+            else
+            {
+                MessageBox.Show("There was a problem posting your tweet to Twitter.com.");
+            }
         }
 
         private void Update_MouseLeftButtonUp(object sender, System.Windows.Input.MouseButtonEventArgs e)
