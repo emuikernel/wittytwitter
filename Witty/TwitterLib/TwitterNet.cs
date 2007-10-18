@@ -355,11 +355,13 @@ namespace TwitterLib
             // Set values for the request back
             request.ContentType = "application/x-www-form-urlencoded";
             string param = "status=" + text;
-            request.ContentLength = param.Length;
+            string sourceParam = "&source=Witty";
+            request.ContentLength = param.Length + sourceParam.Length;
 
             // Write the request paramater
             StreamWriter stOut = new StreamWriter(request.GetRequestStream(), System.Text.Encoding.ASCII);
             stOut.Write(param);
+            stOut.Write(sourceParam);
             stOut.Close();
 
             Tweet tweet;

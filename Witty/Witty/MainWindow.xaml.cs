@@ -59,6 +59,7 @@ namespace Witty
             // Set the datacontext
             LayoutRoot.DataContext = tweets;
             RepliesListBox.ItemsSource = replies;
+            UserTab.DataContext = userTweets;
 
             // Does the user need to login
             if (string.IsNullOrEmpty(AppSettings.Username))
@@ -75,7 +76,7 @@ namespace Witty
                 twitter = new TwitterNet(AppSettings.Username, AppSettings.Password);
                 App.LoggedInUser = twitter.Login(); 
                 
-                DelegateFetch();
+                DelegateRecentFetch();
 
                 // Setup refresh timer
                 refreshTimer.Interval = refreshInterval;
@@ -94,6 +95,9 @@ namespace Witty
         // Main collection of replies
         private Tweets replies = new Tweets();
 
+        // Main collection of user Tweets
+        private Tweets userTweets = new Tweets();
+
         private DateTime repliesLastUpdated;
 
         // Main TwitterNet object used to make Twitter API calls
@@ -109,7 +113,7 @@ namespace Witty
         // Used for making asynchronous calls to Twitter so that the UI does not lock up.
         private delegate void NoArgDelegate();
         private delegate void OneArgDelegate(Tweets arg);
-        private delegate void AddTweetDelegate(string arg);
+        private delegate void OneStringArgDelegate(string arg);
         private delegate void AddTweetUpdateDelegate(Tweet arg);
 
         // Settings used by the application
@@ -119,6 +123,31 @@ namespace Witty
         private bool isExpanded;
         private bool isLoggedIn;
 
+        private enum CurrentView
+        {
+            Recent, Replies, User
+        }
+
+        private CurrentView currentView
+        {
+            get
+            {
+                switch (Tabs.SelectedIndex)
+                {
+                    case 0:
+                        return CurrentView.Recent;
+                    case 1:
+                        return CurrentView.Replies;
+                    case 2:
+                        return CurrentView.User;
+                    default:
+                        return CurrentView.Recent;
+                }
+            }
+        }
+
+        private string displayUser;
+
         #endregion
 
         #region Retrieve new tweets
@@ -126,7 +155,7 @@ namespace Witty
         /// <summary>
         /// Encapsulated method to create dispatcher for fetching new tweets asynchronously
         /// </summary>
-        private void DelegateFetch()
+        private void DelegateRecentFetch()
         {
             // Let the user know what's going on
             StatusTextBlock.Text = "Retrieving tweets...";
@@ -142,7 +171,7 @@ namespace Witty
 
         private void Timer_Elapsed(object sender, EventArgs e)
         {
-            DelegateFetch();
+            DelegateRecentFetch();
         }
 
         private void GetTweets()
@@ -191,11 +220,6 @@ namespace Witty
             StopStoryboard("Fetching");
         }
 
-        private void RefreshButton_Click(object sender, RoutedEventArgs e)
-        {
-            DelegateFetch();
-        }
-
         #endregion
 
         #region Add new tweet update
@@ -207,7 +231,7 @@ namespace Witty
                 // Schedule posting the tweet
                 UpdateButton.Dispatcher.BeginInvoke(
                     System.Windows.Threading.DispatcherPriority.Normal,
-                    new AddTweetDelegate(AddTweet), TweetTextBox.Text);
+                    new OneStringArgDelegate(AddTweet), TweetTextBox.Text);
             }
         }
 
@@ -270,28 +294,19 @@ namespace Witty
         #endregion
 
         #region Replies
-        private void Tabs_SelectionChanged(object sender, SelectionChangedEventArgs e)
+
+        private void DelegateRepliesFetch()
         {
-            TabControl tabs = (TabControl)sender;
-            if (tabs.SelectedIndex == 1 && isLoggedIn)
-            {
-                // Throttle updating replies
-                long ticks = DateTime.Now.Ticks - repliesLastUpdated.Ticks;
-                TimeSpan ts = new TimeSpan(ticks);
-                if (ts.TotalMinutes > 1)
-                {
-                    // Let the user know what's going on
-                    StatusTextBlock.Text = "Retrieving replies...";
+            // Let the user know what's going on
+            StatusTextBlock.Text = "Retrieving replies...";
 
-                    PlayStoryboard("Fetching");
+            PlayStoryboard("Fetching");
 
-                    // Create a Dispatcher to fetching new tweets
-                    NoArgDelegate fetcher = new NoArgDelegate(
-                        this.GetReplies);
+            // Create a Dispatcher to fetching new tweets
+            NoArgDelegate fetcher = new NoArgDelegate(
+                this.GetReplies);
 
-                    fetcher.BeginInvoke(null, null);
-                }
-            }
+            fetcher.BeginInvoke(null, null);
         }
 
         private void GetReplies()
@@ -335,14 +350,121 @@ namespace Witty
         }
         #endregion
 
+        #region User Timline
+
+        private void DeleteUserTimelineFetch(string userId)
+        {
+            displayUser = userId;
+
+            // Let the user know what's going on
+            StatusTextBlock.Text = "Retrieving user's tweets...";
+
+            PlayStoryboard("Fetching");
+
+            // Create a Dispatcher to fetching new tweets
+            LayoutRoot.Dispatcher.BeginInvoke(
+                System.Windows.Threading.DispatcherPriority.Normal,
+                new OneStringArgDelegate(GetUserTimeline), userId);
+
+            UserTab.IsSelected = true;
+        }
+
+        private void GetUserTimeline(string userId)
+        {
+            try
+            {
+                // Schedule the update function in the UI thread.
+                LayoutRoot.Dispatcher.BeginInvoke(
+                    System.Windows.Threading.DispatcherPriority.Normal,
+                    new OneArgDelegate(UpdateUsersTimelineInterface), twitter.GetUserTimeline(userId));
+            }
+            catch (WebException ex)
+            {
+#if DEBUG
+                MessageBox.Show("There was a problem fetching the user's timeline from Twitter.com. " + ex.Message);
+#endif
+            }
+        }
+
+        private void UpdateUsersTimelineInterface(Tweets newTweets)
+        {
+            StatusTextBlock.Text = displayUser + "'s Timeline Updated: " + repliesLastUpdated.ToLongTimeString();
+
+            for (int i = newTweets.Count - 1; i >= 0; i--)
+            {
+                Tweet tweet = newTweets[i];
+                if (!userTweets.Contains(tweet))
+                {
+                    userTweets.Insert(0, tweet);
+                    tweet.IsNew = true;
+                }
+                else
+                {
+                    // update the relativetime for existing tweets
+                    userTweets[i].UpdateRelativeTime();
+                }
+            }
+
+            if (userTweets.Count > 0)
+                UserTimelineListBox.SelectedIndex = 0;
+
+            StopStoryboard("Fetching");
+        }
+        #endregion
+
         #region Misc Methods and Event Handlers
+
+
+        private void RefreshButton_Click(object sender, RoutedEventArgs e)
+        {
+            switch (currentView)
+            {
+                case CurrentView.Recent:
+                    DelegateRecentFetch();
+                    break;
+                case CurrentView.Replies:
+                    DelegateRepliesFetch();
+                    break;
+                case CurrentView.User:
+                    DeleteUserTimelineFetch(displayUser);
+                    break;
+            }
+        }
+
+        private void Tabs_SelectionChanged(object sender, SelectionChangedEventArgs e)
+        {
+            TabControl tabs = (TabControl)sender;
+
+            if (tabs.SelectedIndex == 0)
+            {
+                displayUser = string.Empty;
+            }
+
+            if (tabs.SelectedIndex == 1 && isLoggedIn)
+            {
+                // limit updating replies to no more than once a minute
+                long ticks = DateTime.Now.Ticks - repliesLastUpdated.Ticks;
+                TimeSpan ts = new TimeSpan(ticks);
+                if (ts.TotalMinutes > 1)
+                {
+                    DelegateRepliesFetch();
+                }
+
+                displayUser = string.Empty;
+            }
+
+            if (tabs.SelectedIndex == 2 && string.IsNullOrEmpty(displayUser))
+            {
+                DeleteUserTimelineFetch(AppSettings.Username);
+            }
+        }
 
         private void LoginControl_Login(object sender, RoutedEventArgs e)
         {
             twitter = new TwitterNet(AppSettings.Username, AppSettings.Password);
 
             // fetch new tweets
-            DelegateFetch();
+            DelegateRecentFetch();
 
             // Setup refresh timer to get subsequent tweets
             refreshTimer.Interval = refreshInterval;
@@ -392,10 +514,11 @@ namespace Witty
 
                     if (textBlock.Name == "ScreenName")
                     {
-                        if (listbox.SelectedItem != null)
+                        if (listbox.SelectedItem != null && currentView != CurrentView.User)
                         {
                             Tweet tweet = (Tweet)listbox.SelectedItem;
-                            System.Diagnostics.Process.Start(tweet.User.TwitterUrl);
+                            //System.Diagnostics.Process.Start(tweet.User.TwitterUrl);
+                            DeleteUserTimelineFetch(tweet.User.ScreenName);
                         }
                     }
                 }
@@ -530,5 +653,35 @@ namespace Witty
             Environment.Exit(0);
         }
         #endregion
+
+        private void SiteUrl_MouseLeftButtonUp(object sender, System.Windows.Input.MouseButtonEventArgs e)
+        {
+            TextBlock textBlock = (TextBlock)sender;
+            try
+            {
+                System.Diagnostics.Process.Start(textBlock.Text);
+            }
+            catch (Win32Exception ex)
+            {
+#if DEBUG
+                MessageBox.Show(ex.ToString());
+#endif
+            }
+        }
+
+        private void ScreenName_MouseLeftButtonUp(object sender, System.Windows.Input.MouseButtonEventArgs e)
+        {
+            TextBlock textBlock = (TextBlock)sender;
+            try
+            {
+                System.Diagnostics.Process.Start(textBlock.Tag.ToString());
+            }
+            catch (Win32Exception ex)
+            {
+#if DEBUG
+                MessageBox.Show(ex.ToString());
+#endif
+            }
+        }
     }
 }

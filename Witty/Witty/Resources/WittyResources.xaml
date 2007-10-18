@@ -33,7 +33,7 @@
                 <Image Width="48" Height="48" Source="{Binding Path=User.ImageUrl}" x:Name="UserImage"/>
             </Border>
             <DockPanel Grid.Row="0" Grid.Column="1" VerticalAlignment="Top" >
-                <TextBlock Text="{Binding Path=User.ScreenName, FallbackValue=Screen Name}" FontWeight="Bold" FontSize="16" VerticalAlignment="Bottom" HorizontalAlignment="Left" x:Name="ScreenName" Cursor="Hand" ToolTip="{Binding Path=User.TwitterUrl, Mode=Default}"/>
+                <TextBlock Text="{Binding Path=User.ScreenName, FallbackValue=Screen Name}" FontWeight="Bold" FontSize="16" VerticalAlignment="Bottom" HorizontalAlignment="Left" x:Name="ScreenName" Cursor="Hand"/>
                 <Button Width="20" Height="20" HorizontalAlignment="Right" Margin="0,0,5,0" Visibility="Collapsed" x:Name="ReplyButton">
                     <TextBlock TextWrapping="Wrap" Text="@" VerticalAlignment="Center" Foreground="{DynamicResource SubForegroundBrush}"/>
                 </Button>
@@ -92,4 +92,35 @@
             </Setter.Value>
         </Setter>
     </Style>
+
+    <DataTemplate x:Key="UserTimeLineTemplate">
+        <DataTemplate.Resources>
+            <Storyboard x:Key="YellowFade">
+                <ColorAnimationUsingKeyFrames BeginTime="00:00:00" Storyboard.TargetName="grid" Storyboard.TargetProperty="(Panel.Background).(SolidColorBrush.Color)">
+                    <SplineColorKeyFrame KeyTime="00:00:00" Value="#FFFEFF76"/>
+                    <SplineColorKeyFrame KeyTime="00:00:01" Value="#19FEFF76"/>
+                </ColorAnimationUsingKeyFrames>
+            </Storyboard>
+        </DataTemplate.Resources>
+        <Grid x:Name="grid" Background="#01FFFFFF" Margin="5,0,5,5">
+				<Grid.RowDefinitions>
+					<RowDefinition Height="Auto"/>
+					<RowDefinition Height="*"/>
+				</Grid.RowDefinitions>
+				<TextBlock x:Name="TweetText" Text="{Binding Path=Text, FallbackValue=Tweet Text}" TextWrapping="Wrap"/>
+				<StackPanel Grid.Column="0" Grid.Row="1" Orientation="Horizontal" Margin="0,3,0,0">
+					<TextBlock Text="{Binding Path=RelativeTime, FallbackValue=1 minute ago}"
+						FontStyle="Italic" Foreground="{DynamicResource SubForegroundBrush}" ToolTip="{Binding Path=DateCreated, Mode=Default}" Margin="0,0,3,0"/>
+					<TextBlock Text="{Binding Path=Source, Mode=Default, FallbackValue=from web}"
+						FontStyle="Italic" TextTrimming="CharacterEllipsis" Foreground="{DynamicResource SubForegroundBrush}"/>
+				</StackPanel>
+			</Grid>
+        <DataTemplate.Triggers>
+            <DataTrigger Binding="{Binding Path=IsNew}" Value="True">
+                <DataTrigger.EnterActions>
+                    <BeginStoryboard Storyboard="{StaticResource YellowFade}"/>
+                </DataTrigger.EnterActions>
+            </DataTrigger>
+        </DataTemplate.Triggers>
+    </DataTemplate>
 </ResourceDictionary>
