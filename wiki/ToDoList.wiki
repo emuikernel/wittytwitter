@@ -11,7 +11,7 @@
   * write blog posts about Witty
   * use icons for buttons
   * ~~remember window position~~
-  * Make a better Application icon
+  * Make a kickass Application icon
   * display links as hyperlinks
    # Make only the hyperlink clickable
   * ~~Add User Timeline section [http://code.google.com/p/wittytwitter/issues/detail?id=1 #1]~~
