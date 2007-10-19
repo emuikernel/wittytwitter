@@ -139,7 +139,7 @@
 									</Grid.ColumnDefinitions>
 									<TextBox Text="" TextWrapping="Wrap" x:Name="TweetTextBox" SpellCheck.IsEnabled="True" MaxLength="140"/>
 									<TextBlock Text="{Binding Path=Text.Length, Converter={StaticResource CharRemainingConverter}, ElementName=TweetTextBox, Mode=Default}" FontSize="18" Grid.Column="1" VerticalAlignment="Top" HorizontalAlignment="Left" Margin="10,0,0,0" FontFamily="Georgia" x:Name="CharRemainingCounter" Foreground="#FF52626F" />
-									<Button VerticalAlignment="Bottom" Width="75" Height="23" Content="Update" Grid.Column="1" x:Name="UpdateButton" Click="UpdateButton_Click" Margin="10,0,0,0"/>
+									<Button VerticalAlignment="Bottom" Width="75" Height="23" Content="Update" Grid.Column="1" x:Name="UpdateButton" Click="UpdateButton_Click" Margin="10,0,0,0" IsDefault="True"/>
 								</Grid>
 							</DockPanel>
 						</Border>
