@@ -260,8 +260,10 @@ namespace Witty
         {
             if (newlyAdded != null)
             {
-                UpdateTextBlock.Text = "Status Updated!";
+                UpdateTextBlock.Text = "Update";
+                StatusTextBlock.Text = "Status Updated!";
                 PlayStoryboard("CollapseUpdate");
+                isExpanded = false;
                 TweetTextBox.Clear();
                 tweets.Insert(0, newlyAdded);
             }
@@ -277,14 +279,12 @@ namespace Witty
             {
                 if (!isExpanded)
                 {
-                    UpdateTextBlock.Text = "Cancel Update";
                     PlayStoryboard("ExpandUpdate");
                     TweetTextBox.Focus();
                     isExpanded = true;
                 }
                 else
                 {
-                    UpdateTextBlock.Text = "Update";
                     PlayStoryboard("CollapseUpdate");
                     isExpanded = false;
                 }
@@ -348,6 +348,7 @@ namespace Witty
 
             StopStoryboard("Fetching");
         }
+
         #endregion
 
         #region User Timline
@@ -411,6 +412,7 @@ namespace Witty
 
             StopStoryboard("Fetching");
         }
+
         #endregion
 
         #region Misc Methods and Event Handlers
@@ -550,6 +552,36 @@ namespace Witty
                 this.Topmost = false;
         }
 
+        private void SiteUrl_MouseLeftButtonUp(object sender, System.Windows.Input.MouseButtonEventArgs e)
+        {
+            TextBlock textBlock = (TextBlock)sender;
+            try
+            {
+                System.Diagnostics.Process.Start(textBlock.Text);
+            }
+            catch (Win32Exception ex)
+            {
+#if DEBUG
+                MessageBox.Show(ex.ToString());
+#endif
+            }
+        }
+
+        private void ScreenName_MouseLeftButtonUp(object sender, System.Windows.Input.MouseButtonEventArgs e)
+        {
+            TextBlock textBlock = (TextBlock)sender;
+            try
+            {
+                System.Diagnostics.Process.Start(textBlock.Tag.ToString());
+            }
+            catch (Win32Exception ex)
+            {
+#if DEBUG
+                MessageBox.Show(ex.ToString());
+#endif
+            }
+        }
+
         #endregion
 
         #region Minimize to Tray
@@ -634,6 +666,7 @@ namespace Witty
         {
             this.Close();
         }
+
         #endregion
 
         #region Single Instance
@@ -652,36 +685,7 @@ namespace Witty
         {
             Environment.Exit(0);
         }
+
         #endregion
-
-        private void SiteUrl_MouseLeftButtonUp(object sender, System.Windows.Input.MouseButtonEventArgs e)
-        {
-            TextBlock textBlock = (TextBlock)sender;
-            try
-            {
-                System.Diagnostics.Process.Start(textBlock.Text);
-            }
-            catch (Win32Exception ex)
-            {
-#if DEBUG
-                MessageBox.Show(ex.ToString());
-#endif
-            }
-        }
-
-        private void ScreenName_MouseLeftButtonUp(object sender, System.Windows.Input.MouseButtonEventArgs e)
-        {
-            TextBlock textBlock = (TextBlock)sender;
-            try
-            {
-                System.Diagnostics.Process.Start(textBlock.Tag.ToString());
-            }
-            catch (Win32Exception ex)
-            {
-#if DEBUG
-                MessageBox.Show(ex.ToString());
-#endif
-            }
-        }
     }
 }
