@@ -99,7 +99,6 @@
             </DoubleAnimationUsingKeyFrames>
         </Storyboard>
         <Witty:CharRemainingValueConverter x:Key="CharRemainingConverter"/>
-        <Witty:TextToInlinesValueConverter x:Key="TextToInlinesValueConverter"/>
     </Window.Resources>
     <Window.Triggers>
         <EventTrigger RoutedEvent="Mouse.MouseEnter" SourceName="Update">
