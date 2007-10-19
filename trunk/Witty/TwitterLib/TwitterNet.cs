@@ -642,9 +642,12 @@ namespace TwitterLib
             }
             else
             {
-                // Twitter caches the timeline, so it doesn't always get the latest tweets
-                // adding a since param will bypass twitter cache.
-                timelineUrl = timelineUrl + "?since=" + DateTime.Now;
+                if (timeline == Timeline.Friends)
+                {
+                    // Twitter caches the timeline, so it doesn't always get the latest tweets
+                    // adding a since param will bypass twitter cache.
+                    timelineUrl = timelineUrl + "?since=" + DateTime.Now;
+                }
             }
 
             // Create the web request
