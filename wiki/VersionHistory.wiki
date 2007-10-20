@@ -2,6 +2,14 @@
 #labels Featured
 
 = v0.1.3=
+  * Hyperlinks are now formatted as hyperlinks
+  * bug fixes around the "Update" use case
+  * You can press enter to send an update without having to click the Update button
+  * added slight alternating row colors
+  * updates show up as updated "from Witty"
+  * latest 20 tweets are shown on the user tab
+
+= v0.1.3=
   * User Timeline section
   * Options for "always on top" currently available by righting the Witty header
   * newly added tweets are displayed right away
