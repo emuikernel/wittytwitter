@@ -508,11 +508,6 @@ namespace Witty
                 try
                 {
                     ListBox listbox = (ListBox)sender;
-                    if (textBlock.Name == "TweetText")
-                    {
-                        if (listbox.SelectedValue != null && !string.IsNullOrEmpty(listbox.SelectedValue.ToString()))
-                            System.Diagnostics.Process.Start(listbox.SelectedValue.ToString());
-                    }
 
                     if (textBlock.Name == "ScreenName")
                     {

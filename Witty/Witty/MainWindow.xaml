@@ -128,7 +128,7 @@
         	<TabControl x:Name="Tabs" IsSynchronizedWithCurrentItem="True" DockPanel.Dock="Top" SelectionChanged="Tabs_SelectionChanged">
 				<TabItem Header="Recent">
 					<Grid x:Name="Recent">
-						<ListBox x:Name="TweetsListBox" ScrollViewer.CanContentScroll="False" IsSynchronizedWithCurrentItem="True" ItemTemplate="{DynamicResource TweetsTemplate}" ItemsSource="{Binding Mode=OneWay}" SelectedValuePath="Hyperlink" ScrollViewer.HorizontalScrollBarVisibility="Disabled" Margin="0,0,0,20" MouseLeftButtonUp="TweetsListBox_MouseLeftButtonUp" BorderThickness="0,0,0,0" />
+						<ListBox x:Name="TweetsListBox" ScrollViewer.CanContentScroll="False" IsSynchronizedWithCurrentItem="True" ItemTemplate="{DynamicResource TweetsTemplate}" ItemsSource="{Binding Mode=OneWay}" ScrollViewer.HorizontalScrollBarVisibility="Disabled" Margin="0,0,0,20" MouseLeftButtonUp="TweetsListBox_MouseLeftButtonUp" BorderThickness="0,0,0,0" />
 						<Border Height="21" Background="#FFA8B9C6" VerticalAlignment="Bottom" Padding="10,0,10,0" x:Name="Update" MouseLeftButtonUp="Update_MouseLeftButtonUp" BorderBrush="{DynamicResource PrimaryBackgroundBrush}" BorderThickness="0,0,0,1">
 							<DockPanel OpacityMask="#FF000000" x:Name="dockPanel">
 								<TextBlock HorizontalAlignment="Center" DockPanel.Dock="Top" Text="Update" TextWrapping="Wrap" Height="20" VerticalAlignment="Top" x:Name="UpdateTextBlock"/>
@@ -146,7 +146,7 @@
 					</Grid>
 				</TabItem>
 				<TabItem Header="Replies">
-					<ListBox x:Name="RepliesListBox" ScrollViewer.CanContentScroll="False" IsSynchronizedWithCurrentItem="True" ItemTemplate="{DynamicResource TweetsTemplate}" SelectedValuePath="Hyperlink" ScrollViewer.HorizontalScrollBarVisibility="Disabled" MouseLeftButtonUp="TweetsListBox_MouseLeftButtonUp" BorderThickness="0,0,0,0" />
+					<ListBox x:Name="RepliesListBox" ScrollViewer.CanContentScroll="False" IsSynchronizedWithCurrentItem="True" ItemTemplate="{DynamicResource TweetsTemplate}" ScrollViewer.HorizontalScrollBarVisibility="Disabled" MouseLeftButtonUp="TweetsListBox_MouseLeftButtonUp" BorderThickness="0,0,0,0" />
 				</TabItem>
 				<TabItem x:Name="UserTab" Header="User">
 					<DockPanel>
@@ -179,7 +179,7 @@
 								</DockPanel>
 							</Grid>
 						</Border>
-						<ListBox x:Name="UserTimelineListBox" ItemsSource="{Binding Mode=OneWay}" ScrollViewer.CanContentScroll="False" IsSynchronizedWithCurrentItem="True" ItemTemplate="{DynamicResource UserTimeLineTemplate}" SelectedValuePath="Hyperlink" ScrollViewer.HorizontalScrollBarVisibility="Disabled" MouseLeftButtonUp="TweetsListBox_MouseLeftButtonUp" BorderThickness="0,0,0,0" DockPanel.Dock="Bottom" />
+						<ListBox x:Name="UserTimelineListBox" ItemsSource="{Binding Mode=OneWay}" ScrollViewer.CanContentScroll="False" IsSynchronizedWithCurrentItem="True" ItemTemplate="{DynamicResource UserTimeLineTemplate}" ScrollViewer.HorizontalScrollBarVisibility="Disabled" MouseLeftButtonUp="TweetsListBox_MouseLeftButtonUp" BorderThickness="0,0,0,0" DockPanel.Dock="Bottom" />
 					</DockPanel>
 				</TabItem>
 			</TabControl>
