@@ -1,12 +1,9 @@
 using System;
-using System.Collections.Generic;
-using System.Text;
 using System.Windows.Data;
-using TwitterLib;
-using System.Windows.Documents;
+using System.Windows.Media;
+using System.Globalization;
 using System.Windows.Controls;
-using System.Drawing;
-using System.Windows;
+using TwitterLib;
 
 namespace Witty
 {
@@ -41,11 +38,11 @@ namespace Witty
 
             if (index % 2 == 0)
             {
-                return Brushes.LightBlue;
+                return Brushes.White;
             }
             else
             {
-                return Brushes.Beige;
+                return "#EAEDF1";
             }
         }
 
