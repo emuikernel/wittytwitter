@@ -66,7 +66,7 @@
     
     <SolidColorBrush x:Key="HeaderForegroundBrush" Color="#FFFFFFFF"/>
 
-    <SolidColorBrush x:Key="SelectedBackgroundBrush" Color="#0052A8A8" />
+    <SolidColorBrush x:Key="SelectedBackgroundBrush" Color="#FF52A8A8" />
     
     <SolidColorBrush x:Key="DisabledForegroundBrush" Color="#888" />
 
@@ -86,9 +86,9 @@
                         <ContentPresenter />
                     </Border>
                     <ControlTemplate.Triggers>
-                        <Trigger Property="IsSelected" Value="true">
+                        <!--<Trigger Property="IsSelected" Value="true">
                             <Setter Property="Background" Value="{StaticResource SelectedBackgroundBrush}"/>
-                        </Trigger>
+                        </Trigger>-->
                         <Trigger Property="IsMouseOver" Value="true">
                             <Setter Property="Background" Value="{StaticResource HoverBrush}"/>
                         </Trigger>
@@ -120,7 +120,7 @@
                 <RowDefinition Height="Auto"/>
                 <RowDefinition Height="*"/>
             </Grid.RowDefinitions>
-            <TextBlock x:Name="TweetText" Text="{Binding Path=Text, FallbackValue=Tweet Text}" TextWrapping="Wrap"/>
+            <local:TweetTextBlock x:Name="TweetText" TweetText="{Binding Path=Text, FallbackValue=Tweet Text}" TextWrapping="Wrap"/>
             <StackPanel Grid.Column="0" Grid.Row="1" Orientation="Horizontal">
                 <TextBlock Text="{Binding Path=RelativeTime, FallbackValue=1 minute ago}"
                     FontStyle="Italic" Foreground="{DynamicResource SubForegroundBrush}" ToolTip="{Binding Path=DateCreated, Mode=Default}" Margin="0,0,3,0"/>
