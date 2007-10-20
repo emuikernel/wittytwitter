@@ -13,7 +13,7 @@ using System.Runtime.InteropServices;
 // set of attributes. Change these attribute values to modify the information
 // associated with an assembly.
 [assembly: AssemblyTitle("Witty")]
-[assembly: AssemblyDescription("")]
+[assembly: AssemblyDescription("Witty is a Twitter client for Windows Vista and XP that is powered by the Windows Presentation Foundation (WPF)")]
 [assembly: AssemblyConfiguration("")]
 [assembly: AssemblyCompany("")]
 [assembly: AssemblyProduct("Witty")]
@@ -59,4 +59,4 @@ using System.Runtime.InteropServices;
 //
 // You can specify all the values or you can default the Revision and Build Numbers 
 // by using the '*' as shown below:
-[assembly: AssemblyVersion("0.1.3.*")]
+[assembly: AssemblyVersion("0.1.4.*")]
