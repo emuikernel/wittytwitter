@@ -1,4 +1,4 @@
-#summary Version History
+#summary Version History and Release Notes
 #labels Featured
 
 = v0.1.4=
