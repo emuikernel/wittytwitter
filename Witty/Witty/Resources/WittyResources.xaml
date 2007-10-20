@@ -99,11 +99,11 @@
                 </ControlTemplate>
             </Setter.Value>
         </Setter>
-        <!--<Setter Property="Background" Value="{Binding RelativeSource={RelativeSource Self}, Converter={StaticResource BackgroundConverter}}">
-            --><!--<Setter.Value>
+        <Setter Property="Background" >
+            <Setter.Value>
                 <Binding RelativeSource="{RelativeSource Self}" Converter="{StaticResource BackgroundConverter}"/>
-            </Setter.Value>--><!--
-        </Setter>-->
+            </Setter.Value>
+        </Setter>
     </Style>
 
     <DataTemplate x:Key="UserTimeLineTemplate">
