@@ -1,5 +1,5 @@
 #summary Quick List of Tasks
-#labels Phase-Design,Featured
+#labels Phase-Design
 
 = List of Todos =
 
