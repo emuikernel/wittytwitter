@@ -1,5 +1,5 @@
 #summary Frequently Asked Questions
-#labels Documentation
+#labels Documentation,Featured
 
 = Frequently Asked Questions (FAQ) =
 
