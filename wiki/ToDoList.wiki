@@ -1,5 +1,7 @@
 #summary Quick List of Tasks
-#labels Phase-Design
+#labels Phase-Design,Deprecated
+
+This list is now depracted. New tasks will be added to the Issues list.
 
 = List of Todos =
 
