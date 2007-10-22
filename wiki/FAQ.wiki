@@ -3,11 +3,14 @@
 
 = Frequently Asked Questions (FAQ) =
 
+==#1 Why did you build Twitter?==
 
-==#1 What did you use to build Witty?==
+I built Twitter for several reasons. First, to hone my technical and design skills with WPF.  Secondly, to create a kickass Twitter client for Windows. And last but not least, to share with the community on how to build desktop applications with WPF.
+
+==#2 What did you use to build Witty?==
 
 Witty was developed using [http://msdn2.microsoft.com/en-us/vstudio/default.aspx Microsoft Visual Studio] and [http://www.microsoft.com/expression/products/overview.aspx?key=blend Expression Blend]. Witty is programmed in C#.
 
-==#2 How often does the recent timeline refresh?==
+==#3 How often does the recent timeline refresh?==
 
 Currently the refresh interval is set to 2 minutes. There are plans to make this configurable in a future release.
