@@ -591,6 +591,12 @@ namespace Witty
         {
             Options options = new Options();
 
+            Binding binding = new Binding();
+            binding.Path = new PropertyPath("Topmost");
+            binding.Source = this;
+            binding.Mode = BindingMode.TwoWay;
+            options.SetBinding(Options.TopmostProperty, binding);
+
             bool? dialogResult = options.ShowDialog();
             switch (dialogResult)
             {

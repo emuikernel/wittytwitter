@@ -15,12 +15,28 @@ namespace Witty
         // Settings used by the application
         private Properties.Settings AppSettings = Properties.Settings.Default;
 
+        public bool IsTopMost
+        {
+            get { return (bool)GetValue(IsTopMostProperty); }
+            set { SetValue(IsTopMostProperty, value); }
+        }
+
+        // Using a DependencyProperty as the backing store for IsTopMost.  This enables animation, styling, binding, etc...
+        public static readonly DependencyProperty IsTopMostProperty =
+            DependencyProperty.Register("IsTopMost", typeof(bool), typeof(Options), new UIPropertyMetadata(false));
+
 		public Options()
 		{
 			this.InitializeComponent();
 
             UsernameTextBox.Text = AppSettings.Username;
             PasswordTextBox.Password = AppSettings.Password;
+
+            Binding binding = new Binding();
+            binding.Path = new PropertyPath("Topmost");
+            binding.Source = this;
+
+            AlwaysOnTopCheckBox.SetBinding(CheckBox.IsCheckedProperty, binding);
 
             if (!string.IsNullOrEmpty(AppSettings.RefreshInterval))
                 RefreshSlider.Value = Double.Parse(AppSettings.RefreshInterval);
