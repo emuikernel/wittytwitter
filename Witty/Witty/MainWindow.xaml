@@ -38,21 +38,31 @@
             </DoubleAnimationUsingKeyFrames>
         </Storyboard>
         <Storyboard x:Key="ShowLogin">
-            <DoubleAnimationUsingKeyFrames BeginTime="00:00:00" Storyboard.TargetName="LoginControl" Storyboard.TargetProperty="(FrameworkElement.Height)">
-                <SplineDoubleKeyFrame KeyTime="00:00:00" Value="0" KeySpline="0,0,0,1"/>
-                <SplineDoubleKeyFrame KeyTime="00:00:00.5000000" Value="0" KeySpline="0,0,0,1"/>
-                <SplineDoubleKeyFrame KeyTime="00:00:00.7000000" Value="3" KeySpline="0,0,0,1"/>
-                <SplineDoubleKeyFrame KeyTime="00:00:01.1000000" Value="270" KeySpline="0,0,0,1"/>
-            </DoubleAnimationUsingKeyFrames>
-            <DoubleAnimationUsingKeyFrames BeginTime="00:00:00" Storyboard.TargetName="LoginControl" Storyboard.TargetProperty="(FrameworkElement.Width)">
-                <SplineDoubleKeyFrame KeyTime="00:00:00" Value="0" KeySpline="0,0,0,1"/>
-                <SplineDoubleKeyFrame KeyTime="00:00:00.5000000" Value="0" KeySpline="0,0,0,1"/>
-                <SplineDoubleKeyFrame KeyTime="00:00:00.7000000" Value="225" KeySpline="0,0,0,1"/>
-            </DoubleAnimationUsingKeyFrames>
-        	<BooleanAnimationUsingKeyFrames BeginTime="00:00:00" Duration="00:00:00.0010000" Storyboard.TargetName="Tabs" Storyboard.TargetProperty="(UIElement.IsEnabled)">
-        		<DiscreteBooleanKeyFrame KeyTime="00:00:00" Value="False"/>
-        	</BooleanAnimationUsingKeyFrames>
-        </Storyboard>
+			<DoubleAnimationUsingKeyFrames BeginTime="00:00:00" Storyboard.TargetName="LoginControl" Storyboard.TargetProperty="(FrameworkElement.Height)">
+				<SplineDoubleKeyFrame KeyTime="00:00:00" Value="0" KeySpline="0,0,0,1"/>
+				<SplineDoubleKeyFrame KeyTime="00:00:00.5000000" Value="0" KeySpline="0,0,0,1"/>
+				<SplineDoubleKeyFrame KeyTime="00:00:00.7000000" Value="3" KeySpline="0,0,0,1"/>
+				<SplineDoubleKeyFrame KeyTime="00:00:01.1000000" Value="270" KeySpline="0,0,0,1"/>
+			</DoubleAnimationUsingKeyFrames>
+			<DoubleAnimationUsingKeyFrames BeginTime="00:00:00" Storyboard.TargetName="LoginControl" Storyboard.TargetProperty="(FrameworkElement.Width)">
+				<SplineDoubleKeyFrame KeyTime="00:00:00" Value="0" KeySpline="0,0,0,1"/>
+				<SplineDoubleKeyFrame KeyTime="00:00:00.5000000" Value="0" KeySpline="0,0,0,1"/>
+				<SplineDoubleKeyFrame KeyTime="00:00:00.7000000" Value="225" KeySpline="0,0,0,1"/>
+			</DoubleAnimationUsingKeyFrames>
+			<BooleanAnimationUsingKeyFrames BeginTime="00:00:00" Duration="00:00:00.0010000" Storyboard.TargetName="Tabs" Storyboard.TargetProperty="(UIElement.IsEnabled)">
+				<DiscreteBooleanKeyFrame KeyTime="00:00:00" Value="False"/>
+			</BooleanAnimationUsingKeyFrames>
+			<ObjectAnimationUsingKeyFrames BeginTime="00:00:00" Storyboard.TargetName="LoginControl" Storyboard.TargetProperty="(UIElement.Visibility)">
+				<DiscreteObjectKeyFrame KeyTime="00:00:00" Value="{x:Static Visibility.Visible}"/>
+				<DiscreteObjectKeyFrame KeyTime="00:00:00.5000000" Value="{x:Static Visibility.Visible}"/>
+			</ObjectAnimationUsingKeyFrames>
+			<BooleanAnimationUsingKeyFrames BeginTime="00:00:00" Duration="00:00:00.0010000" Storyboard.TargetName="RefreshButton" Storyboard.TargetProperty="(UIElement.IsEnabled)">
+				<DiscreteBooleanKeyFrame KeyTime="00:00:00" Value="False"/>
+			</BooleanAnimationUsingKeyFrames>
+			<BooleanAnimationUsingKeyFrames BeginTime="00:00:00" Duration="00:00:00.0010000" Storyboard.TargetName="OptionsButton" Storyboard.TargetProperty="(UIElement.IsEnabled)">
+				<DiscreteBooleanKeyFrame KeyTime="00:00:00" Value="False"/>
+			</BooleanAnimationUsingKeyFrames>
+		</Storyboard>
         <Storyboard x:Key="HideLogin">
             <DoubleAnimationUsingKeyFrames BeginTime="00:00:00" Storyboard.TargetName="LoginControl" Storyboard.TargetProperty="(FrameworkElement.Height)">
                 <SplineDoubleKeyFrame KeyTime="00:00:00" Value="270"/>
@@ -78,6 +88,9 @@
         	<BooleanAnimationUsingKeyFrames BeginTime="00:00:00" Storyboard.TargetName="Tabs" Storyboard.TargetProperty="(UIElement.IsEnabled)" Duration="00:00:00.0010000">
 					<DiscreteBooleanKeyFrame KeyTime="00:00:00" Value="True"/>
 				</BooleanAnimationUsingKeyFrames>
+        	<BooleanAnimationUsingKeyFrames BeginTime="00:00:00" Duration="00:00:00.0010000" Storyboard.TargetName="OptionsButton" Storyboard.TargetProperty="(UIElement.IsEnabled)">
+        		<DiscreteBooleanKeyFrame KeyTime="00:00:00" Value="True"/>
+        	</BooleanAnimationUsingKeyFrames>
         </Storyboard>
         <Storyboard x:Key="UpdateMouseEnter">
             <ColorAnimationUsingKeyFrames BeginTime="00:00:00" Storyboard.TargetName="Update" Storyboard.TargetProperty="(Panel.Background).(SolidColorBrush.Color)">
@@ -124,8 +137,8 @@
 			<DockPanel LastChildFill="False">
 				<TextBlock Text="Witty" VerticalAlignment="Center" HorizontalAlignment="Center" FontSize="18" FontWeight="Bold" Foreground="{DynamicResource HeaderForegroundBrush}"/>
 				<Button Content="Refresh" Height="20" x:Name="RefreshButton" Click="RefreshButton_Click" IsEnabled="False" MinWidth="25" MinHeight="20" FontSize="9" DockPanel.Dock="Right"/>
-				<Button Content="Options" Height="20" x:Name="OptionsButton" Click="OptionsButton_Click" MinWidth="25" MinHeight="20" FontSize="9" DockPanel.Dock="Right" Margin="0,0,5,0" IsEnabled="False"/>
-				<Rectangle Fill="#FF52626F" Width="15" Height="15" DockPanel.Dock="Right" x:Name="Friends" MouseLeftButtonUp="Friends_MouseLeftButtonUp" Margin="0,0,5,0"/>
+				<Button Content="Options" Height="20" x:Name="OptionsButton" Click="OptionsButton_Click" MinWidth="25" MinHeight="20" FontSize="9" DockPanel.Dock="Right" Margin="0,0,10,0" IsEnabled="False"/>
+				<Rectangle Fill="#FF52626F" Width="15" Height="15" DockPanel.Dock="Right" x:Name="Friends" MouseLeftButtonUp="Friends_MouseLeftButtonUp" Margin="0,0,10,0"/>
 			</DockPanel>
 		</Border>
 		<Border DockPanel.Dock="Bottom" Padding="5,2,5,2" Background="{DynamicResource PrimaryBackgroundBrush}" x:Name="StatusBar">
@@ -190,7 +203,7 @@
 					</DockPanel>
 				</TabItem>
 			</TabControl>
-			<Witty:LoginControl HorizontalAlignment="Center" VerticalAlignment="Center" x:Name="LoginControl" Login="LoginControl_Login" d:IsHidden="True">
+			<Witty:LoginControl HorizontalAlignment="Center" VerticalAlignment="Center" x:Name="LoginControl" Login="LoginControl_Login" Visibility="Visible">
 				<Witty:LoginControl.BitmapEffect>
 					<OuterGlowBitmapEffect GlowColor="#FF000000" Opacity="0.75"/>
 				</Witty:LoginControl.BitmapEffect>

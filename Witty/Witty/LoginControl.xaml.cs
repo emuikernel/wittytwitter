@@ -34,6 +34,9 @@ namespace Witty
 
                 AppSettings.Save();
 
+                UsernameTextBox.Text = string.Empty;
+                PasswordTextBox.Password = string.Empty;
+
                 RaiseEvent(new RoutedEventArgs(LoginEvent));
             }
             else

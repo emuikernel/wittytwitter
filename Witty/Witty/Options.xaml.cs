@@ -32,7 +32,16 @@ namespace Witty
             AppSettings.Save();
 
             DialogResult = true;
+            this.Close();
+        }
 
+        private void Logout_Click(object sender, RoutedEventArgs e)
+        {
+            AppSettings.Username = string.Empty;
+            AppSettings.Password = string.Empty;
+            AppSettings.Save();
+
+            DialogResult = false;
             this.Close();
         }
 	}
