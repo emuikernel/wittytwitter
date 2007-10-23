@@ -1,6 +1,15 @@
 #summary Version History and Release Notes
 #labels Featured
 
+= v0.1.5 Alpha (in development)=
+
+  * Configurable Options
+   # option to logout
+   # option for refresh interval
+   # option for always on top
+   # option for playing sounds
+  * Audio notifications
+
 = v0.1.4=
   * Hyperlinks are now formatted as hyperlinks
   * bug fixes around the "Update" use case
