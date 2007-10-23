@@ -2,10 +2,11 @@
 	xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
 	xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
 	xmlns:d="http://schemas.microsoft.com/expression/blend/2006" xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" mc:Ignorable="d"
+	xmlns:Witty="clr-namespace:Witty"
 	x:Class="Witty.Options"
 	x:Name="Window"
 	Title="Options"
-	Width="325" Height="400" Background="{DynamicResource SecondaryBackgroundBrush}" xmlns:Witty="clr-namespace:Witty">
+	Width="325" Height="400" Background="{DynamicResource SecondaryBackgroundBrush}" >
 
 	<Window.Resources>
 		<Witty:RoundConverter x:Key="RoundConverter"/>
@@ -38,20 +39,24 @@
 						<Button HorizontalAlignment="Left" VerticalAlignment="Top" Content="Logout" Grid.Row="2" Grid.Column="1" Margin="5,5,0,5" x:Name="Logout" Click="Logout_Click"/>
 					</Grid>
 				</Expander>
-				<Expander Header="Refresh Interval" IsExpanded="True" DockPanel.Dock="Top" Margin="0,20,0,0">
+				<Expander Header="Settings" IsExpanded="True" DockPanel.Dock="Top" Margin="0,20,0,0">
 					<Grid>
 						<Grid.ColumnDefinitions>
 							<ColumnDefinition Width="*"/>
 						</Grid.ColumnDefinitions>
 						<Grid.RowDefinitions>
-							<RowDefinition Height="0.491*"/>
-							<RowDefinition Height="0.509*"/>
+							<RowDefinition Height="Auto"/>
+							<RowDefinition Height="Auto"/>
+							<RowDefinition Height="Auto"/>
 						</Grid.RowDefinitions>
 						<Label Content="Minutes between updates" d:LayoutOverrides="GridBox" HorizontalAlignment="Left" Margin="40,0,0,0"/>
 						<StackPanel Grid.Column="0" Orientation="Horizontal" Grid.Row="1" HorizontalAlignment="Left" Margin="45,0,0,0">
 							<Slider Width="200" Minimum="0" Maximum="30" SmallChange="1" LargeChange="5" TickPlacement="BottomRight" x:Name="RefreshSlider" AutoToolTipPlacement="TopLeft" TickFrequency="2"/>
 							<TextBlock Text="{Binding Path=Value, Converter={StaticResource RoundConverter}, ElementName=RefreshSlider, Mode=Default}" TextWrapping="Wrap" VerticalAlignment="Center" x:Name="SliderValueTextBlock" Width="20" Margin="5,0,0,0"/>
 						</StackPanel>
+
+						<CheckBox Grid.Row="2" Content="Always on top" HorizontalAlignment="Center" Margin="0,20,0,0" x:Name="AlwaysOnTopCheckBox" />
+
 					</Grid>
 				</Expander>
 			</DockPanel>
