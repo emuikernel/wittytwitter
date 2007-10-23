@@ -61,6 +61,14 @@ namespace Witty
             RepliesListBox.ItemsSource = replies;
             UserTab.DataContext = userTweets;
 
+            // set the refresh interval
+            if (string.IsNullOrEmpty(AppSettings.RefreshInterval))
+            {
+                AppSettings.RefreshInterval = "2"; // 2 minutes
+                AppSettings.Save();
+            }
+            refreshInterval = new TimeSpan(0, int.Parse(AppSettings.RefreshInterval), 0);
+
             // Does the user need to login
             if (string.IsNullOrEmpty(AppSettings.Username))
             {
@@ -71,6 +79,7 @@ namespace Witty
                 isLoggedIn = true;
                 LoginControl.Visibility = Visibility.Hidden;
                 RefreshButton.IsEnabled = true;
+                OptionsButton.IsEnabled = true;
                 AppSettings.LastUpdated = string.Empty;
 
                 twitter = new TwitterNet(AppSettings.Username, AppSettings.Password);
@@ -107,7 +116,7 @@ namespace Witty
         private DispatcherTimer refreshTimer = new DispatcherTimer();
 
         // How often the automatic tweet updates occur.  TODO: Make this configurable
-        private TimeSpan refreshInterval = new TimeSpan(0, 2, 0);  // 2 minutes
+        private TimeSpan refreshInterval;
 
         // Delegates for placing jobs onto the thread dispatcher.  
         // Used for making asynchronous calls to Twitter so that the UI does not lock up.
@@ -477,6 +486,7 @@ namespace Witty
 
             isExpanded = false;
             isLoggedIn = true;
+            OptionsButton.IsEnabled = true;
         }
 
         private void PlayStoryboard(string storyboardName)
@@ -682,5 +692,36 @@ namespace Witty
         }
 
         #endregion
+
+        private void OptionsButton_Click(object sender, RoutedEventArgs e)
+        {
+            Options options = new Options();
+
+            bool? dialogResult = options.ShowDialog();
+            switch (dialogResult)
+            {
+                case true:
+                    // User accepted dialog box
+
+                    // update the refresh interval
+                    int minutes = int.Parse(AppSettings.RefreshInterval);
+
+                    refreshTimer.Stop();
+                    if (minutes > 0)
+                    {
+                        refreshInterval = new TimeSpan(0, minutes, 0);
+                        refreshTimer.Interval = refreshInterval;
+                        refreshTimer.Start();
+                    }
+
+                    break;
+                case false:
+                    // User canceled dialog box
+                    break;
+                default:
+                    // Indeterminate
+                    break;
+            }
+        }
     }
 }

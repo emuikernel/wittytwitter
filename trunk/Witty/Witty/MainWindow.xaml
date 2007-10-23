@@ -8,7 +8,7 @@
     xmlns:Witty="clr-namespace:Witty"
 	x:Class="Witty.MainWindow"
 	x:Name="Window"
-	Title="Witty 0.1.4"
+	Title="Witty 0.1.5"
 	Width="325" Height="570" 
     MinWidth="200" MinHeight="200"
     WindowStyle="SingleBorderWindow"
@@ -99,6 +99,11 @@
             </DoubleAnimationUsingKeyFrames>
         </Storyboard>
         <Witty:CharRemainingValueConverter x:Key="CharRemainingConverter"/>
+    	<Storyboard x:Key="HideLogin2">
+    		<BooleanAnimationUsingKeyFrames BeginTime="00:00:00" Duration="00:00:00.0010000" Storyboard.TargetName="RefreshButton" Storyboard.TargetProperty="(UIElement.IsEnabled)">
+    			<DiscreteBooleanKeyFrame KeyTime="00:00:00" Value="True"/>
+    		</BooleanAnimationUsingKeyFrames>
+    	</Storyboard>
     </Window.Resources>
     <Window.Triggers>
         <EventTrigger RoutedEvent="Mouse.MouseEnter" SourceName="Update">
@@ -109,23 +114,25 @@
         </EventTrigger>
     </Window.Triggers>
 
-    <DockPanel x:Name="LayoutRoot" Background="{DynamicResource SecondaryBackgroundBrush}">
-        <Border DockPanel.Dock="Top" Height="30" Padding="10,0,10,0" Background="{DynamicResource PrimaryBackgroundBrush}" x:Name="Header">
-        	<Border.ContextMenu>
-        		<ContextMenu>
+	<DockPanel x:Name="LayoutRoot" Background="{DynamicResource SecondaryBackgroundBrush}">
+		<Border DockPanel.Dock="Top" Height="30" Padding="10,0,10,0" Background="{DynamicResource PrimaryBackgroundBrush}" x:Name="Header">
+			<Border.ContextMenu>
+				<ContextMenu>
 					<MenuItem x:Name="AlwaysOnTopMenuItem" Header="Always on Top" IsCheckable="True" Click="AlwaysOnTop_Click" />
 				</ContextMenu>
-        	</Border.ContextMenu>
-        	<DockPanel LastChildFill="False">
-        		<TextBlock Text="Witty" VerticalAlignment="Center" HorizontalAlignment="Center" FontSize="18" FontWeight="Bold" Foreground="{DynamicResource HeaderForegroundBrush}"/>
-        		<Rectangle Fill="#FF52626F" Width="15" Height="15" DockPanel.Dock="Right" x:Name="Friends" MouseLeftButtonUp="Friends_MouseLeftButtonUp"/>
-        	</DockPanel>
-        </Border>
-        <Border DockPanel.Dock="Bottom" Padding="5,2,5,2" Background="{DynamicResource PrimaryBackgroundBrush}" x:Name="StatusBar">
-            <TextBlock x:Name="StatusTextBlock" TextWrapping="NoWrap" Foreground="#FFE4E4E4" Text="Login" TextTrimming="CharacterEllipsis" />
-        </Border>
-        <Grid x:Name="Content">
-        	<TabControl x:Name="Tabs" IsSynchronizedWithCurrentItem="True" DockPanel.Dock="Top" SelectionChanged="Tabs_SelectionChanged">
+			</Border.ContextMenu>
+			<DockPanel LastChildFill="False">
+				<TextBlock Text="Witty" VerticalAlignment="Center" HorizontalAlignment="Center" FontSize="18" FontWeight="Bold" Foreground="{DynamicResource HeaderForegroundBrush}"/>
+				<Button Content="Refresh" Height="20" x:Name="RefreshButton" Click="RefreshButton_Click" IsEnabled="False" MinWidth="25" MinHeight="20" FontSize="9" DockPanel.Dock="Right"/>
+				<Button Content="Options" Height="20" x:Name="OptionsButton" Click="OptionsButton_Click" MinWidth="25" MinHeight="20" FontSize="9" DockPanel.Dock="Right" Margin="0,0,5,0" IsEnabled="False"/>
+				<Rectangle Fill="#FF52626F" Width="15" Height="15" DockPanel.Dock="Right" x:Name="Friends" MouseLeftButtonUp="Friends_MouseLeftButtonUp" Margin="0,0,5,0"/>
+			</DockPanel>
+		</Border>
+		<Border DockPanel.Dock="Bottom" Padding="5,2,5,2" Background="{DynamicResource PrimaryBackgroundBrush}" x:Name="StatusBar">
+			<TextBlock x:Name="StatusTextBlock" TextWrapping="NoWrap" Foreground="#FFE4E4E4" Text="Login" TextTrimming="CharacterEllipsis" />
+		</Border>
+		<Grid x:Name="Content">
+			<TabControl x:Name="Tabs" IsSynchronizedWithCurrentItem="True" DockPanel.Dock="Top" SelectionChanged="Tabs_SelectionChanged">
 				<TabItem Header="Recent">
 					<Grid x:Name="Recent">
 						<ListBox x:Name="TweetsListBox" ScrollViewer.CanContentScroll="False" IsSynchronizedWithCurrentItem="True" ItemTemplate="{DynamicResource TweetsTemplate}" ItemsSource="{Binding Mode=OneWay}" ScrollViewer.HorizontalScrollBarVisibility="Disabled" Margin="0,0,0,20" MouseLeftButtonUp="TweetsListBox_MouseLeftButtonUp" BorderThickness="0,0,0,0" />
@@ -183,12 +190,11 @@
 					</DockPanel>
 				</TabItem>
 			</TabControl>
-            <Witty:LoginControl HorizontalAlignment="Center" VerticalAlignment="Center" x:Name="LoginControl" Login="LoginControl_Login" d:IsHidden="True">
-                <Witty:LoginControl.BitmapEffect>
-                    <OuterGlowBitmapEffect GlowColor="#FF000000" Opacity="0.75"/>
-                </Witty:LoginControl.BitmapEffect>
-            </Witty:LoginControl>
-        	<Button Content="Refresh" Height="20" x:Name="RefreshButton" Click="RefreshButton_Click" IsEnabled="False" MinWidth="25" MinHeight="20" FontSize="9" HorizontalAlignment="Right" VerticalAlignment="Top" Width="35.657" Margin="0,5,10,0"/>
-        </Grid>
-    </DockPanel>
+			<Witty:LoginControl HorizontalAlignment="Center" VerticalAlignment="Center" x:Name="LoginControl" Login="LoginControl_Login" d:IsHidden="True">
+				<Witty:LoginControl.BitmapEffect>
+					<OuterGlowBitmapEffect GlowColor="#FF000000" Opacity="0.75"/>
+				</Witty:LoginControl.BitmapEffect>
+			</Witty:LoginControl>
+		</Grid>
+	</DockPanel>
 </Window>
