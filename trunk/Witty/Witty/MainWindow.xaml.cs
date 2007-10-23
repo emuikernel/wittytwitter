@@ -11,6 +11,7 @@ using TwitterLib;
 using System.Windows.Threading;
 using System.ComponentModel;
 using System.Windows.Media.Imaging;
+using System.Media;
 
 namespace Witty
 {
@@ -224,6 +225,13 @@ namespace Witty
                     // update the relativetime for existing tweets
                     tweets[i].UpdateRelativeTime();
                 }
+            }
+
+            if (tweetAdded > 0 &&  AppSettings.PlaySounds)
+            {
+                // Play tweets found sound
+                SoundPlayer player = new SoundPlayer("alert.wav");
+                player.Play();
             }
 
             StopStoryboard("Fetching");
