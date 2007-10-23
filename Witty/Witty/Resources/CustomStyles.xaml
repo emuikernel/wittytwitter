@@ -440,4 +440,279 @@
         </Setter>
     </Style>
 
+    <Style x:Key="SliderButtonStyle" TargetType="{x:Type RepeatButton}">
+        <Setter Property="SnapsToDevicePixels" Value="true"/>
+        <Setter Property="OverridesDefaultStyle" Value="true"/>
+        <Setter Property="IsTabStop" Value="false"/>
+        <Setter Property="Focusable" Value="false"/>
+        <Setter Property="Template">
+            <Setter.Value>
+                <ControlTemplate TargetType="{x:Type RepeatButton}">
+                    <Border Background="Transparent" />
+                </ControlTemplate>
+            </Setter.Value>
+        </Setter>
+    </Style>
+
+    <Style x:Key="SliderThumbStyle" TargetType="{x:Type Thumb}">
+        <Setter Property="SnapsToDevicePixels" Value="true"/>
+        <Setter Property="OverridesDefaultStyle" Value="true"/>
+        <Setter Property="Height" Value="14"/>
+        <Setter Property="Width" Value="14"/>
+        <Setter Property="Template">
+            <Setter.Value>
+                <ControlTemplate TargetType="{x:Type Thumb}">
+					<Path Fill="{DynamicResource GlyphBrush}" Stretch="Fill" Stroke="{StaticResource NormalBorderBrush}" StrokeThickness="1" Data="M4.7909554,13.641626 L10.427199,19.419757 15.697845,13.633736 z" Width="14.377" Height="12.737"/>
+					<ControlTemplate.Triggers>
+						<Trigger Property="IsMouseOver" Value="True"/>
+						<Trigger Property="IsEnabled" Value="false"/>
+					</ControlTemplate.Triggers>
+				</ControlTemplate>
+            </Setter.Value>
+        </Setter>
+    </Style>
+
+    <ControlTemplate x:Key="HorizontalSlider" TargetType="{x:Type Slider}">
+        <Grid>
+            <Grid.RowDefinitions>
+                <RowDefinition Height="Auto"/>
+                <RowDefinition Height="Auto" MinHeight="{TemplateBinding Slider.MinHeight}"/>
+                <RowDefinition Height="Auto"/>
+            </Grid.RowDefinitions>
+            <TickBar
+              Name="TopTick"
+              SnapsToDevicePixels="True"
+              Placement="Top"
+              Fill="{StaticResource GlyphBrush}"
+              Height="4"
+              Visibility="Collapsed" />
+            <Border
+              Name="TrackBackground"
+              Margin="0"
+              CornerRadius="2"
+              Height="4"
+              Grid.Row="1"
+              Background="{StaticResource LightBrush}"
+              BorderBrush="{StaticResource NormalBorderBrush}"
+              BorderThickness="1" />
+            <Track Grid.Row="1" Name="PART_Track">
+                <Track.DecreaseRepeatButton>
+                    <RepeatButton
+                      Style="{StaticResource SliderButtonStyle}"
+                      Command="Slider.DecreaseLarge" />
+                </Track.DecreaseRepeatButton>
+                <Track.Thumb>
+                    <Thumb Style="{StaticResource SliderThumbStyle}" />
+                </Track.Thumb>
+                <Track.IncreaseRepeatButton>
+                    <RepeatButton
+                      Style="{StaticResource SliderButtonStyle}"
+                      Command="Slider.IncreaseLarge" />
+                </Track.IncreaseRepeatButton>
+            </Track>
+            <TickBar
+              Name="BottomTick"
+              SnapsToDevicePixels="True"
+              Grid.Row="2"
+              Fill="{TemplateBinding Foreground}"
+              Placement="Bottom"
+              Height="4"
+              Visibility="Collapsed" />
+        </Grid>
+        <ControlTemplate.Triggers>
+            <Trigger Property="TickPlacement" Value="TopLeft">
+                <Setter TargetName="TopTick" Property="Visibility" Value="Visible"/>
+            </Trigger>
+            <Trigger Property="TickPlacement" Value="BottomRight">
+                <Setter TargetName="BottomTick" Property="Visibility" Value="Visible"/>
+            </Trigger>
+            <Trigger Property="TickPlacement" Value="Both">
+                <Setter TargetName="TopTick" Property="Visibility" Value="Visible"/>
+                <Setter TargetName="BottomTick" Property="Visibility" Value="Visible"/>
+            </Trigger>
+        </ControlTemplate.Triggers>
+    </ControlTemplate>
+
+    <ControlTemplate x:Key="VerticalSlider" TargetType="{x:Type Slider}">
+        <Grid>
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition Width="Auto"/>
+                <ColumnDefinition Width="Auto" MinWidth="{TemplateBinding Slider.MinWidth}"/>
+                <ColumnDefinition Width="Auto"/>
+            </Grid.ColumnDefinitions>
+            <TickBar
+              Name="TopTick"
+              SnapsToDevicePixels="True"
+              Placement="Left"
+              Fill="{StaticResource GlyphBrush}"
+              Width="4"
+              Visibility="Collapsed" />
+            <Border
+              Name="TrackBackground"
+              Margin="0"
+              CornerRadius="2"
+              Width="4"
+              Grid.Column="1"
+              Background="{StaticResource HorizontalLightBrush}"
+              BorderBrush="{StaticResource HorizontalNormalBorderBrush}"
+              BorderThickness="1" />
+            <Track Grid.Column="1" Name="PART_Track">
+                <Track.DecreaseRepeatButton>
+                    <RepeatButton
+                      Style="{StaticResource SliderButtonStyle}"
+                      Command="Slider.DecreaseLarge" />
+                </Track.DecreaseRepeatButton>
+                <Track.Thumb>
+                    <Thumb Style="{StaticResource SliderThumbStyle}" />
+                </Track.Thumb>
+                <Track.IncreaseRepeatButton>
+                    <RepeatButton
+                      Style="{StaticResource SliderButtonStyle}"
+                      Command="Slider.IncreaseLarge" />
+                </Track.IncreaseRepeatButton>
+            </Track>
+            <TickBar
+              Name="BottomTick"
+              SnapsToDevicePixels="True"
+              Grid.Column="2"
+              Fill="{TemplateBinding Foreground}"
+              Placement="Right"
+              Width="4"
+              Visibility="Collapsed" />
+        </Grid>
+        <ControlTemplate.Triggers>
+            <Trigger Property="TickPlacement" Value="TopLeft">
+                <Setter TargetName="TopTick" Property="Visibility" Value="Visible"/>
+            </Trigger>
+            <Trigger Property="TickPlacement" Value="BottomRight">
+                <Setter TargetName="BottomTick" Property="Visibility" Value="Visible"/>
+            </Trigger>
+            <Trigger Property="TickPlacement" Value="Both">
+                <Setter TargetName="TopTick" Property="Visibility" Value="Visible"/>
+                <Setter TargetName="BottomTick" Property="Visibility" Value="Visible"/>
+            </Trigger>
+        </ControlTemplate.Triggers>
+    </ControlTemplate>
+
+    <Style TargetType="{x:Type Slider}">
+        <Setter Property="SnapsToDevicePixels" Value="true"/>
+        <Setter Property="OverridesDefaultStyle" Value="true"/>
+        <Style.Triggers>
+            <Trigger Property="Orientation" Value="Horizontal">
+                <Setter Property="MinWidth" Value="104" />
+                <Setter Property="MinHeight" Value="21" />
+                <Setter Property="Template" Value="{StaticResource HorizontalSlider}" />
+            </Trigger>
+            <Trigger Property="Orientation" Value="Vertical">
+                <Setter Property="MinWidth" Value="21" />
+                <Setter Property="MinHeight" Value="104" />
+                <Setter Property="Template" Value="{StaticResource VerticalSlider}" />
+            </Trigger>
+        </Style.Triggers>
+    </Style>
+
+    <ControlTemplate x:Key="ExpanderToggleButton" TargetType="ToggleButton">
+        <Border
+          Name="Border"
+          CornerRadius="2,0,0,0"
+          Background="Transparent"
+          BorderBrush="{StaticResource NormalBorderBrush}"
+          BorderThickness="0,0,1,0">
+            <Path
+              Name="Arrow"
+              Fill="{StaticResource GlyphBrush}"
+              HorizontalAlignment="Center"
+              VerticalAlignment="Center"
+              Data="M 0 0 L 4 4 L 8 0 Z"/>
+        </Border>
+        <ControlTemplate.Triggers>
+            <Trigger Property="ToggleButton.IsMouseOver" Value="true">
+                <Setter TargetName="Border" Property="Background"
+                        Value="{StaticResource DarkBrush}" />
+            </Trigger>
+            <Trigger Property="IsPressed" Value="true">
+                <Setter TargetName="Border" Property="Background"
+                        Value="{StaticResource PressedBrush}" />
+            </Trigger>
+            <Trigger Property="IsChecked" Value="true">
+                <Setter TargetName="Arrow" Property="Data"
+                        Value="M 0 4 L 4 0 L 8 4 Z" />
+            </Trigger>
+            <Trigger Property="IsEnabled" Value="False">
+                <Setter TargetName="Border" Property="Background"
+                        Value="{StaticResource DisabledBackgroundBrush}" />
+                <Setter TargetName="Border" Property="BorderBrush"
+                        Value="{StaticResource DisabledBorderBrush}" />
+                <Setter Property="Foreground"
+                        Value="{StaticResource DisabledForegroundBrush}"/>
+                <Setter TargetName="Arrow" Property="Fill"
+                        Value="{StaticResource DisabledForegroundBrush}" />
+            </Trigger>
+        </ControlTemplate.Triggers>
+    </ControlTemplate>
+
+    <Style TargetType="Expander">
+        <Setter Property="Template">
+            <Setter.Value>
+                <ControlTemplate TargetType="Expander">
+                    <Grid>
+                        <Grid.RowDefinitions>
+                            <RowDefinition Height="Auto"/>
+                            <RowDefinition Name="ContentRow" Height="0"/>
+                        </Grid.RowDefinitions>
+                        <Border
+                          Name="Border"
+                          Grid.Row="0"
+                          Background="{StaticResource LightBrush}"
+                          BorderBrush="{StaticResource NormalBorderBrush}"
+                          BorderThickness="1"
+                          CornerRadius="2,2,0,0" >
+                            <Grid>
+                                <Grid.ColumnDefinitions>
+                                    <ColumnDefinition Width="20" />
+                                    <ColumnDefinition Width="*" />
+                                </Grid.ColumnDefinitions>
+                                <ToggleButton
+                                  IsChecked="{Binding Path=IsExpanded,Mode=TwoWay,
+                                    RelativeSource={RelativeSource TemplatedParent}}"
+                                  OverridesDefaultStyle="True"
+                                  Template="{StaticResource ExpanderToggleButton}"
+                                  Background="{StaticResource NormalBrush}" />
+                                <ContentPresenter
+                                  Grid.Column="1"
+                                  Margin="4"
+                                  ContentSource="Header"
+                                  RecognizesAccessKey="True" />
+                            </Grid>
+                        </Border>
+                        <Border
+                          Name="Content"
+                          Grid.Row="1"
+                          Background="{StaticResource WindowBackgroundBrush}"
+                          BorderBrush="{StaticResource SolidBorderBrush}"
+                          BorderThickness="1,0,1,1"
+                          CornerRadius="0,0,2,2" >
+                            <ContentPresenter Margin="4" />
+                        </Border>
+                    </Grid>
+                    <ControlTemplate.Triggers>
+                        <Trigger Property="IsExpanded" Value="True">
+                            <Setter TargetName="ContentRow" Property="Height"
+                                    Value="{Binding ElementName=Content,Path=DesiredHeight}" />
+                        </Trigger>
+                        <Trigger Property="IsEnabled" Value="False">
+                            <Setter TargetName="Border" Property="Background"
+                                    Value="{StaticResource DisabledBackgroundBrush}" />
+                            <Setter TargetName="Border" Property="BorderBrush"
+                                    Value="{StaticResource DisabledBorderBrush}" />
+                            <Setter Property="Foreground"
+                                    Value="{StaticResource DisabledForegroundBrush}"/>
+                        </Trigger>
+
+                    </ControlTemplate.Triggers>
+                </ControlTemplate>
+            </Setter.Value>
+        </Setter>
+    </Style>
+
 </ResourceDictionary>

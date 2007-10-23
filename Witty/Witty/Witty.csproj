@@ -57,6 +57,7 @@
     <Reference Include="System.IdentityModel" />
     <Page Include="LoginControl.xaml" />
     <Page Include="MainWindow.xaml" />
+    <Page Include="Options.xaml" />
     <Page Include="PeopleYouFollow.xaml" />
     <Page Include="Resources\CustomStyles.xaml" />
     <Page Include="Resources\WittyResources.xaml" />
@@ -65,6 +66,9 @@
     </Compile>
     <Compile Include="MainWindow.xaml.cs">
       <DependentUpon>MainWindow.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Options.xaml.cs">
+      <DependentUpon>Options.xaml</DependentUpon>
     </Compile>
   </ItemGroup>
   <ItemGroup>

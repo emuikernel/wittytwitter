@@ -1,0 +1,58 @@
+﻿<Window
+	xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+	xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+	xmlns:d="http://schemas.microsoft.com/expression/blend/2006" xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" mc:Ignorable="d"
+	x:Class="Witty.Options"
+	x:Name="Window"
+	Title="Options"
+	Width="325" Height="400" Background="{DynamicResource SecondaryBackgroundBrush}" xmlns:Witty="clr-namespace:Witty">
+
+	<Window.Resources>
+		<Witty:RoundConverter x:Key="RoundConverter"/>
+	</Window.Resources>
+
+	<DockPanel x:Name="LayoutRoot">
+		<Border DockPanel.Dock="Top" Padding="0,5,0,5">
+			<TextBlock Text="Witty Options" TextWrapping="Wrap" FontSize="18" FontWeight="Bold" HorizontalAlignment="Center" Margin="0,2,0,0"/>
+		</Border>
+		<Border DockPanel.Dock="Bottom" Padding="0,5,0,5">
+			<Button Content="Done" HorizontalContentAlignment="Center" VerticalContentAlignment="Center" Width="100" IsDefault="True" x:Name="DoneButton" Click="DoneButton_Click"/>
+		</Border>
+		<Border Background="#FFFFFFFF" Padding="10,0,10,0">
+			<DockPanel LastChildFill="False">
+				<Expander Header="User" IsExpanded="True" DockPanel.Dock="Top" Margin="0,20,0,0">
+					<Grid>
+						<Grid.ColumnDefinitions>
+							<ColumnDefinition Width="0.37*"/>
+							<ColumnDefinition Width="0.63*"/>
+						</Grid.ColumnDefinitions>
+						<Grid.RowDefinitions>
+							<RowDefinition Height="0.51*"/>
+							<RowDefinition Height="0.49*"/>
+						</Grid.RowDefinitions>
+						<Label Content="Username" HorizontalAlignment="Right"/>
+						<TextBox x:Name="UsernameTextBox" TextWrapping="Wrap" Grid.Column="1" Margin="5,0,20,0" IsEnabled="False"/>
+						<Label Content="Password" Grid.Row="1" HorizontalAlignment="Right"/>
+						<PasswordBox x:Name="PasswordTextBox" Grid.Column="1" Grid.Row="1" Margin="5,0,20,0" IsEnabled="False"/>
+					</Grid>
+				</Expander>
+				<Expander Header="Refresh Interval" IsExpanded="True" DockPanel.Dock="Top" Margin="0,20,0,0">
+					<Grid>
+						<Grid.ColumnDefinitions>
+							<ColumnDefinition Width="*"/>
+						</Grid.ColumnDefinitions>
+						<Grid.RowDefinitions>
+							<RowDefinition Height="0.491*"/>
+							<RowDefinition Height="0.509*"/>
+						</Grid.RowDefinitions>
+						<Label Content="Minutes between updates" d:LayoutOverrides="GridBox" HorizontalAlignment="Left" Margin="40,0,0,0"/>
+						<StackPanel Grid.Column="0" Orientation="Horizontal" Grid.Row="1" HorizontalAlignment="Left" Margin="45,0,0,0">
+							<Slider Width="200" Minimum="0" Maximum="30" SmallChange="1" LargeChange="5" TickPlacement="BottomRight" x:Name="RefreshSlider" AutoToolTipPlacement="TopLeft" TickFrequency="2"/>
+							<TextBlock Text="{Binding Path=Value, Converter={StaticResource RoundConverter}, ElementName=RefreshSlider, Mode=Default}" TextWrapping="Wrap" VerticalAlignment="Center" x:Name="SliderValueTextBlock" Width="20" Margin="5,0,0,0"/>
+						</StackPanel>
+					</Grid>
+				</Expander>
+			</DockPanel>
+		</Border>
+	</DockPanel>
+</Window>
