@@ -476,7 +476,7 @@ namespace TwitterLib
                     switch ((int)httpResponse.StatusCode)
                     {
                         case 400: // rate limit exceeded
-                            throw new RateLimitException("Rate limit exceeded. Clients may not make more than 70 requests per hour.");
+                            throw new RateLimitException("Rate limit exceeded. Clients may not make more than 70 requests per hour. Please try again in a few minutes.");
                         case 401: // unauthorized
                             return null;
                         default:
@@ -566,7 +566,7 @@ namespace TwitterLib
                         case 304:  // 304 Not modified = no new tweets so ignore error.
                             break;
                         case 400: // rate limit exceeded
-                            throw new RateLimitException("Rate limit exceeded. Clients may not make more than 70 requests per hour.");
+                            throw new RateLimitException("Rate limit exceeded. Clients may not make more than 70 requests per hour. Please try again in a few minutes.");
                         case 401: // unauthorized
                             throw new SecurityException("Not Authorized.");
                         default:
@@ -741,7 +741,7 @@ namespace TwitterLib
                         case 304:  // 304 Not modified = no new tweets so ignore error.
                             break;
                         case 400: // rate limit exceeded
-                            throw new RateLimitException("Rate limit exceeded. Clients may not make more than 70 requests per hour.");
+                            throw new RateLimitException("Rate limit exceeded. Clients may not make more than 70 requests per hour. Please try again in a few minutes.");
                         default:
                             throw webExcp;
                     }
