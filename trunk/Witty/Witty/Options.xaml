@@ -27,13 +27,15 @@
 							<ColumnDefinition Width="0.63*"/>
 						</Grid.ColumnDefinitions>
 						<Grid.RowDefinitions>
-							<RowDefinition Height="0.51*"/>
-							<RowDefinition Height="0.49*"/>
+							<RowDefinition Height="Auto"/>
+							<RowDefinition Height="Auto"/>
+							<RowDefinition Height="Auto"/>
 						</Grid.RowDefinitions>
 						<Label Content="Username" HorizontalAlignment="Right"/>
-						<TextBox x:Name="UsernameTextBox" TextWrapping="Wrap" Grid.Column="1" Margin="5,0,20,0" IsEnabled="False"/>
+						<TextBox x:Name="UsernameTextBox" TextWrapping="Wrap" Grid.Column="1" Margin="5,2,20,2" IsEnabled="False"/>
 						<Label Content="Password" Grid.Row="1" HorizontalAlignment="Right"/>
-						<PasswordBox x:Name="PasswordTextBox" Grid.Column="1" Grid.Row="1" Margin="5,0,20,0" IsEnabled="False"/>
+						<PasswordBox x:Name="PasswordTextBox" Grid.Column="1" Grid.Row="1" Margin="5,2,20,2" IsEnabled="False"/>
+						<Button HorizontalAlignment="Left" VerticalAlignment="Top" Content="Logout" Grid.Row="2" Grid.Column="1" Margin="5,5,0,5" x:Name="Logout" Click="Logout_Click"/>
 					</Grid>
 				</Expander>
 				<Expander Header="Refresh Interval" IsExpanded="True" DockPanel.Dock="Top" Margin="0,20,0,0">

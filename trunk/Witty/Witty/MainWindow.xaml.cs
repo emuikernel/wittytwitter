@@ -587,6 +587,49 @@ namespace Witty
             }
         }
 
+        private void OptionsButton_Click(object sender, RoutedEventArgs e)
+        {
+            Options options = new Options();
+
+            bool? dialogResult = options.ShowDialog();
+            switch (dialogResult)
+            {
+                case true:
+                    // User wants to save options
+
+                    // update the refresh interval
+                    int minutes = int.Parse(AppSettings.RefreshInterval);
+
+                    refreshTimer.Stop();
+                    if (minutes > 0)
+                    {
+                        refreshInterval = new TimeSpan(0, minutes, 0);
+                        refreshTimer.Interval = refreshInterval;
+                        refreshTimer.Start();
+                    }
+
+                    StatusTextBlock.Text = "Options Updated";
+
+                    break;
+                case false:
+                    // User wants to logout
+
+                    isLoggedIn = false;
+                    AppSettings.LastUpdated = string.Empty;
+
+                    tweets.Clear();
+
+                    StatusTextBlock.Text = "Login";
+
+                    PlayStoryboard("ShowLogin");
+
+                    break;
+                default:
+                    // Indeterminate, do nothing
+                    break;
+            }
+        }
+
         #endregion
 
         #region Minimize to Tray
@@ -692,36 +735,5 @@ namespace Witty
         }
 
         #endregion
-
-        private void OptionsButton_Click(object sender, RoutedEventArgs e)
-        {
-            Options options = new Options();
-
-            bool? dialogResult = options.ShowDialog();
-            switch (dialogResult)
-            {
-                case true:
-                    // User accepted dialog box
-
-                    // update the refresh interval
-                    int minutes = int.Parse(AppSettings.RefreshInterval);
-
-                    refreshTimer.Stop();
-                    if (minutes > 0)
-                    {
-                        refreshInterval = new TimeSpan(0, minutes, 0);
-                        refreshTimer.Interval = refreshInterval;
-                        refreshTimer.Start();
-                    }
-
-                    break;
-                case false:
-                    // User canceled dialog box
-                    break;
-                default:
-                    // Indeterminate
-                    break;
-            }
-        }
     }
 }
