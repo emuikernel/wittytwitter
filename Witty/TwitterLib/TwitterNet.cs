@@ -6,6 +6,7 @@ using System.IO;
 using System.Globalization;
 using System.Web;
 using System.Text.RegularExpressions;
+using System.Security;
 
 namespace TwitterLib
 {
@@ -472,11 +473,15 @@ namespace TwitterLib
                     // Get HttpWebResponse so that you can check the HTTP status code.
                     HttpWebResponse httpResponse = (HttpWebResponse)webExcp.Response;
 
-                    // Check for 401 Unauthorized. Rethrow every other WebException.
-                    if ((int)httpResponse.StatusCode == 401)
-                        return null;
-                    else
-                        throw webExcp;
+                    switch ((int)httpResponse.StatusCode)
+                    {
+                        case 400: // rate limit exceeded
+                            throw new RateLimitException("Rate limit exceeded. Clients may not make more than 70 requests per hour.");
+                        case 401: // unauthorized
+                            return null;
+                        default:
+                            throw webExcp;
+                    }
                 }
                 else
                     throw webExcp;
@@ -556,9 +561,17 @@ namespace TwitterLib
                     // Get HttpWebResponse so that you can check the HTTP status code.
                     HttpWebResponse httpResponse = (HttpWebResponse)webExcp.Response;
 
-                    // 304 Not modified = no new tweets so ignore error.  Rethrow every other WebException.
-                    if ((int)httpResponse.StatusCode != 304)
-                        throw webExcp;
+                    switch ((int)httpResponse.StatusCode)
+                    {
+                        case 304:  // 304 Not modified = no new tweets so ignore error.
+                            break;
+                        case 400: // rate limit exceeded
+                            throw new RateLimitException("Rate limit exceeded. Clients may not make more than 70 requests per hour.");
+                        case 401: // unauthorized
+                            throw new SecurityException("Not Authorized.");
+                        default:
+                            throw webExcp;
+                    }
                 }
             }
             return users;
@@ -723,9 +736,15 @@ namespace TwitterLib
                     // Get HttpWebResponse so that you can check the HTTP status code.
                     HttpWebResponse httpResponse = (HttpWebResponse)webExcp.Response;
 
-                    // 304 Not modified = no new tweets so ignore error.  Rethrow every other WebException.
-                    if ((int)httpResponse.StatusCode != 304)
-                        throw webExcp;
+                    switch ((int)httpResponse.StatusCode)
+                    {
+                        case 304:  // 304 Not modified = no new tweets so ignore error.
+                            break;
+                        case 400: // rate limit exceeded
+                            throw new RateLimitException("Rate limit exceeded. Clients may not make more than 70 requests per hour.");
+                        default:
+                            throw webExcp;
+                    }
                 }
             }
             return tweets;
