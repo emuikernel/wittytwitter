@@ -25,22 +25,30 @@ namespace Witty
         private void LoginButton_Click(object sender, RoutedEventArgs e)
         {
             TwitterNet twitterNet = new TwitterNet(UsernameTextBox.Text, PasswordTextBox.Password);
-            App.LoggedInUser = twitterNet.Login();
-            if (App.LoggedInUser != null)
+
+            try
             {
-                AppSettings.Username = UsernameTextBox.Text;
-                AppSettings.Password = PasswordTextBox.Password;
-                AppSettings.LastUpdated = string.Empty;
+                App.LoggedInUser = twitterNet.Login();
+                if (App.LoggedInUser != null)
+                {
+                    AppSettings.Username = UsernameTextBox.Text;
+                    AppSettings.Password = PasswordTextBox.Password;
+                    AppSettings.LastUpdated = string.Empty;
 
-                AppSettings.Save();
+                    AppSettings.Save();
 
-                UsernameTextBox.Text = string.Empty;
-                PasswordTextBox.Password = string.Empty;
+                    UsernameTextBox.Text = string.Empty;
+                    PasswordTextBox.Password = string.Empty;
 
-                RaiseEvent(new RoutedEventArgs(LoginEvent));
+                    RaiseEvent(new RoutedEventArgs(LoginEvent));
+                }
+                else
+                    MessageBox.Show("Incorrect username or password. Please try again");
             }
-            else
-                MessageBox.Show("Incorrect username or password. Please try again");
+            catch(RateLimitException ex)
+            {
+                MessageBox.Show(ex.Message);
+            }
         }
 
         public static readonly RoutedEvent LoginEvent =

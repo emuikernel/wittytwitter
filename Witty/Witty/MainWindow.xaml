@@ -131,7 +131,7 @@
 		<Border DockPanel.Dock="Top" Height="30" Padding="10,0,10,0" Background="{DynamicResource PrimaryBackgroundBrush}" x:Name="Header">
 			<Border.ContextMenu>
 				<ContextMenu>
-					<MenuItem x:Name="AlwaysOnTopMenuItem" Header="Always on Top" IsCheckable="True" IsChecked="{Binding Path=Topmost, ElementName=Window, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" />
+					<MenuItem x:Name="AlwaysOnTopMenuItem" Header="Always on Top" IsCheckable="True" Click="AlwaysOnTop_Click" IsChecked="{Binding Path=Topmost, ElementName=Window, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" />
 				</ContextMenu>
 			</Border.ContextMenu>
 			<DockPanel LastChildFill="False">
