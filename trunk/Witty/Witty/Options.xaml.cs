@@ -39,6 +39,8 @@ namespace Witty
         {
             AppSettings.Username = string.Empty;
             AppSettings.Password = string.Empty;
+            AppSettings.LastUpdated = string.Empty;
+
             AppSettings.Save();
 
             DialogResult = false;

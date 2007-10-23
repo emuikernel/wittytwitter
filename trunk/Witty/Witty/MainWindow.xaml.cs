@@ -612,21 +612,19 @@ namespace Witty
 
                     break;
                 case false:
-                    // User wants to logout
-
-                    isLoggedIn = false;
-                    AppSettings.LastUpdated = string.Empty;
-
-                    tweets.Clear();
-
-                    StatusTextBlock.Text = "Login";
-
-                    PlayStoryboard("ShowLogin");
-
                     break;
                 default:
                     // Indeterminate, do nothing
                     break;
+            }
+            if (string.IsNullOrEmpty(AppSettings.Username))
+            {
+                // User wants to logout
+                isLoggedIn = false;
+                tweets.Clear();
+                StatusTextBlock.Text = "Login";
+
+                PlayStoryboard("ShowLogin");
             }
         }
 
