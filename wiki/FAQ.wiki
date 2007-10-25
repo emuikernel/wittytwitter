@@ -13,4 +13,4 @@ Witty was developed using [http://msdn2.microsoft.com/en-us/vstudio/default.aspx
 
 ==#3 How often does the recent timeline refresh?==
 
-Currently the refresh interval is set to 2 minutes. There are plans to make this configurable in a future release.
+Currently the refresh interval is set to 2 minutes. Witty v0.1.5 will allow this value to be configurable.
