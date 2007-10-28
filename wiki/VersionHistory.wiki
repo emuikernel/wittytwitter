@@ -8,7 +8,13 @@
    # option for refresh interval
    # option for always on top
    # option for playing sounds
+   # option for skins
   * Audio notifications
+  * Skinning support
+   # Aero Skin
+   # CoolBlue Skin
+  * Bug Fixes
+   # Username is focused by default on the login screen
 
 = v0.1.4=
   * Hyperlinks are now formatted as hyperlinks
