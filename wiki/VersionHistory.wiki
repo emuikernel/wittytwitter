@@ -9,7 +9,7 @@
    # option for always on top
    # option for playing sounds
    # option for skins
-  * Audio notifications
+  * Audio notification for new tweets
   * Skinning support
    # Aero Skin
    # CoolBlue Skin
