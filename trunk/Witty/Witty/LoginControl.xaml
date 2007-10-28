@@ -12,9 +12,9 @@
 		<StackPanel Width="150" VerticalAlignment="Center">
 			<Label Content="Username:"/>
 			<TextBox HorizontalAlignment="Stretch" Margin="5,0,0,0" x:Name="UsernameTextBox" TextWrapping="Wrap"/>
-			<Label Content="Password:" d:LayoutOverrides="Height"/>
-			<PasswordBox d:LayoutOverrides="Height" HorizontalAlignment="Stretch" Margin="5,0,0,0" x:Name="PasswordTextBox" Width="Auto"/>
-			<Button d:LayoutOverrides="Height" HorizontalAlignment="Stretch" Margin="10,15,10,0" x:Name="LoginButton" Content="Login" IsDefault="True" Click="LoginButton_Click"/>
+			<Label Content="Password:"/>
+			<PasswordBox HorizontalAlignment="Stretch" Margin="5,0,0,0" x:Name="PasswordTextBox" Width="Auto"/>
+			<Button HorizontalAlignment="Stretch" Margin="10,15,10,0" x:Name="LoginButton" Content="Login" IsDefault="True" Click="LoginButton_Click"/>
 		</StackPanel>
 	</Border>
 </UserControl>
