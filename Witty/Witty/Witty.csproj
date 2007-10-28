@@ -60,8 +60,6 @@
     <Page Include="MainWindow.xaml" />
     <Page Include="Options.xaml" />
     <Page Include="PeopleYouFollow.xaml" />
-    <Page Include="Resources\CustomStyles.xaml" />
-    <Page Include="Resources\WittyResources.xaml" />
     <Page Include="Skins\Aero.xaml">
     </Page>
     <Page Include="Skins\CoolBlue.xaml">
