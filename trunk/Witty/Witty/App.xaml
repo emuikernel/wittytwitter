@@ -6,8 +6,7 @@
     <Application.Resources>         
     	<ResourceDictionary>
 			<ResourceDictionary.MergedDictionaries>
-				<ResourceDictionary Source="Resources\WittyResources.xaml"/>
-				<ResourceDictionary Source="Resources\CustomStyles.xaml"/>
+				<ResourceDictionary Source="Skins\Aero.xaml"/>
 			</ResourceDictionary.MergedDictionaries>
 		</ResourceDictionary>         
     </Application.Resources>

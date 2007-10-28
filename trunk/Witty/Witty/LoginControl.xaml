@@ -6,9 +6,9 @@
     mc:Ignorable="d"
 	x:Class="Witty.LoginControl"
 	x:Name="UserControl"
-    Width="225" Height="270">
+    Width="225" Height="270" Loaded="UserControl_Loaded">
 
-	<Border x:Name="LayoutRoot" CornerRadius="5,5,5,5" BorderBrush="{DynamicResource PrimaryBorderBrush}" BorderThickness="1,0,1,1" Background="{DynamicResource NormalBrush}">
+	<Border x:Name="LayoutRoot" CornerRadius="5,5,5,5" BorderBrush="{DynamicResource PrimaryBorderBrush}" BorderThickness="1,0,1,1" Background="{DynamicResource LoginBackgroundBrush}">
 		<StackPanel Width="150" VerticalAlignment="Center">
 			<Label Content="Username:"/>
 			<TextBox HorizontalAlignment="Stretch" Margin="5,0,0,0" x:Name="UsernameTextBox" TextWrapping="Wrap"/>

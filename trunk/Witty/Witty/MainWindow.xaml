@@ -112,11 +112,6 @@
             </DoubleAnimationUsingKeyFrames>
         </Storyboard>
         <Witty:CharRemainingValueConverter x:Key="CharRemainingConverter"/>
-    	<Storyboard x:Key="HideLogin2">
-    		<BooleanAnimationUsingKeyFrames BeginTime="00:00:00" Duration="00:00:00.0010000" Storyboard.TargetName="RefreshButton" Storyboard.TargetProperty="(UIElement.IsEnabled)">
-    			<DiscreteBooleanKeyFrame KeyTime="00:00:00" Value="True"/>
-    		</BooleanAnimationUsingKeyFrames>
-    	</Storyboard>
     </Window.Resources>
     <Window.Triggers>
         <EventTrigger RoutedEvent="Mouse.MouseEnter" SourceName="Update">
@@ -127,8 +122,8 @@
         </EventTrigger>
     </Window.Triggers>
 
-	<DockPanel x:Name="LayoutRoot" Background="{DynamicResource SecondaryBackgroundBrush}">
-		<Border DockPanel.Dock="Top" Height="30" Padding="10,0,10,0" Background="{DynamicResource PrimaryBackgroundBrush}" x:Name="Header">
+	<DockPanel x:Name="LayoutRoot">
+		<Border DockPanel.Dock="Top" Height="35" Padding="10,0,10,0" x:Name="Header" Background="{DynamicResource PrimaryBackgroundBrush}">
 			<Border.ContextMenu>
 				<ContextMenu>
 					<MenuItem x:Name="AlwaysOnTopMenuItem" Header="Always on Top" IsCheckable="True" Click="AlwaysOnTop_Click" IsChecked="{Binding Path=Topmost, ElementName=Window, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" />
@@ -136,12 +131,12 @@
 			</Border.ContextMenu>
 			<DockPanel LastChildFill="False">
 				<TextBlock Text="Witty" VerticalAlignment="Center" HorizontalAlignment="Center" FontSize="18" FontWeight="Bold" Foreground="{DynamicResource HeaderForegroundBrush}"/>
-				<Button Content="Refresh" Height="20" x:Name="RefreshButton" Click="RefreshButton_Click" IsEnabled="False" MinWidth="25" MinHeight="20" FontSize="9" DockPanel.Dock="Right"/>
-				<Button Content="Options" Height="20" x:Name="OptionsButton" Click="OptionsButton_Click" MinWidth="25" MinHeight="20" FontSize="9" DockPanel.Dock="Right" Margin="0,0,10,0" IsEnabled="False"/>
-				<Rectangle Fill="#FF52626F" Width="15" Height="15" DockPanel.Dock="Right" x:Name="Friends" MouseLeftButtonUp="Friends_MouseLeftButtonUp" Margin="0,0,10,0"/>
+				<Button Content="Refresh" Height="20" x:Name="RefreshButton" Click="RefreshButton_Click" IsEnabled="False" MinWidth="25" MinHeight="20" FontSize="9" DockPanel.Dock="Right" Width="50"/>
+				<Button Content="Options" Height="20" x:Name="OptionsButton" Click="OptionsButton_Click" MinWidth="25" MinHeight="20" FontSize="9" DockPanel.Dock="Right" Margin="0,0,10,0" IsEnabled="False" Width="50"/>
+				<Rectangle Fill="#FF52626F" Width="15" Height="15" DockPanel.Dock="Right" x:Name="Friends" MouseLeftButtonUp="Friends_MouseLeftButtonUp" Margin="0,0,10,0" Visibility="Collapsed"/>
 			</DockPanel>
 		</Border>
-		<Border DockPanel.Dock="Bottom" Padding="5,2,5,2" Background="{DynamicResource PrimaryBackgroundBrush}" x:Name="StatusBar">
+		<Border DockPanel.Dock="Bottom" Padding="5,2,5,2" Background="{DynamicResource StatusBackgroundBrush}" x:Name="StatusBar">
 			<TextBlock x:Name="StatusTextBlock" TextWrapping="NoWrap" Foreground="#FFE4E4E4" Text="Login" TextTrimming="CharacterEllipsis" />
 		</Border>
 		<Grid x:Name="Content">

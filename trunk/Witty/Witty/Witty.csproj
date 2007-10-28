@@ -62,6 +62,13 @@
     <Page Include="PeopleYouFollow.xaml" />
     <Page Include="Resources\CustomStyles.xaml" />
     <Page Include="Resources\WittyResources.xaml" />
+    <Page Include="Skins\Aero.xaml">
+    </Page>
+    <Page Include="Skins\CoolBlue.xaml">
+    </Page>
+    <Page Include="StylesTest\ButtonStyles.xaml" />
+    <Page Include="StylesTest\Colors.xaml" />
+    <Page Include="StylesTest\Tabs.xaml" />
     <Compile Include="LoginControl.xaml.cs">
       <DependentUpon>LoginControl.xaml</DependentUpon>
     </Compile>
@@ -70,6 +77,12 @@
     </Compile>
     <Compile Include="Options.xaml.cs">
       <DependentUpon>Options.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="StylesTest\Colors.xaml.cs">
+      <DependentUpon>Colors.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="StylesTest\Tabs.xaml.cs">
+      <DependentUpon>Tabs.xaml</DependentUpon>
     </Compile>
   </ItemGroup>
   <ItemGroup>
@@ -103,6 +116,10 @@
       <DependentUpon>Settings.settings</DependentUpon>
     </Compile>
     <Compile Include="SingleInstanceManager.cs" />
+    <Compile Include="StylesTest\ButtonStyles.xaml.cs">
+      <SubType>Code</SubType>
+      <DependentUpon>ButtonStyles.xaml</DependentUpon>
+    </Compile>
     <Compile Include="TweetTextBlock.cs" />
     <Compile Include="ValueConverters.cs" />
     <Compile Include="WindowSettings.cs" />
@@ -132,6 +149,7 @@
   <Import Project="$(MSBuildBinPath)\Microsoft.CSharp.targets" />
   <Import Project="$(MSBuildBinPath)\Microsoft.WinFX.targets" />
   <PropertyGroup>
-    <PreBuildEvent>xcopy ..\..\AppIcon.ico .\ /y</PreBuildEvent>
+    <PreBuildEvent>xcopy ..\..\AppIcon.ico .\ /y
+xcopy ..\..\Skins .\Skins /y /s /i</PreBuildEvent>
   </PropertyGroup>
 </Project>
