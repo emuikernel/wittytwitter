@@ -15,6 +15,8 @@ namespace Witty
         // Settings used by the application
         private Properties.Settings AppSettings = Properties.Settings.Default;
 
+        private bool isSettingSkin = false;
+
 		public Options()
 		{
 			this.InitializeComponent();
@@ -32,6 +34,15 @@ namespace Witty
                 RefreshSlider.Value = Double.Parse(AppSettings.RefreshInterval);
 
             PlaySounds = AppSettings.PlaySounds;
+            
+            isSettingSkin = true;
+            SkinsComboBox.ItemsSource = App.Skins;
+
+            // select the current skin
+            if (AppSettings.SkinIndex >= 0)
+                SkinsComboBox.SelectedIndex = AppSettings.SkinIndex;
+
+            isSettingSkin = false;
 		}
 
         public bool PlaySounds
@@ -70,5 +81,21 @@ namespace Witty
             DialogResult = false;
             this.Close();
         }
+
+        private void SkinsComboBox_SelectionChanged(object sender, SelectionChangedEventArgs e)
+        {
+            if (!isSettingSkin)
+            {
+                string skin = App.Skins[((ComboBox)sender).SelectedIndex];
+                ResourceDictionary rd;
+                rd = Application.LoadComponent(new Uri(skin, UriKind.Relative)) as ResourceDictionary;
+                Application.Current.Resources = rd;
+
+                // save the skin setting
+                AppSettings.Skin = skin;
+                AppSettings.SkinIndex = ((ComboBox)sender).SelectedIndex;
+                AppSettings.Save();
+            }
+        } 
 	}
 }

@@ -33,16 +33,23 @@ namespace Witty
             ListBoxItem item = (ListBoxItem)value;
             ListBox listbox = ItemsControl.ItemsControlFromItemContainer(item) as ListBox;
 
-            // Get the index of a ListBoxItem
-            int index = listbox.ItemContainerGenerator.IndexFromContainer(item);
+            try
+            {
+                // Get the index of a ListBoxItem
+                int index = listbox.ItemContainerGenerator.IndexFromContainer(item);
 
-            if (index % 2 == 0)
+                if (index % 2 == 0)
+                {
+                    return Brushes.White;
+                }
+                else
+                {
+                    return "#EAEDF1";
+                }
+            }
+            catch
             {
                 return Brushes.White;
-            }
-            else
-            {
-                return "#EAEDF1";
             }
         }
 

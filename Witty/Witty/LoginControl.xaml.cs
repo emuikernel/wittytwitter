@@ -19,7 +19,6 @@ namespace Witty
 		{
 			this.InitializeComponent();
 
-            UsernameTextBox.Focus();
         }
 
         private void LoginButton_Click(object sender, RoutedEventArgs e)
@@ -58,6 +57,12 @@ namespace Witty
         {
             add { AddHandler(LoginEvent, value); }
             remove { RemoveHandler(LoginEvent, value); }
+        }
+
+        private void UserControl_Loaded(object sender, RoutedEventArgs e)
+        {
+            // Set Username textbox as default focus
+            UsernameTextBox.Focus();
         }
 	}
 }
