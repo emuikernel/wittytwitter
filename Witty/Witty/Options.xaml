@@ -6,7 +6,7 @@
 	x:Class="Witty.Options"
 	x:Name="Window"
 	Title="Options"
-	Width="325" Height="440" Background="{DynamicResource SecondaryBackgroundBrush}" >
+	Width="325" Height="440" >
 
 	<Window.Resources>
 		<Witty:RoundConverter x:Key="RoundConverter"/>
