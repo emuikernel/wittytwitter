@@ -1,7 +1,7 @@
 #summary Version History and Release Notes
 #labels Featured
 
-= v0.1.5 Alpha (in development)=
+= v0.1.5 Beta(QA testing)=
 
   * Configurable Options
    # option to logout
