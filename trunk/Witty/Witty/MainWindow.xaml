@@ -173,18 +173,18 @@
 									<GradientStop Color="#FFFFFFFF" Offset="1"/>
 								</LinearGradientBrush>
 							</Border.Background>
-							<Grid Height="120">
+							<Grid>
 								<Grid.ColumnDefinitions>
 									<ColumnDefinition Width="80"/>
 									<ColumnDefinition Width="*"/>
 								</Grid.ColumnDefinitions>
-								<StackPanel VerticalAlignment="Center" HorizontalAlignment="Center" RenderTransformOrigin="0.5,0.5">
+								<StackPanel VerticalAlignment="Top" HorizontalAlignment="Center" RenderTransformOrigin="0.5,0.5" Margin="0,12,0,0">
 									<StackPanel.RenderTransform>
 										<TransformGroup>
 											<ScaleTransform ScaleX="1" ScaleY="1"/>
 											<SkewTransform AngleX="0" AngleY="5"/>
 											<RotateTransform Angle="0"/>
-											<TranslateTransform X="0" Y="12"/>
+											<TranslateTransform X="0"/>
 										</TransformGroup>
 									</StackPanel.RenderTransform>
 									<Border BorderBrush="{DynamicResource ImageBorderBrush}" BorderThickness="2" Width="52" Height="52" x:Name="border">
@@ -201,13 +201,13 @@
 										</Rectangle.RenderTransform>
 										<Rectangle.OpacityMask>
 											<LinearGradientBrush EndPoint="0.499,0.595" StartPoint="0.5,1.058">
-												<GradientStop Color="#BF000000" Offset="0"/>
+												<GradientStop Color="#7F000000" Offset="0.01"/>
 												<GradientStop Color="#00000000" Offset="1"/>
 											</LinearGradientBrush>
 										</Rectangle.OpacityMask>
 									</Rectangle>
 								</StackPanel>
-								<Grid Grid.Column="1" Margin="0,15,0,0">
+								<Grid Grid.Column="1" Margin="0,10,0,0">
 
 									<Grid.RowDefinitions>
 										<RowDefinition Height="Auto"/>
@@ -216,7 +216,7 @@
 									<TextBlock Text="{Binding Path=User.FullName, FallbackValue=Full Name}" FontWeight="Bold" FontSize="16" x:Name="FullName" Cursor="Hand" MouseLeftButtonUp="ScreenName_MouseLeftButtonUp" Tag="{Binding Path=User.TwitterUrl, Mode=Default}" TextWrapping="NoWrap" TextTrimming="CharacterEllipsis" ToolTip="{Binding Path=User.TwitterUrl, Mode=Default}" d:LayoutOverrides="Width, Height"/>
 									<DockPanel Grid.Row="1">
 										<TextBlock x:Name="Description" Text="{Binding Path=User.Description, Mode=Default, FallbackValue=Description}" TextWrapping="Wrap" FontStyle="Italic" DockPanel.Dock="Top"/>
-										<TextBlock x:Name="SiteUrl" Text="{Binding Path=User.SiteUrl, Mode=Default, FallbackValue=Site Url}" TextWrapping="NoWrap" MouseLeftButtonUp="SiteUrl_MouseLeftButtonUp" Cursor="Hand" TextTrimming="CharacterEllipsis" DockPanel.Dock="Top" ToolTip="{Binding Path=User.SiteUrl, Mode=Default}" TextDecorations="Underline" Foreground="#FF0000FF"><Hyperlink NavigateUri="{Binding Path=User.SiteUrl, Mode=Default, FallbackValue=Site Url}"/></TextBlock>
+										<TextBlock x:Name="SiteUrl" Text="{Binding Path=User.SiteUrl, Mode=Default, FallbackValue=Site Url}" TextWrapping="NoWrap" MouseLeftButtonUp="Url_MouseLeftButtonUp" Cursor="Hand" TextTrimming="CharacterEllipsis" DockPanel.Dock="Top" ToolTip="{Binding Path=User.SiteUrl, Mode=Default}" TextDecorations="Underline" Foreground="#FF0000FF"><Hyperlink NavigateUri="{Binding Path=User.SiteUrl, Mode=Default, FallbackValue=Site Url}"/></TextBlock>
 										<TextBlock x:Name="Location" Text="{Binding Path=User.Location, Mode=Default, FallbackValue=Location}" TextWrapping="NoWrap" TextTrimming="CharacterEllipsis" />
 									</DockPanel>
 								</Grid>

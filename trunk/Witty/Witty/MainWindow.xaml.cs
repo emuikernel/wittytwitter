@@ -565,7 +565,7 @@ namespace Witty
                 this.Topmost = false;
         }
 
-        private void SiteUrl_MouseLeftButtonUp(object sender, System.Windows.Input.MouseButtonEventArgs e)
+        private void Url_MouseLeftButtonUp(object sender, System.Windows.Input.MouseButtonEventArgs e)
         {
             TextBlock textBlock = (TextBlock)sender;
             try
