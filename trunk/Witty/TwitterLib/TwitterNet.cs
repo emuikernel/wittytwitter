@@ -458,6 +458,10 @@ namespace TwitterLib
                         user.LinkColor = userNode.SelectSingleNode("profile_link_color").InnerText;
                         user.SidebarBorderColor = userNode.SelectSingleNode("profile_sidebar_border_color").InnerText;
                         user.SidebarFillColor = userNode.SelectSingleNode("profile_sidebar_fill_color").InnerText;
+                        user.FollowingCount = int.Parse(userNode.SelectSingleNode("friends_count").InnerText);
+                        user.FavoritesCount = int.Parse(userNode.SelectSingleNode("favourites_count").InnerText);
+                        user.StatusesCount = int.Parse(userNode.SelectSingleNode("statuses_count").InnerText);
+                        user.FollowersCount = int.Parse(userNode.SelectSingleNode("followers_count").InnerText);
                     }
                 }
             }
@@ -716,6 +720,7 @@ namespace TwitterLib
                         user.SiteUrl = userNode.SelectSingleNode("url").InnerText;
                         user.Location = userNode.SelectSingleNode("location").InnerText;
                         user.Description = userNode.SelectSingleNode("description").InnerText;
+
                         tweet.User = user;
 
                         tweets.Add(tweet);

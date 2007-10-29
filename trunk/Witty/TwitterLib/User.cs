@@ -122,6 +122,38 @@ namespace TwitterLib
             get { return tweet; }
             set { tweet = value; }
         }
+
+        private int followingCount;
+
+        public int FollowingCount
+        {
+            get { return followingCount; }
+            set { followingCount = value; }
+        }
+
+        private int followersCount;
+
+        public int FollowersCount
+        {
+            get { return followersCount; }
+            set { followersCount = value; }
+        }
+
+        private int statusesCount;
+
+        public int StatusesCount
+        {
+            get { return statusesCount; }
+            set { statusesCount = value; }
+        }
+
+        private int favoritesCount;
+
+        public int FavoritesCount
+        {
+            get { return favoritesCount; }
+            set { favoritesCount = value; }
+        }
     }
 
     [Serializable]

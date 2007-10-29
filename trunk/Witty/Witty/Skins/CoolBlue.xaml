@@ -116,7 +116,7 @@
                 </ColorAnimationUsingKeyFrames>
             </Storyboard>
         </DataTemplate.Resources>
-        <Grid x:Name="grid" Background="#01FFFFFF" Margin="5,3,5,5">
+        <Grid x:Name="grid" Background="#01FFFFFF" Margin="7,7,7,8">
             <Grid.RowDefinitions>
                 <RowDefinition Height="Auto"/>
                 <RowDefinition Height="*"/>
@@ -137,7 +137,6 @@
             </DataTrigger>
         </DataTemplate.Triggers>
     </DataTemplate>
-
 
     <!-- Fill Brushes -->
 
