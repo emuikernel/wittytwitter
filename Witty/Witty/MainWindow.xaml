@@ -112,6 +112,7 @@
             </DoubleAnimationUsingKeyFrames>
         </Storyboard>
         <Witty:CharRemainingValueConverter x:Key="CharRemainingConverter"/>
+    	<VisualBrush x:Key="ImageVisualBrush" Visual="{Binding ElementName=border}"/>
     </Window.Resources>
     <Window.Triggers>
         <EventTrigger RoutedEvent="Mouse.MouseEnter" SourceName="Update">
@@ -165,40 +166,67 @@
 				</TabItem>
 				<TabItem x:Name="UserTab" Header="User">
 					<DockPanel>
-						<Border DockPanel.Dock="Top" BorderThickness="0,0,0,2" BorderBrush="{DynamicResource SolidBorderBrush}" Padding="5,5,5,20">
+						<Border DockPanel.Dock="Top" BorderBrush="{DynamicResource SolidBorderBrush}" BorderThickness="0,0,0,1">
 							<Border.Background>
-								<LinearGradientBrush EndPoint="0.5,0.899" StartPoint="0.5,0.013">
-									<GradientStop Color="#FF828282" Offset="0"/>
+								<LinearGradientBrush EndPoint="0.5,1.01" StartPoint="0.5,-0.01">
+									<GradientStop Color="#FFD0DBE7" Offset="0"/>
 									<GradientStop Color="#FFFFFFFF" Offset="1"/>
 								</LinearGradientBrush>
 							</Border.Background>
-							<Grid>
+							<Grid Height="120">
 								<Grid.ColumnDefinitions>
+									<ColumnDefinition Width="80"/>
 									<ColumnDefinition Width="*"/>
-									<ColumnDefinition Width="Auto"/>
 								</Grid.ColumnDefinitions>
-								<Grid.RowDefinitions>
-									<RowDefinition Height="Auto"/>
-									<RowDefinition Height="*"/>
-								</Grid.RowDefinitions>
-								<Border Width="50" Height="50" Grid.RowSpan="2" BorderBrush="{DynamicResource ImageBorderBrush}" BorderThickness="2" VerticalAlignment="Top" Margin="5,5,5,5" Grid.Column="1">
-									<Image Width="48" Height="48" Source="{Binding Path=User.ImageUrl}" x:Name="UserImage"/>
-								</Border>
-								<DockPanel Grid.Row="0" Grid.Column="0" VerticalAlignment="Top" >
-									<TextBlock Text="{Binding Path=User.FullName, FallbackValue=Full Name}" FontWeight="Bold" FontSize="16" VerticalAlignment="Bottom" HorizontalAlignment="Left" x:Name="FullName" Cursor="Hand" MouseLeftButtonUp="ScreenName_MouseLeftButtonUp" Tag="{Binding Path=User.TwitterUrl, Mode=Default}" TextWrapping="NoWrap" TextTrimming="CharacterEllipsis" ToolTip="{Binding Path=User.TwitterUrl, Mode=Default}"/>
-								</DockPanel>
-								<DockPanel Grid.Column="0" Grid.Row="1">
-									<TextBlock x:Name="Description" Text="{Binding Path=User.Description, Mode=Default, FallbackValue=Description}" TextWrapping="Wrap" FontStyle="Italic" DockPanel.Dock="Top"/>
-									<TextBlock x:Name="SiteUrl" Text="{Binding Path=User.SiteUrl, Mode=Default, FallbackValue=Site Url}" TextWrapping="NoWrap" MouseLeftButtonUp="SiteUrl_MouseLeftButtonUp" Cursor="Hand" TextTrimming="CharacterEllipsis" DockPanel.Dock="Top" ToolTip="{Binding Path=User.SiteUrl, Mode=Default}" TextDecorations="Underline" Foreground="#FF0000FF"><Hyperlink NavigateUri="{Binding Path=User.SiteUrl, Mode=Default, FallbackValue=Site Url}"/></TextBlock>
-									<TextBlock x:Name="Location" Text="{Binding Path=User.Location, Mode=Default, FallbackValue=Location}" TextWrapping="NoWrap" TextTrimming="CharacterEllipsis" DockPanel.Dock="Top"/>
-								</DockPanel>
+								<StackPanel VerticalAlignment="Center" HorizontalAlignment="Center" RenderTransformOrigin="0.5,0.5">
+									<StackPanel.RenderTransform>
+										<TransformGroup>
+											<ScaleTransform ScaleX="1" ScaleY="1"/>
+											<SkewTransform AngleX="0" AngleY="5"/>
+											<RotateTransform Angle="0"/>
+											<TranslateTransform X="0" Y="12"/>
+										</TransformGroup>
+									</StackPanel.RenderTransform>
+									<Border BorderBrush="{DynamicResource ImageBorderBrush}" BorderThickness="2" Width="52" Height="52" x:Name="border">
+										<Image Width="48" Height="48" Source="{Binding Path=User.ImageUrl}" x:Name="UserImage"/>
+									</Border>
+									<Rectangle Fill="{DynamicResource ImageVisualBrush}" Stroke="#FF000000" Width="52" RenderTransformOrigin="0.5,0.5" Stretch="UniformToFill" Height="52">
+										<Rectangle.RenderTransform>
+											<TransformGroup>
+												<ScaleTransform ScaleX="1" ScaleY="-1"/>
+												<SkewTransform AngleX="0" AngleY="0"/>
+												<RotateTransform Angle="0"/>
+												<TranslateTransform X="0" Y="0"/>
+											</TransformGroup>
+										</Rectangle.RenderTransform>
+										<Rectangle.OpacityMask>
+											<LinearGradientBrush EndPoint="0.499,0.595" StartPoint="0.5,1.058">
+												<GradientStop Color="#BF000000" Offset="0"/>
+												<GradientStop Color="#00000000" Offset="1"/>
+											</LinearGradientBrush>
+										</Rectangle.OpacityMask>
+									</Rectangle>
+								</StackPanel>
+								<Grid Grid.Column="1" Margin="0,15,0,0">
+
+									<Grid.RowDefinitions>
+										<RowDefinition Height="Auto"/>
+										<RowDefinition Height="*"/>
+									</Grid.RowDefinitions>
+									<TextBlock Text="{Binding Path=User.FullName, FallbackValue=Full Name}" FontWeight="Bold" FontSize="16" x:Name="FullName" Cursor="Hand" MouseLeftButtonUp="ScreenName_MouseLeftButtonUp" Tag="{Binding Path=User.TwitterUrl, Mode=Default}" TextWrapping="NoWrap" TextTrimming="CharacterEllipsis" ToolTip="{Binding Path=User.TwitterUrl, Mode=Default}" d:LayoutOverrides="Width, Height"/>
+									<DockPanel Grid.Row="1">
+										<TextBlock x:Name="Description" Text="{Binding Path=User.Description, Mode=Default, FallbackValue=Description}" TextWrapping="Wrap" FontStyle="Italic" DockPanel.Dock="Top"/>
+										<TextBlock x:Name="SiteUrl" Text="{Binding Path=User.SiteUrl, Mode=Default, FallbackValue=Site Url}" TextWrapping="NoWrap" MouseLeftButtonUp="SiteUrl_MouseLeftButtonUp" Cursor="Hand" TextTrimming="CharacterEllipsis" DockPanel.Dock="Top" ToolTip="{Binding Path=User.SiteUrl, Mode=Default}" TextDecorations="Underline" Foreground="#FF0000FF"><Hyperlink NavigateUri="{Binding Path=User.SiteUrl, Mode=Default, FallbackValue=Site Url}"/></TextBlock>
+										<TextBlock x:Name="Location" Text="{Binding Path=User.Location, Mode=Default, FallbackValue=Location}" TextWrapping="NoWrap" TextTrimming="CharacterEllipsis" />
+									</DockPanel>
+								</Grid>
 							</Grid>
 						</Border>
 						<ListBox x:Name="UserTimelineListBox" ItemsSource="{Binding Mode=OneWay}" ScrollViewer.CanContentScroll="False" IsSynchronizedWithCurrentItem="True" ItemTemplate="{DynamicResource UserTimeLineTemplate}" ScrollViewer.HorizontalScrollBarVisibility="Disabled" MouseLeftButtonUp="TweetsListBox_MouseLeftButtonUp" BorderThickness="0,0,0,0" DockPanel.Dock="Bottom" />
 					</DockPanel>
 				</TabItem>
 			</TabControl>
-			<Witty:LoginControl HorizontalAlignment="Center" VerticalAlignment="Center" x:Name="LoginControl" Login="LoginControl_Login" Visibility="Visible">
+			<Witty:LoginControl HorizontalAlignment="Center" VerticalAlignment="Center" x:Name="LoginControl" Login="LoginControl_Login" Visibility="Visible" d:IsHidden="True">
 				<Witty:LoginControl.BitmapEffect>
 					<OuterGlowBitmapEffect GlowColor="#FF000000" Opacity="0.75"/>
 				</Witty:LoginControl.BitmapEffect>
