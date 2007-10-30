@@ -84,9 +84,10 @@ namespace Witty
 
         private void SkinsComboBox_SelectionChanged(object sender, SelectionChangedEventArgs e)
         {
-            if (!isSettingSkin)
+            ComboBox skinsComboBox = (ComboBox)sender;
+            if (!isSettingSkin && skinsComboBox.SelectedIndex >= 0)
             {
-                string skin = App.Skins[((ComboBox)sender).SelectedIndex];
+                string skin = App.Skins[skinsComboBox.SelectedIndex];
                 ResourceDictionary rd;
                 rd = Application.LoadComponent(new Uri(skin, UriKind.Relative)) as ResourceDictionary;
                 Application.Current.Resources = rd;
