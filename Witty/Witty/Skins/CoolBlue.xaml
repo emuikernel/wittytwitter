@@ -82,7 +82,7 @@
                 <RowDefinition Height="*"/>
             </Grid.RowDefinitions>
             <Border Width="50" Height="50" Grid.RowSpan="2" BorderBrush="{DynamicResource ImageBorderBrush}" BorderThickness="2" HorizontalAlignment="Left" VerticalAlignment="Top" Margin="5,5,0,0">
-                <Image Width="48" Height="48" Source="{Binding Path=User.ImageUrl}" x:Name="UserImage"/>
+                <Image Width="48" Height="48" Source="{Binding Path=Sender.ImageUrl}" x:Name="UserImage"/>
             </Border>
             <DockPanel Grid.Row="0" Grid.Column="1" VerticalAlignment="Top" >
                 <TextBlock Text="{Binding Path=Sender.ScreenName, FallbackValue=Screen Name}" FontWeight="Bold" FontSize="16" VerticalAlignment="Bottom" HorizontalAlignment="Left" x:Name="ScreenName" Cursor="Hand" ToolTip="View this user's recent tweets"/>
