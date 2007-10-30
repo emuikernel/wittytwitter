@@ -9,7 +9,7 @@
 	x:Class="Witty.MainWindow"
 	x:Name="Window"
 	Title="Witty 0.1.5"
-	Width="325" Height="570" 
+	Width="330" Height="570" 
     MinWidth="200" MinHeight="200"
     WindowStyle="SingleBorderWindow"
     Icon="AppIcon.ico"
@@ -142,7 +142,7 @@
 		</Border>
 		<Grid x:Name="Content">
 			<TabControl x:Name="Tabs" IsSynchronizedWithCurrentItem="True" DockPanel.Dock="Top" SelectionChanged="Tabs_SelectionChanged">
-				<TabItem Header="Recent">
+				<TabItem Header="Recent" Padding="2,1,2,1">
 					<Grid x:Name="Recent">
 						<ListBox x:Name="TweetsListBox" ScrollViewer.CanContentScroll="False" IsSynchronizedWithCurrentItem="True" ItemTemplate="{DynamicResource TweetsTemplate}" ItemsSource="{Binding Mode=OneWay}" ScrollViewer.HorizontalScrollBarVisibility="Disabled" Margin="0,0,0,20" MouseLeftButtonUp="TweetsListBox_MouseLeftButtonUp" BorderThickness="0,0,0,0" />
 						<Border Height="21" Background="#FFA8B9C6" VerticalAlignment="Bottom" Padding="10,0,10,0" x:Name="Update" MouseLeftButtonUp="Update_MouseLeftButtonUp" BorderBrush="{DynamicResource PrimaryBackgroundBrush}" BorderThickness="0,0,0,1">
@@ -161,14 +161,14 @@
 						</Border>
 					</Grid>
 				</TabItem>
-				<TabItem Header="Replies">
+				<TabItem Header="Replies" Padding="2,1,2,1">
 					<ListBox x:Name="RepliesListBox" ScrollViewer.CanContentScroll="False" IsSynchronizedWithCurrentItem="True" ItemTemplate="{DynamicResource TweetsTemplate}" ScrollViewer.HorizontalScrollBarVisibility="Disabled" MouseLeftButtonUp="TweetsListBox_MouseLeftButtonUp" BorderThickness="0,0,0,0" />
 				</TabItem>
-				<TabItem x:Name="UserTab" Header="User">
+				<TabItem x:Name="UserTab" Header="User" Padding="2,1,2,1">
 					<DockPanel>
 						<Border DockPanel.Dock="Top" BorderBrush="{DynamicResource SolidBorderBrush}" BorderThickness="0,0,0,1">
 							<Border.Background>
-								<LinearGradientBrush EndPoint="0.5,1.01" StartPoint="0.5,-0.01">
+								<LinearGradientBrush EndPoint="0.5,1" StartPoint="0.5,0">
 									<GradientStop Color="#FFD0DBE7" Offset="0"/>
 									<GradientStop Color="#FFFFFFFF" Offset="1"/>
 								</LinearGradientBrush>
@@ -208,7 +208,6 @@
 									</Rectangle>
 								</StackPanel>
 								<Grid Grid.Column="1" Margin="0,10,0,0">
-
 									<Grid.RowDefinitions>
 										<RowDefinition Height="Auto"/>
 										<RowDefinition Height="*"/>
@@ -224,6 +223,25 @@
 						</Border>
 						<ListBox x:Name="UserTimelineListBox" ItemsSource="{Binding Mode=OneWay}" ScrollViewer.CanContentScroll="False" IsSynchronizedWithCurrentItem="True" ItemTemplate="{DynamicResource UserTimeLineTemplate}" ScrollViewer.HorizontalScrollBarVisibility="Disabled" MouseLeftButtonUp="TweetsListBox_MouseLeftButtonUp" BorderThickness="0,0,0,0" DockPanel.Dock="Bottom" />
 					</DockPanel>
+				</TabItem>
+				<TabItem Header="Messages" Padding="2,1,2,1">
+					<Grid x:Name="Messages">
+						<ListBox x:Name="MessagesListBox" ScrollViewer.CanContentScroll="False" IsSynchronizedWithCurrentItem="True" ItemTemplate="{DynamicResource MessagesTemplate}" ItemsSource="{Binding Mode=OneWay}" ScrollViewer.HorizontalScrollBarVisibility="Disabled" Margin="0,0,0,0" MouseLeftButtonUp="TweetsListBox_MouseLeftButtonUp" BorderThickness="0,0,0,0" />
+						<!--<Border Height="21" Background="#FFA8B9C6" VerticalAlignment="Bottom" Padding="10,0,10,0" x:Name="Update" MouseLeftButtonUp="Update_MouseLeftButtonUp" BorderBrush="{DynamicResource PrimaryBackgroundBrush}" BorderThickness="0,0,0,1">
+                            <DockPanel OpacityMask="#FF000000" x:Name="dockPanel">
+                                <TextBlock HorizontalAlignment="Center" DockPanel.Dock="Top" Text="Update" TextWrapping="Wrap" Height="20" VerticalAlignment="Top" x:Name="UpdateTextBlock"/>
+                                <Grid Margin="0,5,0,10">
+                                    <Grid.ColumnDefinitions>
+                                        <ColumnDefinition Width="*"/>
+                                        <ColumnDefinition Width="Auto"/>
+                                    </Grid.ColumnDefinitions>
+                                    <TextBox Text="" TextWrapping="Wrap" x:Name="TweetTextBox" SpellCheck.IsEnabled="True" MaxLength="140"/>
+                                    <TextBlock Text="{Binding Path=Text.Length, Converter={StaticResource CharRemainingConverter}, ElementName=TweetTextBox, Mode=Default}" FontSize="18" Grid.Column="1" VerticalAlignment="Top" HorizontalAlignment="Left" Margin="10,0,0,0" FontFamily="Georgia" x:Name="CharRemainingCounter" Foreground="#FF52626F" />
+                                    <Button VerticalAlignment="Bottom" Width="75" Height="23" Content="Update" Grid.Column="1" x:Name="UpdateButton" Click="UpdateButton_Click" Margin="10,0,0,0" IsDefault="True"/>
+                                </Grid>
+                            </DockPanel>
+                        </Border>-->
+					</Grid>
 				</TabItem>
 			</TabControl>
 			<Witty:LoginControl HorizontalAlignment="Center" VerticalAlignment="Center" x:Name="LoginControl" Login="LoginControl_Login" Visibility="Visible" d:IsHidden="True">

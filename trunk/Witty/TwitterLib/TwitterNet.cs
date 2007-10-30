@@ -586,6 +586,100 @@ namespace TwitterLib
             return RetrieveTimeline(Timeline.Replies);
         }
 
+        public DirectMessages GetMessages()
+        {
+            DirectMessages messages = new DirectMessages();
+
+            // Create the web request
+            HttpWebRequest request = WebRequest.Create(DirectMessagesUrl + Format) as HttpWebRequest;
+
+            // Add credendtials to request  
+            request.Credentials = new NetworkCredential(username, password);
+
+            try
+            {
+                // Get the Response  
+                using (HttpWebResponse response = request.GetResponse() as HttpWebResponse)
+                {
+                    // Get the response stream  
+                    StreamReader reader = new StreamReader(response.GetResponseStream());
+
+                    // Create a new XmlDocument  
+                    XmlDocument doc = new XmlDocument();
+
+                    // Load data  
+                    doc.Load(reader);
+
+                    // Get statuses with XPath  
+                    XmlNodeList nodes = doc.SelectNodes("/direct-messages/direct_message");
+
+                    foreach (XmlNode node in nodes)
+                    {
+                        DirectMessage message = new DirectMessage();
+                        message.Id = double.Parse(node.SelectSingleNode("id").InnerText);
+                        message.Text = HttpUtility.HtmlDecode(node.SelectSingleNode("text").InnerText);
+
+                        string dateString = node.SelectSingleNode("created_at").InnerText;
+                        if (!string.IsNullOrEmpty(dateString))
+                        {
+                            message.DateCreated = DateTime.ParseExact(
+                                dateString,
+                                twitterCreatedAtDateFormat,
+                                CultureInfo.CurrentCulture, DateTimeStyles.AllowWhiteSpaces);
+                        }
+
+                        User sender = new User();
+                        XmlNode senderNode = node.SelectSingleNode("sender");
+                        sender.Name = senderNode.SelectSingleNode("name").InnerText;
+                        sender.ScreenName = senderNode.SelectSingleNode("screen_name").InnerText;
+                        sender.ImageUrl = senderNode.SelectSingleNode("profile_image_url").InnerText;
+                        sender.SiteUrl = senderNode.SelectSingleNode("url").InnerText;
+                        sender.Location = senderNode.SelectSingleNode("location").InnerText;
+                        sender.Description = senderNode.SelectSingleNode("description").InnerText;
+
+                        message.Sender = sender;
+
+                        User recipient = new User();
+                        XmlNode recipientNode = node.SelectSingleNode("recipient");
+                        recipient.Name = recipientNode.SelectSingleNode("name").InnerText;
+                        recipient.ScreenName = recipientNode.SelectSingleNode("screen_name").InnerText;
+                        recipient.ImageUrl = recipientNode.SelectSingleNode("profile_image_url").InnerText;
+                        recipient.SiteUrl = recipientNode.SelectSingleNode("url").InnerText;
+                        recipient.Location = recipientNode.SelectSingleNode("location").InnerText;
+                        recipient.Description = recipientNode.SelectSingleNode("description").InnerText;
+
+                        message.Recipient = recipient;
+
+                        messages.Add(message);
+                    }
+                }
+            }
+            catch (WebException webExcp)
+            {
+                // Get the WebException status code.
+                WebExceptionStatus status = webExcp.Status;
+                // If status is WebExceptionStatus.ProtocolError, 
+                //   there has been a protocol error and a WebResponse 
+                //   should exist. Display the protocol error.
+                if (status == WebExceptionStatus.ProtocolError)
+                {
+                    // Get HttpWebResponse so that you can check the HTTP status code.
+                    HttpWebResponse httpResponse = (HttpWebResponse)webExcp.Response;
+
+                    switch ((int)httpResponse.StatusCode)
+                    {
+                        case 400: // rate limit exceeded
+                            throw new RateLimitException("Rate limit exceeded. Clients may not make more than 70 requests per hour. Please try again in a few minutes.");
+                        case 401: // unauthorized
+                            throw new SecurityException("Not Authorized.");
+                        default:
+                            throw webExcp;
+                    }
+                }
+            }
+            return messages;
+        }
+
         #endregion
 
         #region Private Methods
@@ -766,6 +860,7 @@ namespace TwitterLib
         Public,
         Friends,
         User,
-        Replies
+        Replies,
+        DirectMessages
     }
 }

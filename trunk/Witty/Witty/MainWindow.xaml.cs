@@ -61,6 +61,7 @@ namespace Witty
             LayoutRoot.DataContext = tweets;
             RepliesListBox.ItemsSource = replies;
             UserTab.DataContext = userTweets;
+            MessagesListBox.ItemsSource = messages;
 
             // set the refresh interval
             if (string.IsNullOrEmpty(AppSettings.RefreshInterval))
@@ -105,10 +106,15 @@ namespace Witty
         // Main collection of replies
         private Tweets replies = new Tweets();
 
+        private DateTime repliesLastUpdated;
+
         // Main collection of user Tweets
         private Tweets userTweets = new Tweets();
 
-        private DateTime repliesLastUpdated;
+        // Main collection of direct messages
+        private DirectMessages messages = new DirectMessages();
+
+        private DateTime messagesLastUpdated;
 
         // Main TwitterNet object used to make Twitter API calls
         private TwitterNet twitter;
@@ -125,6 +131,7 @@ namespace Witty
         private delegate void OneArgDelegate(Tweets arg);
         private delegate void OneStringArgDelegate(string arg);
         private delegate void AddTweetUpdateDelegate(Tweet arg);
+        private delegate void MessagesDelegate(DirectMessages arg);
 
         // Settings used by the application
         private Properties.Settings AppSettings = Properties.Settings.Default;
@@ -135,7 +142,7 @@ namespace Witty
 
         private enum CurrentView
         {
-            Recent, Replies, User
+            Recent, Replies, User, Messages
         }
 
         private CurrentView currentView
@@ -372,6 +379,64 @@ namespace Witty
 
         #endregion
 
+        #region Messages
+
+        private void DelegateMessagesFetch()
+        {
+            // Let the user know what's going on
+            StatusTextBlock.Text = "Retrieving direct messages...";
+
+            PlayStoryboard("Fetching");
+
+            // Create a Dispatcher to fetching new tweets
+            NoArgDelegate fetcher = new NoArgDelegate(
+                this.GetMessages);
+
+            fetcher.BeginInvoke(null, null);
+        }
+
+        private void GetMessages()
+        {
+            try
+            {
+                // Schedule the update function in the UI thread.
+                LayoutRoot.Dispatcher.BeginInvoke(
+                    System.Windows.Threading.DispatcherPriority.Normal,
+                    new MessagesDelegate(UpdateMessagesInterface), twitter.GetMessages());
+            }
+            catch (WebException ex)
+            {
+#if DEBUG
+                MessageBox.Show("There was a problem fetching your direct messages from Twitter.com. " + ex.Message);
+#endif
+            }
+        }
+
+        private void UpdateMessagesInterface(DirectMessages newMessages)
+        {
+            messagesLastUpdated = DateTime.Now;
+            StatusTextBlock.Text = "Messages Updated: " + messagesLastUpdated.ToLongTimeString();
+
+            for (int i = newMessages.Count - 1; i >= 0; i--)
+            {
+                DirectMessage message = newMessages[i];
+                if (!messages.Contains(message))
+                {
+                    messages.Insert(0, message);
+                    message.IsNew = true;
+                }
+                else
+                {
+                    // update the relativetime for existing messages
+                    //messages[i].UpdateRelativeTime();
+                }
+            }
+
+            StopStoryboard("Fetching");
+        }
+
+        #endregion
+
         #region User Timline
 
         private void DelegateUserTimelineFetch(string userId)
@@ -479,6 +544,19 @@ namespace Witty
             if (tabs.SelectedIndex == 2 && string.IsNullOrEmpty(displayUser))
             {
                 DelegateUserTimelineFetch(AppSettings.Username);
+            }
+
+            if (tabs.SelectedIndex == 3 && isLoggedIn)
+            {
+                // limit updating replies to no more than once a minute
+                long ticks = DateTime.Now.Ticks - messagesLastUpdated.Ticks;
+                TimeSpan ts = new TimeSpan(ticks);
+                if (ts.TotalMinutes > 1)
+                {
+                    DelegateMessagesFetch();
+                }
+
+                displayUser = string.Empty;
             }
         }
 

@@ -126,11 +126,11 @@ namespace TwitterLib
             }
             set
             {
-                if (value != relativeTime)
-                {
+                //if (value != relativeTime)
+                //{
                     relativeTime = value;
                     OnPropertyChanged("Relativetime");
-                }
+                //}
             }
         }
 
