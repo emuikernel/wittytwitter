@@ -123,7 +123,7 @@
         </EventTrigger>
     </Window.Triggers>
 
-	<DockPanel x:Name="LayoutRoot">
+	<DockPanel x:Name="LayoutRoot" KeyDown="MainWindow_OnKeyDown">
 		<Border DockPanel.Dock="Top" Height="35" Padding="10,0,10,0" x:Name="Header" Background="{DynamicResource PrimaryBackgroundBrush}">
 			<Border.ContextMenu>
 				<ContextMenu>
