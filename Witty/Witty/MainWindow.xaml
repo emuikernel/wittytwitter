@@ -182,7 +182,7 @@
 									<StackPanel.RenderTransform>
 										<TransformGroup>
 											<ScaleTransform ScaleX="1" ScaleY="1"/>
-											<SkewTransform AngleX="0" AngleY="5"/>
+											<SkewTransform AngleX="0" AngleY="-5"/>
 											<RotateTransform Angle="0"/>
 											<TranslateTransform X="0"/>
 										</TransformGroup>
