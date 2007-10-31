@@ -4,6 +4,7 @@ using System.Net;
 using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Data;
+using System.Windows.Input;
 using System.Windows.Media;
 using System.Windows.Media.Animation;
 using System.Windows.Navigation;
@@ -56,6 +57,7 @@ namespace Witty
             m_Event = new SingleInstanceManager(this, ShowApplication); 
 #endif
             #endregion
+
 
             // Set the datacontext
             LayoutRoot.DataContext = tweets;
@@ -267,6 +269,7 @@ namespace Witty
         {
             try
             {
+                //TODO parse the text here and tiny up any URLs found.
                 Tweet tweet = twitter.AddTweet(tweetText);
 
                 // Schedule the update function in the UI thread.
@@ -303,7 +306,11 @@ namespace Witty
 
         private void Update_MouseLeftButtonUp(object sender, System.Windows.Input.MouseButtonEventArgs e)
         {
-            if (isLoggedIn)
+            ToggleUpdate();
+        }
+
+        private void ToggleUpdate() {
+               if (isLoggedIn)
             {
                 if (!isExpanded)
                 {
@@ -318,7 +325,6 @@ namespace Witty
                 }
             }
         }
-
         #endregion
 
         #region Replies
@@ -502,8 +508,51 @@ namespace Witty
         #endregion
 
         #region Misc Methods and Event Handlers
+        /// <summary>
+        /// Checks for keyboard shortcuts
+        /// </summary>
+        /// <param name="e">EventArgs</param>
+        private void MainWindow_OnKeyDown(object sender,KeyEventArgs e)
+        {
+            if (Keyboard.Modifiers == ModifierKeys.Control)
+            {
+                switch (e.Key)
+                {
+                    case Key.U:
+                        ToggleUpdate();
+                        break;
+                    case Key.R:
+                        //reply to user
+                        if (null != TweetsListBox.SelectedItem) { 
+                            Tweet currentTweet = (Tweet)TweetsListBox.SelectedItem; 
+                            ToggleUpdate();
+                            TweetTextBox.Text = "";
+                            TweetTextBox.Text = "@" + currentTweet.User.ScreenName + " ";
+                            TweetTextBox.Select(TweetTextBox.Text.Length, 0);
+                        }
+                        break;
+                    case Key.O:
+                        showOptions();
+                        break;
+                    case Key.Q:
+                        App.Current.Shutdown();
+                        break;
+                    
+                }
+            }
+            else
+            {
+                if (e.Key == Key.F5) { this.Refresh(); };
+            }
+ 
+        }
 
         private void RefreshButton_Click(object sender, RoutedEventArgs e)
+        {
+            this.Refresh(); 
+        }
+
+        private void Refresh()
         {
             switch (currentView)
             {
@@ -679,6 +728,11 @@ namespace Witty
 
         private void OptionsButton_Click(object sender, RoutedEventArgs e)
         {
+            showOptions();
+        }
+
+        private void showOptions()
+        {
             Options options = new Options();
 
             Binding binding = new Binding();
@@ -723,7 +777,6 @@ namespace Witty
                 PlayStoryboard("ShowLogin");
             }
         }
-
         #endregion
 
         #region Minimize to Tray
