@@ -47,7 +47,7 @@ _October 18, 2007_
 = v0.1.2=
 _October 15, 2007_
 
-  * Now Witty will remember the window location and size 
+  * Witty will now remember the window location and size 
 
 = v0.1.1=
 _October 15, 2007_
