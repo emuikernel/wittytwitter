@@ -1,12 +1,12 @@
 #summary Version History and Release Notes
 #labels Featured,Documentation
 
-= v0.1.5 Beta 2(QA testing) - November 01 2007 =
+= v0.1.5 Beta 2 (QA testing) - _November 1, 2007_ =
 
   * [http://code.google.com/p/wittytwitter/wiki/KeyboardShortcuts Keyboard Shortcuts]
   * View and Respond to Direct Messages
 
-= v0.1.5 Beta(QA testing)=
+= v0.1.5 Beta (QA testing)=
 
   * Configurable Options
    # option to logout
