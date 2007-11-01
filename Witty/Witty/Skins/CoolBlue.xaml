@@ -105,7 +105,6 @@
         </DataTemplate.Triggers>
     </DataTemplate>
 
-
     <SolidColorBrush x:Key="ForegroundBrush" Color="#FF000000"/>
     
     <SolidColorBrush x:Key="HeaderForegroundBrush" Color="#FFFFFFFF"/>

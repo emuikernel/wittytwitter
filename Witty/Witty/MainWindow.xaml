@@ -37,6 +37,26 @@
                 <SplineDoubleKeyFrame KeyTime="00:00:00.6000000" Value="1"/>
             </DoubleAnimationUsingKeyFrames>
         </Storyboard>
+        <Storyboard x:Key="ExpandMessage">
+            <DoubleAnimationUsingKeyFrames BeginTime="00:00:00" Storyboard.TargetName="Message" Storyboard.TargetProperty="(FrameworkElement.Height)">
+                <SplineDoubleKeyFrame KeyTime="00:00:00" Value="20" KeySpline="0,0,0,1"/>
+                <SplineDoubleKeyFrame KeyTime="00:00:00.5000000" Value="120" KeySpline="0,0,0,1"/>
+            </DoubleAnimationUsingKeyFrames>
+            <DoubleAnimationUsingKeyFrames BeginTime="00:00:00" Storyboard.TargetName="MessageDockPanel" Storyboard.TargetProperty="(UIElement.Opacity)">
+                <SplineDoubleKeyFrame KeyTime="00:00:00" Value="0"/>
+                <SplineDoubleKeyFrame KeyTime="00:00:00.6000000" Value="1"/>
+            </DoubleAnimationUsingKeyFrames>
+        </Storyboard>
+        <Storyboard x:Key="CollapseMessage">
+            <DoubleAnimationUsingKeyFrames BeginTime="00:00:00" Storyboard.TargetName="Message" Storyboard.TargetProperty="(FrameworkElement.Height)">
+                <SplineDoubleKeyFrame KeyTime="00:00:00.1000000" Value="120" KeySpline="0,0,0,1"/>
+                <SplineDoubleKeyFrame KeyTime="00:00:00.6000000" Value="20" KeySpline="0,0,0,1"/>
+            </DoubleAnimationUsingKeyFrames>
+            <DoubleAnimationUsingKeyFrames BeginTime="00:00:00" Storyboard.TargetName="MessageDockPanel" Storyboard.TargetProperty="(UIElement.Opacity)">
+                <SplineDoubleKeyFrame KeyTime="00:00:00.5000000" Value="0"/>
+                <SplineDoubleKeyFrame KeyTime="00:00:00.6000000" Value="1"/>
+            </DoubleAnimationUsingKeyFrames>
+        </Storyboard>
         <Storyboard x:Key="ShowLogin">
 			<DoubleAnimationUsingKeyFrames BeginTime="00:00:00" Storyboard.TargetName="LoginControl" Storyboard.TargetProperty="(FrameworkElement.Height)">
 				<SplineDoubleKeyFrame KeyTime="00:00:00" Value="0" KeySpline="0,0,0,1"/>
@@ -104,6 +124,18 @@
                 <SplineColorKeyFrame KeyTime="00:00:00.2000000" Value="#FFA8B9C6"/>
             </ColorAnimationUsingKeyFrames>
         </Storyboard>
+        <Storyboard x:Key="MessageMouseEnter">
+            <ColorAnimationUsingKeyFrames BeginTime="00:00:00" Storyboard.TargetName="Message" Storyboard.TargetProperty="(Panel.Background).(SolidColorBrush.Color)">
+                <SplineColorKeyFrame KeyTime="00:00:00" Value="#FFA8B9C6"/>
+                <SplineColorKeyFrame KeyTime="00:00:00.2000000" Value="#FF888888"/>
+            </ColorAnimationUsingKeyFrames>
+        </Storyboard>
+        <Storyboard x:Key="MessageMouseLeave">
+            <ColorAnimationUsingKeyFrames BeginTime="00:00:00" Storyboard.TargetProperty="(Panel.Background).(SolidColorBrush.Color)" Storyboard.TargetName="Message">
+                <SplineColorKeyFrame KeyTime="00:00:00" Value="#FF888888"/>
+                <SplineColorKeyFrame KeyTime="00:00:00.2000000" Value="#FFA8B9C6"/>
+            </ColorAnimationUsingKeyFrames>
+        </Storyboard>
         <Storyboard x:Key="Fetching">
             <DoubleAnimationUsingKeyFrames BeginTime="00:00:00" Storyboard.TargetName="StatusBar" Storyboard.TargetProperty="(UIElement.Opacity)">
                 <SplineDoubleKeyFrame KeyTime="00:00:00" Value="1"/>
@@ -120,6 +152,12 @@
         </EventTrigger>
         <EventTrigger RoutedEvent="Mouse.MouseLeave" SourceName="Update">
             <BeginStoryboard Storyboard="{StaticResource UpdateMouseLeave}" x:Name="UpdateMouseLeave_BeginStoryboard"/>
+        </EventTrigger>
+        <EventTrigger RoutedEvent="Mouse.MouseEnter" SourceName="Message">
+            <BeginStoryboard Storyboard="{StaticResource MessageMouseEnter}" x:Name="MessageMouseEnter_BeginStoryboard"/>
+        </EventTrigger>
+        <EventTrigger RoutedEvent="Mouse.MouseLeave" SourceName="Message">
+            <BeginStoryboard Storyboard="{StaticResource MessageMouseLeave}" x:Name="MessageMouseLeave_BeginStoryboard"/>
         </EventTrigger>
     </Window.Triggers>
 
@@ -147,7 +185,7 @@
 						<ListBox x:Name="TweetsListBox" ScrollViewer.CanContentScroll="False" IsSynchronizedWithCurrentItem="True" ItemTemplate="{DynamicResource TweetsTemplate}" ItemsSource="{Binding Mode=OneWay}" ScrollViewer.HorizontalScrollBarVisibility="Disabled" Margin="0,0,0,20" MouseLeftButtonUp="TweetsListBox_MouseLeftButtonUp" BorderThickness="0,0,0,0" />
 						<Border Height="21" Background="#FFA8B9C6" VerticalAlignment="Bottom" Padding="10,0,10,0" x:Name="Update" MouseLeftButtonUp="Update_MouseLeftButtonUp" BorderBrush="{DynamicResource PrimaryBackgroundBrush}" BorderThickness="0,0,0,1">
 							<DockPanel OpacityMask="#FF000000" x:Name="dockPanel">
-								<TextBlock HorizontalAlignment="Center" DockPanel.Dock="Top" Text="Update" TextWrapping="Wrap" Height="20" VerticalAlignment="Top" x:Name="UpdateTextBlock"/>
+								<TextBlock HorizontalAlignment="Center" DockPanel.Dock="Top" Text="Update" TextWrapping="Wrap" VerticalAlignment="Top" x:Name="UpdateTextBlock" Margin="0,2,0,0"/>
 								<Grid Margin="0,5,0,10">
 									<Grid.ColumnDefinitions>
 										<ColumnDefinition Width="*"/>
@@ -226,21 +264,29 @@
 				</TabItem>
 				<TabItem Header="Messages" Padding="2,1,2,1">
 					<Grid x:Name="Messages">
-						<ListBox x:Name="MessagesListBox" ScrollViewer.CanContentScroll="False" IsSynchronizedWithCurrentItem="True" ItemTemplate="{DynamicResource MessagesTemplate}" ItemsSource="{Binding Mode=OneWay}" ScrollViewer.HorizontalScrollBarVisibility="Disabled" Margin="0,0,0,0" MouseLeftButtonUp="TweetsListBox_MouseLeftButtonUp" BorderThickness="0,0,0,0" />
-						<!--<Border Height="21" Background="#FFA8B9C6" VerticalAlignment="Bottom" Padding="10,0,10,0" x:Name="Update" MouseLeftButtonUp="Update_MouseLeftButtonUp" BorderBrush="{DynamicResource PrimaryBackgroundBrush}" BorderThickness="0,0,0,1">
-                            <DockPanel OpacityMask="#FF000000" x:Name="dockPanel">
-                                <TextBlock HorizontalAlignment="Center" DockPanel.Dock="Top" Text="Update" TextWrapping="Wrap" Height="20" VerticalAlignment="Top" x:Name="UpdateTextBlock"/>
-                                <Grid Margin="0,5,0,10">
-                                    <Grid.ColumnDefinitions>
-                                        <ColumnDefinition Width="*"/>
-                                        <ColumnDefinition Width="Auto"/>
-                                    </Grid.ColumnDefinitions>
-                                    <TextBox Text="" TextWrapping="Wrap" x:Name="TweetTextBox" SpellCheck.IsEnabled="True" MaxLength="140"/>
-                                    <TextBlock Text="{Binding Path=Text.Length, Converter={StaticResource CharRemainingConverter}, ElementName=TweetTextBox, Mode=Default}" FontSize="18" Grid.Column="1" VerticalAlignment="Top" HorizontalAlignment="Left" Margin="10,0,0,0" FontFamily="Georgia" x:Name="CharRemainingCounter" Foreground="#FF52626F" />
-                                    <Button VerticalAlignment="Bottom" Width="75" Height="23" Content="Update" Grid.Column="1" x:Name="UpdateButton" Click="UpdateButton_Click" Margin="10,0,0,0" IsDefault="True"/>
-                                </Grid>
-                            </DockPanel>
-                        </Border>-->
+						<ListBox x:Name="MessagesListBox" ScrollViewer.CanContentScroll="False" IsSynchronizedWithCurrentItem="True" ItemTemplate="{DynamicResource MessagesTemplate}" ItemsSource="{Binding Mode=OneWay}" ScrollViewer.HorizontalScrollBarVisibility="Disabled" Margin="0,0,0,20" MouseLeftButtonUp="MessagesListBox_MouseLeftButtonUp" BorderThickness="0,0,0,0" />
+						<Border Height="21" Background="#FFA8B9C6" VerticalAlignment="Bottom" Padding="10,0,10,0" x:Name="Message" MouseLeftButtonUp="Message_MouseLeftButtonUp" BorderBrush="{DynamicResource PrimaryBackgroundBrush}" BorderThickness="0,0,0,1">
+							<DockPanel OpacityMask="#FF000000" x:Name="MessageDockPanel">
+								<TextBlock HorizontalAlignment="Center" DockPanel.Dock="Top" Text="Send Message" TextWrapping="Wrap" VerticalAlignment="Top" x:Name="MessageTextBlock" Margin="0,2,0,0"/>
+								<Grid Margin="0,5,0,10">
+									<Grid.RowDefinitions>
+										<RowDefinition Height="Auto"/>
+										<RowDefinition Height="*"/>
+									</Grid.RowDefinitions>
+									<Grid.ColumnDefinitions>
+										<ColumnDefinition Width="*"/>
+										<ColumnDefinition Width="Auto"/>
+									</Grid.ColumnDefinitions>
+									<StackPanel Orientation="Horizontal">
+										<TextBlock Text="To:" TextWrapping="Wrap" Margin="0,0,5,0" VerticalAlignment="Center"/>
+										<TextBox Text="" TextWrapping="Wrap" VerticalAlignment="Center" Width="120" Margin="0,0,0,2" x:Name="MessageUserTextBox"/>
+									</StackPanel>
+									<TextBox Grid.Row="1" Text="" TextWrapping="Wrap" x:Name="MessageTextBox" SpellCheck.IsEnabled="True" MaxLength="140"/>
+									<TextBlock Grid.Row="1" Text="{Binding Path=Text.Length, Converter={StaticResource CharRemainingConverter}, ElementName=MessageTextBox, Mode=Default}" FontSize="18" Grid.Column="1" VerticalAlignment="Top" HorizontalAlignment="Left" Margin="10,0,0,0" FontFamily="Georgia" x:Name="MessageCharRemainingCounter" Foreground="#FF52626F" />
+									<Button Grid.Row="1" VerticalAlignment="Bottom" Width="75" Height="23" Content="Send" Grid.Column="1" x:Name="SendMessageButton" Click="SendMessageButton_Click" Margin="10,0,0,0" IsDefault="True"/>
+								</Grid>
+							</DockPanel>
+						</Border>
 					</Grid>
 				</TabItem>
 			</TabControl>
