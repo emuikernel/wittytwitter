@@ -1,11 +1,10 @@
 #summary List of keyboard shortcuts
 #labels Featured,Documentation
 
- *ctrl-u - toggle the update area
- *ctrl-r - add @screenname of the selected Tweets user to the update textbox
- *ctrl-q - Quit. Exit. Vamoose.
- *ctrl o - not enabled. Open the options dialog. I think the show
- *options code may need to be refactored a little before this is enabled.
- *F5 - refresh. It seemed best to stick with IE/Firefox's refresh key. 
+ * ctrl-u - toggle the update area
+ * ctrl-r - add @screenname of the selected Tweets user to the update textbox
+ * ctrl-q - Quit. Exit. Vamoose.
+ * ctrl o - not enabled. Open the options dialog. I think the show options code may need to be refactored a little before this is enabled.
+ * F5 - refresh. It seemed best to stick with IE/Firefox's refresh key. 
 
 Code added by [http://twitter.com/lazycoder lazycoder]
