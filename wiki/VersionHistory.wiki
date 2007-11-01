@@ -3,6 +3,7 @@
 
 = v0.1.5 (Upcoming Release) = 
 
+  * Everything from v0.1.5 Beta and v0.1.5 Beta 2
   * Escape key to minimize Witty
 
 = v0.1.5 Beta 2 (QA testing) = 
