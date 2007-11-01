@@ -17,134 +17,15 @@
     >
 
     <Window.Resources>
-        <Storyboard x:Key="ExpandUpdate">
-            <DoubleAnimationUsingKeyFrames BeginTime="00:00:00" Storyboard.TargetName="Update" Storyboard.TargetProperty="(FrameworkElement.Height)">
-                <SplineDoubleKeyFrame KeyTime="00:00:00" Value="20" KeySpline="0,0,0,1"/>
-                <SplineDoubleKeyFrame KeyTime="00:00:00.5000000" Value="100" KeySpline="0,0,0,1"/>
-            </DoubleAnimationUsingKeyFrames>
-            <DoubleAnimationUsingKeyFrames BeginTime="00:00:00" Storyboard.TargetName="dockPanel" Storyboard.TargetProperty="(UIElement.Opacity)">
-                <SplineDoubleKeyFrame KeyTime="00:00:00" Value="0"/>
-                <SplineDoubleKeyFrame KeyTime="00:00:00.6000000" Value="1"/>
-            </DoubleAnimationUsingKeyFrames>
-        </Storyboard>
-        <Storyboard x:Key="CollapseUpdate">
-            <DoubleAnimationUsingKeyFrames BeginTime="00:00:00" Storyboard.TargetName="Update" Storyboard.TargetProperty="(FrameworkElement.Height)">
-                <SplineDoubleKeyFrame KeyTime="00:00:00.1000000" Value="100" KeySpline="0,0,0,1"/>
-                <SplineDoubleKeyFrame KeyTime="00:00:00.6000000" Value="20" KeySpline="0,0,0,1"/>
-            </DoubleAnimationUsingKeyFrames>
-            <DoubleAnimationUsingKeyFrames BeginTime="00:00:00" Storyboard.TargetName="dockPanel" Storyboard.TargetProperty="(UIElement.Opacity)">
-                <SplineDoubleKeyFrame KeyTime="00:00:00.5000000" Value="0"/>
-                <SplineDoubleKeyFrame KeyTime="00:00:00.6000000" Value="1"/>
-            </DoubleAnimationUsingKeyFrames>
-        </Storyboard>
-        <Storyboard x:Key="ExpandMessage">
-            <DoubleAnimationUsingKeyFrames BeginTime="00:00:00" Storyboard.TargetName="Message" Storyboard.TargetProperty="(FrameworkElement.Height)">
-                <SplineDoubleKeyFrame KeyTime="00:00:00" Value="20" KeySpline="0,0,0,1"/>
-                <SplineDoubleKeyFrame KeyTime="00:00:00.5000000" Value="120" KeySpline="0,0,0,1"/>
-            </DoubleAnimationUsingKeyFrames>
-            <DoubleAnimationUsingKeyFrames BeginTime="00:00:00" Storyboard.TargetName="MessageDockPanel" Storyboard.TargetProperty="(UIElement.Opacity)">
-                <SplineDoubleKeyFrame KeyTime="00:00:00" Value="0"/>
-                <SplineDoubleKeyFrame KeyTime="00:00:00.6000000" Value="1"/>
-            </DoubleAnimationUsingKeyFrames>
-        </Storyboard>
-        <Storyboard x:Key="CollapseMessage">
-            <DoubleAnimationUsingKeyFrames BeginTime="00:00:00" Storyboard.TargetName="Message" Storyboard.TargetProperty="(FrameworkElement.Height)">
-                <SplineDoubleKeyFrame KeyTime="00:00:00.1000000" Value="120" KeySpline="0,0,0,1"/>
-                <SplineDoubleKeyFrame KeyTime="00:00:00.6000000" Value="20" KeySpline="0,0,0,1"/>
-            </DoubleAnimationUsingKeyFrames>
-            <DoubleAnimationUsingKeyFrames BeginTime="00:00:00" Storyboard.TargetName="MessageDockPanel" Storyboard.TargetProperty="(UIElement.Opacity)">
-                <SplineDoubleKeyFrame KeyTime="00:00:00.5000000" Value="0"/>
-                <SplineDoubleKeyFrame KeyTime="00:00:00.6000000" Value="1"/>
-            </DoubleAnimationUsingKeyFrames>
-        </Storyboard>
-        <Storyboard x:Key="ShowLogin">
-			<DoubleAnimationUsingKeyFrames BeginTime="00:00:00" Storyboard.TargetName="LoginControl" Storyboard.TargetProperty="(FrameworkElement.Height)">
-				<SplineDoubleKeyFrame KeyTime="00:00:00" Value="0" KeySpline="0,0,0,1"/>
-				<SplineDoubleKeyFrame KeyTime="00:00:00.5000000" Value="0" KeySpline="0,0,0,1"/>
-				<SplineDoubleKeyFrame KeyTime="00:00:00.7000000" Value="3" KeySpline="0,0,0,1"/>
-				<SplineDoubleKeyFrame KeyTime="00:00:01.1000000" Value="270" KeySpline="0,0,0,1"/>
-			</DoubleAnimationUsingKeyFrames>
-			<DoubleAnimationUsingKeyFrames BeginTime="00:00:00" Storyboard.TargetName="LoginControl" Storyboard.TargetProperty="(FrameworkElement.Width)">
-				<SplineDoubleKeyFrame KeyTime="00:00:00" Value="0" KeySpline="0,0,0,1"/>
-				<SplineDoubleKeyFrame KeyTime="00:00:00.5000000" Value="0" KeySpline="0,0,0,1"/>
-				<SplineDoubleKeyFrame KeyTime="00:00:00.7000000" Value="225" KeySpline="0,0,0,1"/>
-			</DoubleAnimationUsingKeyFrames>
-			<BooleanAnimationUsingKeyFrames BeginTime="00:00:00" Duration="00:00:00.0010000" Storyboard.TargetName="Tabs" Storyboard.TargetProperty="(UIElement.IsEnabled)">
-				<DiscreteBooleanKeyFrame KeyTime="00:00:00" Value="False"/>
-			</BooleanAnimationUsingKeyFrames>
-			<ObjectAnimationUsingKeyFrames BeginTime="00:00:00" Storyboard.TargetName="LoginControl" Storyboard.TargetProperty="(UIElement.Visibility)">
-				<DiscreteObjectKeyFrame KeyTime="00:00:00" Value="{x:Static Visibility.Visible}"/>
-				<DiscreteObjectKeyFrame KeyTime="00:00:00.5000000" Value="{x:Static Visibility.Visible}"/>
-			</ObjectAnimationUsingKeyFrames>
-			<BooleanAnimationUsingKeyFrames BeginTime="00:00:00" Duration="00:00:00.0010000" Storyboard.TargetName="RefreshButton" Storyboard.TargetProperty="(UIElement.IsEnabled)">
-				<DiscreteBooleanKeyFrame KeyTime="00:00:00" Value="False"/>
-			</BooleanAnimationUsingKeyFrames>
-			<BooleanAnimationUsingKeyFrames BeginTime="00:00:00" Duration="00:00:00.0010000" Storyboard.TargetName="OptionsButton" Storyboard.TargetProperty="(UIElement.IsEnabled)">
-				<DiscreteBooleanKeyFrame KeyTime="00:00:00" Value="False"/>
-			</BooleanAnimationUsingKeyFrames>
-		</Storyboard>
-        <Storyboard x:Key="HideLogin">
-            <DoubleAnimationUsingKeyFrames BeginTime="00:00:00" Storyboard.TargetName="LoginControl" Storyboard.TargetProperty="(FrameworkElement.Height)">
-                <SplineDoubleKeyFrame KeyTime="00:00:00" Value="270"/>
-                <SplineDoubleKeyFrame KeyTime="00:00:00.4000000" Value="3"/>
-                <SplineDoubleKeyFrame KeyTime="00:00:00.6000000" Value="0"/>
-            </DoubleAnimationUsingKeyFrames>
-            <DoubleAnimationUsingKeyFrames BeginTime="00:00:00" Storyboard.TargetName="LoginControl" Storyboard.TargetProperty="(FrameworkElement.Width)">
-                <SplineDoubleKeyFrame KeyTime="00:00:00.4000000" Value="225"/>
-                <SplineDoubleKeyFrame KeyTime="00:00:00.6000000" Value="0"/>
-            </DoubleAnimationUsingKeyFrames>
-            <DoubleAnimationUsingKeyFrames BeginTime="00:00:00" Storyboard.TargetName="Recent" Storyboard.TargetProperty="(UIElement.Opacity)">
-                <SplineDoubleKeyFrame KeyTime="00:00:00" Value="0"/>
-                <SplineDoubleKeyFrame KeyTime="00:00:00.5000000" Value="1"/>
-            </DoubleAnimationUsingKeyFrames>
-            <ObjectAnimationUsingKeyFrames BeginTime="00:00:00" Storyboard.TargetName="LoginControl" Storyboard.TargetProperty="(UIElement.Visibility)">
-                <DiscreteObjectKeyFrame KeyTime="00:00:00" Value="{x:Static Visibility.Visible}"/>
-                <DiscreteObjectKeyFrame KeyTime="00:00:00.4000000" Value="{x:Static Visibility.Hidden}"/>
-                <DiscreteObjectKeyFrame KeyTime="00:00:00.6000000" Value="{x:Static Visibility.Hidden}"/>
-            </ObjectAnimationUsingKeyFrames>
-            <BooleanAnimationUsingKeyFrames BeginTime="00:00:00" Duration="00:00:00.0010000" Storyboard.TargetName="RefreshButton" Storyboard.TargetProperty="(UIElement.IsEnabled)">
-                <DiscreteBooleanKeyFrame KeyTime="00:00:00" Value="True"/>
-            </BooleanAnimationUsingKeyFrames>
-        	<BooleanAnimationUsingKeyFrames BeginTime="00:00:00" Storyboard.TargetName="Tabs" Storyboard.TargetProperty="(UIElement.IsEnabled)" Duration="00:00:00.0010000">
-					<DiscreteBooleanKeyFrame KeyTime="00:00:00" Value="True"/>
-				</BooleanAnimationUsingKeyFrames>
-        	<BooleanAnimationUsingKeyFrames BeginTime="00:00:00" Duration="00:00:00.0010000" Storyboard.TargetName="OptionsButton" Storyboard.TargetProperty="(UIElement.IsEnabled)">
-        		<DiscreteBooleanKeyFrame KeyTime="00:00:00" Value="True"/>
-        	</BooleanAnimationUsingKeyFrames>
-        </Storyboard>
-        <Storyboard x:Key="UpdateMouseEnter">
-            <ColorAnimationUsingKeyFrames BeginTime="00:00:00" Storyboard.TargetName="Update" Storyboard.TargetProperty="(Panel.Background).(SolidColorBrush.Color)">
-                <SplineColorKeyFrame KeyTime="00:00:00" Value="#FFA8B9C6"/>
-                <SplineColorKeyFrame KeyTime="00:00:00.2000000" Value="#FF888888"/>
-            </ColorAnimationUsingKeyFrames>
-        </Storyboard>
-        <Storyboard x:Key="UpdateMouseLeave">
-            <ColorAnimationUsingKeyFrames BeginTime="00:00:00" Storyboard.TargetProperty="(Panel.Background).(SolidColorBrush.Color)" Storyboard.TargetName="Update">
-                <SplineColorKeyFrame KeyTime="00:00:00" Value="#FF888888"/>
-                <SplineColorKeyFrame KeyTime="00:00:00.2000000" Value="#FFA8B9C6"/>
-            </ColorAnimationUsingKeyFrames>
-        </Storyboard>
-        <Storyboard x:Key="MessageMouseEnter">
-            <ColorAnimationUsingKeyFrames BeginTime="00:00:00" Storyboard.TargetName="Message" Storyboard.TargetProperty="(Panel.Background).(SolidColorBrush.Color)">
-                <SplineColorKeyFrame KeyTime="00:00:00" Value="#FFA8B9C6"/>
-                <SplineColorKeyFrame KeyTime="00:00:00.2000000" Value="#FF888888"/>
-            </ColorAnimationUsingKeyFrames>
-        </Storyboard>
-        <Storyboard x:Key="MessageMouseLeave">
-            <ColorAnimationUsingKeyFrames BeginTime="00:00:00" Storyboard.TargetProperty="(Panel.Background).(SolidColorBrush.Color)" Storyboard.TargetName="Message">
-                <SplineColorKeyFrame KeyTime="00:00:00" Value="#FF888888"/>
-                <SplineColorKeyFrame KeyTime="00:00:00.2000000" Value="#FFA8B9C6"/>
-            </ColorAnimationUsingKeyFrames>
-        </Storyboard>
-        <Storyboard x:Key="Fetching">
-            <DoubleAnimationUsingKeyFrames BeginTime="00:00:00" Storyboard.TargetName="StatusBar" Storyboard.TargetProperty="(UIElement.Opacity)">
-                <SplineDoubleKeyFrame KeyTime="00:00:00" Value="1"/>
-                <SplineDoubleKeyFrame KeyTime="00:00:00.5000000" Value="0.495"/>
-                <SplineDoubleKeyFrame KeyTime="00:00:01" Value="1"/>
-            </DoubleAnimationUsingKeyFrames>
-        </Storyboard>
-        <Witty:CharRemainingValueConverter x:Key="CharRemainingConverter"/>
-    	<VisualBrush x:Key="ImageVisualBrush" Visual="{Binding ElementName=border}"/>
+        <ResourceDictionary>
+            <ResourceDictionary.MergedDictionaries>
+                <ResourceDictionary Source="Resources\Storyboards.xaml"/>
+                <ResourceDictionary>
+                    <Witty:CharRemainingValueConverter x:Key="CharRemainingConverter"/>
+                    <VisualBrush x:Key="ImageVisualBrush" Visual="{Binding ElementName=border}"/>
+                </ResourceDictionary>
+            </ResourceDictionary.MergedDictionaries>
+        </ResourceDictionary>
     </Window.Resources>
     <Window.Triggers>
         <EventTrigger RoutedEvent="Mouse.MouseEnter" SourceName="Update">
@@ -180,7 +61,7 @@
 		</Border>
 		<Grid x:Name="Content">
 			<TabControl x:Name="Tabs" IsSynchronizedWithCurrentItem="True" DockPanel.Dock="Top" SelectionChanged="Tabs_SelectionChanged">
-				<TabItem Header="Recent" Padding="2,1,2,1">
+				<TabItem Header="Recent" Padding="2,1,2,1" x:Name="RecentTab">
 					<Grid x:Name="Recent">
 						<ListBox x:Name="TweetsListBox" ScrollViewer.CanContentScroll="False" IsSynchronizedWithCurrentItem="True" ItemTemplate="{DynamicResource TweetsTemplate}" ItemsSource="{Binding Mode=OneWay}" ScrollViewer.HorizontalScrollBarVisibility="Disabled" Margin="0,0,0,20" MouseLeftButtonUp="TweetsListBox_MouseLeftButtonUp" BorderThickness="0,0,0,0" />
 						<Border Height="21" Background="#FFA8B9C6" VerticalAlignment="Bottom" Padding="10,0,10,0" x:Name="Update" MouseLeftButtonUp="Update_MouseLeftButtonUp" BorderBrush="{DynamicResource PrimaryBackgroundBrush}" BorderThickness="0,0,0,1">
@@ -199,7 +80,7 @@
 						</Border>
 					</Grid>
 				</TabItem>
-				<TabItem Header="Replies" Padding="2,1,2,1">
+				<TabItem Header="Replies" Padding="2,1,2,1" x:Name="RepliesTab">
 					<ListBox x:Name="RepliesListBox" ScrollViewer.CanContentScroll="False" IsSynchronizedWithCurrentItem="True" ItemTemplate="{DynamicResource TweetsTemplate}" ScrollViewer.HorizontalScrollBarVisibility="Disabled" MouseLeftButtonUp="TweetsListBox_MouseLeftButtonUp" BorderThickness="0,0,0,0" />
 				</TabItem>
 				<TabItem x:Name="UserTab" Header="User" Padding="2,1,2,1">
@@ -262,7 +143,7 @@
 						<ListBox x:Name="UserTimelineListBox" ItemsSource="{Binding Mode=OneWay}" ScrollViewer.CanContentScroll="False" IsSynchronizedWithCurrentItem="True" ItemTemplate="{DynamicResource UserTimeLineTemplate}" ScrollViewer.HorizontalScrollBarVisibility="Disabled" MouseLeftButtonUp="TweetsListBox_MouseLeftButtonUp" BorderThickness="0,0,0,0" DockPanel.Dock="Bottom" />
 					</DockPanel>
 				</TabItem>
-				<TabItem Header="Messages" Padding="2,1,2,1">
+				<TabItem Header="Messages" Padding="2,1,2,1" x:Name="MessagesTab">
 					<Grid x:Name="Messages">
 						<ListBox x:Name="MessagesListBox" ScrollViewer.CanContentScroll="False" IsSynchronizedWithCurrentItem="True" ItemTemplate="{DynamicResource MessagesTemplate}" ItemsSource="{Binding Mode=OneWay}" ScrollViewer.HorizontalScrollBarVisibility="Disabled" Margin="0,0,0,20" MouseLeftButtonUp="MessagesListBox_MouseLeftButtonUp" BorderThickness="0,0,0,0" />
 						<Border Height="21" Background="#FFA8B9C6" VerticalAlignment="Bottom" Padding="10,0,10,0" x:Name="Message" MouseLeftButtonUp="Message_MouseLeftButtonUp" BorderBrush="{DynamicResource PrimaryBackgroundBrush}" BorderThickness="0,0,0,1">
