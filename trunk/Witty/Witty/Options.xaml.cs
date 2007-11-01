@@ -7,19 +7,20 @@ using System.Windows.Data;
 using System.Windows.Media;
 using System.Windows.Media.Animation;
 using System.Windows.Navigation;
+using System.Windows.Input;
 
 namespace Witty
 {
-	public partial class Options
-	{
+    public partial class Options
+    {
         // Settings used by the application
         private Properties.Settings AppSettings = Properties.Settings.Default;
 
         private bool isSettingSkin = false;
 
-		public Options()
-		{
-			this.InitializeComponent();
+        public Options()
+        {
+            this.InitializeComponent();
 
             UsernameTextBox.Text = AppSettings.Username;
             PasswordTextBox.Password = AppSettings.Password;
@@ -34,7 +35,7 @@ namespace Witty
                 RefreshSlider.Value = Double.Parse(AppSettings.RefreshInterval);
 
             PlaySounds = AppSettings.PlaySounds;
-            
+
             isSettingSkin = true;
             SkinsComboBox.ItemsSource = App.Skins;
 
@@ -43,7 +44,7 @@ namespace Witty
                 SkinsComboBox.SelectedIndex = AppSettings.SkinIndex;
 
             isSettingSkin = false;
-		}
+        }
 
         public bool PlaySounds
         {
@@ -59,7 +60,7 @@ namespace Witty
         {
             Properties.Settings.Default.PlaySounds = (bool)args.NewValue;
             Properties.Settings.Default.Save();
-        }                
+        }
 
         private void DoneButton_Click(object sender, RoutedEventArgs e)
         {
@@ -97,6 +98,15 @@ namespace Witty
                 AppSettings.SkinIndex = ((ComboBox)sender).SelectedIndex;
                 AppSettings.Save();
             }
-        } 
-	}
+        }
+
+        /// <summary>
+        /// Checks for keyboard shortcuts
+        /// </summary>
+        /// <param name="e">EventArgs</param>
+        private void Window_OnKeyDown(object sender, KeyEventArgs e)
+        {
+            if (e.Key == Key.Escape) { this.Close(); };
+        }
+    }
 }
