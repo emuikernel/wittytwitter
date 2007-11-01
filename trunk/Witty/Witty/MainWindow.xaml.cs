@@ -58,7 +58,6 @@ namespace Witty
 #endif
             #endregion
 
-
             // Set the datacontext
             LayoutRoot.DataContext = tweets;
             RepliesListBox.ItemsSource = replies;
@@ -68,7 +67,7 @@ namespace Witty
             // set the refresh interval
             if (string.IsNullOrEmpty(AppSettings.RefreshInterval))
             {
-                AppSettings.RefreshInterval = "2"; // 2 minutes
+                AppSettings.RefreshInterval = "2"; // 2 minutes default
                 AppSettings.Save();
             }
             refreshInterval = new TimeSpan(0, int.Parse(AppSettings.RefreshInterval), 0);
@@ -134,6 +133,7 @@ namespace Witty
         private delegate void OneStringArgDelegate(string arg);
         private delegate void AddTweetUpdateDelegate(Tweet arg);
         private delegate void MessagesDelegate(DirectMessages arg);
+        private delegate void SendMessageDelegate(string user, string text);
 
         // Settings used by the application
         private Properties.Settings AppSettings = Properties.Settings.Default;
@@ -141,6 +141,7 @@ namespace Witty
         // booleans to keep track of state
         private bool isExpanded;
         private bool isLoggedIn;
+        private bool isMessageExpanded;
 
         private enum CurrentView
         {
@@ -443,6 +444,73 @@ namespace Witty
 
         #endregion
 
+        #region Send messages
+
+        private void SendMessageButton_Click(object sender, RoutedEventArgs e)
+        {
+            if (!string.IsNullOrEmpty(MessageUserTextBox.Text) && !string.IsNullOrEmpty(MessageTextBox.Text))
+            {
+                // Schedule posting the tweet
+                UpdateButton.Dispatcher.BeginInvoke(
+                    System.Windows.Threading.DispatcherPriority.Normal,
+                    new SendMessageDelegate(SendMessage), MessageUserTextBox.Text, MessageTextBox.Text);
+            }
+        }
+
+        private void SendMessage(string user, string messageText)
+        {
+            try
+            {
+                twitter.SendMessage(user, messageText);
+
+                // Schedule the update function in the UI thread.
+                LayoutRoot.Dispatcher.BeginInvoke(
+                    System.Windows.Threading.DispatcherPriority.Normal,
+                    new NoArgDelegate(UpdateMessageUserInterface));
+            }
+            catch (WebException ex)
+            {
+                UpdateTextBlock.Text = "Message failed.";
+
+#if DEBUG
+                MessageBox.Show("There was a problem sending your message. " + ex.Message);
+#endif
+            }
+        }
+
+        private void UpdateMessageUserInterface()
+        {
+            UpdateTextBlock.Text = "Send Message";
+            StatusTextBlock.Text = "Message Sent!";
+            PlayStoryboard("CollapseMessage");
+            isMessageExpanded = false;
+            MessageTextBox.Clear();
+        }
+
+        private void Message_MouseLeftButtonUp(object sender, System.Windows.Input.MouseButtonEventArgs e)
+        {
+            ToggleMessage();
+        }
+
+        private void ToggleMessage()
+        {
+            if (isLoggedIn)
+            {
+                if (!isMessageExpanded)
+                {
+                    PlayStoryboard("ExpandMessage");
+                    MessageTextBox.Focus();
+                    isMessageExpanded = true;
+                }
+                else
+                {
+                    PlayStoryboard("CollapseToggleMessage");
+                    isMessageExpanded = false;
+                }
+            }
+        }
+        #endregion
+
         #region User Timline
 
         private void DelegateUserTimelineFetch(string userId)
@@ -665,6 +733,37 @@ namespace Witty
                             Tweet tweet = (Tweet)listbox.SelectedItem;
                             //System.Diagnostics.Process.Start(tweet.User.TwitterUrl);
                             DelegateUserTimelineFetch(tweet.User.ScreenName);
+                        }
+                    }
+                }
+                catch (Win32Exception ex)
+                {
+#if DEBUG
+                    MessageBox.Show(ex.ToString());
+#endif
+                }
+            }
+        }
+
+        private void MessagesListBox_MouseLeftButtonUp(object sender, System.Windows.Input.MouseButtonEventArgs e)
+        {
+            if (e.MouseDevice.DirectlyOver.GetType() == typeof(TextBlock))
+            {
+                TextBlock textBlock = (TextBlock)e.MouseDevice.DirectlyOver;
+
+                try
+                {
+                    ListBox listbox = (ListBox)sender;
+
+                    if (textBlock.Name == "ScreenName")
+                    {
+                        if (listbox.SelectedItem != null && currentView != CurrentView.User)
+                        {
+                            DirectMessage tweet = (DirectMessage)listbox.SelectedItem;
+
+                            ToggleMessage();
+                            MessageUserTextBox.Text = textBlock.Text;
+                            MessageTextBox.Focus();
                         }
                     }
                 }

@@ -27,7 +27,8 @@ namespace TwitterLib
         private string updateUrl;
         private string friendsUrl;
         private string followersUrl;
-        private string userShowUrl; 
+        private string userShowUrl;
+        private string sendMessageUrl;
         private string format;
 
         // TODO: might need to fix this for globalization
@@ -221,7 +222,26 @@ namespace TwitterLib
                     return userShowUrl;
             }
             set { userShowUrl = value; }
-        }	
+        }
+
+        /// <summary>
+        /// Url to sends a new direct message to the specified user from the authenticating user. Defaults to http://twitter.com/direct_messages/new
+        /// </summary>
+        /// <remarks>
+        /// This value should only be changed if Twitter API urls have been changed on http://groups.google.com/group/twitter-development-talk/web/api-documentation
+        /// </remarks>
+        public string SendMessageUrl
+        {
+            get
+            {
+                if (string.IsNullOrEmpty(sendMessageUrl))
+                    return "http://twitter.com/direct_messages/new";
+                else
+                    return sendMessageUrl;
+            }
+            set { sendMessageUrl = value; }
+        }
+        
 
         /// <summary>
         /// The format of the results from the twitter API. Ex: .xml, .json, .rss, .atom. Defaults to ".xml"
@@ -678,6 +698,63 @@ namespace TwitterLib
                 }
             }
             return messages;
+        }
+
+        public void SendMessage(string user, string text)
+        {
+            if (string.IsNullOrEmpty(text))
+                return;
+
+            text = HttpUtility.UrlEncode(text);
+
+            // Create the web request  
+            HttpWebRequest request = WebRequest.Create(SendMessageUrl + Format) as HttpWebRequest;
+
+            // Add authentication to request  
+            request.Credentials = new NetworkCredential(username, password);
+
+            request.Method = "POST";
+
+            // Set values for the request back
+            request.ContentType = "application/x-www-form-urlencoded";
+            string param = "text=" + text;
+            string userParam = "&user=" + user;
+            request.ContentLength = param.Length + userParam.Length;
+
+            // Write the request paramater
+            StreamWriter stOut = new StreamWriter(request.GetRequestStream(), System.Text.Encoding.ASCII);
+            stOut.Write(param);
+            stOut.Write(userParam);
+            stOut.Close();
+
+            try
+            {
+                // Do the request to get the response
+                using (HttpWebResponse response = request.GetResponse() as HttpWebResponse)
+                {
+                }
+            }
+            catch (WebException webExcp)
+            {
+                // Get the WebException status code.
+                WebExceptionStatus status = webExcp.Status;
+                // If status is WebExceptionStatus.ProtocolError, 
+                //   there has been a protocol error and a WebResponse 
+                //   should exist. Display the protocol error.
+                if (status == WebExceptionStatus.ProtocolError)
+                {
+                    // Get HttpWebResponse so that you can check the HTTP status code.
+                    HttpWebResponse httpResponse = (HttpWebResponse)webExcp.Response;
+
+                    switch ((int)httpResponse.StatusCode)
+                    {
+                        case 401: // unauthorized
+                            throw new SecurityException("Not Authorized.");
+                        default:
+                            throw webExcp;
+                    }
+                }
+            }
         }
 
         #endregion
