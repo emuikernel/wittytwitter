@@ -1,5 +1,10 @@
 #summary Version History and Release Notes
-#labels Featured
+#labels Featured,Documentation
+
+= v0.1.5 Beta 2(QA testing)=
+
+  * [http://code.google.com/p/wittytwitter/wiki/KeyboardShortcuts Keyboard Shortcuts]
+  * View and Respond to Direct Messages
 
 = v0.1.5 Beta(QA testing)=
 
