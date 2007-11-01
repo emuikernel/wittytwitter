@@ -61,6 +61,7 @@
     <Page Include="MainWindow.xaml" />
     <Page Include="Options.xaml" />
     <Page Include="PeopleYouFollow.xaml" />
+    <Page Include="Resources\Storyboards.xaml" />
     <Page Include="Skins\Aero.xaml">
     </Page>
     <Page Include="Skins\CoolBlue.xaml">
