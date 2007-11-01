@@ -86,8 +86,8 @@ namespace Witty
                 AppSettings.LastUpdated = string.Empty;
 
                 twitter = new TwitterNet(AppSettings.Username, AppSettings.Password);
-                App.LoggedInUser = twitter.Login(); 
-                
+                App.LoggedInUser = twitter.Login();
+
                 DelegateRecentFetch();
 
                 // Setup refresh timer
@@ -237,7 +237,7 @@ namespace Witty
                 }
             }
 
-            if (tweetAdded > 0 &&  AppSettings.PlaySounds)
+            if (tweetAdded > 0 && AppSettings.PlaySounds)
             {
                 // Play tweets found sound
                 SoundPlayer player = new SoundPlayer("alert.wav");
@@ -310,8 +310,9 @@ namespace Witty
             ToggleUpdate();
         }
 
-        private void ToggleUpdate() {
-               if (isLoggedIn)
+        private void ToggleUpdate()
+        {
+            if (isLoggedIn)
             {
                 if (!isExpanded)
                 {
@@ -580,7 +581,7 @@ namespace Witty
         /// Checks for keyboard shortcuts
         /// </summary>
         /// <param name="e">EventArgs</param>
-        private void MainWindow_OnKeyDown(object sender,KeyEventArgs e)
+        private void MainWindow_OnKeyDown(object sender, KeyEventArgs e)
         {
             if (Keyboard.Modifiers == ModifierKeys.Control)
             {
@@ -591,8 +592,9 @@ namespace Witty
                         break;
                     case Key.R:
                         //reply to user
-                        if (null != TweetsListBox.SelectedItem) { 
-                            Tweet currentTweet = (Tweet)TweetsListBox.SelectedItem; 
+                        if (null != TweetsListBox.SelectedItem)
+                        {
+                            Tweet currentTweet = (Tweet)TweetsListBox.SelectedItem;
                             ToggleUpdate();
                             TweetTextBox.Text = "";
                             TweetTextBox.Text = "@" + currentTweet.User.ScreenName + " ";
@@ -605,19 +607,19 @@ namespace Witty
                     case Key.Q:
                         App.Current.Shutdown();
                         break;
-                    
+
                 }
             }
             else
             {
                 if (e.Key == Key.F5) { this.Refresh(); };
             }
- 
+
         }
 
         private void RefreshButton_Click(object sender, RoutedEventArgs e)
         {
-            this.Refresh(); 
+            this.Refresh();
         }
 
         private void Refresh()
@@ -955,7 +957,7 @@ namespace Witty
             Show();
             WindowState = m_storedWindowState;
         }
-        
+
         void exitMenuItem_Click(object sender, EventArgs e)
         {
             this.Close();

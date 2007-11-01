@@ -240,8 +240,7 @@ namespace TwitterLib
                     return sendMessageUrl;
             }
             set { sendMessageUrl = value; }
-        }
-        
+        }        
 
         /// <summary>
         /// The format of the results from the twitter API. Ex: .xml, .json, .rss, .atom. Defaults to ".xml"
