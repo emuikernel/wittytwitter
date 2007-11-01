@@ -1,6 +1,10 @@
 #summary Version History and Release Notes
 #labels Featured,Documentation
 
+= v0.1.5 (Upcoming Release) = 
+
+  * Escape key to minimize Witty
+
 = v0.1.5 Beta 2 (QA testing) = 
 
 _November 1, 2007_
