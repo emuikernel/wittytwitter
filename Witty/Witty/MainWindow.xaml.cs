@@ -629,6 +629,8 @@ namespace Witty
             else
             {
                 if (e.Key == Key.F5) { this.Refresh(); };
+
+                if (e.Key == Key.Escape) { this.WindowState = WindowState.Minimized; };
             }
         }
 
