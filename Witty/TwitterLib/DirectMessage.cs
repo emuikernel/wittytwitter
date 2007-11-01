@@ -29,7 +29,11 @@ namespace TwitterLib
         public DateTime DateCreated
         {
             get { return dateCreated; }
-            set { dateCreated = value; }
+            set
+            {
+                dateCreated = value;
+                UpdateRelativeTime();
+            }
         }
 
         private User sender;
@@ -54,6 +58,69 @@ namespace TwitterLib
         {
             get { return isNew; }
             set { isNew = value; }
+        }
+
+        private string relativeTime;
+
+        /// <summary>
+        /// How long ago the Direct Message was added based on DatedCreated and DateTime.Now
+        /// </summary>
+        public string RelativeTime
+        {
+            get
+            {
+                return relativeTime;
+            }
+            set
+            {
+                relativeTime = value;
+                OnPropertyChanged("Relativetime");
+            }
+        }
+
+        public void UpdateRelativeTime()
+        {
+            DateTime StatusCreatedDate = (DateTime)dateCreated;
+
+            TimeSpan ts = new TimeSpan(DateTime.Now.Ticks - StatusCreatedDate.Ticks);
+            double delta = ts.TotalSeconds;
+
+            string relativeTime = string.Empty;
+
+            if (delta == 1)
+            {
+                relativeTime = "a second ago";
+            }
+            else if (delta < 60)
+            {
+                relativeTime = ts.Seconds + " seconds ago";
+            }
+            else if (delta < 120)
+            {
+                relativeTime = "about a minute ago";
+            }
+            else if (delta < (45 * 60))
+            {
+                relativeTime = ts.Minutes + " minutes ago";
+            }
+            else if (delta < (90 * 60))
+            {
+                relativeTime = "about an hour ago";
+            }
+            else if (delta < (24 * 60 * 60))
+            {
+                relativeTime = "about " + ts.Hours + " hours ago";
+            }
+            else if (delta < (48 * 60 * 60))
+            {
+                relativeTime = "1 day ago";
+            }
+            else
+            {
+                relativeTime = ts.Days + " days ago";
+            }
+
+            RelativeTime = relativeTime;
         }
 
         #region INotifyPropertyChanged Members
