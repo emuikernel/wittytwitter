@@ -8,14 +8,13 @@
     xmlns:Witty="clr-namespace:Witty"
 	x:Class="Witty.MainWindow"
 	x:Name="Window"
-	Title="Witty 0.1.5"
+	Title="Witty 0.1.5 Beta 2"
 	Width="330" Height="570" 
     MinWidth="200" MinHeight="200"
     WindowStyle="SingleBorderWindow"
     Icon="AppIcon.ico"
     Witty:WindowSettings.Save="True"
     >
-
     <Window.Resources>
         <ResourceDictionary>
             <ResourceDictionary.MergedDictionaries>

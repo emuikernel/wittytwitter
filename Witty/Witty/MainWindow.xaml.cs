@@ -505,7 +505,7 @@ namespace Witty
                 }
                 else
                 {
-                    PlayStoryboard("CollapseToggleMessage");
+                    PlayStoryboard("CollapseMessage");
                     isMessageExpanded = false;
                 }
             }
@@ -577,6 +577,7 @@ namespace Witty
         #endregion
 
         #region Misc Methods and Event Handlers
+
         /// <summary>
         /// Checks for keyboard shortcuts
         /// </summary>
@@ -585,36 +586,50 @@ namespace Witty
         {
             if (Keyboard.Modifiers == ModifierKeys.Control)
             {
-                switch (e.Key)
+                if (isLoggedIn)
                 {
-                    case Key.U:
-                        ToggleUpdate();
-                        break;
-                    case Key.R:
-                        //reply to user
-                        if (null != TweetsListBox.SelectedItem)
-                        {
-                            Tweet currentTweet = (Tweet)TweetsListBox.SelectedItem;
+                    switch (e.Key)
+                    {
+                        case Key.U:
                             ToggleUpdate();
-                            TweetTextBox.Text = "";
-                            TweetTextBox.Text = "@" + currentTweet.User.ScreenName + " ";
-                            TweetTextBox.Select(TweetTextBox.Text.Length, 0);
-                        }
-                        break;
-                    case Key.O:
-                        showOptions();
-                        break;
-                    case Key.Q:
-                        App.Current.Shutdown();
-                        break;
-
+                            break;
+                        case Key.R:
+                            //reply to user
+                            if (null != TweetsListBox.SelectedItem)
+                            {
+                                Tweet currentTweet = (Tweet)TweetsListBox.SelectedItem;
+                                ToggleUpdate();
+                                TweetTextBox.Text = "";
+                                TweetTextBox.Text = "@" + currentTweet.User.ScreenName + " ";
+                                TweetTextBox.Select(TweetTextBox.Text.Length, 0);
+                            }
+                            break;
+                        case Key.O:
+                            showOptions();
+                            break;
+                        case Key.D1:
+                            Tabs.SelectedIndex = 0;
+                            break;
+                        case Key.D2:
+                            Tabs.SelectedIndex = 1;
+                            break;
+                        case Key.D3:
+                            Tabs.SelectedIndex = 2;
+                            break;
+                        case Key.D4:
+                            Tabs.SelectedIndex = 3;
+                            break;
+                    }
+                }
+                else
+                {
+                    if (e.Key == Key.Q) { App.Current.Shutdown(); };
                 }
             }
             else
             {
                 if (e.Key == Key.F5) { this.Refresh(); };
             }
-
         }
 
         private void RefreshButton_Click(object sender, RoutedEventArgs e)

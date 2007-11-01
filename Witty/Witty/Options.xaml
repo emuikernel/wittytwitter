@@ -6,7 +6,8 @@
 	x:Class="Witty.Options"
 	x:Name="Window"
 	Title="Options"
-	Width="325" Height="440" >
+	Width="325" Height="440" 
+    KeyDown="Window_OnKeyDown">
 
     <Window.Resources>
         <Witty:RoundConverter x:Key="RoundConverter"/>
