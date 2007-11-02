@@ -592,6 +592,17 @@ namespace Witty
                 {
                     switch (e.Key)
                     {
+                        case Key.D:
+                            //Direct message to user
+                            ToggleUpdate();
+                            TweetTextBox.Text = "";
+                            TweetTextBox.Text = "D ";
+                            if (null != TweetsListBox.SelectedItem)
+                            {
+                                TweetTextBox.Text += ((Tweet)TweetsListBox.SelectedItem).User.ScreenName;
+                            }
+                            TweetTextBox.Select(TweetTextBox.Text.Length, 0);
+                            break;
                         case Key.U:
                             ToggleUpdate();
                             break;
@@ -599,10 +610,9 @@ namespace Witty
                             //reply to user
                             if (null != TweetsListBox.SelectedItem)
                             {
-                                Tweet currentTweet = (Tweet)TweetsListBox.SelectedItem;
                                 ToggleUpdate();
                                 TweetTextBox.Text = "";
-                                TweetTextBox.Text = "@" + currentTweet.User.ScreenName + " ";
+                                TweetTextBox.Text = "@" + ((Tweet)TweetsListBox.SelectedItem).User.ScreenName +" ";
                                 TweetTextBox.Select(TweetTextBox.Text.Length, 0);
                             }
                             break;
@@ -610,15 +620,19 @@ namespace Witty
                             showOptions();
                             break;
                         case Key.D1:
+                            //show the "Recent" tab
                             Tabs.SelectedIndex = 0;
                             break;
                         case Key.D2:
+                            //show the "Replies" tab
                             Tabs.SelectedIndex = 1;
                             break;
                         case Key.D3:
+                            //show the "Users" tab
                             Tabs.SelectedIndex = 2;
                             break;
                         case Key.D4:
+                            //show the "Messages" tab
                             Tabs.SelectedIndex = 3;
                             break;
                     }
