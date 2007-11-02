@@ -858,6 +858,7 @@ namespace Witty
             binding.Source = this;
             binding.Mode = BindingMode.TwoWay;
             options.SetBinding(Options.TopmostProperty, binding);
+            options.Owner = this;
 
             bool? dialogResult = options.ShowDialog();
             switch (dialogResult)
