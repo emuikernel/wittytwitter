@@ -21,6 +21,6 @@ Currently the refresh interval is set to 2 minutes. In Witty v0.1.5 and later, t
 
 Make sure you have the Visual Studio 2005 extensions for .NET Framework 3.0 installed. http://www.microsoft.com/downloads/details.aspx?familyid=F54F5537-CC86-4BF5-AE44-F5A1E805680D&displaylang=en
 
-==#5 I want to help improve. What should I do?
+==#5 I want to help improve. What should I do?==
 
 Get involved in the Witty discussion group. Make patches to the source. Provide feedback in the Issues list. etc.
