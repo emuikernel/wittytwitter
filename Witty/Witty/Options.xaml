@@ -7,7 +7,9 @@
 	x:Name="Window"
 	Title="Options"
 	Width="325" Height="440" 
-    KeyDown="Window_OnKeyDown">
+    KeyDown="Window_OnKeyDown" 
+    WindowStartupLocation="CenterOwner" 
+    ShowInTaskbar="False">
 
     <Window.Resources>
         <Witty:RoundConverter x:Key="RoundConverter"/>
