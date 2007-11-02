@@ -3,7 +3,8 @@
     xmlns:aero="clr-namespace:Microsoft.Windows.Themes;assembly=PresentationFramework.Aero"
     xmlns:local="clr-namespace:Witty">
 
-    <local:BackgroundConverter x:Key="BackgroundConverter"/>
+    <!--<local:BackgroundConverter x:Key="BackgroundConverter"/>-->
+    <local:IndexConverter x:Key="IndexConverter"/>
 
     <LinearGradientBrush x:Key="PrimaryBackgroundBrush" StartPoint="0.5,0" EndPoint="0.5,1">
         <GradientStop Color="#FF7B7E80" Offset="0"/>
@@ -136,6 +137,8 @@
         <GradientStop Color="#FFC7E0FB" Offset="1"/>
     </LinearGradientBrush>
 
+    <SolidColorBrush x:Key="AlternatingBackgroundBrush" Color="#EAEDF1" />
+
     <Style x:Key="{x:Type ListBoxItem}" TargetType="ListBoxItem">
         <Setter Property="SnapsToDevicePixels" Value="true"/>
         <Setter Property="OverridesDefaultStyle" Value="true"/>
@@ -153,6 +156,9 @@
                         <!--<Trigger Property="IsSelected" Value="true">
                             <Setter Property="Background" Value="{StaticResource SelectedBackgroundBrush}"/>
                         </Trigger>-->
+                        <DataTrigger Binding="{Binding Index, Converter={StaticResource IndexConverter}}" Value="1">
+                            <Setter Property="Background" Value="{StaticResource AlternatingBackgroundBrush}"/>
+                        </DataTrigger>
                         <Trigger Property="IsMouseOver" Value="true">
                             <Setter Property="Background" Value="{StaticResource ListHoverBrush}"/>
                         </Trigger>
@@ -163,11 +169,11 @@
                 </ControlTemplate>
             </Setter.Value>
         </Setter>
-        <Setter Property="Background" >
+        <!--<Setter Property="Background" >
             <Setter.Value>
                 <Binding RelativeSource="{RelativeSource Self}" Converter="{StaticResource BackgroundConverter}"/>
             </Setter.Value>
-        </Setter>
+        </Setter>-->
     </Style>
 
     <DataTemplate x:Key="UserTimeLineTemplate">
