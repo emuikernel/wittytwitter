@@ -86,5 +86,31 @@ namespace Witty
 
         #endregion
     }
+
+    public sealed class IndexConverter : IValueConverter
+    {
+        #region IValueConverter Members
+
+        public object Convert(object value, Type targetType, object parameter, System.Globalization.CultureInfo culture)
+        {
+            int index = (int)value;
+
+            if (index % 2 == 0)
+            {
+                return 0;
+            }
+            else
+            {
+                return 1;
+            }
+        }
+
+        public object ConvertBack(object value, Type targetType, object parameter, System.Globalization.CultureInfo culture)
+        {
+            throw new NotImplementedException("The method or operation is not implemented.");
+        }
+
+        #endregion
+    }
 }
 

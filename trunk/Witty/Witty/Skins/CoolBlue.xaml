@@ -115,6 +115,8 @@
 
     <SolidColorBrush x:Key="HoverBrush" Color="#FFC4D8E3" />
 
+    <SolidColorBrush x:Key="AlternatingBackgroundBrush" Color="#EAEDF1" />
+
     <Style x:Key="{x:Type ListBoxItem}" TargetType="ListBoxItem">
         <Setter Property="SnapsToDevicePixels" Value="true"/>
         <Setter Property="OverridesDefaultStyle" Value="true"/>
@@ -124,7 +126,7 @@
                     <Border
 						x:Name="Border"
 						Padding="2"
-						SnapsToDevicePixels="true" 
+						SnapsToDevicePixels="true"
                         Background="{TemplateBinding Background}" BorderThickness="0,0,0,1" BorderBrush="{DynamicResource LightBorderBrush}">
                         <ContentPresenter />
                     </Border>
@@ -132,8 +134,11 @@
                         <!--<Trigger Property="IsSelected" Value="true">
                             <Setter Property="Background" Value="{StaticResource SelectedBackgroundBrush}"/>
                         </Trigger>-->
+                        <DataTrigger Binding="{Binding Index, Converter={StaticResource IndexConverter}}" Value="1">
+                            <Setter Property="Background" Value="{StaticResource AlternatingBackgroundBrush}"/>
+                        </DataTrigger>
                         <Trigger Property="IsMouseOver" Value="true">
-                            <Setter Property="Background" Value="{StaticResource HoverBrush}"/>
+                            <Setter Property="Background" Value="{StaticResource ListHoverBrush}"/>
                         </Trigger>
                         <Trigger Property="IsEnabled" Value="false">
                             <Setter Property="Foreground" Value="{StaticResource DisabledForegroundBrush}"/>
@@ -142,13 +147,13 @@
                 </ControlTemplate>
             </Setter.Value>
         </Setter>
-        <Setter Property="Background" >
+        <!--<Setter Property="Background" >
             <Setter.Value>
                 <Binding RelativeSource="{RelativeSource Self}" Converter="{StaticResource BackgroundConverter}"/>
             </Setter.Value>
-        </Setter>
+        </Setter>-->
     </Style>
-
+    
     <DataTemplate x:Key="UserTimeLineTemplate">
         <DataTemplate.Resources>
             <Storyboard x:Key="YellowFade">

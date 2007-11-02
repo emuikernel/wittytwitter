@@ -23,7 +23,8 @@ namespace TwitterLib
         private string text;
         private string source;
         private User user;
-        private bool isNew;	
+        private bool isNew;
+        private int index;
 
         #endregion
 
@@ -134,7 +135,27 @@ namespace TwitterLib
         public bool IsNew
         {
             get { return isNew; }
-            set { isNew = value; }
+            set
+            {
+                if (value != isNew)
+                {
+                    isNew = value;
+                    OnPropertyChanged("IsNew");
+                }
+            }
+        }
+
+        public int Index
+        {
+            get { return index; }
+            set
+            {
+                if (value != index)
+                {
+                    index = value;
+                    OnPropertyChanged("Index");
+                }
+            }
         }
 
         #endregion

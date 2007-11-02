@@ -227,6 +227,7 @@ namespace Witty
                 if (!tweets.Contains(tweet))
                 {
                     tweets.Insert(0, tweet);
+                    tweet.Index = tweets.Count;
                     tweet.IsNew = true;
                     tweetAdded++;
                 }
@@ -373,6 +374,7 @@ namespace Witty
                 if (!replies.Contains(reply))
                 {
                     replies.Insert(0, reply);
+                    reply.Index = replies.Count;
                     reply.IsNew = true;
                 }
                 else
