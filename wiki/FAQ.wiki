@@ -3,9 +3,11 @@
 
 = Frequently Asked Questions (FAQ) =
 
-==#1 Why did you build Twitter?==
+==#1 Why did you build Witty?==
 
-I built Twitter for several reasons. First, to hone my technical and design skills with WPF.  Secondly, to create a kickass Twitter client for Windows. And last but not least, to share with the community on how to build desktop applications with WPF.
+I started Witty for several reasons. First, to hone my technical and design skills with WPF.  Secondly, to create a kickass Twitter client for Windows. And last but not least, to share with the community on how to build desktop applications with WPF.
+
+There are several twitter clients done with Adobe AIR. Why not make one available in WPF?
 
 ==#2 What did you use to build Witty?==
 
