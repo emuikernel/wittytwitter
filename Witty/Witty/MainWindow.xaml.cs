@@ -241,7 +241,7 @@ namespace Witty
             if (tweetAdded > 0 && AppSettings.PlaySounds)
             {
                 // Play tweets found sound
-                SoundPlayer player = new SoundPlayer("alert.wav");
+                SoundPlayer player = new SoundPlayer(Witty.Properties.Resources.alert);
                 player.Play();
 
                 //MediaElement media = new MediaElement();
@@ -271,8 +271,10 @@ namespace Witty
         {
             try
             {
-                //TODO parse the text here and tiny up any URLs found.
-                Tweet tweet = twitter.AddTweet(tweetText);
+                //parse the text here and tiny up any URLs found.
+                TinyUrlHelper tinyUrls = new TinyUrlHelper();
+                string tinyfiedText = tinyUrls.ConvertUrlsToTinyUrls(tweetText);             
+                Tweet tweet = twitter.AddTweet(tinyfiedText);
 
                 // Schedule the update function in the UI thread.
                 LayoutRoot.Dispatcher.BeginInvoke(
