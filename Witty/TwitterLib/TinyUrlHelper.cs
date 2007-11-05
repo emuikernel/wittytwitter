@@ -29,25 +29,33 @@ namespace TwitterLib
 
       public string GetNewTinyUrl(string sourceUrl)
       {
-         // tinyurl doesn't like urls w/o protocols so we'll ensure we have at least http
-         string requestUrl = BuildRequestUrl(EnsureMinimalProtocol(sourceUrl));
-         WebRequest request = HttpWebRequest.Create(requestUrl);
+          // fallback will be source url
+          string result = sourceUrl;
+          //Added 11/3/2007 scottckoon
+          //19 is the shortest a tinyURl can be (http://tinyurl.com/a)
+          //so if the sourceUrl is shorter than that, don't make a request to TinyURL
+          if (sourceUrl.Length > 19)
+          {
+              // tinyurl doesn't like urls w/o protocols so we'll ensure we have at least http
+              string requestUrl = BuildRequestUrl(EnsureMinimalProtocol(sourceUrl));
+              WebRequest request = HttpWebRequest.Create(requestUrl);
 
-         // fallback will be source url
-         string result = sourceUrl;
-         try
-         {
-            using (Stream responseStream = request.GetResponse().GetResponseStream())
-            {
-               StreamReader reader = new StreamReader(responseStream, Encoding.ASCII);
-               result = reader.ReadToEnd();
-            }
-         }
-         catch
-         {
-            // eat it and return original url
-         }
 
+              try
+              {
+                  using (Stream responseStream = request.GetResponse().GetResponseStream())
+                  {
+                      StreamReader reader = new StreamReader(responseStream, Encoding.ASCII);
+                      result = reader.ReadToEnd();
+                  }
+              }
+              catch
+              {
+                  // eat it and return original url
+              }
+          }
+          //scottckoon - It doesn't make sense to return a TinyURL that is longer than the original.
+          if (result.Length > sourceUrl.Length) { result = sourceUrl; }
          return result;
       }
 
