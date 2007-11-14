@@ -40,8 +40,8 @@ namespace Witty
             SkinsComboBox.ItemsSource = App.Skins;
 
             // select the current skin
-            if (AppSettings.SkinIndex >= 0)
-                SkinsComboBox.SelectedIndex = AppSettings.SkinIndex;
+            if (!string.IsNullOrEmpty(AppSettings.Skin))
+                SkinsComboBox.SelectedItem = AppSettings.Skin;
 
             isSettingSkin = false;
         }
@@ -85,17 +85,14 @@ namespace Witty
 
         private void SkinsComboBox_SelectionChanged(object sender, SelectionChangedEventArgs e)
         {
-            ComboBox skinsComboBox = (ComboBox)sender;
-            if (!isSettingSkin && skinsComboBox.SelectedIndex >= 0)
+            if (!isSettingSkin && e.AddedItems.Count >= 0)
             {
-                string skin = App.Skins[skinsComboBox.SelectedIndex];
-                ResourceDictionary rd;
-                rd = Application.LoadComponent(new Uri(skin, UriKind.Relative)) as ResourceDictionary;
+                string skin = e.AddedItems[0] as string;
+                ResourceDictionary rd = Application.LoadComponent(new Uri(skin, UriKind.Relative)) as ResourceDictionary;
                 Application.Current.Resources = rd;
 
                 // save the skin setting
                 AppSettings.Skin = skin;
-                AppSettings.SkinIndex = ((ComboBox)sender).SelectedIndex;
                 AppSettings.Save();
             }
         }

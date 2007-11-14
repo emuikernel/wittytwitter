@@ -2,8 +2,9 @@
     xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
     xmlns:local="clr-namespace:Witty">
 
-    <local:BackgroundConverter x:Key="BackgroundConverter"/>
-
+    <!--<local:BackgroundConverter x:Key="BackgroundConverter"/>-->
+    <local:IndexConverter x:Key="IndexConverter"/>
+  
     <SolidColorBrush x:Key="PrimaryBackgroundBrush" Color="#FF52626F"/>
     
     <SolidColorBrush x:Key="SecondaryBackgroundBrush" Color="#FFA8B9C6"/>
