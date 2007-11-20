@@ -35,7 +35,7 @@ namespace Witty
 
                 foreach (string word in words)
                 {
-                    if (StringUtils.IsHyperlink(word))
+                    if (StringHelper.IsHyperlink(word))
                     {
                         try
                         {

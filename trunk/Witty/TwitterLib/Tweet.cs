@@ -97,7 +97,7 @@ namespace TwitterLib
 
         public string Hyperlink
         {
-            get { return StringUtils.GetHyperlink(text); }
+            get { return StringHelper.GetHyperlink(text); }
         }
 
         /// <summary>

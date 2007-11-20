@@ -4,13 +4,6 @@ using System.Text;
 
 namespace TwitterLib
 {
-    class MyException : Exception
-    {
-        public MyException(string str)
-        {
-        }
-    }
-
     public class RateLimitException : Exception
     {
         public RateLimitException()
