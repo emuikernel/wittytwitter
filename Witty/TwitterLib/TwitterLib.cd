@@ -1,0 +1,90 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<ClassDiagram MajorVersion="1" MinorVersion="1">
+  <Font Name="Segoe UI" Size="9" />
+  <Class Name="TwitterLib.DirectMessage" BaseTypeListCollapsed="true">
+    <Position X="7.75" Y="0.5" Width="1.5" />
+    <TypeIdentifier>
+      <FileName>DirectMessage.cs</FileName>
+      <HashCode>AAgCAAAAAAAAgAAAoIAgAAAIoAAAAAQIAEAECABIAgA=</HashCode>
+    </TypeIdentifier>
+    <Lollipop Position="0.2" Collapsed="true" />
+  </Class>
+  <Class Name="TwitterLib.DirectMessages">
+    <Position X="7.75" Y="6" Width="1.5" />
+    <TypeIdentifier>
+      <FileName>DirectMessage.cs</FileName>
+      <HashCode>AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA=</HashCode>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="TwitterLib.RateLimitException">
+    <Position X="9.5" Y="4.25" Width="1.5" />
+    <TypeIdentifier>
+      <FileName>Exceptions.cs</FileName>
+      <HashCode>AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA=</HashCode>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="TwitterLib.TinyUrlHelper">
+    <Position X="9.5" Y="2" Width="1.5" />
+    <TypeIdentifier>
+      <FileName>TinyUrlHelper.cs</FileName>
+      <HashCode>AAAAgAAAQAAAAAAAAAAAAAAAAAAAAAAACUAAAAAAAAA=</HashCode>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="TwitterLib.StringUtils">
+    <Position X="9.5" Y="0.5" Width="1.5" />
+    <TypeIdentifier>
+      <FileName>StringUtils.cs</FileName>
+      <HashCode>AEAAAAAAAAAAAAAAAgAAAAAAAAAAAAAAAAAAAAAAAAA=</HashCode>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="TwitterLib.Tweet" BaseTypeListCollapsed="true">
+    <Position X="4.25" Y="0.5" Width="1.5" />
+    <TypeIdentifier>
+      <FileName>Tweet.cs</FileName>
+      <HashCode>AgADAAAAAgAAAAIAoAAgAAAIoAAAAAQIAEEECABBAwA=</HashCode>
+    </TypeIdentifier>
+    <Lollipop Position="0.2" Collapsed="true" />
+  </Class>
+  <Class Name="TwitterLib.Tweets">
+    <Position X="4.25" Y="6.5" Width="1.5" />
+    <TypeIdentifier>
+      <FileName>Tweet.cs</FileName>
+      <HashCode>AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAIAAAAAo=</HashCode>
+    </TypeIdentifier>
+    <NestedTypes>
+      <Class Name="TwitterLib.Tweets.Const" Collapsed="true">
+        <TypeIdentifier>
+          <NewMemberFileName>Tweet.cs</NewMemberFileName>
+        </TypeIdentifier>
+      </Class>
+    </NestedTypes>
+  </Class>
+  <Class Name="TwitterLib.TwitterNet">
+    <Position X="2.5" Y="0.5" Width="1.5" />
+    <TypeIdentifier>
+      <FileName>TwitterNet.cs</FileName>
+      <HashCode>AIAAAggoIAQACCBgCCCICTEAggkAEACiAQEQBwAEAAI=</HashCode>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="TwitterLib.User">
+    <Position X="6" Y="0.5" Width="1.5" />
+    <TypeIdentifier>
+      <FileName>User.cs</FileName>
+      <HashCode>IgACUABAABEgQIAJaAIACAwCCABEAAxASAAEACIAAkA=</HashCode>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="TwitterLib.Users">
+    <Position X="6" Y="8.75" Width="1.5" />
+    <TypeIdentifier>
+      <FileName>User.cs</FileName>
+      <HashCode>AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA=</HashCode>
+    </TypeIdentifier>
+  </Class>
+  <Enum Name="TwitterLib.Timeline">
+    <Position X="9.5" Y="6" Width="1.5" />
+    <TypeIdentifier>
+      <FileName>TwitterNet.cs</FileName>
+      <HashCode>AAABAAAABAAAAAAAAAAAAAAAAAAAAgAAAAAAAAAIQAA=</HashCode>
+    </TypeIdentifier>
+  </Enum>
+</ClassDiagram>

@@ -353,6 +353,86 @@ namespace TwitterLib
             return RetrieveTimeline(Timeline.User, "", userId);
         }
 
+        public Users GetFriends()
+        {
+            Users users = new Users();
+
+            // Create the web request
+            HttpWebRequest request = WebRequest.Create(FriendsUrl + Format) as HttpWebRequest;
+
+            // Add credendtials to request  
+            request.Credentials = new NetworkCredential(username, password);
+
+            try
+            {
+                // Get the Response  
+                using (HttpWebResponse response = request.GetResponse() as HttpWebResponse)
+                {
+                    // Get the response stream  
+                    StreamReader reader = new StreamReader(response.GetResponseStream());
+
+                    // Create a new XmlDocument  
+                    XmlDocument doc = new XmlDocument();
+
+                    // Load data  
+                    doc.Load(reader);
+
+                    // Get statuses with XPath  
+                    XmlNodeList nodes = doc.SelectNodes("/users/user");
+
+                    foreach (XmlNode node in nodes)
+                    {
+                        User user = new User();
+                        user.Id = int.Parse(node.SelectSingleNode("id").InnerText);
+                        user.Name = node.SelectSingleNode("name").InnerText;
+                        user.ScreenName = node.SelectSingleNode("screen_name").InnerText;
+                        user.ImageUrl = node.SelectSingleNode("profile_image_url").InnerText;
+                        user.SiteUrl = node.SelectSingleNode("url").InnerText;
+                        user.Location = node.SelectSingleNode("location").InnerText;
+                        user.Description = node.SelectSingleNode("description").InnerText;
+
+                        Tweet tweet = new Tweet();
+                        XmlNode statusNode = node.SelectSingleNode("status");
+
+                        users.Add(user);
+                    }
+
+                }
+            }
+            catch (WebException webExcp)
+            {
+                // Get the WebException status code.
+                WebExceptionStatus status = webExcp.Status;
+                // If status is WebExceptionStatus.ProtocolError, 
+                //   there has been a protocol error and a WebResponse 
+                //   should exist. Display the protocol error.
+                if (status == WebExceptionStatus.ProtocolError)
+                {
+                    // Get HttpWebResponse so that you can check the HTTP status code.
+                    HttpWebResponse httpResponse = (HttpWebResponse)webExcp.Response;
+
+                    switch ((int)httpResponse.StatusCode)
+                    {
+                        case 304:  // 304 Not modified = no new tweets so ignore error.
+                            break;
+                        case 400: // rate limit exceeded
+                            throw new RateLimitException("Rate limit exceeded. Clients may not make more than 70 requests per hour. Please try again in a few minutes.");
+                        case 401: // unauthorized
+                            throw new SecurityException("Not Authorized.");
+                        default:
+                            throw webExcp;
+                    }
+                }
+            }
+            return users;
+        }
+
+        public Tweets GetReplies()
+        {
+            return RetrieveTimeline(Timeline.Replies);
+        }
+
+
         /// <summary>
         /// Post new tweet to Twitter
         /// </summary>
@@ -511,98 +591,6 @@ namespace TwitterLib
             }
 
             return user;
-        }
-
-        public Users GetFriends()
-        {
-            Users users = new Users();
-
-            // Create the web request
-            HttpWebRequest request = WebRequest.Create(FriendsUrl + Format) as HttpWebRequest;
-
-            // Add credendtials to request  
-            request.Credentials = new NetworkCredential(username, password);
-
-            try
-            {
-                // Get the Response  
-                using (HttpWebResponse response = request.GetResponse() as HttpWebResponse)
-                {
-                    // Get the response stream  
-                    StreamReader reader = new StreamReader(response.GetResponseStream());
-
-                    // Create a new XmlDocument  
-                    XmlDocument doc = new XmlDocument();
-
-                    // Load data  
-                    doc.Load(reader);
-
-                    // Get statuses with XPath  
-                    XmlNodeList nodes = doc.SelectNodes("/users/user");
-
-                    foreach (XmlNode node in nodes)
-                    {
-                        User user = new User();
-                        user.Id = int.Parse(node.SelectSingleNode("id").InnerText);
-                        user.Name = node.SelectSingleNode("name").InnerText;
-                        user.ScreenName = node.SelectSingleNode("screen_name").InnerText;
-                        user.ImageUrl = node.SelectSingleNode("profile_image_url").InnerText;
-                        user.SiteUrl = node.SelectSingleNode("url").InnerText;
-                        user.Location = node.SelectSingleNode("location").InnerText;
-                        user.Description = node.SelectSingleNode("description").InnerText;
-
-                        Tweet tweet = new Tweet();
-                        XmlNode statusNode = node.SelectSingleNode("status");
-
-                        //string dateString = statusNode.SelectSingleNode("created_at").InnerText;
-                        //if (!string.IsNullOrEmpty(dateString))
-                        //{
-                        //    tweet.DateCreated = DateTime.ParseExact(
-                        //        dateString,
-                        //        twitterCreatedAtDateFormat,
-                        //        CultureInfo.CurrentCulture, DateTimeStyles.AllowWhiteSpaces);
-                        //}
-                        //tweet.Id = double.Parse(statusNode.SelectSingleNode("id").InnerText);
-                        //tweet.Text = HttpUtility.HtmlDecode(statusNode.SelectSingleNode("text").InnerText);
-                        //tweet.Source = statusNode.SelectSingleNode("source").InnerText;
-                        //user.Tweet = tweet;
-
-                        users.Add(user);
-                    }
-
-                }
-            }
-            catch (WebException webExcp)
-            {
-                // Get the WebException status code.
-                WebExceptionStatus status = webExcp.Status;
-                // If status is WebExceptionStatus.ProtocolError, 
-                //   there has been a protocol error and a WebResponse 
-                //   should exist. Display the protocol error.
-                if (status == WebExceptionStatus.ProtocolError)
-                {
-                    // Get HttpWebResponse so that you can check the HTTP status code.
-                    HttpWebResponse httpResponse = (HttpWebResponse)webExcp.Response;
-
-                    switch ((int)httpResponse.StatusCode)
-                    {
-                        case 304:  // 304 Not modified = no new tweets so ignore error.
-                            break;
-                        case 400: // rate limit exceeded
-                            throw new RateLimitException("Rate limit exceeded. Clients may not make more than 70 requests per hour. Please try again in a few minutes.");
-                        case 401: // unauthorized
-                            throw new SecurityException("Not Authorized.");
-                        default:
-                            throw webExcp;
-                    }
-                }
-            }
-            return users;
-        }
-
-        public Tweets GetReplies()
-        {
-            return RetrieveTimeline(Timeline.Replies);
         }
 
         public DirectMessages GetMessages()
