@@ -145,13 +145,16 @@ namespace TwitterLib
 
         public bool Equals(DirectMessage other)
         {
+            if (other == null)
+                throw new ArgumentNullException("other");
+            
             return (this.Id == other.Id);
         }
 
         #endregion
     }
 
-    public class DirectMessages : ObservableCollection<DirectMessage>
+    public class DirectMessageCollection : ObservableCollection<DirectMessage>
     {
     }
 }

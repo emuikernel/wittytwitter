@@ -6,6 +6,7 @@ using System.Resources;
 using System.Globalization;
 using System.Windows;
 using System.Runtime.InteropServices;
+using System;
 
 #endregion
 
@@ -21,6 +22,7 @@ using System.Runtime.InteropServices;
 [assembly: AssemblyTrademark("")]
 [assembly: AssemblyCulture("")]
 [assembly: ComVisible(false)]
+[assembly: CLSCompliant(true)]
 
 //In order to begin building localizable applications, set 
 //<UICulture>CultureYouAreCodingWith</UICulture> in your .csproj file
