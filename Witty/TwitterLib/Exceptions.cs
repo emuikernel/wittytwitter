@@ -1,9 +1,11 @@
 using System;
 using System.Collections.Generic;
 using System.Text;
+using System.Runtime.Serialization;
 
 namespace TwitterLib
 {
+    [Serializable]
     public class RateLimitException : Exception
     {
         public RateLimitException()
@@ -16,6 +18,10 @@ namespace TwitterLib
 
         public RateLimitException(string message, Exception inner) : base(message, inner)
         {
+        }
+
+        protected RateLimitException(SerializationInfo info, StreamingContext context) : base(info, context) 
+        { 
         }
     }
 }

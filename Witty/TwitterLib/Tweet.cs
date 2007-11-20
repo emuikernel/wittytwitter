@@ -186,6 +186,9 @@ namespace TwitterLib
         /// </summary>
         public bool Equals(Tweet other)
         {
+            if (other == null)
+                throw new ArgumentNullException("other");
+
             return (this.Id == other.Id);
         }
 
@@ -244,7 +247,7 @@ namespace TwitterLib
     /// Collection of Tweets
     /// </summary>
     [Serializable]
-    public class Tweets : ObservableCollection<Tweet>
+    public class TweetCollection : ObservableCollection<Tweet>
     {
         #region Class Constants
 
@@ -310,15 +313,15 @@ namespace TwitterLib
         /// <summary>
         /// Load the list of Tweets from disk
         /// </summary>
-        public static Tweets LoadFromDisk()
+        public static TweetCollection LoadFromDisk()
         {
             if (!File.Exists(SaveFileAbsolutePath))
-                return new Tweets();
+                return new TweetCollection();
 
-            Tweets tweets;
+            TweetCollection tweets;
 
             XmlReader xmlReader = XmlReader.Create(SaveFileAbsolutePath);
-            tweets = XamlReader.Load(xmlReader) as Tweets;
+            tweets = XamlReader.Load(xmlReader) as TweetCollection;
             xmlReader.Close();
 
             return tweets;

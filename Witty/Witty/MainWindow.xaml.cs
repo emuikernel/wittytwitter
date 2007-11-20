@@ -102,18 +102,18 @@ namespace Witty
         #region Fields and Properties
 
         // Main collection of tweets
-        private Tweets tweets = new Tweets();
+        private TweetCollection tweets = new TweetCollection();
 
         // Main collection of replies
-        private Tweets replies = new Tweets();
+        private TweetCollection replies = new TweetCollection();
 
         private DateTime repliesLastUpdated;
 
         // Main collection of user Tweets
-        private Tweets userTweets = new Tweets();
+        private TweetCollection userTweets = new TweetCollection();
 
         // Main collection of direct messages
-        private DirectMessages messages = new DirectMessages();
+        private DirectMessageCollection messages = new DirectMessageCollection();
 
         private DateTime messagesLastUpdated;
 
@@ -129,10 +129,10 @@ namespace Witty
         // Delegates for placing jobs onto the thread dispatcher.  
         // Used for making asynchronous calls to Twitter so that the UI does not lock up.
         private delegate void NoArgDelegate();
-        private delegate void OneArgDelegate(Tweets arg);
+        private delegate void OneArgDelegate(TweetCollection arg);
         private delegate void OneStringArgDelegate(string arg);
         private delegate void AddTweetUpdateDelegate(Tweet arg);
-        private delegate void MessagesDelegate(DirectMessages arg);
+        private delegate void MessagesDelegate(DirectMessageCollection arg);
         private delegate void SendMessageDelegate(string user, string text);
 
         // Settings used by the application
@@ -211,7 +211,7 @@ namespace Witty
             }
         }
 
-        private void UpdateUserInterface(Tweets newTweets)
+        private void UpdateUserInterface(TweetCollection newTweets)
         {
             DateTime lastUpdated = DateTime.Now;
             StatusTextBlock.Text = "Last Updated: " + lastUpdated.ToLongTimeString();
@@ -365,7 +365,7 @@ namespace Witty
             }
         }
 
-        private void UpdateRepliesInterface(Tweets newReplies)
+        private void UpdateRepliesInterface(TweetCollection newReplies)
         {
             repliesLastUpdated = DateTime.Now;
             StatusTextBlock.Text = "Replies Updated: " + repliesLastUpdated.ToLongTimeString();
@@ -414,7 +414,7 @@ namespace Witty
                 // Schedule the update function in the UI thread.
                 LayoutRoot.Dispatcher.BeginInvoke(
                     System.Windows.Threading.DispatcherPriority.Normal,
-                    new MessagesDelegate(UpdateMessagesInterface), twitter.GetMessages());
+                    new MessagesDelegate(UpdateMessagesInterface), twitter.RetrieveMessages());
             }
             catch (WebException ex)
             {
@@ -424,7 +424,7 @@ namespace Witty
             }
         }
 
-        private void UpdateMessagesInterface(DirectMessages newMessages)
+        private void UpdateMessagesInterface(DirectMessageCollection newMessages)
         {
             messagesLastUpdated = DateTime.Now;
             StatusTextBlock.Text = "Messages Updated: " + messagesLastUpdated.ToLongTimeString();
@@ -553,7 +553,7 @@ namespace Witty
             }
         }
 
-        private void UpdateUsersTimelineInterface(Tweets newTweets)
+        private void UpdateUsersTimelineInterface(TweetCollection newTweets)
         {
             StatusTextBlock.Text = displayUser + "'s Timeline Updated: " + repliesLastUpdated.ToLongTimeString();
 

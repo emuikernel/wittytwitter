@@ -157,7 +157,7 @@ namespace TwitterLib
     }
 
     [Serializable]
-    public class Users : ObservableCollection<User>
+    public class UserCollection : ObservableCollection<User>
     {
     }
 }

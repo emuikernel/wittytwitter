@@ -305,7 +305,7 @@ namespace TwitterLib
         /// <summary>
         /// Retrieves the public timeline
         /// </summary>
-        public Tweets GetPublicTimeline()
+        public TweetCollection GetPublicTimeline()
         {
             return RetrieveTimeline(Timeline.Public);
         }
@@ -313,7 +313,7 @@ namespace TwitterLib
         /// <summary>
         /// Retrieves the public timeline. Narrows the result to after the since date.
         /// </summary>
-        public Tweets GetPublicTimeline(string since)
+        public TweetCollection GetPublicTimeline(string since)
         {
             return RetrieveTimeline(Timeline.Public, since);
         }
@@ -321,7 +321,7 @@ namespace TwitterLib
         /// <summary>
         /// Retrieves the friends timeline
         /// </summary>
-        public Tweets GetFriendsTimeline()
+        public TweetCollection GetFriendsTimeline()
         {
             if (!string.IsNullOrEmpty(username))
                 return RetrieveTimeline(Timeline.Friends);
@@ -332,7 +332,7 @@ namespace TwitterLib
         /// <summary>
         /// Retrieves the friends timeline. Narrows the result to after the since date.
         /// </summary>
-        public Tweets GetFriendsTimeline(string since)
+        public TweetCollection GetFriendsTimeline(string since)
         {
             if (!string.IsNullOrEmpty(username))
                 return RetrieveTimeline(Timeline.Friends, since);
@@ -343,19 +343,19 @@ namespace TwitterLib
         /// <summary>
         /// Retrieves the friends timeline. Narrows the result to after the since date.
         /// </summary>
-        public Tweets GetFriendsTimeline(string since, string userId)
+        public TweetCollection GetFriendsTimeline(string since, string userId)
         {
-            return RetrieveTimeline(Timeline.Friends, string.Empty, userId);
+            return RetrieveTimeline(Timeline.Friends, since, userId);
         }
 
-        public Tweets GetUserTimeline(string userId)
+        public TweetCollection GetUserTimeline(string userId)
         {
             return RetrieveTimeline(Timeline.User, "", userId);
         }
 
-        public Users GetFriends()
+        public UserCollection GetFriends()
         {
-            Users users = new Users();
+            UserCollection users = new UserCollection();
 
             // Create the web request
             HttpWebRequest request = WebRequest.Create(FriendsUrl + Format) as HttpWebRequest;
@@ -391,9 +391,6 @@ namespace TwitterLib
                         user.Location = node.SelectSingleNode("location").InnerText;
                         user.Description = node.SelectSingleNode("description").InnerText;
 
-                        Tweet tweet = new Tweet();
-                        XmlNode statusNode = node.SelectSingleNode("status");
-
                         users.Add(user);
                     }
 
@@ -420,14 +417,14 @@ namespace TwitterLib
                         case 401: // unauthorized
                             throw new SecurityException("Not Authorized.");
                         default:
-                            throw webExcp;
+                            throw;
                     }
                 }
             }
             return users;
         }
 
-        public Tweets GetReplies()
+        public TweetCollection GetReplies()
         {
             return RetrieveTimeline(Timeline.Replies);
         }
@@ -583,19 +580,19 @@ namespace TwitterLib
                         case 401: // unauthorized
                             return null;
                         default:
-                            throw webExcp;
+                            throw;
                     }
                 }
                 else
-                    throw webExcp;
+                    throw;
             }
 
             return user;
         }
 
-        public DirectMessages GetMessages()
+        public DirectMessageCollection RetrieveMessages()
         {
-            DirectMessages messages = new DirectMessages();
+            DirectMessageCollection messages = new DirectMessageCollection();
 
             // Create the web request
             HttpWebRequest request = WebRequest.Create(DirectMessagesUrl + Format) as HttpWebRequest;
@@ -680,7 +677,7 @@ namespace TwitterLib
                         case 401: // unauthorized
                             throw new SecurityException("Not Authorized.");
                         default:
-                            throw webExcp;
+                            throw;
                     }
                 }
             }
@@ -738,7 +735,7 @@ namespace TwitterLib
                         case 401: // unauthorized
                             throw new SecurityException("Not Authorized.");
                         default:
-                            throw webExcp;
+                            throw;
                     }
                 }
             }
@@ -752,7 +749,7 @@ namespace TwitterLib
         /// Retrieves the specified timeline from Twitter
         /// </summary>
         /// <returns>Collection of Tweets</returns>
-        private Tweets RetrieveTimeline(Timeline timeline)
+        private TweetCollection RetrieveTimeline(Timeline timeline)
         {
             return RetrieveTimeline(timeline, string.Empty);
         }
@@ -761,7 +758,7 @@ namespace TwitterLib
         /// Retrieves the specified timeline from Twitter
         /// </summary>
         /// <returns>Collection of Tweets</returns>
-        private Tweets RetrieveTimeline(Timeline timeline, string since)
+        private TweetCollection RetrieveTimeline(Timeline timeline, string since)
         {
             return RetrieveTimeline(timeline, since, string.Empty);
         }
@@ -773,9 +770,9 @@ namespace TwitterLib
         /// <param name="since"></param>
         /// <param name="userId"></param>
         /// <returns>Collection of Tweets. Twitter limits the max to 20.</returns>
-        private Tweets RetrieveTimeline(Timeline timeline, string since, string userId)
+        private TweetCollection RetrieveTimeline(Timeline timeline, string since, string userId)
         {
-            Tweets tweets = new Tweets();
+            TweetCollection tweets = new TweetCollection();
 
             string timelineUrl = string.Empty;
 
@@ -906,7 +903,7 @@ namespace TwitterLib
                         case 400: // rate limit exceeded
                             throw new RateLimitException("Rate limit exceeded. Clients may not make more than 70 requests per hour. Please try again in a few minutes.");
                         default:
-                            throw webExcp;
+                            throw;
                     }
                 }
             }
