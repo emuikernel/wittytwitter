@@ -2,6 +2,9 @@ using System.Text.RegularExpressions;
 
 namespace TwitterLib
 {
+    /// <summary>
+    /// String related static methods
+    /// </summary>
     public sealed class StringHelper
     {
         private StringHelper() { }

@@ -6,6 +6,9 @@ using System.Text.RegularExpressions;
 
 namespace TwitterLib
 {
+    /// <summary>
+    /// Wrapper for interacting with TinyUrl API
+    /// </summary>
     public class TinyUrlHelper
     {
         public string ConvertUrlsToTinyUrls(string text)
