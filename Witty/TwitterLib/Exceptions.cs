@@ -3,6 +3,9 @@ using System.Runtime.Serialization;
 
 namespace TwitterLib
 {
+    /// <summary>
+    /// Custom Exception when the 70/hour rate limit for authenticated Twitter API calls have been hit.
+    /// </summary>
     [Serializable]
     public class RateLimitException : Exception
     {

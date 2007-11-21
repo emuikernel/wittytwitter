@@ -10,7 +10,7 @@ using System.Xml;
 namespace TwitterLib
 {
     /// <summary>
-    /// .NET wrapper for Twitter API calls
+    /// .NET wrapper for interacting with the Twitter API
     /// </summary>
     public class TwitterNet
     {
@@ -764,9 +764,6 @@ namespace TwitterLib
         /// <summary>
         /// The Main function for interfacing with the Twitter API
         /// </summary>
-        /// <param name="timeline"></param>
-        /// <param name="since"></param>
-        /// <param name="userId"></param>
         /// <returns>Collection of Tweets. Twitter limits the max to 20.</returns>
         private TweetCollection RetrieveTimeline(Timeline timeline, string since, string userId)
         {
@@ -805,9 +802,7 @@ namespace TwitterLib
 
                 // Go back a minute to compensate for latency.
                 sinceDate = sinceDate.AddMinutes(-1);
-
                 string sinceDateString = sinceDate.ToString(twitterSinceDateFormat);
-
                 timelineUrl = timelineUrl + "?since=" + sinceDateString;
             }
             else
