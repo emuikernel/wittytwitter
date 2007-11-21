@@ -1,10 +1,8 @@
 using System;
-using System.Collections.Generic;
-using System.Text;
-using System.Windows.Controls;
 using System.Windows;
-using TwitterLib;
+using System.Windows.Controls;
 using System.Windows.Documents;
+using TwitterLib;
 
 namespace Witty
 {

@@ -1,18 +1,14 @@
 ﻿using System;
-using System.IO;
+using System.ComponentModel;
+using System.Media;
 using System.Net;
 using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Data;
 using System.Windows.Input;
-using System.Windows.Media;
 using System.Windows.Media.Animation;
-using System.Windows.Navigation;
-using TwitterLib;
 using System.Windows.Threading;
-using System.ComponentModel;
-using System.Windows.Media.Imaging;
-using System.Media;
+using TwitterLib;
 
 namespace Witty
 {
@@ -273,7 +269,7 @@ namespace Witty
             {
                 //parse the text here and tiny up any URLs found.
                 TinyUrlHelper tinyUrls = new TinyUrlHelper();
-                string tinyfiedText = tinyUrls.ConvertUrlsToTinyUrls(tweetText);             
+                string tinyfiedText = tinyUrls.ConvertUrlsToTinyUrls(tweetText);
                 Tweet tweet = twitter.AddTweet(tinyfiedText);
 
                 // Schedule the update function in the UI thread.
@@ -614,7 +610,7 @@ namespace Witty
                             {
                                 ToggleUpdate();
                                 TweetTextBox.Text = "";
-                                TweetTextBox.Text = "@" + ((Tweet)TweetsListBox.SelectedItem).User.ScreenName +" ";
+                                TweetTextBox.Text = "@" + ((Tweet)TweetsListBox.SelectedItem).User.ScreenName + " ";
                                 TweetTextBox.Select(TweetTextBox.Text.Length, 0);
                             }
                             break;

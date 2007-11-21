@@ -1,11 +1,9 @@
 using System;
-using System.IO;
 using System.Collections.ObjectModel;
-using System.Xml.Serialization;
 using System.ComponentModel;
-using System.Xml;
+using System.IO;
 using System.Windows.Markup;
-using System.Windows.Documents;
+using System.Xml;
 
 namespace TwitterLib
 {

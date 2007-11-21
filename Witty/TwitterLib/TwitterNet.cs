@@ -1,12 +1,11 @@
 using System;
-using System.Collections.Generic;
-using System.Xml;
-using System.Net;
-using System.IO;
 using System.Globalization;
-using System.Web;
-using System.Text.RegularExpressions;
+using System.IO;
+using System.Net;
 using System.Security;
+using System.Text.RegularExpressions;
+using System.Web;
+using System.Xml;
 
 namespace TwitterLib
 {
