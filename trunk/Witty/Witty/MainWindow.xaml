@@ -1,44 +1,27 @@
-﻿<Window
-  xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
-  xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
-  xmlns:d="http://schemas.microsoft.com/expression/blend/2006"
-  xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
-  mc:Ignorable="d"
-  xmlns:TwitterLib="clr-namespace:TwitterLib;assembly=TwitterLib"
-  xmlns:Witty="clr-namespace:Witty"
-  x:Class="Witty.MainWindow"
-  x:Name="Window"
-  Title="Witty 0.1.5"
-  Width="330" Height="570"
-  MinWidth="200" MinHeight="200"
-  WindowStyle="SingleBorderWindow"
-  Icon="AppIcon.ico"
-  Witty:WindowSettings.Save="True"
-  KeyDown="MainWindow_OnKeyDown"
-  >
+﻿<Window xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation" xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml" xmlns:d="http://schemas.microsoft.com/expression/blend/2006" xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" mc:Ignorable="d" xmlns:TwitterLib="clr-namespace:TwitterLib;assembly=TwitterLib" xmlns:Witty="clr-namespace:Witty" x:Class="Witty.MainWindow" x:Name="Window" Title="Witty 0.1.5" Width="330" Height="570" MinWidth="200" MinHeight="200" WindowStyle="SingleBorderWindow" Icon="AppIcon.ico" Witty:WindowSettings.Save="True" KeyDown="MainWindow_OnKeyDown">
   <Window.Resources>
     <ResourceDictionary>
       <ResourceDictionary.MergedDictionaries>
-        <ResourceDictionary Source="Resources\Storyboards.xaml"/>
+        <ResourceDictionary Source="Resources\Storyboards.xaml" />
         <ResourceDictionary>
-          <Witty:CharRemainingValueConverter x:Key="CharRemainingConverter"/>
-          <VisualBrush x:Key="ImageVisualBrush" Visual="{Binding ElementName=border}"/>
+          <Witty:CharRemainingValueConverter x:Key="CharRemainingConverter" />
+          <VisualBrush x:Key="ImageVisualBrush" Visual="{Binding ElementName=border}" />
         </ResourceDictionary>
       </ResourceDictionary.MergedDictionaries>
     </ResourceDictionary>
   </Window.Resources>
   <Window.Triggers>
     <EventTrigger RoutedEvent="Mouse.MouseEnter" SourceName="Update">
-      <BeginStoryboard Storyboard="{StaticResource UpdateMouseEnter}" x:Name="UpdateMouseEnter_BeginStoryboard"/>
+      <BeginStoryboard Storyboard="{StaticResource UpdateMouseEnter}" x:Name="UpdateMouseEnter_BeginStoryboard" />
     </EventTrigger>
     <EventTrigger RoutedEvent="Mouse.MouseLeave" SourceName="Update">
-      <BeginStoryboard Storyboard="{StaticResource UpdateMouseLeave}" x:Name="UpdateMouseLeave_BeginStoryboard"/>
+      <BeginStoryboard Storyboard="{StaticResource UpdateMouseLeave}" x:Name="UpdateMouseLeave_BeginStoryboard" />
     </EventTrigger>
     <EventTrigger RoutedEvent="Mouse.MouseEnter" SourceName="Message">
-      <BeginStoryboard Storyboard="{StaticResource MessageMouseEnter}" x:Name="MessageMouseEnter_BeginStoryboard"/>
+      <BeginStoryboard Storyboard="{StaticResource MessageMouseEnter}" x:Name="MessageMouseEnter_BeginStoryboard" />
     </EventTrigger>
     <EventTrigger RoutedEvent="Mouse.MouseLeave" SourceName="Message">
-      <BeginStoryboard Storyboard="{StaticResource MessageMouseLeave}" x:Name="MessageMouseLeave_BeginStoryboard"/>
+      <BeginStoryboard Storyboard="{StaticResource MessageMouseLeave}" x:Name="MessageMouseLeave_BeginStoryboard" />
     </EventTrigger>
   </Window.Triggers>
 
@@ -50,10 +33,10 @@
         </ContextMenu>
       </Border.ContextMenu>
       <DockPanel LastChildFill="False">
-        <TextBlock Text="Witty" VerticalAlignment="Center" HorizontalAlignment="Center" FontSize="18" FontWeight="Bold" Foreground="{DynamicResource HeaderForegroundBrush}"/>
-        <Button Content="Refresh" Height="20" x:Name="RefreshButton" Click="RefreshButton_Click" IsEnabled="False" MinWidth="25" MinHeight="20" FontSize="9" DockPanel.Dock="Right" Width="50"/>
-        <Button Content="Options" Height="20" x:Name="OptionsButton" Click="OptionsButton_Click" MinWidth="25" MinHeight="20" FontSize="9" DockPanel.Dock="Right" Margin="0,0,10,0" IsEnabled="False" Width="50"/>
-        <Rectangle Fill="#FF52626F" Width="15" Height="15" DockPanel.Dock="Right" x:Name="Friends" MouseLeftButtonUp="Friends_MouseLeftButtonUp" Margin="0,0,10,0" Visibility="Collapsed"/>
+        <TextBlock Text="Witty" VerticalAlignment="Center" HorizontalAlignment="Center" FontSize="18" FontWeight="Bold" Foreground="{DynamicResource HeaderForegroundBrush}" />
+        <Button Content="Refresh" Height="20" x:Name="RefreshButton" Click="RefreshButton_Click" IsEnabled="False" MinWidth="25" MinHeight="20" FontSize="9" DockPanel.Dock="Right" Width="50" />
+        <Button Content="Options" Height="20" x:Name="OptionsButton" Click="OptionsButton_Click" MinWidth="25" MinHeight="20" FontSize="9" DockPanel.Dock="Right" Margin="0,0,10,0" IsEnabled="False" Width="50" />
+        <Rectangle Fill="#FF52626F" Width="15" Height="15" DockPanel.Dock="Right" x:Name="Friends" MouseLeftButtonUp="Friends_MouseLeftButtonUp" Margin="0,0,10,0" Visibility="Collapsed" />
       </DockPanel>
     </Border>
     <Border DockPanel.Dock="Bottom" Padding="5,2,5,2" Background="{DynamicResource StatusBackgroundBrush}" x:Name="StatusBar">
@@ -66,15 +49,15 @@
             <ListBox x:Name="TweetsListBox" ScrollViewer.CanContentScroll="False" IsSynchronizedWithCurrentItem="True" ItemTemplate="{DynamicResource TweetsTemplate}" ItemsSource="{Binding Mode=OneWay}" ScrollViewer.HorizontalScrollBarVisibility="Disabled" Margin="0,0,0,20" MouseLeftButtonUp="TweetsListBox_MouseLeftButtonUp" BorderThickness="0,0,0,0" />
             <Border Height="21" Background="#FFA8B9C6" VerticalAlignment="Bottom" Padding="10,0,10,0" x:Name="Update" MouseLeftButtonUp="Update_MouseLeftButtonUp" BorderBrush="{DynamicResource PrimaryBackgroundBrush}" BorderThickness="0,0,0,1">
               <DockPanel OpacityMask="#FF000000" x:Name="dockPanel">
-                <TextBlock HorizontalAlignment="Center" DockPanel.Dock="Top" Text="Update" TextWrapping="Wrap" VerticalAlignment="Top" x:Name="UpdateTextBlock" Margin="0,2,0,0"/>
+                <TextBlock HorizontalAlignment="Center" DockPanel.Dock="Top" Text="Update" TextWrapping="Wrap" VerticalAlignment="Top" x:Name="UpdateTextBlock" Margin="0,2,0,0" />
                 <Grid Margin="0,5,0,10">
                   <Grid.ColumnDefinitions>
-                    <ColumnDefinition Width="*"/>
-                    <ColumnDefinition Width="Auto"/>
+                    <ColumnDefinition Width="*" />
+                    <ColumnDefinition Width="Auto" />
                   </Grid.ColumnDefinitions>
                   <TextBox Text="" TextWrapping="Wrap" x:Name="TweetTextBox" SpellCheck.IsEnabled="True" />
                   <TextBlock Text="{Binding Path=Text.Length, Converter={StaticResource CharRemainingConverter}, ElementName=TweetTextBox, Mode=Default}" FontSize="18" Grid.Column="1" VerticalAlignment="Top" HorizontalAlignment="Left" Margin="10,0,0,0" FontFamily="Georgia" x:Name="CharRemainingCounter" Foreground="#FF52626F" />
-                  <Button VerticalAlignment="Bottom" Width="75" Height="23" Content="Update" Grid.Column="1" x:Name="UpdateButton" Click="UpdateButton_Click" Margin="10,0,0,0" IsDefault="True"/>
+                  <Button VerticalAlignment="Bottom" Width="75" Height="23" Content="Update" Grid.Column="1" x:Name="UpdateButton" Click="UpdateButton_Click" Margin="10,0,0,0" IsDefault="True" />
                 </Grid>
               </DockPanel>
             </Border>
@@ -88,54 +71,54 @@
             <Border DockPanel.Dock="Top" BorderBrush="{DynamicResource SolidBorderBrush}" BorderThickness="0,0,0,1">
               <Border.Background>
                 <LinearGradientBrush EndPoint="0.5,1" StartPoint="0.5,0">
-                  <GradientStop Color="#FFD0DBE7" Offset="0"/>
-                  <GradientStop Color="#FFFFFFFF" Offset="1"/>
+                  <GradientStop Color="#FFD0DBE7" Offset="0" />
+                  <GradientStop Color="#FFFFFFFF" Offset="1" />
                 </LinearGradientBrush>
               </Border.Background>
               <Grid>
                 <Grid.ColumnDefinitions>
-                  <ColumnDefinition Width="80"/>
-                  <ColumnDefinition Width="*"/>
+                  <ColumnDefinition Width="80" />
+                  <ColumnDefinition Width="*" />
                 </Grid.ColumnDefinitions>
                 <StackPanel VerticalAlignment="Top" HorizontalAlignment="Center" RenderTransformOrigin="0.5,0.5" Margin="0,12,0,0">
                   <StackPanel.RenderTransform>
                     <TransformGroup>
-                      <ScaleTransform ScaleX="1" ScaleY="1"/>
-                      <SkewTransform AngleX="0" AngleY="-5"/>
-                      <RotateTransform Angle="0"/>
-                      <TranslateTransform X="0"/>
+                      <ScaleTransform ScaleX="1" ScaleY="1" />
+                      <SkewTransform AngleX="0" AngleY="-5" />
+                      <RotateTransform Angle="0" />
+                      <TranslateTransform X="0" />
                     </TransformGroup>
                   </StackPanel.RenderTransform>
                   <Border BorderBrush="{DynamicResource ImageBorderBrush}" BorderThickness="2" Width="52" Height="52" x:Name="border">
-                    <Image Width="48" Height="48" Source="{Binding Path=User.ImageUrl}" x:Name="UserImage"/>
+                    <Image Width="48" Height="48" Source="{Binding Path=User.ImageUrl}" x:Name="UserImage" />
                   </Border>
                   <Rectangle Fill="{DynamicResource ImageVisualBrush}" Stroke="#FF000000" Width="52" RenderTransformOrigin="0.5,0.5" Stretch="UniformToFill" Height="52">
                     <Rectangle.RenderTransform>
                       <TransformGroup>
-                        <ScaleTransform ScaleX="1" ScaleY="-1"/>
-                        <SkewTransform AngleX="0" AngleY="0"/>
-                        <RotateTransform Angle="0"/>
-                        <TranslateTransform X="0" Y="0"/>
+                        <ScaleTransform ScaleX="1" ScaleY="-1" />
+                        <SkewTransform AngleX="0" AngleY="0" />
+                        <RotateTransform Angle="0" />
+                        <TranslateTransform X="0" Y="0" />
                       </TransformGroup>
                     </Rectangle.RenderTransform>
                     <Rectangle.OpacityMask>
                       <LinearGradientBrush EndPoint="0.499,0.595" StartPoint="0.5,1.058">
-                        <GradientStop Color="#7F000000" Offset="0.01"/>
-                        <GradientStop Color="#00000000" Offset="1"/>
+                        <GradientStop Color="#7F000000" Offset="0.01" />
+                        <GradientStop Color="#00000000" Offset="1" />
                       </LinearGradientBrush>
                     </Rectangle.OpacityMask>
                   </Rectangle>
                 </StackPanel>
                 <Grid Grid.Column="1" Margin="0,10,0,0">
                   <Grid.RowDefinitions>
-                    <RowDefinition Height="Auto"/>
-                    <RowDefinition Height="*"/>
+                    <RowDefinition Height="Auto" />
+                    <RowDefinition Height="*" />
                   </Grid.RowDefinitions>
-                  <TextBlock Text="{Binding Path=User.FullName, FallbackValue=Full Name}" FontWeight="Bold" FontSize="16" x:Name="FullName" Cursor="Hand" MouseLeftButtonUp="ScreenName_MouseLeftButtonUp" Tag="{Binding Path=User.TwitterUrl, Mode=Default}" TextWrapping="NoWrap" TextTrimming="CharacterEllipsis" ToolTip="{Binding Path=User.TwitterUrl, Mode=Default}" d:LayoutOverrides="Width, Height"/>
+                  <TextBlock Text="{Binding Path=User.FullName, FallbackValue=Full Name}" FontWeight="Bold" FontSize="16" x:Name="FullName" Cursor="Hand" MouseLeftButtonUp="ScreenName_MouseLeftButtonUp" Tag="{Binding Path=User.TwitterUrl, Mode=Default}" TextWrapping="NoWrap" TextTrimming="CharacterEllipsis" ToolTip="{Binding Path=User.TwitterUrl, Mode=Default}" d:LayoutOverrides="Width, Height" />
                   <DockPanel Grid.Row="1">
-                    <TextBlock x:Name="Description" Text="{Binding Path=User.Description, Mode=Default, FallbackValue=Description}" TextWrapping="Wrap" FontStyle="Italic" DockPanel.Dock="Top"/>
+                    <TextBlock x:Name="Description" Text="{Binding Path=User.Description, Mode=Default, FallbackValue=Description}" TextWrapping="Wrap" FontStyle="Italic" DockPanel.Dock="Top" />
                     <TextBlock x:Name="SiteUrl" Text="{Binding Path=User.SiteUrl, Mode=Default, FallbackValue=Site Url}" TextWrapping="NoWrap" MouseLeftButtonUp="Url_MouseLeftButtonUp" Cursor="Hand" TextTrimming="CharacterEllipsis" DockPanel.Dock="Top" ToolTip="{Binding Path=User.SiteUrl, Mode=Default}" TextDecorations="Underline" Foreground="#FF0000FF">
-                      <Hyperlink NavigateUri="{Binding Path=User.SiteUrl, Mode=Default, FallbackValue=Site Url}"/>
+                      <Hyperlink NavigateUri="{Binding Path=User.SiteUrl, Mode=Default, FallbackValue=Site Url}" />
                     </TextBlock>
                     <TextBlock x:Name="Location" Text="{Binding Path=User.Location, Mode=Default, FallbackValue=Location}" TextWrapping="NoWrap" TextTrimming="CharacterEllipsis" />
                   </DockPanel>
@@ -150,23 +133,23 @@
             <ListBox x:Name="MessagesListBox" ScrollViewer.CanContentScroll="False" IsSynchronizedWithCurrentItem="True" ItemTemplate="{DynamicResource MessagesTemplate}" ItemsSource="{Binding Mode=OneWay}" ScrollViewer.HorizontalScrollBarVisibility="Disabled" Margin="0,0,0,20" MouseLeftButtonUp="MessagesListBox_MouseLeftButtonUp" BorderThickness="0,0,0,0" />
             <Border Height="21" Background="#FFA8B9C6" VerticalAlignment="Bottom" Padding="10,0,10,0" x:Name="Message" MouseLeftButtonUp="Message_MouseLeftButtonUp" BorderBrush="{DynamicResource PrimaryBackgroundBrush}" BorderThickness="0,0,0,1">
               <DockPanel OpacityMask="#FF000000" x:Name="MessageDockPanel">
-                <TextBlock HorizontalAlignment="Center" DockPanel.Dock="Top" Text="Send Message" TextWrapping="Wrap" VerticalAlignment="Top" x:Name="MessageTextBlock" Margin="0,2,0,0"/>
+                <TextBlock HorizontalAlignment="Center" DockPanel.Dock="Top" Text="Send Message" TextWrapping="Wrap" VerticalAlignment="Top" x:Name="MessageTextBlock" Margin="0,2,0,0" />
                 <Grid Margin="0,5,0,10">
                   <Grid.RowDefinitions>
-                    <RowDefinition Height="Auto"/>
-                    <RowDefinition Height="*"/>
+                    <RowDefinition Height="Auto" />
+                    <RowDefinition Height="*" />
                   </Grid.RowDefinitions>
                   <Grid.ColumnDefinitions>
-                    <ColumnDefinition Width="*"/>
-                    <ColumnDefinition Width="Auto"/>
+                    <ColumnDefinition Width="*" />
+                    <ColumnDefinition Width="Auto" />
                   </Grid.ColumnDefinitions>
                   <StackPanel Orientation="Horizontal">
-                    <TextBlock Text="To:" TextWrapping="Wrap" Margin="0,0,5,0" VerticalAlignment="Center"/>
-                    <TextBox Text="" TextWrapping="Wrap" VerticalAlignment="Center" Width="120" Margin="0,0,0,2" x:Name="MessageUserTextBox"/>
+                    <TextBlock Text="To:" TextWrapping="Wrap" Margin="0,0,5,0" VerticalAlignment="Center" />
+                    <TextBox Text="" TextWrapping="Wrap" VerticalAlignment="Center" Width="120" Margin="0,0,0,2" x:Name="MessageUserTextBox" />
                   </StackPanel>
-                  <TextBox Grid.Row="1" Text="" TextWrapping="Wrap" x:Name="MessageTextBox" SpellCheck.IsEnabled="True"/>
+                  <TextBox Grid.Row="1" Text="" TextWrapping="Wrap" x:Name="MessageTextBox" SpellCheck.IsEnabled="True" />
                   <TextBlock Grid.Row="1" Text="{Binding Path=Text.Length, Converter={StaticResource CharRemainingConverter}, ElementName=MessageTextBox, Mode=Default}" FontSize="18" Grid.Column="1" VerticalAlignment="Top" HorizontalAlignment="Left" Margin="10,0,0,0" FontFamily="Georgia" x:Name="MessageCharRemainingCounter" Foreground="#FF52626F" />
-                  <Button Grid.Row="1" VerticalAlignment="Bottom" Width="75" Height="23" Content="Send" Grid.Column="1" x:Name="SendMessageButton" Click="SendMessageButton_Click" Margin="10,0,0,0" IsDefault="True"/>
+                  <Button Grid.Row="1" VerticalAlignment="Bottom" Width="75" Height="23" Content="Send" Grid.Column="1" x:Name="SendMessageButton" Click="SendMessageButton_Click" Margin="10,0,0,0" IsDefault="True" />
                 </Grid>
               </DockPanel>
             </Border>
@@ -175,7 +158,7 @@
       </TabControl>
       <Witty:LoginControl HorizontalAlignment="Center" VerticalAlignment="Center" x:Name="LoginControl" Login="LoginControl_Login" Visibility="Visible" d:IsHidden="True">
         <Witty:LoginControl.BitmapEffect>
-          <OuterGlowBitmapEffect GlowColor="#FF000000" Opacity="0.75"/>
+          <OuterGlowBitmapEffect GlowColor="#FF000000" Opacity="0.75" />
         </Witty:LoginControl.BitmapEffect>
       </Witty:LoginControl>
     </Grid>

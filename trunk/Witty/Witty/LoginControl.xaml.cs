@@ -1,23 +1,15 @@
-﻿using System;
-using System.IO;
-using System.Net;
-using System.Windows;
-using System.Windows.Controls;
-using System.Windows.Data;
-using System.Windows.Media;
-using System.Windows.Media.Animation;
-using System.Windows.Navigation;
+﻿using System.Windows;
 using TwitterLib;
 
 namespace Witty
 {
     public partial class LoginControl
-	{
+    {
         private Properties.Settings AppSettings = Properties.Settings.Default;
 
-		public LoginControl()
-		{
-			this.InitializeComponent();
+        public LoginControl()
+        {
+            this.InitializeComponent();
 
         }
 
@@ -44,7 +36,7 @@ namespace Witty
                 else
                     MessageBox.Show("Incorrect username or password. Please try again");
             }
-            catch(RateLimitException ex)
+            catch (RateLimitException ex)
             {
                 MessageBox.Show(ex.Message);
             }
@@ -64,5 +56,5 @@ namespace Witty
             // Set Username textbox as default focus
             UsernameTextBox.Focus();
         }
-	}
+    }
 }
