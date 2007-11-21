@@ -117,7 +117,7 @@ namespace Witty
             try
             {
                 TwitterNet twitter = new TwitterNet(Properties.Settings.Default.Username, Properties.Settings.Default.Password);
-                UserCollection users = twitter.GetFriends();
+                UserCollection users = twitter.RetrieveFriends();
 
                 ArrayList stringArray = new ArrayList();
                 foreach (User user in users)

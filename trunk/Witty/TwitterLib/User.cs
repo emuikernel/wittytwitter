@@ -1,5 +1,6 @@
 using System;
 using System.Collections.ObjectModel;
+using System.ComponentModel;
 
 namespace TwitterLib
 {
@@ -7,7 +8,7 @@ namespace TwitterLib
     /// A Twitter User
     /// </summary>
     [Serializable]
-    public class User
+    public class User : INotifyPropertyChanged
     {
         private int id;
         private string name;
@@ -20,31 +21,66 @@ namespace TwitterLib
         public int Id
         {
             get { return id; }
-            set { id = value; }
+            set
+            {
+                if (value != id)
+                {
+                    id = value;
+                    OnPropertyChanged("Id");
+                }
+            }
         }
 
         public string Name
         {
             get { return name; }
-            set { name = value; }
+            set
+            {
+                if (value != name)
+                {
+                    name = value;
+                    OnPropertyChanged("Name");
+                }
+            }
         }
 
         public string ScreenName
         {
             get { return screenName; }
-            set { screenName = value; }
+            set
+            {
+                if (value != screenName)
+                {
+                    screenName = value;
+                    OnPropertyChanged("ScreenName");
+                }
+            }
         }
 
         public string ImageUrl
         {
             get { return imageUrl; }
-            set { imageUrl = value; }
+            set
+            {
+                if (value != imageUrl)
+                {
+                    imageUrl = value;
+                    OnPropertyChanged("ImageUrl");
+                }
+            }
         }
 
         public string SiteUrl
         {
             get { return siteUrl; }
-            set { siteUrl = value; }
+            set
+            {
+                if (value != siteUrl)
+                {
+                    siteUrl = value;
+                    OnPropertyChanged("SiteUrl");
+                }
+            }
         }
 
         public string TwitterUrl
@@ -58,13 +94,27 @@ namespace TwitterLib
         public string Location
         {
             get { return location; }
-            set { location = value; }
+            set
+            {
+                if (value != location)
+                {
+                    location = value;
+                    OnPropertyChanged("location");
+                }
+            }
         }
 
         public string Description
         {
             get { return description; }
-            set { description = value; }
+            set
+            {
+                if (value != description)
+                {
+                    description = value;
+                    OnPropertyChanged("Description");
+                }
+            }
         }
 
         /// <summary>
@@ -80,7 +130,14 @@ namespace TwitterLib
         public string BackgroundColor
         {
             get { return backgroundColor; }
-            set { backgroundColor = value; }
+            set
+            {
+                if (value != backgroundColor)
+                {
+                    backgroundColor = value;
+                    OnPropertyChanged("BackgroundColor");
+                }
+            }
         }
 
         private string textColor;
@@ -88,14 +145,28 @@ namespace TwitterLib
         public string TextColor
         {
             get { return textColor; }
-            set { textColor = value; }
+            set
+            {
+                if (value != textColor)
+                {
+                    textColor = value;
+                    OnPropertyChanged("TextColor");
+                }
+            }
         }
         private string linkColor;
 
         public string LinkColor
         {
             get { return linkColor; }
-            set { linkColor = value; }
+            set
+            {
+                if (value != linkColor)
+                {
+                    linkColor = value;
+                    OnPropertyChanged("LinkColor");
+                }
+            }
         }
 
         private string sidebarFillColor;
@@ -103,7 +174,14 @@ namespace TwitterLib
         public string SidebarFillColor
         {
             get { return sidebarFillColor; }
-            set { sidebarFillColor = value; }
+            set
+            {
+                if (value != sidebarFillColor)
+                {
+                    sidebarFillColor = value;
+                    OnPropertyChanged("SidebarFillColor");
+                }
+            }
         }
 
         private string sidebarBorderColor;
@@ -111,7 +189,14 @@ namespace TwitterLib
         public string SidebarBorderColor
         {
             get { return sidebarBorderColor; }
-            set { sidebarBorderColor = value; }
+            set
+            {
+                if (value != sidebarBorderColor)
+                {
+                    sidebarBorderColor = value;
+                    OnPropertyChanged("SidebarBorderColor");
+                }
+            }
         }
 
         private Tweet tweet;
@@ -119,7 +204,14 @@ namespace TwitterLib
         public Tweet Tweet
         {
             get { return tweet; }
-            set { tweet = value; }
+            set
+            {
+                if (value != tweet)
+                {
+                    tweet = value;
+                    OnPropertyChanged("Tweet");
+                }
+            }
         }
 
         private int followingCount;
@@ -127,7 +219,14 @@ namespace TwitterLib
         public int FollowingCount
         {
             get { return followingCount; }
-            set { followingCount = value; }
+            set
+            {
+                if (value != followingCount)
+                {
+                    followingCount = value;
+                    OnPropertyChanged("FollowingCount");
+                }
+            }
         }
 
         private int followersCount;
@@ -135,7 +234,14 @@ namespace TwitterLib
         public int FollowersCount
         {
             get { return followersCount; }
-            set { followersCount = value; }
+            set
+            {
+                if (value != followersCount)
+                {
+                    followersCount = value;
+                    OnPropertyChanged("FollowersCount");
+                }
+            }
         }
 
         private int statusesCount;
@@ -143,7 +249,14 @@ namespace TwitterLib
         public int StatusesCount
         {
             get { return statusesCount; }
-            set { statusesCount = value; }
+            set
+            {
+                if (value != statusesCount)
+                {
+                    statusesCount = value;
+                    OnPropertyChanged("StatusesCount");
+                }
+            }
         }
 
         private int favoritesCount;
@@ -151,8 +264,33 @@ namespace TwitterLib
         public int FavoritesCount
         {
             get { return favoritesCount; }
-            set { favoritesCount = value; }
+            set
+            {
+                if (value != favoritesCount)
+                {
+                    favoritesCount = value;
+                    OnPropertyChanged("FavoritesCount");
+                }
+            }
         }
+
+        #region INotifyPropertyChanged Members
+
+        /// <summary>
+        /// INotifyPropertyChanged requires a property called PropertyChanged.
+        /// </summary>
+        public event PropertyChangedEventHandler PropertyChanged;
+
+        /// <summary>
+        /// Fires the event for the property when it changes.
+        /// </summary>
+        protected virtual void OnPropertyChanged(string propertyName)
+        {
+            if (PropertyChanged != null)
+                PropertyChanged(this, new PropertyChangedEventArgs(propertyName));
+        }
+
+        #endregion
     }
 
     [Serializable]

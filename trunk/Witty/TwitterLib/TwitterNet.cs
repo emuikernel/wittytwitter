@@ -352,7 +352,12 @@ namespace TwitterLib
             return RetrieveTimeline(Timeline.User, "", userId);
         }
 
-        public UserCollection GetFriends()
+        public TweetCollection GetReplies()
+        {
+            return RetrieveTimeline(Timeline.Replies);
+        }
+
+        public UserCollection RetrieveFriends()
         {
             UserCollection users = new UserCollection();
 
@@ -422,12 +427,6 @@ namespace TwitterLib
             }
             return users;
         }
-
-        public TweetCollection GetReplies()
-        {
-            return RetrieveTimeline(Timeline.Replies);
-        }
-
 
         /// <summary>
         /// Post new tweet to Twitter
