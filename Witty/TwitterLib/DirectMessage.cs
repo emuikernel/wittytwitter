@@ -4,6 +4,9 @@ using System.ComponentModel;
 
 namespace TwitterLib
 {
+    /// <summary>
+    /// Represents a message sent to a User
+    /// </summary>
     public class DirectMessage : INotifyPropertyChanged, IEquatable<DirectMessage>
     {
         private double id;
@@ -11,7 +14,14 @@ namespace TwitterLib
         public double Id
         {
             get { return id; }
-            set { id = value; }
+            set
+            {
+                if (value != id)
+                {
+                    id = value;
+                    OnPropertyChanged("Id");
+                }
+            }
         }
 
         private string text;
@@ -19,7 +29,14 @@ namespace TwitterLib
         public string Text
         {
             get { return text; }
-            set { text = value; }
+            set
+            {
+                if (value != text)
+                {
+                    text = value;
+                    OnPropertyChanged("Text");
+                }
+            }
         }
 
         private DateTime dateCreated;
@@ -29,8 +46,12 @@ namespace TwitterLib
             get { return dateCreated; }
             set
             {
-                dateCreated = value;
-                UpdateRelativeTime();
+                if (value != dateCreated)
+                {
+                    dateCreated = value;
+                    UpdateRelativeTime();
+                    OnPropertyChanged("DateCreated");
+                }
             }
         }
 
@@ -39,7 +60,14 @@ namespace TwitterLib
         public User Sender
         {
             get { return sender; }
-            set { sender = value; }
+            set
+            {
+                if (value != sender)
+                {
+                    sender = value;
+                    OnPropertyChanged("Sender");
+                }
+            }
         }
 
         private User recipient;
@@ -47,7 +75,14 @@ namespace TwitterLib
         public User Recipient
         {
             get { return recipient; }
-            set { recipient = value; }
+            set
+            {
+                if (value != recipient)
+                {
+                    recipient = value;
+                    OnPropertyChanged("Recipient");
+                }
+            }
         }
 
         private bool isNew;
@@ -55,7 +90,14 @@ namespace TwitterLib
         public bool IsNew
         {
             get { return isNew; }
-            set { isNew = value; }
+            set
+            {
+                if (value != isNew)
+                {
+                    isNew = value;
+                    OnPropertyChanged("IsNew");
+                }
+            }
         }
 
         private string relativeTime;
@@ -76,6 +118,9 @@ namespace TwitterLib
             }
         }
 
+        /// <summary>
+        /// Updates the relativeTime based on the DateCreated and DateTime.Now
+        /// </summary>
         public void UpdateRelativeTime()
         {
             DateTime StatusCreatedDate = (DateTime)dateCreated;

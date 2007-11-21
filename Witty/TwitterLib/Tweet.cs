@@ -192,6 +192,9 @@ namespace TwitterLib
 
         #endregion
 
+        /// <summary>
+        /// Updates the relativeTime based on the DateCreated and DateTime.Now
+        /// </summary>
         public void UpdateRelativeTime()
         {
             if (!dateCreated.HasValue)
