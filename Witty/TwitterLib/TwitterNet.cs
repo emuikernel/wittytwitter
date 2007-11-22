@@ -467,19 +467,17 @@ namespace TwitterLib
                 // Get the response stream  
                 StreamReader reader = new StreamReader(response.GetResponseStream());
 
-                // Create a new XmlDocument  
+                // Load the response data into a XmlDocument  
                 XmlDocument doc = new XmlDocument();
-
-                // Load data  
                 doc.Load(reader);
 
                 XmlNode node = doc.SelectSingleNode("status");
 
                 tweet = new Tweet();
-
                 tweet.Id = double.Parse(node.SelectSingleNode("id").InnerText);
                 tweet.Text = HttpUtility.HtmlDecode(node.SelectSingleNode("text").InnerText);
                 string source = HttpUtility.HtmlDecode(node.SelectSingleNode("source").InnerText);
+                // Remove html from the source string
                 if (!string.IsNullOrEmpty(source))
                     tweet.Source = Regex.Replace(source, @"<(.|\n)*?>", string.Empty);
 
@@ -530,10 +528,8 @@ namespace TwitterLib
                     // Get the response stream  
                     StreamReader reader = new StreamReader(response.GetResponseStream());
 
-                    // Create a new XmlDocument  
+                    // Load the response data into a XmlDocument  
                     XmlDocument doc = new XmlDocument();
-
-                    // Load data  
                     doc.Load(reader);
 
                     // Get statuses with XPath  
@@ -606,10 +602,8 @@ namespace TwitterLib
                     // Get the response stream  
                     StreamReader reader = new StreamReader(response.GetResponseStream());
 
-                    // Create a new XmlDocument  
+                    // Load the response data into a XmlDocument  
                     XmlDocument doc = new XmlDocument();
-
-                    // Load data  
                     doc.Load(reader);
 
                     // Get statuses with XPath  
@@ -827,16 +821,14 @@ namespace TwitterLib
 
             try
             {
-                // Get the Response  
+                // Get the Web Response  
                 using (HttpWebResponse response = request.GetResponse() as HttpWebResponse)
                 {
                     // Get the response stream  
                     StreamReader reader = new StreamReader(response.GetResponseStream());
 
-                    // Create a new XmlDocument  
+                    // Load the response data into a XmlDocument  
                     XmlDocument doc = new XmlDocument();
-
-                    // Load data  
                     doc.Load(reader);
 
                     // Get statuses with XPath  
