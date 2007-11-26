@@ -1,10 +1,11 @@
 #summary Version History and Release Notes
 #labels Featured,Documentation
 
-= v0.1.5 (Upcoming Release) = 
-
+= v0.1.5 = 
+_November 21, 2007_
   * Everything from v0.1.5 Beta and v0.1.5 Beta 2
   * Escape key to minimize Witty
+  * tinyurl support
 
 = v0.1.5 Beta 2 (QA testing) = 
 
