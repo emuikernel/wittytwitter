@@ -54,7 +54,7 @@ namespace Witty
 #endif
             #endregion
 
-            // Set the datacontext
+            // Set the data contexts
             LayoutRoot.DataContext = tweets;
             RepliesListBox.ItemsSource = replies;
             UserTab.DataContext = userTweets;
@@ -75,21 +75,20 @@ namespace Witty
             }
             else
             {
-                isLoggedIn = true;
                 LoginControl.Visibility = Visibility.Hidden;
-                RefreshButton.IsEnabled = true;
-                OptionsButton.IsEnabled = true;
-                AppSettings.LastUpdated = string.Empty;
 
                 twitter = new TwitterNet(AppSettings.Username, AppSettings.Password);
-                App.LoggedInUser = twitter.Login();
 
-                DelegateRecentFetch();
+                // Let the user know what's going on
+                StatusTextBlock.Text = "Attempting Login...";
 
-                // Setup refresh timer
-                refreshTimer.Interval = refreshInterval;
-                refreshTimer.Tick += new EventHandler(Timer_Elapsed);
-                refreshTimer.Start();
+                PlayStoryboard("Fetching");
+
+                // Create a Dispatcher to attempt login
+                NoArgDelegate loginFetcher = new NoArgDelegate(
+                    this.TryLogin);
+
+                loginFetcher.BeginInvoke(null, null);
             }
 
             AlwaysOnTopMenuItem.IsChecked = this.Topmost;
@@ -130,6 +129,7 @@ namespace Witty
         private delegate void AddTweetUpdateDelegate(Tweet arg);
         private delegate void MessagesDelegate(DirectMessageCollection arg);
         private delegate void SendMessageDelegate(string user, string text);
+        private delegate void LoginDelegate(User arg);
 
         // Settings used by the application
         private Properties.Settings AppSettings = Properties.Settings.Default;
@@ -576,6 +576,63 @@ namespace Witty
 
         #endregion
 
+        #region Login
+
+        private void TryLogin()
+        {
+            try
+            {
+                // Schedule the update function in the UI thread.
+                LayoutRoot.Dispatcher.BeginInvoke(
+                    System.Windows.Threading.DispatcherPriority.Normal,
+                    new LoginDelegate(UpdatePostLoginInterface), twitter.Login());
+            }
+            catch (WebException ex)
+            {
+#if DEBUG
+                MessageBox.Show("There was a problem logging in to Twitter. " + ex.Message);
+#endif
+            }
+        }
+
+        private void UpdatePostLoginInterface(User user)
+        {
+            isLoggedIn = true;
+            RefreshButton.IsEnabled = true;
+            OptionsButton.IsEnabled = true;
+            AppSettings.LastUpdated = string.Empty;
+
+            App.LoggedInUser = user;
+
+            DelegateRecentFetch();
+
+            // Setup refresh timer
+            refreshTimer.Interval = refreshInterval;
+            refreshTimer.Tick += new EventHandler(Timer_Elapsed);
+            refreshTimer.Start();
+        }
+
+        private void LoginControl_Login(object sender, RoutedEventArgs e)
+        {
+            twitter = new TwitterNet(AppSettings.Username, AppSettings.Password);
+
+            // fetch new tweets
+            DelegateRecentFetch();
+
+            // Setup refresh timer to get subsequent tweets
+            refreshTimer.Interval = refreshInterval;
+            refreshTimer.Tick += new EventHandler(Timer_Elapsed);
+            refreshTimer.Start();
+
+            PlayStoryboard("HideLogin");
+
+            isExpanded = false;
+            isLoggedIn = true;
+            OptionsButton.IsEnabled = true;
+        }
+
+        #endregion
+
         #region Misc Methods and Event Handlers
 
         /// <summary>
@@ -708,25 +765,6 @@ namespace Witty
 
                 displayUser = string.Empty;
             }
-        }
-
-        private void LoginControl_Login(object sender, RoutedEventArgs e)
-        {
-            twitter = new TwitterNet(AppSettings.Username, AppSettings.Password);
-
-            // fetch new tweets
-            DelegateRecentFetch();
-
-            // Setup refresh timer to get subsequent tweets
-            refreshTimer.Interval = refreshInterval;
-            refreshTimer.Tick += new EventHandler(Timer_Elapsed);
-            refreshTimer.Start();
-
-            PlayStoryboard("HideLogin");
-
-            isExpanded = false;
-            isLoggedIn = true;
-            OptionsButton.IsEnabled = true;
         }
 
         private void PlayStoryboard(string storyboardName)

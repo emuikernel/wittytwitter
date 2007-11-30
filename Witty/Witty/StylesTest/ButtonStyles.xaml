@@ -9,40 +9,13 @@
 
 		<Button VerticalAlignment="Top" Content="Button" Margin="0,18,69.377,0" HorizontalAlignment="Right" Width="100" Height="30" x:Name="NormalButton"/>
 
-		<Button VerticalAlignment="Top" Content="Button" Margin="0,72,69.377,0" HorizontalAlignment="Right" Width="100" Height="30" x:Name="MouseOverButton">
-			<Button.Background>
-				<LinearGradientBrush EndPoint="0,1" StartPoint="0,0">
-					<GradientStop Color="#FFADBFE0" Offset="0"/>
-					<GradientStop Color="#FF5B78BF" Offset="0.5"/>
-					<GradientStop Color="#FF193B9D" Offset="0.5"/>
-					<GradientStop Color="#FF99D1EC" Offset="1"/>
-				</LinearGradientBrush>
-			</Button.Background>
-		</Button>
+		<Button VerticalAlignment="Top" Content="Button" Margin="0,72,69.377,0" HorizontalAlignment="Right" Width="100" Height="30" x:Name="MouseOverButton" Background="{DynamicResource HoverBrush}"/>
 
-		<Button Content="Button" Margin="0,132.96,69.377,0" HorizontalAlignment="Right" Width="100" x:Name="PressedButton" Height="30" d:LayoutOverrides="Height" VerticalAlignment="Top">
-			<Button.Background>
-				<LinearGradientBrush EndPoint="0,1" StartPoint="0,0">
-					<GradientStop Color="#FF5A7AB3" Offset="0"/>
-					<GradientStop Color="#FF5B78BF" Offset="0.5"/>
-					<GradientStop Color="#FF193B9D" Offset="0.5"/>
-					<GradientStop Color="#FF20749D" Offset="1"/>
-				</LinearGradientBrush>
-			</Button.Background>
-		</Button>
+		<Button Content="Button" Margin="0,132.96,69.377,0" HorizontalAlignment="Right" Width="100" x:Name="PressedButton" Height="30" d:LayoutOverrides="Height" VerticalAlignment="Top" Background="{DynamicResource PressedBrush}" BorderBrush="{DynamicResource PressedBorderBrush}"/>
 
-		<Button Content="Button" Margin="0,0,69.377,145.04" HorizontalAlignment="Right" VerticalAlignment="Bottom" Width="100" Height="30" x:Name="DefaultedButton" IsDefault="True"/>
+		<Button Content="Button" Margin="0,0,69.377,145.04" HorizontalAlignment="Right" VerticalAlignment="Bottom" Width="100" Height="30" x:Name="DefaultedButton" IsDefault="True" BorderBrush="{DynamicResource DefaultedBorderBrush}"/>
 
-		<Button Content="Button" Margin="118.623,0,69.377,95" VerticalAlignment="Bottom" Height="30" Foreground="{DynamicResource DisabledForegroundBrush}" BorderBrush="{DynamicResource DisabledBorderBrush}">
-			<Button.Background>
-				<LinearGradientBrush EndPoint="0,1" StartPoint="0,0">
-					<GradientStop Color="#FFDDDFE4" Offset="0"/>
-					<GradientStop Color="#FFBCBCBF" Offset="0.5"/>
-					<GradientStop Color="#FF9B9C9F" Offset="0.529"/>
-					<GradientStop Color="#FFC9CBCC" Offset="1"/>
-				</LinearGradientBrush>
-			</Button.Background>
-		</Button>
+		<Button Content="Button" Margin="118.623,0,69.377,95" VerticalAlignment="Bottom" Height="30" Foreground="{DynamicResource DisabledForegroundBrush}" BorderBrush="{DynamicResource DisabledBorderBrush}" Background="{DynamicResource DisabledBackgroundBrush}"/>
 
 		<TextBlock HorizontalAlignment="Left" VerticalAlignment="Top" Text="Normal" TextWrapping="Wrap" Margin="33,25.02,0,0"/>
 
