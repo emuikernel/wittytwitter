@@ -44,31 +44,41 @@
     </DataTemplate.Resources>
     <Grid x:Name="grid" Background="#01FFFFFF">
       <Grid.ColumnDefinitions>
-        <ColumnDefinition Width="65"/>
+        <ColumnDefinition Width="70"/>
         <ColumnDefinition Width="*"/>
       </Grid.ColumnDefinitions>
       <Grid.RowDefinitions>
         <RowDefinition Height="Auto"/>
         <RowDefinition Height="*"/>
       </Grid.RowDefinitions>
-      <aero:SystemDropShadowChrome Grid.RowSpan="2" HorizontalAlignment="Left" VerticalAlignment="Top" Margin="5,5,0,0">
-        <Border Width="50" Height="50" Background="#FFF" BorderBrush="{DynamicResource ImageBorderBrush}" BorderThickness="2">
+      <Grid Grid.RowSpan="2" HorizontalAlignment="Left" VerticalAlignment="Top" Margin="5,5,0,0" Width="58" Height="60">
+        <aero:SystemDropShadowChrome CornerRadius="5,5,5,5">
+          <Rectangle Stroke="#FF8E8E8E" RadiusX="10" RadiusY="5">
+            <Rectangle.Fill>
+              <LinearGradientBrush EndPoint="0.869,0.837" StartPoint="0.278,0.298">
+                <GradientStop Color="#FFFFFFFF" Offset="0"/>
+                <GradientStop Color="#FF7BB2B7" Offset="1"/>
+              </LinearGradientBrush>
+            </Rectangle.Fill>
+          </Rectangle>
+        </aero:SystemDropShadowChrome>
+        <Border Width="50" Height="50" Background="#FFF" BorderBrush="{DynamicResource ImageBorderBrush}" BorderThickness="1">
           <Image Width="48" Height="48" Source="{Binding Path=User.ImageUrl}" x:Name="UserImage"/>
         </Border>
-      </aero:SystemDropShadowChrome>
+      </Grid>
       <DockPanel Grid.Row="0" Grid.Column="1" VerticalAlignment="Top" >
         <TextBlock Text="{Binding Path=User.ScreenName, FallbackValue=Screen Name}" FontWeight="Bold" FontSize="16" VerticalAlignment="Bottom" HorizontalAlignment="Left" x:Name="ScreenName" Cursor="Hand" ToolTip="View this user's recent tweets"/>
-                <Button Width="20" Height="20" HorizontalAlignment="Right" Margin="0,0,5,0" Visibility="Collapsed" x:Name="ReplyButton">
-                    <TextBlock TextWrapping="Wrap" Text="@" VerticalAlignment="Center"/>
-                </Button>
-            </DockPanel>
+        <Button Width="20" Height="20" HorizontalAlignment="Right" Margin="0,0,5,0" Visibility="Collapsed" x:Name="ReplyButton">
+            <TextBlock TextWrapping="Wrap" Text="@" VerticalAlignment="Center"/>
+        </Button>
+      </DockPanel>
       <WrapPanel Grid.Column="1" Grid.Row="1">
         <local:TweetTextBlock x:Name="TweetText" TweetText="{Binding Path=Text, FallbackValue=Tweet Text}" TextWrapping="Wrap" Margin="0,0,5,0"/>
         <TextBlock Text="{Binding Path=RelativeTime, FallbackValue=1 minute ago}"
-                    FontStyle="Italic" Margin="0,0,3.5,0" Foreground="{DynamicResource SubForegroundBrush}" ToolTip="{Binding Path=DateCreated, Mode=Default}"/>
-                <TextBlock Text="{Binding Path=Source, Mode=Default, FallbackValue=from web}"
-                    FontStyle="Italic" TextTrimming="CharacterEllipsis" Foreground="{DynamicResource SubForegroundBrush}"/>
-            </WrapPanel>
+                FontStyle="Italic" Margin="0,0,3.5,0" Foreground="{DynamicResource SubForegroundBrush}" ToolTip="{Binding Path=DateCreated, Mode=Default}"/>
+            <TextBlock Text="{Binding Path=Source, Mode=Default, FallbackValue=from web}"
+                FontStyle="Italic" TextTrimming="CharacterEllipsis" Foreground="{DynamicResource SubForegroundBrush}"/>
+        </WrapPanel>
     </Grid>
     <DataTemplate.Triggers>
       <DataTrigger Binding="{Binding Path=IsNew}" Value="True">
