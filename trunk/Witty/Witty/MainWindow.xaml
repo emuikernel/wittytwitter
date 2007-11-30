@@ -1,13 +1,23 @@
-﻿<Window xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation" xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml" xmlns:d="http://schemas.microsoft.com/expression/blend/2006" xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" mc:Ignorable="d" xmlns:TwitterLib="clr-namespace:TwitterLib;assembly=TwitterLib" xmlns:Witty="clr-namespace:Witty" x:Class="Witty.MainWindow" x:Name="Window" Title="Witty 0.1.5" Width="330" Height="570" MinWidth="200" MinHeight="200" WindowStyle="SingleBorderWindow" Icon="AppIcon.ico" Witty:WindowSettings.Save="True" KeyDown="MainWindow_OnKeyDown">
+﻿<Window 
+  xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation" 
+  xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml" 
+  xmlns:d="http://schemas.microsoft.com/expression/blend/2006" 
+  xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" mc:Ignorable="d" 
+  xmlns:TwitterLib="clr-namespace:TwitterLib;assembly=TwitterLib" 
+  xmlns:Witty="clr-namespace:Witty" 
+  x:Class="Witty.MainWindow" 
+  x:Name="Window" 
+  Title="Witty 0.1.6 Alpha" 
+  Width="330" Height="570" MinWidth="200" MinHeight="200" 
+  WindowStyle="SingleBorderWindow" Icon="AppIcon.ico" 
+  Witty:WindowSettings.Save="True" KeyDown="MainWindow_OnKeyDown">
   <Window.Resources>
     <ResourceDictionary>
       <ResourceDictionary.MergedDictionaries>
         <ResourceDictionary Source="Resources\Storyboards.xaml" />
-        <ResourceDictionary>
-          <Witty:CharRemainingValueConverter x:Key="CharRemainingConverter" />
-          <VisualBrush x:Key="ImageVisualBrush" Visual="{Binding ElementName=border}" />
-        </ResourceDictionary>
       </ResourceDictionary.MergedDictionaries>
+      <Witty:CharRemainingValueConverter x:Key="CharRemainingConverter" />
+      <VisualBrush x:Key="ImageVisualBrush" Visual="{Binding ElementName=border}" />
     </ResourceDictionary>
   </Window.Resources>
   <Window.Triggers>
