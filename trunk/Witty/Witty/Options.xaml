@@ -18,7 +18,7 @@
   <DockPanel x:Name="LayoutRoot">
     <Border DockPanel.Dock="Top" Padding="0,5,0,5">
       <TextBlock Text="Witty Options" TextWrapping="Wrap" FontSize="18" FontWeight="Bold" HorizontalAlignment="Center" Margin="0,2,0,0"/>
-        </Border>
+    </Border>
     <Border DockPanel.Dock="Bottom" Padding="0,5,0,5">
       <Button Content="Done" HorizontalContentAlignment="Center" VerticalContentAlignment="Center" Width="100" IsDefault="True" x:Name="DoneButton" Click="DoneButton_Click"/>
     </Border>
@@ -59,17 +59,13 @@
               <StackPanel Grid.Column="0" Orientation="Horizontal" Grid.Row="1" HorizontalAlignment="Left" Margin="45,0,0,0">
                 <Slider Width="200" Minimum="0" Maximum="30" SmallChange="1" LargeChange="5" TickPlacement="BottomRight" x:Name="RefreshSlider" AutoToolTipPlacement="TopLeft" TickFrequency="2"/>
                 <TextBlock Text="{Binding Path=Value, Converter={StaticResource RoundConverter}, ElementName=RefreshSlider, Mode=Default}" TextWrapping="Wrap" VerticalAlignment="Center" x:Name="SliderValueTextBlock" Width="20" Margin="5,0,0,0"/>
-                            </StackPanel>
-
+              </StackPanel>
               <CheckBox Grid.Row="4" Content="Always on top" HorizontalAlignment="Center" Margin="0,15,0,0" x:Name="AlwaysOnTopCheckBox" />
-
               <CheckBox Grid.Row="3" Content="Play Sounds" HorizontalAlignment="Center" Margin="0,10,0,0" x:Name="PlaySoundsCheckBox" IsChecked="{Binding Path=PlaySounds, ElementName=Window, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" />
-
               <DockPanel Grid.Row="2" HorizontalAlignment="Center" Margin="0,10,0,0">
                 <TextBlock Text="Skin" TextWrapping="Wrap" VerticalAlignment="Center" Margin="0,0,5,0"/>
-                                <ComboBox x:Name="SkinsComboBox" Width="75" SelectionChanged="SkinsComboBox_SelectionChanged"/>
-                            </DockPanel>
-
+                <ComboBox x:Name="SkinsComboBox" Width="75" SelectionChanged="SkinsComboBox_SelectionChanged"/>
+              </DockPanel>
             </Grid>
           </Expander>
         </DockPanel>
