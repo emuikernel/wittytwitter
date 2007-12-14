@@ -118,6 +118,8 @@
 
   <SolidColorBrush x:Key="AlternatingBackgroundBrush" Color="#EAEDF1" />
 
+  <SolidColorBrush x:Key="UpdateBackgroundBrush" Color="#FFA8B9C6"/>
+
   <Style x:Key="{x:Type ListBoxItem}" TargetType="ListBoxItem">
     <Setter Property="SnapsToDevicePixels" Value="true"/>
     <Setter Property="OverridesDefaultStyle" Value="true"/>
@@ -1111,5 +1113,7 @@
     <Style.Triggers>
     </Style.Triggers>
   </Style>
+
+  <OuterGlowBitmapEffect x:Key="LoginBitmapEffect" GlowColor="#FF000000" Opacity="0.75" />
 
 </ResourceDictionary>

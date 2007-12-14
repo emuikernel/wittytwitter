@@ -18,7 +18,7 @@
               <GradientStop Color="#FF7BB2B7" Offset="1"/>
             </LinearGradientBrush>
           </Border.Background>
-          <Border Background="#FFF" BorderBrush="{DynamicResource ImageBorderBrush}" BorderThickness="1,1,1,1">
+          <Border Background="#FFF" BorderBrush="{DynamicResource ImageBorderBrush}" BorderThickness="1,1,1,1" CornerRadius="2,2,2,2">
             <Image x:Name="UserImage" Source="avatar.png" Width="48" Height="48"/>
           </Border>
         </Border>
@@ -36,7 +36,7 @@
 					</Rectangle.Fill>
 				</Rectangle>
 			</aero:SystemDropShadowChrome>
-      <Border Background="#FFF" BorderBrush="{DynamicResource ImageBorderBrush}" BorderThickness="1,1,1,1" Margin="4,5,4,5">
+      <Border Background="#FFF" BorderBrush="{DynamicResource ImageBorderBrush}" BorderThickness="1,1,1,1" Margin="4,5,4,5" CornerRadius="2,2,2,2">
         <Image x:Name="UserImage1" Source="avatar.png" Width="48" Height="48"/>
       </Border>
     </Grid>
