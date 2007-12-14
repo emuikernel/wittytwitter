@@ -20,7 +20,6 @@
         <ResourceDictionary Source="Resources\Storyboards.xaml" />
       </ResourceDictionary.MergedDictionaries>
       <Witty:CharRemainingValueConverter x:Key="CharRemainingConverter" />
-      <VisualBrush x:Key="ImageVisualBrush" Visual="{Binding ElementName=border}" />
     </ResourceDictionary>
   </Window.Resources>
   
@@ -69,7 +68,7 @@
         <TabItem Header="Recent" Padding="2,1,2,1" x:Name="RecentTab">
           <Grid x:Name="Recent">
             <ListBox x:Name="TweetsListBox" ScrollViewer.CanContentScroll="False" IsSynchronizedWithCurrentItem="True" ItemTemplate="{DynamicResource TweetsTemplate}" ItemsSource="{Binding Mode=OneWay}" ScrollViewer.HorizontalScrollBarVisibility="Disabled" Margin="0,0,0,20" MouseLeftButtonUp="TweetsListBox_MouseLeftButtonUp" BorderThickness="0,0,0,0" />
-            <Border Height="21" Background="#FFA8B9C6" VerticalAlignment="Bottom" Padding="10,0,10,0" x:Name="Update" MouseLeftButtonUp="Update_MouseLeftButtonUp" BorderBrush="{DynamicResource PrimaryBackgroundBrush}" BorderThickness="0,0,0,1">
+            <Border Height="21" Background="{DynamicResource UpdateBackgroundBrush}" VerticalAlignment="Bottom" Padding="10,0,10,0" x:Name="Update" MouseLeftButtonUp="Update_MouseLeftButtonUp" BorderBrush="{DynamicResource PrimaryBackgroundBrush}" BorderThickness="0,0,0,1">
               <DockPanel OpacityMask="#FF000000" x:Name="dockPanel">
                 <TextBlock HorizontalAlignment="Center" DockPanel.Dock="Top" Text="Update" TextWrapping="Wrap" VerticalAlignment="Top" x:Name="UpdateTextBlock" Margin="0,2,0,0" />
                 <Grid Margin="0,5,0,10">
@@ -117,7 +116,7 @@
                       </Rectangle.Fill>
                     </Rectangle>
                   </aero:SystemDropShadowChrome>
-                  <Border BorderBrush="{DynamicResource ImageBorderBrush}" BorderThickness="1,1,1,1" Margin="4,5,4,5">
+                  <Border BorderBrush="{DynamicResource ImageBorderBrush}" BorderThickness="1,1,1,1" Margin="4,5,4,5" CornerRadius="2,2,2,2">
                     <Image Width="48" Height="48" Source="{Binding Path=User.ImageUrl}" x:Name="UserImage" />
                   </Border>
                 </Grid>
@@ -145,7 +144,7 @@
         <TabItem Header="Messages" Padding="2,1,2,1" x:Name="MessagesTab">
           <Grid x:Name="Messages">
             <ListBox x:Name="MessagesListBox" ScrollViewer.CanContentScroll="False" IsSynchronizedWithCurrentItem="True" ItemTemplate="{DynamicResource MessagesTemplate}" ItemsSource="{Binding Mode=OneWay}" ScrollViewer.HorizontalScrollBarVisibility="Disabled" Margin="0,0,0,20" MouseLeftButtonUp="MessagesListBox_MouseLeftButtonUp" BorderThickness="0,0,0,0" />
-            <Border Height="21" Background="#FFA8B9C6" VerticalAlignment="Bottom" Padding="10,0,10,0" x:Name="Message" MouseLeftButtonUp="Message_MouseLeftButtonUp" BorderBrush="{DynamicResource PrimaryBackgroundBrush}" BorderThickness="0,0,0,1">
+            <Border Height="21" Background="{DynamicResource UpdateBackgroundBrush}" VerticalAlignment="Bottom" Padding="10,0,10,0" x:Name="Message" MouseLeftButtonUp="Message_MouseLeftButtonUp" BorderBrush="{DynamicResource PrimaryBackgroundBrush}" BorderThickness="0,0,0,1">
               <DockPanel OpacityMask="#FF000000" x:Name="MessageDockPanel">
                 <TextBlock HorizontalAlignment="Center" DockPanel.Dock="Top" Text="Send Message" TextWrapping="Wrap" VerticalAlignment="Top" x:Name="MessageTextBlock" Margin="0,2,0,0" />
                 <Grid Margin="0,5,0,10">
@@ -173,11 +172,7 @@
       </TabControl>
       
       <!-- Login Control -->
-      <Witty:LoginControl HorizontalAlignment="Center" VerticalAlignment="Center" x:Name="LoginControl" Login="LoginControl_Login" Visibility="Visible" d:IsHidden="True">
-        <Witty:LoginControl.BitmapEffect>
-          <OuterGlowBitmapEffect GlowColor="#FF000000" Opacity="0.75" />
-        </Witty:LoginControl.BitmapEffect>
-      </Witty:LoginControl>
+      <Witty:LoginControl HorizontalAlignment="Center" VerticalAlignment="Center" x:Name="LoginControl" Login="LoginControl_Login" Visibility="Visible" BitmapEffect="{DynamicResource LoginBitmapEffect}"/>
       
     </Grid>
   </DockPanel>

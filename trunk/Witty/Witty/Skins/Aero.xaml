@@ -62,7 +62,7 @@
             </Rectangle.Fill>
           </Rectangle>
         </aero:SystemDropShadowChrome>
-        <Border Width="50" Height="50" Background="#FFF" BorderBrush="{DynamicResource ImageBorderBrush}" BorderThickness="1">
+        <Border Width="50" Height="50" Background="#FFF" BorderBrush="{DynamicResource ImageBorderBrush}" BorderThickness="1" CornerRadius="2">
           <Image Width="48" Height="48" Source="{Binding Path=User.ImageUrl}" x:Name="UserImage"/>
         </Border>
       </Grid>
@@ -148,6 +148,8 @@
   </LinearGradientBrush>
 
   <SolidColorBrush x:Key="AlternatingBackgroundBrush" Color="#EAEDF1" />
+
+  <SolidColorBrush x:Key="UpdateBackgroundBrush" Color="#FFA8B9C6"/>
 
   <Style x:Key="{x:Type ListBoxItem}" TargetType="ListBoxItem">
     <Setter Property="SnapsToDevicePixels" Value="true"/>
@@ -1163,8 +1165,7 @@
               <Setter TargetName="DropDownBorder" Property="CornerRadius" Value="4"/>
               <Setter TargetName="DropDownBorder" Property="Margin" Value="0,2,0,0"/>
             </Trigger>
-            <Trigger Property="IsEditable"
-                             Value="true">
+            <Trigger Property="IsEditable" Value="true">
               <Setter Property="IsTabStop" Value="false"/>
               <Setter TargetName="PART_EditableTextBox" Property="Visibility"    Value="Visible"/>
               <Setter TargetName="ContentSite" Property="Visibility" Value="Hidden"/>
@@ -1176,5 +1177,7 @@
     <Style.Triggers>
     </Style.Triggers>
   </Style>
+
+  <OuterGlowBitmapEffect x:Key="LoginBitmapEffect" GlowColor="#FF000000" Opacity="0.75" />
 
 </ResourceDictionary>
