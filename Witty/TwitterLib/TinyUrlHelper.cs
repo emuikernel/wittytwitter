@@ -41,9 +41,9 @@ namespace TwitterLib
             // fallback will be source url
             string result = sourceUrl;
             //Added 11/3/2007 scottckoon
-            //19 is the shortest a tinyURl can be (http://tinyurl.com/a)
+            //20 is the shortest a tinyURl can be (http://tinyurl.com/a)
             //so if the sourceUrl is shorter than that, don't make a request to TinyURL
-            if (sourceUrl.Length > 19)
+            if (sourceUrl.Length > 20 && !sourceUrl.Contains("http://tinyurl.com"))
             {
                 // tinyurl doesn't like urls w/o protocols so we'll ensure we have at least http
                 string requestUrl = BuildRequestUrl(EnsureMinimalProtocol(sourceUrl));
