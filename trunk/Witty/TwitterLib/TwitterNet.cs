@@ -28,7 +28,11 @@ namespace TwitterLib
         private string followersUrl;
         private string userShowUrl;
         private string sendMessageUrl;
+        private string destroyUrl;
+        private string destroyDirectMessageUrl;
         private string format;
+
+        private User currentLoggedInUser;
 
         // TODO: might need to fix this for globalization
         private string twitterCreatedAtDateFormat = "ddd MMM dd HH:mm:ss zzzz yyyy"; // Thu Apr 26 01:36:08 +0000 2007
@@ -40,6 +44,21 @@ namespace TwitterLib
 
         #region Public Properties
 
+        public User CurrentlyLoggedInUser
+        {
+            get
+            {
+                if (null == currentLoggedInUser)
+                {
+                    currentLoggedInUser = Login();
+                }
+                return currentLoggedInUser;
+            }
+            set
+            {
+                currentLoggedInUser = value;
+            }
+        }
         /// <summary>
         /// Twitter username
         /// </summary>
@@ -239,7 +258,42 @@ namespace TwitterLib
                     return sendMessageUrl;
             }
             set { sendMessageUrl = value; }
-        }        
+        }
+
+        /// <summary>
+        /// Url to destroy a status from the authenticating user. Defaults to http://twitter.com/statuses/destroy
+        /// </summary>
+        /// <remarks>
+        /// This value should only be changed if Twitter API urls have been changed on http://groups.google.com/group/twitter-development-talk/web/api-documentation
+        /// </remarks>
+        public string DestroyUrl
+        {
+            get
+            {
+                if (string.IsNullOrEmpty(destroyUrl))
+                    return "http://twitter.com/statuses/destroy/";
+                else
+                    return destroyUrl;
+            }
+            set { destroyUrl = value; }
+        }
+        /// <summary>
+        /// Url to destroy a direct message from the authenticating user. Defaults to http://twitter.com/direct_messages/destroy/
+        /// </summary>
+        /// <remarks>
+        /// This value should only be changed if Twitter API urls have been changed on http://groups.google.com/group/twitter-development-talk/web/api-documentation
+        /// </remarks>
+        public string DestroyDirectMessageUrl
+        {
+            get
+            {
+                if (string.IsNullOrEmpty(destroyDirectMessageUrl))
+                    return "http://twitter.com/direct_messages/destroy/";
+                else
+                    return destroyDirectMessageUrl;
+            }
+            set { destroyDirectMessageUrl = value; }
+        }
 
         /// <summary>
         /// The format of the results from the twitter API. Ex: .xml, .json, .rss, .atom. Defaults to ".xml"
@@ -361,71 +415,102 @@ namespace TwitterLib
         {
             UserCollection users = new UserCollection();
 
-            // Create the web request
-            HttpWebRequest request = WebRequest.Create(FriendsUrl + Format) as HttpWebRequest;
-
-            // Add credendtials to request  
-            request.Credentials = new NetworkCredential(username, password);
-
-            try
+            //Since the API docs state "Returns up to 100 of the authenticating user's friends", we need
+            // to use the page param and to fetch ALL of the users friends. We can find out how many pages
+            // we need by dividing the # of friends by 100 and rounding any remainder up.
+            // merging the responses from each request may be tricky.
+            int currentUsersFriendsCount = CurrentlyLoggedInUser.FollowingCount;
+            int numberOfPagesToFetch = (currentUsersFriendsCount / 100);
+            if ((currentUsersFriendsCount % 100) > 0) { numberOfPagesToFetch++; };
+            for (int count = 1; count <= numberOfPagesToFetch;count++ )
             {
-                // Get the Response  
-                using (HttpWebResponse response = request.GetResponse() as HttpWebResponse)
+                // Create the web request
+                HttpWebRequest request = WebRequest.Create(FriendsUrl + Format + "&page=" + count) as HttpWebRequest;
+
+                // Add credendtials to request  
+                request.Credentials = new NetworkCredential(username, password);
+
+                try
                 {
-                    // Get the response stream  
-                    StreamReader reader = new StreamReader(response.GetResponseStream());
-
-                    // Create a new XmlDocument  
-                    XmlDocument doc = new XmlDocument();
-
-                    // Load data  
-                    doc.Load(reader);
-
-                    // Get statuses with XPath  
-                    XmlNodeList nodes = doc.SelectNodes("/users/user");
-
-                    foreach (XmlNode node in nodes)
+                    // Get the Response  
+                    using (HttpWebResponse response = request.GetResponse() as HttpWebResponse)
                     {
-                        User user = new User();
-                        user.Id = int.Parse(node.SelectSingleNode("id").InnerText);
-                        user.Name = node.SelectSingleNode("name").InnerText;
-                        user.ScreenName = node.SelectSingleNode("screen_name").InnerText;
-                        user.ImageUrl = node.SelectSingleNode("profile_image_url").InnerText;
-                        user.SiteUrl = node.SelectSingleNode("url").InnerText;
-                        user.Location = node.SelectSingleNode("location").InnerText;
-                        user.Description = node.SelectSingleNode("description").InnerText;
+                        // Get the response stream  
+                        StreamReader reader = new StreamReader(response.GetResponseStream());
 
-                        users.Add(user);
+                        // Create a new XmlDocument  
+                        XmlDocument doc = new XmlDocument();
+
+                        // Load data  
+                        doc.Load(reader);
+
+                        // Get statuses with XPath  
+                        XmlNodeList nodes = doc.SelectNodes("/users/user");
+
+                        foreach (XmlNode node in nodes)
+                        {
+                            User user = new User();
+                            user.Id = int.Parse(node.SelectSingleNode("id").InnerText);
+                            user.Name = node.SelectSingleNode("name").InnerText;
+                            user.ScreenName = node.SelectSingleNode("screen_name").InnerText;
+                            user.ImageUrl = node.SelectSingleNode("profile_image_url").InnerText;
+                            user.SiteUrl = node.SelectSingleNode("url").InnerText;
+                            user.Location = node.SelectSingleNode("location").InnerText;
+                            user.Description = node.SelectSingleNode("description").InnerText;
+
+                            users.Add(user);
+                        }
+
                     }
-
                 }
-            }
-            catch (WebException webExcp)
-            {
-                // Get the WebException status code.
-                WebExceptionStatus status = webExcp.Status;
-                // If status is WebExceptionStatus.ProtocolError, 
-                //   there has been a protocol error and a WebResponse 
-                //   should exist. Display the protocol error.
-                if (status == WebExceptionStatus.ProtocolError)
+                catch (WebException webExcp)
                 {
-                    // Get HttpWebResponse so that you can check the HTTP status code.
-                    HttpWebResponse httpResponse = (HttpWebResponse)webExcp.Response;
-
-                    switch ((int)httpResponse.StatusCode)
+                    // Get the WebException status code.
+                    WebExceptionStatus status = webExcp.Status;
+                    // If status is WebExceptionStatus.ProtocolError, 
+                    //   there has been a protocol error and a WebResponse 
+                    //   should exist. Display the protocol error.
+                    if (status == WebExceptionStatus.ProtocolError)
                     {
-                        case 304:  // 304 Not modified = no new tweets so ignore error.
-                            break;
-                        case 400: // rate limit exceeded
-                            throw new RateLimitException("Rate limit exceeded. Clients may not make more than 70 requests per hour. Please try again in a few minutes.");
-                        case 401: // unauthorized
-                            throw new SecurityException("Not Authorized.");
-                        default:
-                            throw;
+                        // Get HttpWebResponse so that you can check the HTTP status code.
+                        HttpWebResponse httpResponse = (HttpWebResponse)webExcp.Response;
+
+                        switch ((int)httpResponse.StatusCode)
+                        {
+                            case 304:  // 304 Not modified = no new tweets so ignore error.
+                                break;
+                            case 400: // rate limit exceeded
+                                throw new RateLimitException("Rate limit exceeded. Clients may not make more than 70 requests per hour. Please try again in a few minutes.");
+                            case 401: // unauthorized
+                                throw new SecurityException("Not Authorized.");
+                            default:
+                                throw;
+                        }
                     }
                 }
             }
             return users;
+        }
+
+        /// <summary>
+        /// Delete a tweet from a users timeline
+        /// </summary>
+        /// <param name="id">id of the Tweet to delete</param>
+        public void DestroyTweet(int id)
+        {
+            string urlToCall = DestroyUrl + id + format;
+            MakeDestroyRequestCall(urlToCall);
+        }
+
+        /// <summary>
+        /// Destroy a direct message sent by a user
+        /// </summary>
+        /// <param name="id">id of the direct message to delete</param>
+        public void DestroyDirectMessage(int id)
+        {
+            string urlToCall = DestroyDirectMessageUrl + id + "." + Format;
+            MakeDestroyRequestCall(urlToCall);
+
         }
 
         /// <summary>
@@ -580,7 +665,7 @@ namespace TwitterLib
                 else
                     throw;
             }
-
+            currentLoggedInUser = user;
             return user;
         }
 
@@ -895,6 +980,49 @@ namespace TwitterLib
             return tweets;
         }
 
+        /// <summary>
+        /// Generic call to destroy a status ** still in progress **
+        /// </summary>
+        /// <param name="urlToCall"></param>
+        private void MakeDestroyRequestCall(string urlToCall)
+        {
+            // Create the web request  
+            HttpWebRequest request = WebRequest.Create(urlToCall) as HttpWebRequest;
+
+            // Add authentication to request  
+            request.Credentials = new NetworkCredential(username, password);
+
+            request.Method = "GET";
+
+            try
+            {
+                // Do the request to get the response
+                using (HttpWebResponse response = request.GetResponse() as HttpWebResponse)
+                {
+                }
+            }
+            catch (WebException webExcp)
+            {
+                // Get the WebException status code.
+                WebExceptionStatus status = webExcp.Status;
+                // If status is WebExceptionStatus.ProtocolError, 
+                //   there has been a protocol error and a WebResponse 
+                //   should exist. Display the protocol error.
+                if (status == WebExceptionStatus.ProtocolError)
+                {
+                    // Get HttpWebResponse so that you can check the HTTP status code.
+                    HttpWebResponse httpResponse = (HttpWebResponse)webExcp.Response;
+
+                    switch ((int)httpResponse.StatusCode)
+                    {
+                        case 401: // unauthorized
+                            throw new SecurityException("Not Authorized.",webExcp);
+                        default:
+                            throw;
+                    }
+                }
+            }
+        }
         #endregion
     }
 
