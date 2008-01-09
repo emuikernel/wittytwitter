@@ -61,11 +61,6 @@ namespace Witty
             MessagesListBox.ItemsSource = messages;
 
             // set the refresh interval
-            if (string.IsNullOrEmpty(AppSettings.RefreshInterval))
-            {
-                AppSettings.RefreshInterval = "2"; // 2 minutes default
-                AppSettings.Save();
-            }
             refreshInterval = new TimeSpan(0, int.Parse(AppSettings.RefreshInterval), 0);
 
             // Does the user need to login
