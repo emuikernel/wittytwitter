@@ -207,7 +207,7 @@ namespace TwitterLib
 
             string relativeTime = string.Empty;
 
-            if (delta == 1)
+            if (delta <= 1)
             {
                 relativeTime = "a second ago";
             }
