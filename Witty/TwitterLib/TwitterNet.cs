@@ -884,15 +884,18 @@ namespace TwitterLib
                 string sinceDateString = sinceDate.ToString(twitterSinceDateFormat);
                 timelineUrl = timelineUrl + "?since=" + sinceDateString;
             }
-            else
-            {
-                if (timeline == Timeline.Friends)
-                {
-                    // Twitter caches the timeline, so it doesn't always get the latest tweets
-                    // adding a since param will bypass twitter cache.
-                    timelineUrl = timelineUrl + "?since=" + DateTime.Now;
-                }
-            }
+            // The following section removed by Dave White as a) it doesn't work and
+            // b) there is no need for it anymore.
+
+            // else
+            // {
+            //    if (timeline == Timeline.Friends)
+            //    {
+            //        // Twitter caches the timeline, so it doesn't always get the latest tweets
+            //        // adding a since param will bypass twitter cache.
+            //        timelineUrl = timelineUrl + "?since=" + DateTime.Now;
+            //    }
+            // }
 
             // Create the web request
             HttpWebRequest request = WebRequest.Create(timelineUrl) as HttpWebRequest;
