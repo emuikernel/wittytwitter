@@ -23,7 +23,10 @@ namespace Witty
         #endregion
     }
 
-    class RoundConverter : IValueConverter
+    /// <summary>
+    /// Takes a double value and round it to the nearest integer
+    /// </summary>
+    public class RoundConverter : IValueConverter
     {
         #region IValueConverter Members
 
@@ -49,26 +52,19 @@ namespace Witty
         #endregion
     }
 
-    public sealed class IndexConverter : IValueConverter
+    public sealed class IndexToIsAlternateRowConverter : IValueConverter
     {
         #region IValueConverter Members
 
         public object Convert(object value, Type targetType, object parameter, System.Globalization.CultureInfo culture)
         {
             int index = (int)value;
-
-            if (index % 2 == 0)
-            {
-                return 0;
-            }
-            else
-            {
-                return 1;
-            }
+            return (index % 2 == 1);
         }
 
         public object ConvertBack(object value, Type targetType, object parameter, System.Globalization.CultureInfo culture)
         {
+            // Convert back is not used in the binding
             throw new NotImplementedException("The method or operation is not implemented.");
         }
 
