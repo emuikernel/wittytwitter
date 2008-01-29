@@ -65,5 +65,14 @@ namespace Witty.Properties {
                 return ResourceManager.GetStream("alert", resourceCulture);
             }
         }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Attempting Login....
+        /// </summary>
+        internal static string TryLogin {
+            get {
+                return ResourceManager.GetString("TryLogin", resourceCulture);
+            }
+        }
     }
 }

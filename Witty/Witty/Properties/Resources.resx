@@ -7601,4 +7601,7 @@
         AP//AAABAAAA/v8AAAAA//8AAAAAAgAAAAAAAQAAAP//AAAL
 </value>
   </data>
+  <data name="TryLogin" xml:space="preserve">
+    <value>Attempting Login...</value>
+  </data>
 </root>

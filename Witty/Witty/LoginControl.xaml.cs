@@ -1,5 +1,6 @@
 ﻿using System.Windows;
 using TwitterLib;
+using System.Net;
 
 namespace Witty
 {
@@ -7,39 +8,62 @@ namespace Witty
     {
         private Properties.Settings AppSettings = Properties.Settings.Default;
 
+        private delegate void NoArgDelegate();
+        private delegate void LoginDelegate(TwitterNet arg);
+        private delegate void PostLoginDelegate(User arg);
+
         public LoginControl()
         {
             this.InitializeComponent();
-
         }
 
         private void LoginButton_Click(object sender, RoutedEventArgs e)
         {
-            TwitterNet twitterNet = new TwitterNet(UsernameTextBox.Text, PasswordTextBox.Password);
+            TwitterNet twitter = new TwitterNet(UsernameTextBox.Text, PasswordTextBox.Password);
 
+            // Attempt login in a new thread
+            LoginButton.Dispatcher.BeginInvoke(
+                System.Windows.Threading.DispatcherPriority.Normal,
+                new LoginDelegate(TryLogin), twitter);
+        }
+
+        private void TryLogin(TwitterNet twitter)
+        {
             try
             {
-                App.LoggedInUser = twitterNet.Login();
-                if (App.LoggedInUser != null)
-                {
-                    AppSettings.Username = UsernameTextBox.Text;
-                    AppSettings.Password = PasswordTextBox.Password;
-                    AppSettings.LastUpdated = string.Empty;
-
-                    AppSettings.Save();
-
-                    UsernameTextBox.Text = string.Empty;
-                    PasswordTextBox.Password = string.Empty;
-
-                    RaiseEvent(new RoutedEventArgs(LoginEvent));
-                }
-                else
-                    MessageBox.Show("Incorrect username or password. Please try again");
+                // Schedule the update function in the UI thread.
+                LayoutRoot.Dispatcher.BeginInvoke(
+                    System.Windows.Threading.DispatcherPriority.Normal,
+                    new PostLoginDelegate(UpdatePostLoginInterface), twitter.Login());
+            }
+            catch (WebException ex)
+            {
+                MessageBox.Show("There was a problem logging in to Twitter. " + ex.Message);
             }
             catch (RateLimitException ex)
             {
                 MessageBox.Show(ex.Message);
             }
+        }
+
+        private void UpdatePostLoginInterface(User user)
+        {
+            App.LoggedInUser = user;
+            if (App.LoggedInUser != null)
+            {
+                AppSettings.Username = UsernameTextBox.Text;
+                AppSettings.Password = PasswordTextBox.Password;
+                AppSettings.LastUpdated = string.Empty;
+
+                AppSettings.Save();
+
+                UsernameTextBox.Text = string.Empty;
+                PasswordTextBox.Password = string.Empty;
+
+                RaiseEvent(new RoutedEventArgs(LoginEvent));
+            }
+            else
+                MessageBox.Show("Incorrect username or password. Please try again");
         }
 
         public static readonly RoutedEvent LoginEvent =
