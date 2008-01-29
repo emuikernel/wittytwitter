@@ -13,25 +13,27 @@ namespace Witty
 
     public partial class App : System.Windows.Application
     {
+        // Global variable for the user
         public static User LoggedInUser = null;
 
         protected override void OnStartup(StartupEventArgs e)
         {
             Properties.Settings appSettings = Witty.Properties.Settings.Default;
 
-            try
+            if (!string.IsNullOrEmpty(appSettings.Skin))
             {
-                if (!string.IsNullOrEmpty(appSettings.Skin))
+                try
                 {
                     ResourceDictionary rd = new ResourceDictionary();
                     rd.MergedDictionaries.Add(Application.LoadComponent(new Uri(appSettings.Skin, UriKind.Relative)) as ResourceDictionary);
                     Application.Current.Resources = rd;
                 }
+                catch
+                {
+                    // selected skin not found
+                    // REVIEW: Should witty do something smart here?
+                }
             }
-            catch
-            {
-            }
-
 
             base.OnStartup(e);
         }

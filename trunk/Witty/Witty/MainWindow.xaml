@@ -16,6 +16,7 @@
   
   <Window.Resources>
     <ResourceDictionary>
+      <!-- Store storyboard animations in their own file to condense the markup -->
       <ResourceDictionary.MergedDictionaries>
         <ResourceDictionary Source="Resources\Storyboards.xaml" />
       </ResourceDictionary.MergedDictionaries>

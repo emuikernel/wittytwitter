@@ -54,16 +54,19 @@ namespace Witty
 #endif
             #endregion
 
-            // Set the data contexts
+            // Set the data contexts for all of the tabs
             LayoutRoot.DataContext = tweets;
             RepliesListBox.ItemsSource = replies;
             UserTab.DataContext = userTweets;
             MessagesListBox.ItemsSource = messages;
 
-            // set the refresh interval
+            // Set how often to get updates from Twitter
             refreshInterval = new TimeSpan(0, int.Parse(AppSettings.RefreshInterval), 0);
+            
+            // TODO: refactor this into a setting
+            AlwaysOnTopMenuItem.IsChecked = this.Topmost;
 
-            // Does the user need to login
+            // Does the user need to login?
             if (string.IsNullOrEmpty(AppSettings.Username))
             {
                 PlayStoryboard("ShowLogin");
@@ -75,18 +78,13 @@ namespace Witty
                 twitter = new TwitterNet(AppSettings.Username, AppSettings.Password);
 
                 // Let the user know what's going on
-                StatusTextBlock.Text = "Attempting Login...";
-
+                StatusTextBlock.Text = Properties.Resources.TryLogin ;
                 PlayStoryboard("Fetching");
 
-                // Create a Dispatcher to attempt login
-                NoArgDelegate loginFetcher = new NoArgDelegate(
-                    this.TryLogin);
-
+                // Create a Dispatcher to attempt login on new thread
+                NoArgDelegate loginFetcher = new NoArgDelegate(this.TryLogin);
                 loginFetcher.BeginInvoke(null, null);
             }
-
-            AlwaysOnTopMenuItem.IsChecked = this.Topmost;
         }
 
         #region Fields and Properties
