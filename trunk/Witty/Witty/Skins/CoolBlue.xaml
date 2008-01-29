@@ -2,7 +2,6 @@
   xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
   xmlns:local="clr-namespace:Witty">
 
-  <!--<local:BackgroundConverter x:Key="BackgroundConverter"/>-->
   <local:IndexConverter x:Key="IndexConverter"/>
 
   <SolidColorBrush x:Key="PrimaryBackgroundBrush" Color="#FF52626F"/>
@@ -150,11 +149,6 @@
         </ControlTemplate>
       </Setter.Value>
     </Setter>
-    <!--<Setter Property="Background" >
-            <Setter.Value>
-                <Binding RelativeSource="{RelativeSource Self}" Converter="{StaticResource BackgroundConverter}"/>
-            </Setter.Value>
-        </Setter>-->
   </Style>
 
   <DataTemplate x:Key="UserTimeLineTemplate">
