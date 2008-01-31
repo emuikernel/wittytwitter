@@ -209,7 +209,7 @@ namespace Witty
             AppSettings.Save();
 
             int tweetAdded = 0;
-
+            
             for (int i = newTweets.Count - 1; i >= 0; i--)
             {
                 Tweet tweet = newTweets[i];
@@ -220,11 +220,11 @@ namespace Witty
                     tweet.IsNew = true;
                     tweetAdded++;
                 }
-                else
-                {
-                    // update the relativetime for existing tweets
-                    tweets[i].UpdateRelativeTime();
-                }
+            }
+
+            foreach (Tweet tweet in tweets)
+            {
+                tweet.UpdateRelativeTime();
             }
 
             if (tweetAdded > 0 && AppSettings.PlaySounds)
