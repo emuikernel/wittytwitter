@@ -18,7 +18,13 @@ namespace Witty
 
         protected override void OnStartup(StartupEventArgs e)
         {
+            
             Properties.Settings appSettings = Witty.Properties.Settings.Default;
+            if (appSettings.UpgradeSettings)
+            {
+                Witty.Properties.Settings.Default.Upgrade();
+                appSettings.UpgradeSettings = false;
+            }
 
             if (!string.IsNullOrEmpty(appSettings.Skin))
             {
