@@ -67,19 +67,19 @@ namespace TwitterLib
             return result;
         }
 
-        private string BuildRequestUrl(string sourceUrl)
+        private static string BuildRequestUrl(string sourceUrl)
         {
             const string tinyUrlFormat = "http://tinyurl.com/api-create.php?url={0}";
             return String.Format(tinyUrlFormat, sourceUrl);
         }
 
         // REFACTOR: DRY vs. StringUtils - didn't want this static
-        private bool IsUrl(string word)
+        private static bool IsUrl(string word)
         {
             const string urlRegex =
                @"\b(((https?)://)?[-\w]+(\.\w[-\w]*)+|\w+\@|mailto:|[a-z0-9](?:[-a-z0-9]*[a-z0-9])?\.)+(com\b|edu\b|biz\b|gov\b|in(?:t|fo)\b|mil\b|net\b|org\b|[a-z][a-z]\b)(:\d+)?(/[-a-z0-9_:\@&?=+,.!/~*'%\$]*)*(?<![.,?!])(?!((?!(?:<a )).)*?(?:</a>))(?!((?!(?:<!--)).)*?(?:-->))";
 
-            bool isUrl = false;
+            bool isUrl;
             try
             {
                 isUrl = Regex.IsMatch(word, urlRegex, RegexOptions.IgnorePatternWhitespace | RegexOptions.Multiline | RegexOptions.IgnoreCase);
@@ -93,7 +93,7 @@ namespace TwitterLib
             return isUrl;
         }
 
-        private string EnsureMinimalProtocol(string url)
+        private static string EnsureMinimalProtocol(string url)
         {
             // if our url doesn't have a protocol, we'll at least assume it's plain old http, otherwise good to go
             const string minimalProtocal = @"http://";

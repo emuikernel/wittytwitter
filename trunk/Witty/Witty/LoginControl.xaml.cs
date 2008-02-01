@@ -6,9 +6,8 @@ namespace Witty
 {
     public partial class LoginControl
     {
-        private Properties.Settings AppSettings = Properties.Settings.Default;
+        private readonly Properties.Settings AppSettings = Properties.Settings.Default;
 
-        private delegate void NoArgDelegate();
         private delegate void LoginDelegate(TwitterNet arg);
         private delegate void PostLoginDelegate(User arg);
 

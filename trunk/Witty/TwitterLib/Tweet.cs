@@ -187,7 +187,7 @@ namespace TwitterLib
             if (other == null)
                 throw new ArgumentNullException("other");
 
-            return (this.Id == other.Id);
+            return (Id == other.Id);
         }
 
         #endregion
@@ -205,42 +205,38 @@ namespace TwitterLib
             TimeSpan ts = new TimeSpan(DateTime.Now.Ticks - StatusCreatedDate.Ticks);
             double delta = ts.TotalSeconds;
 
-            string relativeTime = string.Empty;
-
             if (delta <= 1)
             {
-                relativeTime = "a second ago";
+                RelativeTime = "a second ago";
             }
             else if (delta < 60)
             {
-                relativeTime = ts.Seconds + " seconds ago";
+                RelativeTime = ts.Seconds + " seconds ago";
             }
             else if (delta < 120)
             {
-                relativeTime = "about a minute ago";
+                RelativeTime = "about a minute ago";
             }
             else if (delta < (45 * 60))
             {
-                relativeTime = ts.Minutes + " minutes ago";
+                RelativeTime = ts.Minutes + " minutes ago";
             }
             else if (delta < (90 * 60))
             {
-                relativeTime = "about an hour ago";
+                RelativeTime = "about an hour ago";
             }
             else if (delta < (24 * 60 * 60))
             {
-                relativeTime = "about " + ts.Hours + " hours ago";
+                RelativeTime = "about " + ts.Hours + " hours ago";
             }
             else if (delta < (48 * 60 * 60))
             {
-                relativeTime = "1 day ago";
+                RelativeTime = "1 day ago";
             }
             else
             {
-                relativeTime = ts.Days + " days ago";
+                RelativeTime = ts.Days + " days ago";
             }
-
-            RelativeTime = relativeTime;
         }
     }
 
