@@ -519,6 +519,8 @@ namespace TwitterLib
         /// <returns>newly added tweet</returns>
         public Tweet AddTweet(string text)
         {
+            bool isDirectMessage = (text.StartsWith("d ", StringComparison.CurrentCultureIgnoreCase));
+
             if (string.IsNullOrEmpty(text))
                 return null;
 
@@ -560,7 +562,12 @@ namespace TwitterLib
 
                 tweet = new Tweet();
                 tweet.Id = double.Parse(node.SelectSingleNode("id").InnerText);
-                tweet.Text = HttpUtility.HtmlDecode(node.SelectSingleNode("text").InnerText);
+                //Defect 43 - Twitter incorrectly returns last tweet sent when you direct message someone.
+                if (isDirectMessage)
+                    tweet.Text = HttpUtility.UrlDecode(text);
+                else
+                    tweet.Text = HttpUtility.HtmlDecode(node.SelectSingleNode("text").InnerText);
+
                 string source = HttpUtility.HtmlDecode(node.SelectSingleNode("source").InnerText);
                 // Remove html from the source string
                 if (!string.IsNullOrEmpty(source))
