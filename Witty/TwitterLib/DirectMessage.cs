@@ -123,7 +123,7 @@ namespace TwitterLib
         /// </summary>
         public void UpdateRelativeTime()
         {
-            DateTime StatusCreatedDate = (DateTime)dateCreated;
+            DateTime StatusCreatedDate = dateCreated;
 
             TimeSpan ts = new TimeSpan(DateTime.Now.Ticks - StatusCreatedDate.Ticks);
             double delta = ts.TotalSeconds;
@@ -187,7 +187,7 @@ namespace TwitterLib
             if (other == null)
                 return false;
             
-            return (this.Id == other.Id);
+            return (Id == other.Id);
         }
 
         #endregion

@@ -50,7 +50,7 @@ namespace Witty
             // Enforce single instance for release mode
 #if !DEBUG
             Application.Current.Exit += new ExitEventHandler(Current_Exit);
-            m_Event = new SingleInstanceManager(this, ShowApplication); 
+            m_Event = new SingleInstanceManager(this, ShowApplication);
 #endif
             #endregion
 
@@ -62,7 +62,7 @@ namespace Witty
 
             // Set how often to get updates from Twitter
             refreshInterval = new TimeSpan(0, int.Parse(AppSettings.RefreshInterval), 0);
-            
+
             // TODO: refactor this into a setting
             AlwaysOnTopMenuItem.IsChecked = this.Topmost;
 
@@ -78,7 +78,7 @@ namespace Witty
                 twitter = new TwitterNet(AppSettings.Username, AppSettings.Password);
 
                 // Let the user know what's going on
-                StatusTextBlock.Text = Properties.Resources.TryLogin ;
+                StatusTextBlock.Text = Properties.Resources.TryLogin;
                 PlayStoryboard("Fetching");
 
                 // Create a Dispatcher to attempt login on new thread
@@ -185,19 +185,24 @@ namespace Witty
 
         private void GetTweets()
         {
+#if DEBUG       
             try
             {
                 // Schedule the update function in the UI thread.
                 LayoutRoot.Dispatcher.BeginInvoke(
-                    System.Windows.Threading.DispatcherPriority.Normal,
+                    DispatcherPriority.Normal,
                     new OneArgDelegate(UpdateUserInterface), twitter.GetFriendsTimeline());
             }
             catch (WebException ex)
             {
-#if DEBUG
                 MessageBox.Show("There was a problem fetching new tweets from Twitter.com. " + ex.Message);
-#endif
             }
+#else
+            // Schedule the update function in the UI thread.
+            LayoutRoot.Dispatcher.BeginInvoke(
+                DispatcherPriority.Normal,
+                new OneArgDelegate(UpdateUserInterface), twitter.GetFriendsTimeline());
+#endif
         }
 
         private void UpdateUserInterface(TweetCollection newTweets)
@@ -251,7 +256,7 @@ namespace Witty
             {
                 // Schedule posting the tweet
                 UpdateButton.Dispatcher.BeginInvoke(
-                    System.Windows.Threading.DispatcherPriority.Normal,
+                    DispatcherPriority.Normal,
                     new OneStringArgDelegate(AddTweet), TweetTextBox.Text);
             }
         }
@@ -267,7 +272,7 @@ namespace Witty
 
                 // Schedule the update function in the UI thread.
                 LayoutRoot.Dispatcher.BeginInvoke(
-                    System.Windows.Threading.DispatcherPriority.Normal,
+                    DispatcherPriority.Normal,
                     new AddTweetUpdateDelegate(UpdatePostUserInterface), tweet);
             }
             catch (WebException ex)
@@ -297,7 +302,7 @@ namespace Witty
             }
         }
 
-        private void Update_MouseLeftButtonUp(object sender, System.Windows.Input.MouseButtonEventArgs e)
+        private void Update_MouseLeftButtonUp(object sender, MouseButtonEventArgs e)
         {
             ToggleUpdate();
         }
@@ -339,19 +344,24 @@ namespace Witty
 
         private void GetReplies()
         {
+#if DEBUG
             try
             {
                 // Schedule the update function in the UI thread.
                 LayoutRoot.Dispatcher.BeginInvoke(
-                    System.Windows.Threading.DispatcherPriority.Normal,
+                    DispatcherPriority.Normal,
                     new OneArgDelegate(UpdateRepliesInterface), twitter.GetReplies());
             }
             catch (WebException ex)
             {
-#if DEBUG
                 MessageBox.Show("There was a problem fetching your replies from Twitter.com. " + ex.Message);
-#endif
             }
+#else
+            // Schedule the update function in the UI thread.
+            LayoutRoot.Dispatcher.BeginInvoke(
+                DispatcherPriority.Normal,
+                new OneArgDelegate(UpdateRepliesInterface), twitter.GetReplies());
+#endif
         }
 
         private void UpdateRepliesInterface(TweetCollection newReplies)
@@ -398,19 +408,24 @@ namespace Witty
 
         private void GetMessages()
         {
+#if DEBUG
             try
             {
                 // Schedule the update function in the UI thread.
                 LayoutRoot.Dispatcher.BeginInvoke(
-                    System.Windows.Threading.DispatcherPriority.Normal,
+                    DispatcherPriority.Normal,
                     new MessagesDelegate(UpdateMessagesInterface), twitter.RetrieveMessages());
             }
             catch (WebException ex)
             {
-#if DEBUG
                 MessageBox.Show("There was a problem fetching your direct messages from Twitter.com. " + ex.Message);
-#endif
             }
+#else
+            // Schedule the update function in the UI thread.
+            LayoutRoot.Dispatcher.BeginInvoke(
+                DispatcherPriority.Normal,
+                new MessagesDelegate(UpdateMessagesInterface), twitter.RetrieveMessages());
+#endif
         }
 
         private void UpdateMessagesInterface(DirectMessageCollection newMessages)
@@ -446,30 +461,35 @@ namespace Witty
             {
                 // Schedule posting the tweet
                 UpdateButton.Dispatcher.BeginInvoke(
-                    System.Windows.Threading.DispatcherPriority.Normal,
+                    DispatcherPriority.Normal,
                     new SendMessageDelegate(SendMessage), MessageUserTextBox.Text, MessageTextBox.Text);
             }
         }
 
         private void SendMessage(string user, string messageText)
         {
+#if DEBUG
             try
             {
                 twitter.SendMessage(user, messageText);
 
                 // Schedule the update function in the UI thread.
                 LayoutRoot.Dispatcher.BeginInvoke(
-                    System.Windows.Threading.DispatcherPriority.Normal,
+                    DispatcherPriority.Normal,
                     new NoArgDelegate(UpdateMessageUserInterface));
             }
             catch (WebException ex)
             {
                 UpdateTextBlock.Text = "Message failed.";
 
-#if DEBUG
                 MessageBox.Show("There was a problem sending your message. " + ex.Message);
-#endif
             }
+#else
+            // Schedule the update function in the UI thread.
+            LayoutRoot.Dispatcher.BeginInvoke(
+                DispatcherPriority.Normal,
+                new NoArgDelegate(UpdateMessageUserInterface));
+#endif
         }
 
         private void UpdateMessageUserInterface()
@@ -481,7 +501,7 @@ namespace Witty
             MessageTextBox.Clear();
         }
 
-        private void Message_MouseLeftButtonUp(object sender, System.Windows.Input.MouseButtonEventArgs e)
+        private void Message_MouseLeftButtonUp(object sender, MouseButtonEventArgs e)
         {
             ToggleMessage();
         }
@@ -521,25 +541,30 @@ namespace Witty
 
             // Create a Dispatcher to fetching new tweets
             LayoutRoot.Dispatcher.BeginInvoke(
-                System.Windows.Threading.DispatcherPriority.Normal,
+                DispatcherPriority.Normal,
                 new OneStringArgDelegate(GetUserTimeline), userId);
         }
 
         private void GetUserTimeline(string userId)
         {
+#if DEBUG
             try
             {
                 // Schedule the update function in the UI thread.
                 LayoutRoot.Dispatcher.BeginInvoke(
-                    System.Windows.Threading.DispatcherPriority.Normal,
+                    DispatcherPriority.Normal,
                     new OneArgDelegate(UpdateUsersTimelineInterface), twitter.GetUserTimeline(userId));
             }
             catch (WebException ex)
             {
-#if DEBUG
                 MessageBox.Show("There was a problem fetching the user's timeline from Twitter.com. " + ex.Message);
-#endif
             }
+#else
+            // Schedule the update function in the UI thread.
+            LayoutRoot.Dispatcher.BeginInvoke(
+                DispatcherPriority.Normal,
+                new OneArgDelegate(UpdateUsersTimelineInterface), twitter.GetUserTimeline(userId));
+#endif
         }
 
         private void UpdateUsersTimelineInterface(TweetCollection newTweets)
@@ -573,19 +598,24 @@ namespace Witty
 
         private void TryLogin()
         {
+#if DEBUG
             try
             {
                 // Schedule the update function in the UI thread.
                 LayoutRoot.Dispatcher.BeginInvoke(
-                    System.Windows.Threading.DispatcherPriority.Normal,
+                    DispatcherPriority.Normal,
                     new LoginDelegate(UpdatePostLoginInterface), twitter.Login());
             }
             catch (WebException ex)
             {
-#if DEBUG
                 MessageBox.Show("There was a problem logging in to Twitter. " + ex.Message);
-#endif
             }
+#else
+            // Schedule the update function in the UI thread.
+            LayoutRoot.Dispatcher.BeginInvoke(
+                DispatcherPriority.Normal,
+                new LoginDelegate(UpdatePostLoginInterface), twitter.Login());
+#endif
         }
 
         private void UpdatePostLoginInterface(User user)
@@ -631,6 +661,7 @@ namespace Witty
         /// <summary>
         /// Checks for keyboard shortcuts
         /// </summary>
+        /// <param name="sender"></param>
         /// <param name="e">EventArgs</param>
         private void MainWindow_OnKeyDown(object sender, KeyEventArgs e)
         {
@@ -713,6 +744,9 @@ namespace Witty
                 case CurrentView.Replies:
                     DelegateRepliesFetch();
                     break;
+                case CurrentView.Messages:
+                    DelegateMessagesFetch();
+                    break;
                 case CurrentView.User:
                     DelegateUserTimelineFetch(displayUser);
                     break;
@@ -780,7 +814,7 @@ namespace Witty
             }
         }
 
-        private void TweetsListBox_MouseLeftButtonUp(object sender, System.Windows.Input.MouseButtonEventArgs e)
+        private void TweetsListBox_MouseLeftButtonUp(object sender, MouseButtonEventArgs e)
         {
             if (e.MouseDevice.DirectlyOver.GetType() == typeof(TextBlock))
             {
@@ -809,7 +843,7 @@ namespace Witty
             }
         }
 
-        private void MessagesListBox_MouseLeftButtonUp(object sender, System.Windows.Input.MouseButtonEventArgs e)
+        private void MessagesListBox_MouseLeftButtonUp(object sender, MouseButtonEventArgs e)
         {
             if (e.MouseDevice.DirectlyOver.GetType() == typeof(TextBlock))
             {
@@ -840,7 +874,7 @@ namespace Witty
             }
         }
 
-        private void Friends_MouseLeftButtonUp(object sender, System.Windows.Input.MouseButtonEventArgs e)
+        private void Friends_MouseLeftButtonUp(object sender, MouseButtonEventArgs e)
         {
             if (isLoggedIn)
             {
@@ -859,7 +893,7 @@ namespace Witty
                 this.Topmost = false;
         }
 
-        private void Url_MouseLeftButtonUp(object sender, System.Windows.Input.MouseButtonEventArgs e)
+        private void Url_MouseLeftButtonUp(object sender, MouseButtonEventArgs e)
         {
             TextBlock textBlock = (TextBlock)sender;
             try
@@ -874,7 +908,7 @@ namespace Witty
             }
         }
 
-        private void ScreenName_MouseLeftButtonUp(object sender, System.Windows.Input.MouseButtonEventArgs e)
+        private void ScreenName_MouseLeftButtonUp(object sender, MouseButtonEventArgs e)
         {
             TextBlock textBlock = (TextBlock)sender;
             try

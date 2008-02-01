@@ -9,7 +9,7 @@ namespace Witty
     public partial class Options
     {
         // Settings used by the application
-        private Properties.Settings AppSettings = Properties.Settings.Default;
+        private readonly Properties.Settings AppSettings = Properties.Settings.Default;
 
         private bool isSettingSkin = false;
 
@@ -95,6 +95,7 @@ namespace Witty
         /// <summary>
         /// Checks for keyboard shortcuts
         /// </summary>
+        /// <param name="sender"></param>
         /// <param name="e">EventArgs</param>
         private void Window_OnKeyDown(object sender, KeyEventArgs e)
         {

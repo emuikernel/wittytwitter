@@ -35,8 +35,8 @@ namespace TwitterLib
         private User currentLoggedInUser;
 
         // TODO: might need to fix this for globalization
-        private string twitterCreatedAtDateFormat = "ddd MMM dd HH:mm:ss zzzz yyyy"; // Thu Apr 26 01:36:08 +0000 2007
-        private string twitterSinceDateFormat = "ddd MMM dd yyyy HH:mm:ss zzzz";
+        private readonly string twitterCreatedAtDateFormat = "ddd MMM dd HH:mm:ss zzzz yyyy"; // Thu Apr 26 01:36:08 +0000 2007
+        private readonly string twitterSinceDateFormat = "ddd MMM dd yyyy HH:mm:ss zzzz";
 
         private static int characterLimit;
 
@@ -790,10 +790,8 @@ namespace TwitterLib
 
             try
             {
-                // Do the request to get the response
-                using (HttpWebResponse response = request.GetResponse() as HttpWebResponse)
-                {
-                }
+                // Perform the web request
+                request.GetResponse();
             }
             catch (WebException webExcp)
             {
@@ -848,7 +846,7 @@ namespace TwitterLib
         {
             TweetCollection tweets = new TweetCollection();
 
-            string timelineUrl = string.Empty;
+            string timelineUrl;
 
             switch (timeline)
             {
@@ -876,7 +874,7 @@ namespace TwitterLib
 
             if (!string.IsNullOrEmpty(since))
             {
-                DateTime sinceDate = new DateTime();
+                DateTime sinceDate;
                 DateTime.TryParse(since, out sinceDate);
 
                 // Go back a minute to compensate for latency.
@@ -987,10 +985,8 @@ namespace TwitterLib
 
             try
             {
-                // Do the request to get the response
-                using (HttpWebResponse response = request.GetResponse() as HttpWebResponse)
-                {
-                }
+                // perform the destroy web request
+                request.GetResponse();
             }
             catch (WebException webExcp)
             {
