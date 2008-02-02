@@ -237,10 +237,6 @@ namespace Witty
                 // Play tweets found sound
                 SoundPlayer player = new SoundPlayer(Witty.Properties.Resources.alert);
                 player.Play();
-
-                //MediaElement media = new MediaElement();
-                //media.Source = new Uri("alert.wav");
-
             }
 
             StopStoryboard("Fetching");

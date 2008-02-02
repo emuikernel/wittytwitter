@@ -11,7 +11,7 @@
   x:Name="Window" 
   Title="Witty 0.1.6 Beta" 
   Width="330" Height="570" MinWidth="200" MinHeight="200" 
-  WindowStyle="SingleBorderWindow" Icon="AppIcon.ico" 
+  WindowStyle="SingleBorderWindow"
   Witty:WindowSettings.Save="True" KeyDown="MainWindow_OnKeyDown">
   
   <Window.Resources>

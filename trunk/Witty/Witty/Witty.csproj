@@ -188,9 +188,9 @@
     </ProjectReference>
   </ItemGroup>
   <ItemGroup>
-    <Resource Include="AppIcon.ico">
-      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
-    </Resource>
+    <EmbeddedResource Include="AppIcon.ico">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </EmbeddedResource>
   </ItemGroup>
   <ItemGroup>
     <EmbeddedResource Include="alert.wav">
@@ -202,7 +202,6 @@
   </ItemGroup>
   <Import Project="$(MSBuildBinPath)\Microsoft.CSharp.targets" />
   <PropertyGroup>
-    <PreBuildEvent>xcopy ..\..\AppIcon.ico .\ /y
-xcopy ..\..\Skins .\Skins /y /s /i</PreBuildEvent>
+    <PreBuildEvent>xcopy ..\..\Skins .\Skins /y /s /i</PreBuildEvent>
   </PropertyGroup>
 </Project>
