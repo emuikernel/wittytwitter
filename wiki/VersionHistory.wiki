@@ -1,6 +1,22 @@
 #summary Version History and Release Notes
 #labels Featured,Documentation
 
+= v0.1.6 Beta =
+  * Improved Threading to prevent lockups when Twitter is slow
+  * Avatars are styled like Vista user icons
+  * Improved TinyUrl support
+  * New 256x256 Witty Icon
+  * Bug fixes
+   # Stability fixes
+   # Fixes for non-US users
+   # no longer returns timestamp in the future "-3 seconds ago"
+ 
+= v0.1.5 = 
+_November 21, 2007_
+  * Everything from v0.1.5 Beta and v0.1.5 Beta 2
+  * Escape key to minimize Witty
+  * tinyurl support
+
 = v0.1.5 = 
 _November 21, 2007_
   * Everything from v0.1.5 Beta and v0.1.5 Beta 2
