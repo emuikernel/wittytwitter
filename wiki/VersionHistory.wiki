@@ -2,6 +2,7 @@
 #labels Featured,Documentation
 
 = v0.1.6 Beta =
+_February 1, 2008_
   * Improved Threading to prevent lockups when Twitter is slow
   * Avatars are styled like Vista user icons
   * Improved TinyUrl support
