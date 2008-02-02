@@ -3,9 +3,7 @@
   xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
   xmlns:local="clr-namespace:Witty" x:Class="Witty.PeopleYouFollow"
   Title="Witty - People You Follow"
-  Height="650" Width="650"
-  Icon="AppIcon.ico"
-  >
+  Height="650" Width="650">
   <Window.Background>
     <LinearGradientBrush EndPoint="0,0.5" StartPoint="0,0.95">
       <GradientStop Color="#F999" Offset="0"/>
