@@ -9,6 +9,7 @@ using System.Windows.Input;
 using System.Windows.Media.Animation;
 using System.Windows.Threading;
 using TwitterLib;
+using System.Reflection;
 
 namespace Witty
 {
@@ -23,7 +24,7 @@ namespace Witty
             m_notifyIcon.BalloonTipText = "Richt-click for more options";
             m_notifyIcon.BalloonTipTitle = "Witty";
             m_notifyIcon.Text = "Witty - The WPF Twitter Client";
-            m_notifyIcon.Icon = new System.Drawing.Icon("AppIcon.ico");
+            m_notifyIcon.Icon = Witty.Properties.Resources.AppIcon;
             m_notifyIcon.Click += new EventHandler(m_notifyIcon_Click);
             m_notifyIcon.MouseDoubleClick += new System.Windows.Forms.MouseEventHandler(m_notifyIcon_MouseDoubleClick);
 
