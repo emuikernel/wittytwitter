@@ -421,7 +421,7 @@ namespace TwitterLib
             // merging the responses from each request may be tricky.
             int currentUsersFriendsCount = CurrentlyLoggedInUser.FollowingCount;
             int numberOfPagesToFetch = (currentUsersFriendsCount / 100);
-            if ((currentUsersFriendsCount % 100) > 0) { numberOfPagesToFetch++; };
+            
             for (int count = 1; count <= numberOfPagesToFetch;count++ )
             {
                 // Create the web request
@@ -496,7 +496,7 @@ namespace TwitterLib
         /// Delete a tweet from a users timeline
         /// </summary>
         /// <param name="id">id of the Tweet to delete</param>
-        public void DestroyTweet(int id)
+        public void DestroyTweet(double id)
         {
             string urlToCall = DestroyUrl + id + format;
             MakeDestroyRequestCall(urlToCall);
@@ -506,7 +506,7 @@ namespace TwitterLib
         /// Destroy a direct message sent by a user
         /// </summary>
         /// <param name="id">id of the direct message to delete</param>
-        public void DestroyDirectMessage(int id)
+        public void DestroyDirectMessage(double id)
         {
             string urlToCall = DestroyDirectMessageUrl + id + "." + Format;
             MakeDestroyRequestCall(urlToCall);
