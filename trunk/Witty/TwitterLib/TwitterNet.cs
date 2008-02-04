@@ -39,6 +39,7 @@ namespace TwitterLib
         private readonly string twitterSinceDateFormat = "ddd MMM dd yyyy HH:mm:ss zzzz";
 
         private static int characterLimit;
+        private string clientName;
 
         #endregion
 
@@ -59,6 +60,7 @@ namespace TwitterLib
                 currentLoggedInUser = value;
             }
         }
+
         /// <summary>
         /// Twitter username
         /// </summary>
@@ -331,6 +333,24 @@ namespace TwitterLib
             set { characterLimit = value; }
         }
 
+        /// <summary>
+        /// The name of the current client. Defaults to "Witty"
+        /// </summary>
+        /// <remarks>
+        /// This value can be changed if you're using this Library for your own twitter client
+        /// </remarks>
+        public string ClientName
+        {
+            get
+            {
+                if (string.IsNullOrEmpty(clientName))
+                    return "witty";
+                else
+                    return clientName;
+            }
+            set { clientName = value; }
+        }
+
         #endregion
 
         #region Constructors
@@ -537,7 +557,7 @@ namespace TwitterLib
             // Set values for the request back
             request.ContentType = "application/x-www-form-urlencoded";
             string param = "status=" + text;
-            string sourceParam = "&source=witty";
+            string sourceParam = "&source=" + ClientName;
             request.ContentLength = param.Length + sourceParam.Length;
 
             // Write the request paramater
