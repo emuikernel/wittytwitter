@@ -670,7 +670,10 @@ namespace Witty
                     {
                         case Key.D:
                             //Direct message to user
-                            ToggleUpdate();
+                            if (!isExpanded)
+                            {
+                                ToggleUpdate();
+                            }
                             TweetTextBox.Text = "";
                             TweetTextBox.Text = "D ";
                             if (null != TweetsListBox.SelectedItem)
@@ -686,7 +689,10 @@ namespace Witty
                             //reply to user
                             if (null != TweetsListBox.SelectedItem)
                             {
-                                ToggleUpdate();
+                                if (!isExpanded)
+                                {
+                                    ToggleUpdate();
+                                }
                                 TweetTextBox.Text = "";
                                 TweetTextBox.Text = "@" + ((Tweet)TweetsListBox.SelectedItem).User.ScreenName + " ";
                                 TweetTextBox.Select(TweetTextBox.Text.Length, 0);
