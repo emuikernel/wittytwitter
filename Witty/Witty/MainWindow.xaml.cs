@@ -989,6 +989,10 @@ namespace Witty
             }
         }
 
+        #endregion
+
+        #region filtering
+
         /// <summary>
         /// Handles the filtering and search
         /// </summary>
@@ -1033,6 +1037,10 @@ namespace Witty
         public bool TweetFilter(object item)
         {
             Tweet tweet = item as Tweet;
+
+            // this will prevent the fade animation from starting when the tweet is filtered
+            tweet.IsNew = false;
+
             return (tweet.Text.ToLower().Contains(FilterTextBox.Text.ToLower()))
                    || (tweet.User.ScreenName.ToLower().Contains(FilterTextBox.Text.ToLower()));
         }
@@ -1048,6 +1056,7 @@ namespace Witty
             return (message.Text.ToLower().Contains(FilterTextBox.Text.ToLower()))
                    || (message.Sender.ScreenName.ToLower().Contains(FilterTextBox.Text.ToLower()));
         } 
+
         #endregion
 
         #region Minimize to Tray
