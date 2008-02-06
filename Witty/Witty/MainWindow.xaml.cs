@@ -150,6 +150,8 @@ namespace Witty
                         return CurrentView.Replies;
                     case 2:
                         return CurrentView.User;
+                    case 3:
+                        return CurrentView.Messages;
                     default:
                         return CurrentView.Recent;
                 }
@@ -214,6 +216,13 @@ namespace Witty
             AppSettings.LastUpdated = lastUpdated.ToString();
             AppSettings.Save();
 
+            // Update existing tweets
+            foreach (Tweet tweet in tweets)
+            {
+                tweet.IsNew = false;
+                tweet.UpdateRelativeTime();
+            }
+
             int tweetAdded = 0;
             
             for (int i = newTweets.Count - 1; i >= 0; i--)
@@ -226,11 +235,6 @@ namespace Witty
                     tweet.IsNew = true;
                     tweetAdded++;
                 }
-            }
-
-            foreach (Tweet tweet in tweets)
-            {
-                tweet.UpdateRelativeTime();
             }
 
             if (tweetAdded > 0 && AppSettings.PlaySounds)
@@ -621,6 +625,7 @@ namespace Witty
             RefreshButton.IsEnabled = true;
             OptionsButton.IsEnabled = true;
             AppSettings.LastUpdated = string.Empty;
+            Filter.IsEnabled = true;
 
             App.LoggedInUser = user;
 
@@ -649,6 +654,7 @@ namespace Witty
             isExpanded = false;
             isLoggedIn = true;
             OptionsButton.IsEnabled = true;
+            Filter.IsEnabled = true;
         }
 
         #endregion
@@ -795,6 +801,9 @@ namespace Witty
 
                 displayUser = string.Empty;
             }
+
+            // clear the filter text since it isn't applied when switching tabs
+            FilterTextBox.Text = string.Empty;
         }
 
         private void PlayStoryboard(string storyboardName)
@@ -974,10 +983,71 @@ namespace Witty
                 isLoggedIn = false;
                 tweets.Clear();
                 StatusTextBlock.Text = "Login";
+                Filter.IsEnabled = false;
 
                 PlayStoryboard("ShowLogin");
             }
         }
+
+        /// <summary>
+        /// Handles the filtering and search
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="e"></param>
+        private void FilterTextBox_TextChanged(object sender, TextChangedEventArgs e)
+        {
+            //Use collection view to filter the listbox
+            ICollectionView collectionView = CollectionViewSource.GetDefaultView(tweets);
+
+            switch (currentView)
+            {
+                case CurrentView.Recent:
+                    collectionView = CollectionViewSource.GetDefaultView(tweets);
+                    break;
+                case CurrentView.Replies:
+                    collectionView = CollectionViewSource.GetDefaultView(replies);
+                    break;
+                case CurrentView.Messages:
+                    collectionView = CollectionViewSource.GetDefaultView(messages);
+                    break;
+                case CurrentView.User:
+                    collectionView = CollectionViewSource.GetDefaultView(userTweets);
+                    break;
+                default:
+                    collectionView = CollectionViewSource.GetDefaultView(tweets);
+                    break;
+            }
+
+            if (currentView == CurrentView.Messages)
+                // messages aren't tweets
+                collectionView.Filter = new Predicate<object>(MessageFilter);
+            else
+                collectionView.Filter = new Predicate<object>(TweetFilter);
+        }
+
+        /// <summary>
+        /// Delegate to filter the tweet text and by the tweet user's screenname.
+        /// </summary>
+        /// <param name="item"></param>
+        /// <returns></returns>
+        public bool TweetFilter(object item)
+        {
+            Tweet tweet = item as Tweet;
+            return (tweet.Text.ToLower().Contains(FilterTextBox.Text.ToLower()))
+                   || (tweet.User.ScreenName.ToLower().Contains(FilterTextBox.Text.ToLower()));
+        }
+
+        /// <summary>
+        /// Delegate to filter the tweet text and by the tweet user's screenname.
+        /// </summary>
+        /// <param name="item"></param>
+        /// <returns></returns>
+        public bool MessageFilter(object item)
+        {
+            DirectMessage message = item as DirectMessage;
+            return (message.Text.ToLower().Contains(FilterTextBox.Text.ToLower()))
+                   || (message.Sender.ScreenName.ToLower().Contains(FilterTextBox.Text.ToLower()));
+        } 
         #endregion
 
         #region Minimize to Tray

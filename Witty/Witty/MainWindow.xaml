@@ -42,6 +42,8 @@
   <DockPanel x:Name="LayoutRoot">
     
     <!-- Header -->
+    
+    <!-- Header -->
     <Border DockPanel.Dock="Top" Height="35" Padding="10,0,10,0" x:Name="Header" Background="{DynamicResource PrimaryBackgroundBrush}">
       <Border.ContextMenu>
         <ContextMenu>
@@ -54,6 +56,16 @@
         <Button Content="Options" Height="20" x:Name="OptionsButton" Click="OptionsButton_Click" MinWidth="25" MinHeight="20" FontSize="9" DockPanel.Dock="Right" Margin="0,0,10,0" IsEnabled="False" Width="50" />
         <Rectangle Fill="#FF52626F" Width="15" Height="15" DockPanel.Dock="Right" x:Name="Friends" MouseLeftButtonUp="Friends_MouseLeftButtonUp" Margin="0,0,10,0" Visibility="Collapsed" />
       </DockPanel>
+    </Border>
+    <Border DockPanel.Dock="Top" x:Name="Filter" Background="#FFCEE8B9" IsEnabled="False">
+    	<Grid>
+    		<Grid.ColumnDefinitions>
+    			<ColumnDefinition Width="Auto"/>
+    			<ColumnDefinition Width="*"/>
+    		</Grid.ColumnDefinitions>
+    		<Label Content="Search" Target="{Binding ElementName=FilterTextBox, Mode=OneWay}" VerticalAlignment="Center"/>
+    		<TextBox x:Name="FilterTextBox" TextWrapping="Wrap" TextChanged="FilterTextBox_TextChanged" Grid.Column="1" Margin="5,5,5,5"/>
+    	</Grid>
     </Border>
     
     <!-- StatusBar-->
@@ -129,9 +141,7 @@
                   <TextBlock Text="{Binding Path=User.FullName, FallbackValue=Full Name}" FontWeight="Bold" FontSize="16" x:Name="FullName" Cursor="Hand" MouseLeftButtonUp="ScreenName_MouseLeftButtonUp" Tag="{Binding Path=User.TwitterUrl, Mode=Default}" TextWrapping="NoWrap" TextTrimming="CharacterEllipsis" ToolTip="{Binding Path=User.TwitterUrl, Mode=Default}" d:LayoutOverrides="Width, Height" />
                   <DockPanel Grid.Row="1">
                     <TextBlock x:Name="Description" Text="{Binding Path=User.Description, Mode=Default, FallbackValue=Description}" TextWrapping="Wrap" FontStyle="Italic" DockPanel.Dock="Top" />
-                    <TextBlock x:Name="SiteUrl" Text="{Binding Path=User.SiteUrl, Mode=Default, FallbackValue=Site Url}" TextWrapping="NoWrap" MouseLeftButtonUp="Url_MouseLeftButtonUp" Cursor="Hand" TextTrimming="CharacterEllipsis" DockPanel.Dock="Top" ToolTip="{Binding Path=User.SiteUrl, Mode=Default}" TextDecorations="Underline" Foreground="#FF0000FF">
-                      <Hyperlink NavigateUri="{Binding Path=User.SiteUrl, Mode=Default, FallbackValue=Site Url}" />
-                    </TextBlock>
+                    <TextBlock x:Name="SiteUrl" Text="{Binding Path=User.SiteUrl, Mode=Default, FallbackValue=Site Url}" TextWrapping="NoWrap" MouseLeftButtonUp="Url_MouseLeftButtonUp" Cursor="Hand" TextTrimming="CharacterEllipsis" DockPanel.Dock="Top" ToolTip="{Binding Path=User.SiteUrl, Mode=Default}" TextDecorations="Underline" Foreground="#FF0000FF"><Hyperlink NavigateUri="{Binding Path=User.SiteUrl, Mode=Default, FallbackValue=Site Url}" /></TextBlock>
                     <TextBlock x:Name="Location" Text="{Binding Path=User.Location, Mode=Default, FallbackValue=Location}" TextWrapping="NoWrap" TextTrimming="CharacterEllipsis" />
                   </DockPanel>
                 </Grid>
