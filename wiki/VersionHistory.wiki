@@ -2,6 +2,7 @@
 #labels Featured,Documentation
 
 = v0.1.6 Beta 2=
+http://wittytwitter.googlecode.com/files/Setup-Witty-0.1.6-Beta2.exe
 _February 6, 2008_
   * Added Search filterting feature
   * Added installer (thanks @jongalloway)
