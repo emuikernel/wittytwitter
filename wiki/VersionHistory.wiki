@@ -1,6 +1,11 @@
 #summary Version History and Release Notes
 #labels Featured,Documentation
 
+= v0.1.6 Beta 2=
+_February 6, 2008_
+  * Added Search filterting feature
+  * Added installer (thanks @jongalloway)
+
 = v0.1.6 Beta =
 _February 1, 2008_
   * Improved Threading to prevent lockups when Twitter is slow
