@@ -9,7 +9,6 @@ using System.Windows.Input;
 using System.Windows.Media.Animation;
 using System.Windows.Threading;
 using TwitterLib;
-using System.Reflection;
 
 namespace Witty
 {
@@ -624,8 +623,9 @@ namespace Witty
             isLoggedIn = true;
             RefreshButton.IsEnabled = true;
             OptionsButton.IsEnabled = true;
+            SearchButton.IsEnabled = true;
             AppSettings.LastUpdated = string.Empty;
-            Filter.IsEnabled = true;
+            Search.IsEnabled = true;
 
             App.LoggedInUser = user;
 
@@ -654,7 +654,8 @@ namespace Witty
             isExpanded = false;
             isLoggedIn = true;
             OptionsButton.IsEnabled = true;
-            Filter.IsEnabled = true;
+            SearchButton.IsEnabled = true; 
+            Search.IsEnabled = true;
         }
 
         #endregion
@@ -983,7 +984,7 @@ namespace Witty
                 isLoggedIn = false;
                 tweets.Clear();
                 StatusTextBlock.Text = "Login";
-                Filter.IsEnabled = false;
+                Search.IsEnabled = false;
 
                 PlayStoryboard("ShowLogin");
             }
@@ -1055,7 +1056,20 @@ namespace Witty
             DirectMessage message = item as DirectMessage;
             return (message.Text.ToLower().Contains(FilterTextBox.Text.ToLower()))
                    || (message.Sender.ScreenName.ToLower().Contains(FilterTextBox.Text.ToLower()));
-        } 
+        }
+
+
+        private void SearchButton_Click(object sender, RoutedEventArgs e)
+        {
+            if (Search.Visibility == Visibility.Hidden)
+            {
+                PlayStoryboard("ShowSearchPanel");
+            }
+            else
+            {
+                PlayStoryboard("HideSearchPanel");
+            }
+        }
 
         #endregion
 

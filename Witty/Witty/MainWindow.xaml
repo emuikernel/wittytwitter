@@ -7,9 +7,10 @@
   mc:Ignorable="d" 
   xmlns:TwitterLib="clr-namespace:TwitterLib;assembly=TwitterLib" 
   xmlns:Witty="clr-namespace:Witty" 
+  xmlns:controls="clr-namespace:Witty.Controls" 
   x:Class="Witty.MainWindow" 
   x:Name="Window" 
-  Title="Witty 0.1.6 Beta" 
+  Title="Witty 0.1.6 Beta 2" 
   Width="330" Height="570" MinWidth="200" MinHeight="200" 
   WindowStyle="SingleBorderWindow"
   Witty:WindowSettings.Save="True" KeyDown="MainWindow_OnKeyDown">
@@ -21,6 +22,24 @@
         <ResourceDictionary Source="Resources\Storyboards.xaml" />
       </ResourceDictionary.MergedDictionaries>
       <Witty:CharRemainingValueConverter x:Key="CharRemainingConverter" />
+    	<Storyboard x:Key="ShowSearchPanel">
+    		<DoubleAnimationUsingKeyFrames BeginTime="00:00:00" Storyboard.TargetName="Search" Storyboard.TargetProperty="(FrameworkElement.Height)">
+    			<SplineDoubleKeyFrame KeyTime="00:00:00" Value="0"/>
+    			<SplineDoubleKeyFrame KeyTime="00:00:00.2000000" Value="35"/>
+    		</DoubleAnimationUsingKeyFrames>
+    		<ObjectAnimationUsingKeyFrames BeginTime="00:00:00" Storyboard.TargetName="Search" Storyboard.TargetProperty="(UIElement.Visibility)">
+    			<DiscreteObjectKeyFrame KeyTime="00:00:00" Value="{x:Static Visibility.Visible}"/>
+    		</ObjectAnimationUsingKeyFrames>
+    	</Storyboard>
+    	<Storyboard x:Key="HideSearchPanel">
+    		<DoubleAnimationUsingKeyFrames BeginTime="00:00:00" Storyboard.TargetName="Search" Storyboard.TargetProperty="(FrameworkElement.Height)">
+    			<SplineDoubleKeyFrame KeyTime="00:00:00" Value="35"/>
+    			<SplineDoubleKeyFrame KeyTime="00:00:00.2000000" Value="0"/>
+    		</DoubleAnimationUsingKeyFrames>
+    		<ObjectAnimationUsingKeyFrames BeginTime="00:00:00" Storyboard.TargetName="Search" Storyboard.TargetProperty="(UIElement.Visibility)">
+    			<DiscreteObjectKeyFrame KeyTime="00:00:00.2000000" Value="{x:Static Visibility.Hidden}"/>
+    		</ObjectAnimationUsingKeyFrames>
+    	</Storyboard>
     </ResourceDictionary>
   </Window.Resources>
   
@@ -42,8 +61,6 @@
   <DockPanel x:Name="LayoutRoot">
     
     <!-- Header -->
-    
-    <!-- Header -->
     <Border DockPanel.Dock="Top" Height="35" Padding="10,0,10,0" x:Name="Header" Background="{DynamicResource PrimaryBackgroundBrush}">
       <Border.ContextMenu>
         <ContextMenu>
@@ -52,19 +69,20 @@
       </Border.ContextMenu>
       <DockPanel LastChildFill="False">
         <TextBlock Text="Witty" VerticalAlignment="Center" HorizontalAlignment="Center" FontSize="18" FontWeight="Bold" Foreground="{DynamicResource HeaderForegroundBrush}" />
-        <Button Content="Refresh" Height="20" x:Name="RefreshButton" Click="RefreshButton_Click" IsEnabled="False" MinWidth="25" MinHeight="20" FontSize="9" DockPanel.Dock="Right" Width="50" />
-        <Button Content="Options" Height="20" x:Name="OptionsButton" Click="OptionsButton_Click" MinWidth="25" MinHeight="20" FontSize="9" DockPanel.Dock="Right" Margin="0,0,10,0" IsEnabled="False" Width="50" />
+        <Button Content="Search" Height="20" x:Name="SearchButton" MinWidth="25" MinHeight="20" FontSize="9" IsEnabled="False" Width="50" ToolTip="Display Search Panel" DockPanel.Dock="Right" Click="SearchButton_Click" />
+        <Button Content="Refresh" Height="20" x:Name="RefreshButton" Click="RefreshButton_Click" IsEnabled="False" MinWidth="25" MinHeight="20" FontSize="9" DockPanel.Dock="Right" Width="50" ToolTip="Refresh Tweets" Margin="0,0,10,0" />
+        <Button Content="Options" Height="20" x:Name="OptionsButton" Click="OptionsButton_Click" MinWidth="25" MinHeight="20" FontSize="9" DockPanel.Dock="Right" Margin="0,0,10,0" IsEnabled="False" Width="50" ToolTip="Show Options Window" />
         <Rectangle Fill="#FF52626F" Width="15" Height="15" DockPanel.Dock="Right" x:Name="Friends" MouseLeftButtonUp="Friends_MouseLeftButtonUp" Margin="0,0,10,0" Visibility="Collapsed" />
       </DockPanel>
     </Border>
-    <Border DockPanel.Dock="Top" x:Name="Filter" Background="#FFCEE8B9" IsEnabled="False">
+    <Border DockPanel.Dock="Top" x:Name="Search" Background="#FFCEE8B9" IsEnabled="False" Height="0" Visibility="Hidden">
     	<Grid>
     		<Grid.ColumnDefinitions>
     			<ColumnDefinition Width="Auto"/>
     			<ColumnDefinition Width="*"/>
     		</Grid.ColumnDefinitions>
     		<Label Content="Search" Target="{Binding ElementName=FilterTextBox, Mode=OneWay}" VerticalAlignment="Center"/>
-    		<TextBox x:Name="FilterTextBox" TextWrapping="Wrap" TextChanged="FilterTextBox_TextChanged" Grid.Column="1" Margin="5,5,5,5"/>
+    		<controls:FilterText x:Name="FilterTextBox" TextBox.TextChanged="FilterTextBox_TextChanged" Grid.Column="1" Margin="5,5,5,5"/>
     	</Grid>
     </Border>
     
@@ -81,7 +99,7 @@
         <TabItem Header="Recent" Padding="2,1,2,1" x:Name="RecentTab">
           <Grid x:Name="Recent">
             <ListBox x:Name="TweetsListBox" ScrollViewer.CanContentScroll="False" IsSynchronizedWithCurrentItem="True" ItemTemplate="{DynamicResource TweetsTemplate}" ItemsSource="{Binding Mode=OneWay}" ScrollViewer.HorizontalScrollBarVisibility="Disabled" Margin="0,0,0,20" MouseLeftButtonUp="TweetsListBox_MouseLeftButtonUp" BorderThickness="0,0,0,0" />
-            <Border Height="21" Background="{StaticResource UpdateBackgroundBrush}" VerticalAlignment="Bottom" Padding="10,0,10,0" x:Name="Update" MouseLeftButtonUp="Update_MouseLeftButtonUp" BorderBrush="{DynamicResource PrimaryBackgroundBrush}" BorderThickness="0,0,0,1">
+            <Border Height="21" Background="{StaticResource UpdateBackgroundBrush}" VerticalAlignment="Bottom" Padding="10,0,10,0" x:Name="Update" MouseLeftButtonUp="Update_MouseLeftButtonUp" BorderBrush="{DynamicResource PrimaryBackgroundBrush}" BorderThickness="0,0,0,1" ToolTip="Display update panel">
               <DockPanel OpacityMask="#FF000000" x:Name="dockPanel">
                 <TextBlock HorizontalAlignment="Center" DockPanel.Dock="Top" Text="Update" TextWrapping="Wrap" VerticalAlignment="Top" x:Name="UpdateTextBlock" Margin="0,2,0,0" />
                 <Grid Margin="0,5,0,10">

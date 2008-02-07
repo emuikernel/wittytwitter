@@ -72,6 +72,10 @@
     <Reference Include="System.ServiceModel" />
     <Reference Include="System.Runtime.Serialization" />
     <Reference Include="System.IdentityModel" />
+    <Page Include="Controls\FilterText.xaml">
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
+    </Page>
     <Page Include="LoginControl.xaml">
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
@@ -145,6 +149,9 @@
     </Compile>
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="Controls\FilterText.xaml.cs">
+      <DependentUpon>FilterText.xaml</DependentUpon>
+    </Compile>
     <Compile Include="FlipTile3D\Code.cs" />
     <Compile Include="FlipTile3D\FileTile3D.cs" />
     <Compile Include="FlipTile3D\TileData.cs" />
