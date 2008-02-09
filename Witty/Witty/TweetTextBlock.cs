@@ -59,7 +59,14 @@ namespace Witty
 
         static void link_Click(object sender, RoutedEventArgs e)
         {
-            System.Diagnostics.Process.Start(((Hyperlink)sender).NavigateUri.ToString());
+            try
+            {
+                System.Diagnostics.Process.Start(((Hyperlink)sender).NavigateUri.ToString());
+            }
+            catch
+            {
+                MessageBox.Show("There was a problem launching the specified URL.", "Error", MessageBoxButton.OK, MessageBoxImage.Exclamation);
+            }
         }
 
     }
