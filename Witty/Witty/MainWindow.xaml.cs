@@ -676,34 +676,13 @@ namespace Witty
                     switch (e.Key)
                     {
                         case Key.D:
-                            //Direct message to user
-                            if (!isExpanded)
-                            {
-                                ToggleUpdate();
-                            }
-                            TweetTextBox.Text = "";
-                            TweetTextBox.Text = "D ";
-                            if (null != TweetsListBox.SelectedItem)
-                            {
-                                TweetTextBox.Text += ((Tweet)TweetsListBox.SelectedItem).User.ScreenName;
-                            }
-                            TweetTextBox.Select(TweetTextBox.Text.Length, 0);
+                            createDirectMessage();
                             break;
                         case Key.U:
                             ToggleUpdate();
                             break;
                         case Key.R:
-                            //reply to user
-                            if (null != TweetsListBox.SelectedItem)
-                            {
-                                if (!isExpanded)
-                                {
-                                    ToggleUpdate();
-                                }
-                                TweetTextBox.Text = "";
-                                TweetTextBox.Text = "@" + ((Tweet)TweetsListBox.SelectedItem).User.ScreenName + " ";
-                                TweetTextBox.Select(TweetTextBox.Text.Length, 0);
-                            }
+                            createReply();
                             break;
                         case Key.O:
                             showOptions();
@@ -736,6 +715,37 @@ namespace Witty
                 if (e.Key == Key.F5) { this.Refresh(); };
 
                 if (e.Key == Key.Escape) { this.WindowState = WindowState.Minimized; };
+            }
+        }
+
+        private void createDirectMessage()
+        {
+            //Direct message to user
+            if (!isExpanded)
+            {
+                ToggleUpdate();
+            }
+            TweetTextBox.Text = "";
+            TweetTextBox.Text = "D ";
+            if (null != TweetsListBox.SelectedItem)
+            {
+                TweetTextBox.Text += ((Tweet)TweetsListBox.SelectedItem).User.ScreenName;
+            }
+            TweetTextBox.Select(TweetTextBox.Text.Length, 0);
+        }
+
+        private void createReply()
+        {
+            //reply to user
+            if (null != TweetsListBox.SelectedItem)
+            {
+                if (!isExpanded)
+                {
+                    ToggleUpdate();
+                }
+                TweetTextBox.Text = "";
+                TweetTextBox.Text = "@" + ((Tweet)TweetsListBox.SelectedItem).User.ScreenName + " ";
+                TweetTextBox.Select(TweetTextBox.Text.Length, 0);
             }
         }
 
