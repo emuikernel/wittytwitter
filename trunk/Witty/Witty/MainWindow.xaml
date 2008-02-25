@@ -98,8 +98,17 @@
         <!-- Recent Tab -->
         <TabItem Header="Recent" Padding="2,1,2,1" x:Name="RecentTab">
           <Grid x:Name="Recent">
-            <ListBox x:Name="TweetsListBox" ScrollViewer.CanContentScroll="False" IsSynchronizedWithCurrentItem="True" ItemTemplate="{DynamicResource TweetsTemplate}" ItemsSource="{Binding Mode=OneWay}" ScrollViewer.HorizontalScrollBarVisibility="Disabled" Margin="0,0,0,20" MouseLeftButtonUp="TweetsListBox_MouseLeftButtonUp" BorderThickness="0,0,0,0" />
-            <Border Height="21" Background="{StaticResource UpdateBackgroundBrush}" VerticalAlignment="Bottom" Padding="10,0,10,0" x:Name="Update" MouseLeftButtonUp="Update_MouseLeftButtonUp" BorderBrush="{DynamicResource PrimaryBackgroundBrush}" BorderThickness="0,0,0,1" ToolTip="Display update panel">
+            <ListBox x:Name="TweetsListBox" ScrollViewer.CanContentScroll="False" IsSynchronizedWithCurrentItem="True" ItemTemplate="{DynamicResource TweetsTemplate}" ItemsSource="{Binding Mode=OneWay}" ScrollViewer.HorizontalScrollBarVisibility="Disabled" Margin="0,0,0,20" MouseLeftButtonUp="TweetsListBox_MouseLeftButtonUp" BorderThickness="0,0,0,0" >
+                            <ListBox.ContextMenu>
+                                <ContextMenu Name="recentContextMenu">
+                                    <MenuItem Header="Reply" Click="ContextMenuReply_Click"></MenuItem>
+                                    <MenuItem Header="Send Direct Message" Click="ContextMenuDirectMessage_Click"></MenuItem>
+                                    <MenuItem Header="Delete" Click="ContextMenuDelete_Click" IsEnabled="False"></MenuItem>
+                                    <MenuItem Header="Follow" Click="ContextMenuFollow_Click" IsEnabled="False"></MenuItem>
+                                </ContextMenu>
+                            </ListBox.ContextMenu>
+                        </ListBox>
+              <Border Height="21" Background="{StaticResource UpdateBackgroundBrush}" VerticalAlignment="Bottom" Padding="10,0,10,0" x:Name="Update" MouseLeftButtonUp="Update_MouseLeftButtonUp" BorderBrush="{DynamicResource PrimaryBackgroundBrush}" BorderThickness="0,0,0,1" ToolTip="Display update panel">
               <DockPanel OpacityMask="#FF000000" x:Name="dockPanel">
                 <TextBlock HorizontalAlignment="Center" DockPanel.Dock="Top" Text="Update" TextWrapping="Wrap" VerticalAlignment="Top" x:Name="UpdateTextBlock" Margin="0,2,0,0" />
                 <Grid Margin="0,5,0,10">
@@ -119,8 +128,13 @@
         <!-- Replies Tab -->
         <TabItem Header="Replies" Padding="2,1,2,1" x:Name="RepliesTab">
             <ListBox x:Name="RepliesListBox" ScrollViewer.CanContentScroll="False" IsSynchronizedWithCurrentItem="True" ItemTemplate="{DynamicResource TweetsTemplate}" ScrollViewer.HorizontalScrollBarVisibility="Disabled" MouseLeftButtonUp="TweetsListBox_MouseLeftButtonUp" BorderThickness="0,0,0,0" >
-                
-            </ListBox>
+                        <ListBox.ContextMenu>
+                            <ContextMenu Name="RepliesContextMenu">
+                                <MenuItem Header="Reply" Click="ContextMenuReply_Click"></MenuItem>
+                                <MenuItem Header="Send Direct Message" Click="ContextMenuDirectMessage_Click"></MenuItem>
+                            </ContextMenu>
+                        </ListBox.ContextMenu>
+                    </ListBox>
         </TabItem>
 
         <!-- User Tab -->
