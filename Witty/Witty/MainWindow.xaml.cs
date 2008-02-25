@@ -1000,6 +1000,27 @@ namespace Witty
             }
         }
 
+        private void ContextMenuReply_Click(object sender, RoutedEventArgs e)
+        {
+            createReply();
+        }
+
+        private void ContextMenuDirectMessage_Click(object sender, RoutedEventArgs e)
+        {
+            createDirectMessage();
+        }
+
+        private void ContextMenuFollow_Click(object sender, RoutedEventArgs e)
+        {
+            throw new NotImplementedException();
+        }
+
+        private void ContextMenuDelete_Click(object sender, RoutedEventArgs e) 
+        {
+            throw new NotImplementedException();
+        }
+
+        
         #endregion
 
         #region filtering
@@ -1186,5 +1207,7 @@ namespace Witty
         }
 
         #endregion
+
+        
     }
 }
