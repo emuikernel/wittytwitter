@@ -3,11 +3,15 @@ using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Data;
 using System.Windows.Input;
+using log4net;
+using log4net.Config;
 
 namespace Witty
 {
     public partial class Options
     {
+        private static readonly ILog logger = LogManager.GetLogger("Witty.Logging");
+
         // Settings used by the application
         private readonly Properties.Settings AppSettings = Properties.Settings.Default;
 
@@ -27,7 +31,9 @@ namespace Witty
             AlwaysOnTopCheckBox.SetBinding(CheckBox.IsCheckedProperty, binding);
 
             if (!string.IsNullOrEmpty(AppSettings.RefreshInterval))
+            {
                 RefreshSlider.Value = Double.Parse(AppSettings.RefreshInterval);
+            }
 
             PlaySounds = AppSettings.PlaySounds;
 
@@ -36,7 +42,9 @@ namespace Witty
 
             // select the current skin
             if (!string.IsNullOrEmpty(AppSettings.Skin))
+            {
                 SkinsComboBox.SelectedItem = AppSettings.Skin;
+            }
 
             isSettingSkin = false;
         }
@@ -80,7 +88,7 @@ namespace Witty
 
         private void SkinsComboBox_SelectionChanged(object sender, SelectionChangedEventArgs e)
         {
-            if (!isSettingSkin && e.AddedItems.Count >= 0)
+            if ((!(isSettingSkin)) && (e.AddedItems.Count >= 0))
             {
                 string skin = e.AddedItems[0] as string;
                 ResourceDictionary rd = Application.LoadComponent(new Uri(skin, UriKind.Relative)) as ResourceDictionary;

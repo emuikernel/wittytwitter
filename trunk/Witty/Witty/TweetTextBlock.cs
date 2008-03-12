@@ -3,11 +3,15 @@ using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Documents;
 using TwitterLib;
+using log4net;
+using log4net.Config;
 
 namespace Witty
 {
     public class TweetTextBlock : TextBlock
     {
+        private static readonly ILog logger = LogManager.GetLogger("Witty.Logging");
+
         public string TweetText
         {
             get { return (string)GetValue(TweetTextProperty); }
@@ -46,11 +50,14 @@ namespace Witty
                         }
                         catch
                         {
+                            //TODO:What are we catching here? Why? Log it?
                             textblock.Inlines.Add(word);
                         }
                     }
                     else
+                    {
                         textblock.Inlines.Add(word);
+                    }
 
                     textblock.Inlines.Add(" ");
                 }
@@ -65,6 +72,8 @@ namespace Witty
             }
             catch
             {
+                logger.Error("There was a problem launching the specified URL.");
+                //TODO: Log specific URL that caused error
                 MessageBox.Show("There was a problem launching the specified URL.", "Error", MessageBoxButton.OK, MessageBoxImage.Exclamation);
             }
         }

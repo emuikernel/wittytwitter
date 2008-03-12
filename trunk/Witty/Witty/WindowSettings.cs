@@ -2,6 +2,8 @@ using System;
 using System.ComponentModel;
 using System.Configuration;
 using System.Windows;
+using log4net;
+using log4net.Config;
 
 namespace Witty
 {
@@ -10,7 +12,10 @@ namespace Witty
     /// </summary>
     public class WindowSettings
     {
+        private static readonly ILog logger = LogManager.GetLogger("Witty.Logging");
+
         #region WindowApplicationSettings Helper Class
+
         public class WindowApplicationSettings : ApplicationSettingsBase
         {
             private WindowSettings windowSettings;

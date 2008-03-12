@@ -1,11 +1,15 @@
 ﻿using System.Windows;
 using TwitterLib;
 using System.Net;
+using log4net;
+using log4net.Config;
 
 namespace Witty
 {
-    public partial class LoginControl 
+    public partial class LoginControl
     {
+        private static readonly ILog logger = LogManager.GetLogger("Witty.Logging");
+
         private readonly Properties.Settings AppSettings = Properties.Settings.Default;
 
         private delegate void LoginDelegate(TwitterNet arg);
@@ -37,10 +41,12 @@ namespace Witty
             }
             catch (WebException ex)
             {
+                logger.Error("There was a problem logging in Twitter.");
                 MessageBox.Show("There was a problem logging in to Twitter. " + ex.Message);
             }
             catch (RateLimitException ex)
             {
+                logger.Error("There was a rate limit exception.");
                 MessageBox.Show(ex.Message);
             }
         }
@@ -62,7 +68,9 @@ namespace Witty
                 RaiseEvent(new RoutedEventArgs(LoginEvent));
             }
             else
+            {
                 MessageBox.Show("Incorrect username or password. Please try again");
+            }
         }
 
         public static readonly RoutedEvent LoginEvent =

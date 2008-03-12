@@ -9,16 +9,21 @@ using System.Windows.Input;
 using System.Windows.Media.Animation;
 using System.Windows.Threading;
 using TwitterLib;
+using log4net;
+using log4net.Config;
 
 namespace Witty
 {
     public partial class MainWindow
     {
+        private static readonly ILog logger = LogManager.GetLogger("Witty.Logging");
+
         public MainWindow()
         {
             this.InitializeComponent();
 
             #region Minimize to tray setup
+
             m_notifyIcon = new System.Windows.Forms.NotifyIcon();
             m_notifyIcon.BalloonTipText = "Richt-click for more options";
             m_notifyIcon.BalloonTipTitle = "Witty";
@@ -187,7 +192,6 @@ namespace Witty
 
         private void GetTweets()
         {
-#if DEBUG       
             try
             {
                 // Schedule the update function in the UI thread.
@@ -197,14 +201,8 @@ namespace Witty
             }
             catch (WebException ex)
             {
-                MessageBox.Show("There was a problem fetching new tweets from Twitter.com. " + ex.Message);
+                logger.Debug(String.Format("There was a problem fetching new tweets from Twitter.com: {0}", ex.ToString()));
             }
-#else
-            // Schedule the update function in the UI thread.
-            LayoutRoot.Dispatcher.BeginInvoke(
-                DispatcherPriority.Normal,
-                new OneArgDelegate(UpdateUserInterface), twitter.GetFriendsTimeline());
-#endif
         }
 
         private void UpdateUserInterface(TweetCollection newTweets)
@@ -223,7 +221,7 @@ namespace Witty
             }
 
             int tweetAdded = 0;
-            
+
             for (int i = newTweets.Count - 1; i >= 0; i--)
             {
                 Tweet tweet = newTweets[i];
@@ -278,10 +276,7 @@ namespace Witty
             catch (WebException ex)
             {
                 UpdateTextBlock.Text = "Update failed.";
-
-#if DEBUG
-                MessageBox.Show("There was a problem posting your tweet to Twitter.com. " + ex.Message);
-#endif
+                logger.Debug(String.Format("There was a problem fetching new tweets from Twitter.com: {0}", ex.ToString()));
             }
         }
 
@@ -298,6 +293,7 @@ namespace Witty
             }
             else
             {
+                logger.Error("There was a problem posting your tweet to Twitter.com.");
                 MessageBox.Show("There was a problem posting your tweet to Twitter.com.");
             }
         }
@@ -344,7 +340,6 @@ namespace Witty
 
         private void GetReplies()
         {
-#if DEBUG
             try
             {
                 // Schedule the update function in the UI thread.
@@ -354,14 +349,8 @@ namespace Witty
             }
             catch (WebException ex)
             {
-                MessageBox.Show("There was a problem fetching your replies from Twitter.com. " + ex.Message);
+                logger.Debug(String.Format("There was a problem fetching your replies from Twitter.com. ", ex.Message));
             }
-#else
-            // Schedule the update function in the UI thread.
-            LayoutRoot.Dispatcher.BeginInvoke(
-                DispatcherPriority.Normal,
-                new OneArgDelegate(UpdateRepliesInterface), twitter.GetReplies());
-#endif
         }
 
         private void UpdateRepliesInterface(TweetCollection newReplies)
@@ -408,7 +397,6 @@ namespace Witty
 
         private void GetMessages()
         {
-#if DEBUG
             try
             {
                 // Schedule the update function in the UI thread.
@@ -418,14 +406,8 @@ namespace Witty
             }
             catch (WebException ex)
             {
-                MessageBox.Show("There was a problem fetching your direct messages from Twitter.com. " + ex.Message);
+                logger.Debug(String.Format("There was a problem fetching your direct messages from Twitter.com: {0}", ex.ToString()));
             }
-#else
-            // Schedule the update function in the UI thread.
-            LayoutRoot.Dispatcher.BeginInvoke(
-                DispatcherPriority.Normal,
-                new MessagesDelegate(UpdateMessagesInterface), twitter.RetrieveMessages());
-#endif
         }
 
         private void UpdateMessagesInterface(DirectMessageCollection newMessages)
@@ -468,7 +450,6 @@ namespace Witty
 
         private void SendMessage(string user, string messageText)
         {
-#if DEBUG
             try
             {
                 twitter.SendMessage(user, messageText);
@@ -481,15 +462,8 @@ namespace Witty
             catch (WebException ex)
             {
                 UpdateTextBlock.Text = "Message failed.";
-
-                MessageBox.Show("There was a problem sending your message. " + ex.Message);
+                logger.Debug(String.Format("There was a problem sending your message: {0}", ex.ToString()));
             }
-#else
-            // Schedule the update function in the UI thread.
-            LayoutRoot.Dispatcher.BeginInvoke(
-                DispatcherPriority.Normal,
-                new NoArgDelegate(UpdateMessageUserInterface));
-#endif
         }
 
         private void UpdateMessageUserInterface()
@@ -547,7 +521,6 @@ namespace Witty
 
         private void GetUserTimeline(string userId)
         {
-#if DEBUG
             try
             {
                 // Schedule the update function in the UI thread.
@@ -557,14 +530,8 @@ namespace Witty
             }
             catch (WebException ex)
             {
-                MessageBox.Show("There was a problem fetching the user's timeline from Twitter.com. " + ex.Message);
+                logger.Debug(String.Format("There was a problem fetching the user's timeline from Twitter.com: {0}", ex.ToString()));
             }
-#else
-            // Schedule the update function in the UI thread.
-            LayoutRoot.Dispatcher.BeginInvoke(
-                DispatcherPriority.Normal,
-                new OneArgDelegate(UpdateUsersTimelineInterface), twitter.GetUserTimeline(userId));
-#endif
         }
 
         private void UpdateUsersTimelineInterface(TweetCollection newTweets)
@@ -598,7 +565,6 @@ namespace Witty
 
         private void TryLogin()
         {
-#if DEBUG
             try
             {
                 // Schedule the update function in the UI thread.
@@ -608,14 +574,8 @@ namespace Witty
             }
             catch (WebException ex)
             {
-                MessageBox.Show("There was a problem logging in to Twitter. " + ex.Message);
+                logger.Debug(String.Format("There was a problem logging in to Twitter: {0}", ex.ToString()));
             }
-#else
-            // Schedule the update function in the UI thread.
-            LayoutRoot.Dispatcher.BeginInvoke(
-                DispatcherPriority.Normal,
-                new LoginDelegate(UpdatePostLoginInterface), twitter.Login());
-#endif
         }
 
         private void UpdatePostLoginInterface(User user)
@@ -654,7 +614,7 @@ namespace Witty
             isExpanded = false;
             isLoggedIn = true;
             OptionsButton.IsEnabled = true;
-            SearchButton.IsEnabled = true; 
+            SearchButton.IsEnabled = true;
             Search.IsEnabled = true;
         }
 
@@ -859,9 +819,7 @@ namespace Witty
                 }
                 catch (Win32Exception ex)
                 {
-#if DEBUG
-                    MessageBox.Show(ex.ToString());
-#endif
+                    logger.Debug(String.Format("Exception: {0}", ex.ToString()));
                 }
             }
         }
@@ -890,9 +848,7 @@ namespace Witty
                 }
                 catch (Win32Exception ex)
                 {
-#if DEBUG
-                    MessageBox.Show(ex.ToString());
-#endif
+                    logger.Debug(String.Format("Exception: {0}", ex.ToString()));
                 }
             }
         }
@@ -925,9 +881,7 @@ namespace Witty
             }
             catch (Win32Exception ex)
             {
-#if DEBUG
-                MessageBox.Show(ex.ToString());
-#endif
+                logger.Debug(String.Format("Exception: {0}", ex.ToString()));
             }
         }
 
@@ -940,9 +894,7 @@ namespace Witty
             }
             catch (Win32Exception ex)
             {
-#if DEBUG
-                MessageBox.Show(ex.ToString());
-#endif
+                logger.Debug(String.Format("Exception: {0}", ex.ToString()));
             }
         }
 
@@ -1012,15 +964,17 @@ namespace Witty
 
         private void ContextMenuFollow_Click(object sender, RoutedEventArgs e)
         {
+            logger.Debug("Follow not implemented.");
             throw new NotImplementedException();
         }
 
-        private void ContextMenuDelete_Click(object sender, RoutedEventArgs e) 
+        private void ContextMenuDelete_Click(object sender, RoutedEventArgs e)
         {
+            logger.Debug("Delete not implemented.");
             throw new NotImplementedException();
         }
 
-        
+
         #endregion
 
         #region filtering
@@ -1208,6 +1162,6 @@ namespace Witty
 
         #endregion
 
-        
+
     }
 }
