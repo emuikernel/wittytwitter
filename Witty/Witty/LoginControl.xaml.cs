@@ -4,7 +4,7 @@ using System.Net;
 
 namespace Witty
 {
-    public partial class LoginControl
+    public partial class LoginControl 
     {
         private readonly Properties.Settings AppSettings = Properties.Settings.Default;
 
