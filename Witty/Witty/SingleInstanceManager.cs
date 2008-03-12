@@ -2,11 +2,15 @@ using System;
 using System.Runtime.InteropServices;
 using System.Threading;
 using System.Windows;
+using log4net;
+using log4net.Config;
 
 namespace Witty
 {
     public class SingleInstanceManager : IDisposable
     {
+        private static readonly ILog logger = LogManager.GetLogger("Witty.Logging");
+
         private bool disposed = false;
 
         [DllImport("kernel32.dll")]
@@ -71,9 +75,10 @@ namespace Witty
         public void SignalEvent()
         {
             if (m_EventHandle != IntPtr.Zero)
+            {
                 SetEvent(m_EventHandle);
+            }
         }
-
 
         // thread method will wait on the event, which will signal
         // if another instance tries to start
@@ -102,7 +107,9 @@ namespace Witty
             {
                 // dispose unmanaged resources
                 if (m_EventHandle != IntPtr.Zero)
+                {
                     CloseHandle(m_EventHandle);
+                }
                 m_EventHandle = IntPtr.Zero;
 
                 disposed = true;

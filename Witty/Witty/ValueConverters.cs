@@ -1,11 +1,15 @@
 using System;
 using System.Windows.Data;
 using TwitterLib;
+using log4net;
+using log4net.Config;
 
 namespace Witty
 {
     public class CharRemainingValueConverter : IValueConverter
     {
+        private static readonly ILog logger = LogManager.GetLogger("Witty.Logging");
+
         #region IValueConverter Members
 
         public object Convert(object value, Type targetType, object parameter, System.Globalization.CultureInfo culture)
@@ -15,6 +19,7 @@ namespace Witty
 
         public object ConvertBack(object value, Type targetType, object parameter, System.Globalization.CultureInfo culture)
         {
+            logger.Error("Error converting value (CharRemainingValueConverter.ConvertBack is not implemented).");
             throw new NotImplementedException("The method or operation is not implemented.");
         }
 
@@ -52,6 +57,8 @@ namespace Witty
 
     public sealed class IndexToIsAlternateRowConverter : IValueConverter
     {
+        private static readonly ILog logger = LogManager.GetLogger("Witty.Logging");
+
         #region IValueConverter Members
 
         public object Convert(object value, Type targetType, object parameter, System.Globalization.CultureInfo culture)
@@ -63,6 +70,7 @@ namespace Witty
         public object ConvertBack(object value, Type targetType, object parameter, System.Globalization.CultureInfo culture)
         {
             // Convert back is not used in the binding
+            logger.Error("Error converting value (IndexToIsAlternateRowConverter.ConvertBack is not implemented).");
             throw new NotImplementedException("The method or operation is not implemented.");
         }
 
