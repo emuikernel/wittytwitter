@@ -12,7 +12,7 @@ There are several twitter clients done with Adobe AIR. Why not make one availabl
 
 ==#2 What did you use to build Witty?==
 
-Witty was developed using [http://msdn2.microsoft.com/en-us/vstudio/default.aspx Microsoft Visual Studio] and [http://www.microsoft.com/expression/products/overview.aspx?key=blend Expression Blend]. Witty is programmed in C#.
+Witty was developed using [http://msdn2.microsoft.com/en-us/vstudio/default.aspx Microsoft Visual Studio 2008] and [http://www.microsoft.com/expression/products/overview.aspx?key=blend Expression Blend]. Witty is programmed in C#.
 
 
 ==#3 How often does the recent timeline refresh?==
