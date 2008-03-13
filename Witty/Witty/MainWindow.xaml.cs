@@ -696,15 +696,29 @@ namespace Witty
 
         private void createReply()
         {
+            Tweet selectedTweet = null;
             //reply to user
-            if (null != TweetsListBox.SelectedItem)
+            if (this.currentView == CurrentView.Replies)
+            {
+                if (null != RepliesListBox.SelectedItem)
+                {
+                    selectedTweet = (Tweet)RepliesListBox.SelectedItem;
+                    this.Tabs.SelectedIndex = 0;
+                }
+
+            }
+            else if (this.currentView == CurrentView.Messages) 
+            {
+                if(null != TweetsListBox.SelectedItem) selectedTweet = (Tweet)TweetsListBox.SelectedItem;
+            }
+            if (null != selectedTweet)
             {
                 if (!isExpanded)
                 {
                     ToggleUpdate();
                 }
                 TweetTextBox.Text = "";
-                TweetTextBox.Text = "@" + ((Tweet)TweetsListBox.SelectedItem).User.ScreenName + " ";
+                TweetTextBox.Text = "@" + selectedTweet.User.ScreenName + " ";
                 TweetTextBox.Select(TweetTextBox.Text.Length, 0);
             }
         }
