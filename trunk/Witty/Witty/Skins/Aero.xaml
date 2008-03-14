@@ -2,11 +2,13 @@
 
   <local:IndexToIsAlternateRowConverter x:Key="IndexToIsAlternateRowConverter" />
 
-  <LinearGradientBrush x:Key="PrimaryBackgroundBrush" StartPoint="0.5,0" EndPoint="0.5,1">
-    <GradientStop Color="#FF7B7E80" Offset="0" />
-    <GradientStop Color="#FF424548" Offset="0.5" />
-    <GradientStop Color="#FF121212" Offset="0.5" />
-    <GradientStop Color="#FF181E31" Offset="1" />
+  <LinearGradientBrush x:Key="PrimaryBackgroundBrush" StartPoint="0.5,1" EndPoint="0.5,0">
+    <GradientStop Color="#FF000104" Offset="0"/>
+    <GradientStop Color="#FF02070B" Offset="0.494507"/>
+    <GradientStop Color="#FF33373D" Offset="0.494507"/>
+    <GradientStop Color="#FF757A7C" Offset="0.917587"/>
+    <GradientStop Color="#FFA0A1A3" Offset="0.956039"/>
+    <GradientStop Color="#FF48494A" Offset="1"/>
   </LinearGradientBrush>
 
   <LinearGradientBrush x:Key="SecondaryBackgroundBrush" StartPoint="0.5,0" EndPoint="0.5,1">
@@ -16,11 +18,16 @@
     <GradientStop Color="#FFEAECFB" Offset="1" />
   </LinearGradientBrush>
 
-  <LinearGradientBrush x:Key="StatusBackgroundBrush" StartPoint="0.5,0" EndPoint="0.5,1">
-    <GradientStop Color="#FF8AC8CC" Offset="0" />
-    <GradientStop Color="#FF68B4B8" Offset="0.5" />
-    <GradientStop Color="#FF448D94" Offset="0.5" />
-    <GradientStop Color="#FF187D88" Offset="1" />
+  <LinearGradientBrush x:Key="StatusBackgroundBrush" StartPoint="0.5,1" EndPoint="0.5,0">
+    <GradientStop Color="#FF000000" Offset="0"/>
+    <GradientStop Color="#FF9AC6CF" Offset="0.0494537"/>
+    <GradientStop Color="#FF54A1AA" Offset="0.0714264"/>
+    <GradientStop Color="#FF146478" Offset="0.5"/>
+    <GradientStop Color="#FF408C9A" Offset="0.505493"/>
+    <GradientStop Color="#FF87B6C0" Offset="0.928574"/>
+    <GradientStop Color="#FFBCCDD7" Offset="0.950546"/>
+    <GradientStop Color="#FFAEBFCA" Offset="0.983521"/>
+    <GradientStop Color="#FFAEBFCA" Offset="1"/>
   </LinearGradientBrush>
 
   <SolidColorBrush x:Key="PrimaryBorderBrush" Color="#FF222B34" />
@@ -75,18 +82,18 @@
       </WrapPanel>
     </Grid>
     <DataTemplate.Triggers>
-  		<Trigger Property="IsMouseOver" Value="True" SourceName="ScreenName">
+      <Trigger Property="IsMouseOver" Value="True" SourceName="ScreenName">
         <Setter Property="Foreground" Value="#FF177E8C" TargetName="ScreenName"/>
-  		</Trigger>
-  		<DataTrigger Binding="{Binding Path=IsNew}" Value="True">
-  			<DataTrigger.EnterActions>
-  				<BeginStoryboard Storyboard="{StaticResource YellowFade}" x:Name="YellowFade_BeginStoryboard" />
-  			</DataTrigger.EnterActions>
-  		</DataTrigger>
-  		<!--<Trigger Property="IsMouseOver" Value="True">
+      </Trigger>
+      <DataTrigger Binding="{Binding Path=IsNew}" Value="True">
+        <DataTrigger.EnterActions>
+          <BeginStoryboard Storyboard="{StaticResource YellowFade}" x:Name="YellowFade_BeginStoryboard" />
+        </DataTrigger.EnterActions>
+      </DataTrigger>
+      <!--<Trigger Property="IsMouseOver" Value="True">
 			<Setter Property="Visibility" TargetName="ReplyButton" Value="Visible"/>
 		</Trigger>-->
-  	</DataTemplate.Triggers>
+    </DataTemplate.Triggers>
   </DataTemplate>
 
   <DataTemplate x:Key="MessagesTemplate">
