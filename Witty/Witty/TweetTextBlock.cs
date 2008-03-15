@@ -2,15 +2,19 @@ using System;
 using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Documents;
-using TwitterLib;
 using log4net;
-using log4net.Config;
+using TwitterLib;
 
 namespace Witty
 {
+    /// <summary>
+    /// Custom TextBlock to allow parsing hyperlinks and @names
+    /// </summary>
     public class TweetTextBlock : TextBlock
     {
         private static readonly ILog logger = LogManager.GetLogger("Witty.Logging");
+
+        #region Dependency properties
 
         public string TweetText
         {
@@ -23,10 +27,10 @@ namespace Witty
             DependencyProperty.Register("TweetText", typeof(string), typeof(TweetTextBlock),
             new FrameworkPropertyMetadata(string.Empty, new PropertyChangedCallback(OnTweetTextChanged)));
 
+        #endregion
+
         private static void OnTweetTextChanged(DependencyObject obj, DependencyPropertyChangedEventArgs args)
         {
-            //Format hyperlinks
-            //TODO: format @name
             string text = args.NewValue as string;
             if (!string.IsNullOrEmpty(text))
             {
@@ -37,6 +41,7 @@ namespace Witty
 
                 foreach (string word in words)
                 {
+                    // clickable hyperlinks
                     if (StringHelper.IsHyperlink(word))
                     {
                         try
@@ -53,6 +58,18 @@ namespace Witty
                             //TODO:What are we catching here? Why? Log it?
                             textblock.Inlines.Add(word);
                         }
+                    }
+                    // clickable @name
+                    else if (word.StartsWith("@"))
+                    {
+                        Hyperlink name = new Hyperlink();
+                        name.Inlines.Add(word.Remove(0, 1));
+                        name.NavigateUri = new Uri("http://twitter.com/" + word.Remove(0, 1));
+                        name.ToolTip = "Show user's profile";
+                        name.Click += new RoutedEventHandler(name_Click);
+
+                        textblock.Inlines.Add("@");
+                        textblock.Inlines.Add(name);
                     }
                     else
                     {
@@ -78,5 +95,28 @@ namespace Witty
             }
         }
 
+        public static readonly RoutedEvent NameClickEvent = EventManager.RegisterRoutedEvent(
+            "NameClick", RoutingStrategy.Bubble, typeof(RoutedEventHandler), typeof(TweetTextBlock));
+
+        public event RoutedEventHandler NameClick
+        {
+            add { AddHandler(NameClickEvent, value); }
+            remove { RemoveHandler(NameClickEvent, value); }
+        }
+
+        static void name_Click(object sender, RoutedEventArgs e)
+        {
+            //TODO: this should show the user in Witty.
+            try
+            {
+                System.Diagnostics.Process.Start(((Hyperlink)sender).NavigateUri.ToString());
+            }
+            catch
+            {
+                logger.Error("There was a problem launching the specified URL.");
+                //TODO: Log specific URL that caused error
+                MessageBox.Show("There was a problem launching the specified URL.", "Error", MessageBoxButton.OK, MessageBoxImage.Exclamation);
+            }
+        }
     }
 }

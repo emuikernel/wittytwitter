@@ -8,9 +8,8 @@ using System.Windows.Data;
 using System.Windows.Input;
 using System.Windows.Media.Animation;
 using System.Windows.Threading;
-using TwitterLib;
 using log4net;
-using log4net.Config;
+using TwitterLib;
 
 namespace Witty
 {
@@ -59,7 +58,7 @@ namespace Witty
 #endif
             #endregion
 
-            // Set the data contexts for all of the tabs
+            // Set the data context for all of the tabs
             LayoutRoot.DataContext = tweets;
             RepliesListBox.ItemsSource = replies;
             UserTab.DataContext = userTweets;
@@ -707,9 +706,9 @@ namespace Witty
                 }
 
             }
-            else if (this.currentView == CurrentView.Messages) 
+            else if (this.currentView == CurrentView.Messages)
             {
-                if(null != TweetsListBox.SelectedItem) selectedTweet = (Tweet)TweetsListBox.SelectedItem;
+                if (null != TweetsListBox.SelectedItem) selectedTweet = (Tweet)TweetsListBox.SelectedItem;
             }
             if (null != selectedTweet)
             {
@@ -1048,8 +1047,6 @@ namespace Witty
         /// <summary>
         /// Delegate to filter the tweet text and by the tweet user's screenname.
         /// </summary>
-        /// <param name="item"></param>
-        /// <returns></returns>
         public bool MessageFilter(object item)
         {
             DirectMessage message = item as DirectMessage;
@@ -1175,7 +1172,5 @@ namespace Witty
         }
 
         #endregion
-
-
     }
 }
