@@ -699,21 +699,22 @@ namespace Witty
             //reply to user
             if (this.currentView == CurrentView.Replies)
             {
-                if (null != RepliesListBox.SelectedItem)
-                {
-                    selectedTweet = (Tweet)RepliesListBox.SelectedItem;
-                    this.Tabs.SelectedIndex = 0;
-                }
-
+                if (null != RepliesListBox.SelectedItem) selectedTweet = (Tweet)RepliesListBox.SelectedItem;
             }
             else if (this.currentView == CurrentView.Messages)
             {
+                if (null != MessagesListBox.SelectedItem) selectedTweet = (Tweet)MessagesListBox.SelectedItem;
+            }
+            else
+            {
                 if (null != TweetsListBox.SelectedItem) selectedTweet = (Tweet)TweetsListBox.SelectedItem;
             }
+
             if (null != selectedTweet)
             {
                 if (!isExpanded)
                 {
+                    this.Tabs.SelectedIndex = 0;
                     ToggleUpdate();
                 }
                 TweetTextBox.Text = "";
