@@ -72,7 +72,6 @@
         <Button Content="Refresh" Height="20" x:Name="RefreshButton" Click="RefreshButton_Click" IsEnabled="False" MinWidth="25" MinHeight="20" FontSize="9" DockPanel.Dock="Right" Width="50" ToolTip="Refresh Tweets" />
         <Button Content="Options" Height="20" x:Name="OptionsButton" Click="OptionsButton_Click" MinWidth="25" MinHeight="20" FontSize="9" DockPanel.Dock="Right" Margin="0,0,10,0" IsEnabled="False" Width="50" ToolTip="Show Options Window" />
         <Button Content="Search" Height="20" x:Name="SearchButton" MinWidth="25" MinHeight="20" FontSize="9" IsEnabled="False" Width="50" ToolTip="Display Search Panel" DockPanel.Dock="Right" Click="SearchButton_Click" BorderThickness="0,0,10,0" Margin="0,0,10,0" />
-        <Rectangle Fill="#FF52626F" Width="15" Height="15" DockPanel.Dock="Right" x:Name="Friends" MouseLeftButtonUp="Friends_MouseLeftButtonUp" Margin="0,0,10,0" Visibility="Collapsed" />
       </DockPanel>
     </Border>
     <Border DockPanel.Dock="Top" x:Name="Search" Background="#FFCEE8B9" IsEnabled="False" Height="0" Visibility="Hidden">

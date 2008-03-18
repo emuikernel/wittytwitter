@@ -867,17 +867,6 @@ namespace Witty
             }
         }
 
-        private void Friends_MouseLeftButtonUp(object sender, MouseButtonEventArgs e)
-        {
-            if (isLoggedIn)
-            {
-                StatusTextBlock.Text = "Loading People You Follow...";
-
-                PeopleYouFollow peopleYouFollow = new PeopleYouFollow();
-                peopleYouFollow.Show();
-            }
-        }
-
         void AlwaysOnTop_Click(object sender, RoutedEventArgs e)
         {
             if (((MenuItem)sender).IsChecked)
