@@ -29,7 +29,6 @@ namespace Witty
             m_notifyIcon.Text = "Witty - The WPF Twitter Client";
             m_notifyIcon.Icon = Witty.Properties.Resources.AppIcon;
             m_notifyIcon.Click += new EventHandler(m_notifyIcon_Click);
-            m_notifyIcon.MouseDoubleClick += new System.Windows.Forms.MouseEventHandler(m_notifyIcon_MouseDoubleClick);
 
             System.Windows.Forms.ContextMenu notifyMenu = new System.Windows.Forms.ContextMenu();
             System.Windows.Forms.MenuItem openMenuItem = new System.Windows.Forms.MenuItem();
@@ -1110,11 +1109,6 @@ namespace Witty
         }
 
         void m_notifyIcon_Click(object sender, EventArgs e)
-        {
-            //m_notifyIcon.ContextMenu.Show((System.Windows.Forms.Control)sender, new System.Drawing.Point(20, 20));
-        }
-
-        void m_notifyIcon_MouseDoubleClick(object sender, System.Windows.Forms.MouseEventArgs e)
         {
             Show();
             WindowState = m_storedWindowState;
