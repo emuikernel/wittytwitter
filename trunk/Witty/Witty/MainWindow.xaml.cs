@@ -1087,14 +1087,17 @@ namespace Witty
 
         void OnStateChanged(object sender, EventArgs args)
         {
-            if (WindowState == WindowState.Minimized)
+            if (AppSettings.MinimizeToTray)
             {
-                hideTimer.Interval = new TimeSpan(500);
-                hideTimer.Tick += new EventHandler(HideTimer_Elapsed);
-                hideTimer.Start();
+                if (WindowState == WindowState.Minimized)
+                {
+                    hideTimer.Interval = new TimeSpan(500);
+                    hideTimer.Tick += new EventHandler(HideTimer_Elapsed);
+                    hideTimer.Start();
+                }
+                else
+                    m_storedWindowState = WindowState;
             }
-            else
-                m_storedWindowState = WindowState;
         }
 
         private void HideTimer_Elapsed(object sender, EventArgs e)
