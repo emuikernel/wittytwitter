@@ -13,7 +13,7 @@
   Title="Witty 0.1.6 Beta 2" 
   Width="330" Height="570" MinWidth="200" MinHeight="200" 
   WindowStyle="SingleBorderWindow"
-  Witty:WindowSettings.Save="True" KeyDown="MainWindow_OnKeyDown">
+  Witty:WindowSettings.Save="True" KeyDown="MainWindow_OnKeyDown" Left="800" Top="50">
 
   <Window.Resources>
     <ResourceDictionary>
