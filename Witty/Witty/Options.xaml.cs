@@ -12,14 +12,16 @@ namespace Witty
     {
         private static readonly ILog logger = LogManager.GetLogger("Witty.Logging");
 
-        // Settings used by the application
         private readonly Properties.Settings AppSettings = Properties.Settings.Default;
 
+        // bool to prevent endless recursion
         private bool isSettingSkin = false;
 
         public Options()
         {
             this.InitializeComponent();
+
+            #region Initialize Options
 
             UsernameTextBox.Text = AppSettings.Username;
             PasswordTextBox.Password = AppSettings.Password;
@@ -27,7 +29,6 @@ namespace Witty
             Binding binding = new Binding();
             binding.Path = new PropertyPath("Topmost");
             binding.Source = this;
-
             AlwaysOnTopCheckBox.SetBinding(CheckBox.IsCheckedProperty, binding);
 
             if (!string.IsNullOrEmpty(AppSettings.RefreshInterval))
@@ -39,15 +40,19 @@ namespace Witty
 
             isSettingSkin = true;
             SkinsComboBox.ItemsSource = App.Skins;
-
             // select the current skin
             if (!string.IsNullOrEmpty(AppSettings.Skin))
             {
                 SkinsComboBox.SelectedItem = AppSettings.Skin;
             }
-
             isSettingSkin = false;
+
+            MinimizeToTray = AppSettings.MinimizeToTray;
+
+            #endregion
         }
+
+        #region PlaySounds
 
         public bool PlaySounds
         {
@@ -64,6 +69,28 @@ namespace Witty
             Properties.Settings.Default.PlaySounds = (bool)args.NewValue;
             Properties.Settings.Default.Save();
         }
+
+        #endregion
+
+        #region MinimizeToTray
+
+        public bool MinimizeToTray
+        {
+            get { return (bool)GetValue(MinimizeToTrayProperty); }
+            set { SetValue(MinimizeToTrayProperty, value); }
+        }
+
+        public static readonly DependencyProperty MinimizeToTrayProperty =
+            DependencyProperty.Register("MinimizeToTray", typeof(bool), typeof(Options),
+            new FrameworkPropertyMetadata(false, new PropertyChangedCallback(OnMinimizeToTrayChanged)));
+
+        private static void OnMinimizeToTrayChanged(DependencyObject obj, DependencyPropertyChangedEventArgs args)
+        {
+            Properties.Settings.Default.MinimizeToTray = (bool)args.NewValue;
+            Properties.Settings.Default.Save();
+        }
+
+        #endregion
 
         private void DoneButton_Click(object sender, RoutedEventArgs e)
         {
