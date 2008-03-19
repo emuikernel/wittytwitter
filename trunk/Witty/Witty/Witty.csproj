@@ -10,7 +10,7 @@
     <OutputType>winexe</OutputType>
     <MinFrameworkVersionRequired>3.0</MinFrameworkVersionRequired>
     <IsWebBootstrapper>false</IsWebBootstrapper>
-    <ApplicationIcon>AppIcon.ico</ApplicationIcon>
+    <ApplicationIcon>Resources\AppIcon.ico</ApplicationIcon>
     <TargetFrameworkVersion>v3.0</TargetFrameworkVersion>
     <FileUpgradeFlags>
     </FileUpgradeFlags>
@@ -170,13 +170,13 @@
       <DesignTimeSharedInput>True</DesignTimeSharedInput>
       <DependentUpon>Settings.settings</DependentUpon>
     </Compile>
-    <Compile Include="SingleInstanceManager.cs" />
+    <Compile Include="Misc\SingleInstanceManager.cs" />
     <Compile Include="StylesTest\ButtonStyles.xaml.cs">
       <SubType>Code</SubType>
       <DependentUpon>ButtonStyles.xaml</DependentUpon>
     </Compile>
-    <Compile Include="ValueConverters.cs" />
-    <Compile Include="WindowSettings.cs" />
+    <Compile Include="Misc\ValueConverters.cs" />
+    <Compile Include="Misc\WindowSettings.cs" />
     <None Include="app.config" />
     <None Include="Properties\Settings.settings">
       <Generator>SettingsSingleFileGenerator</Generator>
@@ -191,11 +191,11 @@
     </ProjectReference>
   </ItemGroup>
   <ItemGroup>
-    <EmbeddedResource Include="AppIcon.ico">
+    <EmbeddedResource Include="Resources\AppIcon.ico">
     </EmbeddedResource>
   </ItemGroup>
   <ItemGroup>
-    <EmbeddedResource Include="alert.wav">
+    <EmbeddedResource Include="Resources\alert.wav">
     </EmbeddedResource>
   </ItemGroup>
   <ItemGroup>
