@@ -14,7 +14,7 @@
   Width="330" Height="570" MinWidth="200" MinHeight="200" 
   WindowStyle="SingleBorderWindow"
   Witty:WindowSettings.Save="True" KeyDown="MainWindow_OnKeyDown">
-  
+
   <Window.Resources>
     <ResourceDictionary>
       <!-- Store storyboard animations in their own file to condense the markup -->
@@ -22,27 +22,27 @@
         <ResourceDictionary Source="Resources\Storyboards.xaml" />
       </ResourceDictionary.MergedDictionaries>
       <Witty:CharRemainingValueConverter x:Key="CharRemainingConverter" />
-    	<Storyboard x:Key="ShowSearchPanel">
-    		<DoubleAnimationUsingKeyFrames BeginTime="00:00:00" Storyboard.TargetName="Search" Storyboard.TargetProperty="(FrameworkElement.Height)">
-    			<SplineDoubleKeyFrame KeyTime="00:00:00" Value="0"/>
-    			<SplineDoubleKeyFrame KeyTime="00:00:00.2000000" Value="35"/>
-    		</DoubleAnimationUsingKeyFrames>
-    		<ObjectAnimationUsingKeyFrames BeginTime="00:00:00" Storyboard.TargetName="Search" Storyboard.TargetProperty="(UIElement.Visibility)">
-    			<DiscreteObjectKeyFrame KeyTime="00:00:00" Value="{x:Static Visibility.Visible}"/>
-    		</ObjectAnimationUsingKeyFrames>
-    	</Storyboard>
-    	<Storyboard x:Key="HideSearchPanel">
-    		<DoubleAnimationUsingKeyFrames BeginTime="00:00:00" Storyboard.TargetName="Search" Storyboard.TargetProperty="(FrameworkElement.Height)">
-    			<SplineDoubleKeyFrame KeyTime="00:00:00" Value="35"/>
-    			<SplineDoubleKeyFrame KeyTime="00:00:00.2000000" Value="0"/>
-    		</DoubleAnimationUsingKeyFrames>
-    		<ObjectAnimationUsingKeyFrames BeginTime="00:00:00" Storyboard.TargetName="Search" Storyboard.TargetProperty="(UIElement.Visibility)">
-    			<DiscreteObjectKeyFrame KeyTime="00:00:00.2000000" Value="{x:Static Visibility.Hidden}"/>
-    		</ObjectAnimationUsingKeyFrames>
-    	</Storyboard>
+      <Storyboard x:Key="ShowSearchPanel">
+        <DoubleAnimationUsingKeyFrames BeginTime="00:00:00" Storyboard.TargetName="Search" Storyboard.TargetProperty="(FrameworkElement.Height)">
+          <SplineDoubleKeyFrame KeyTime="00:00:00" Value="0"/>
+          <SplineDoubleKeyFrame KeyTime="00:00:00.2000000" Value="35"/>
+        </DoubleAnimationUsingKeyFrames>
+        <ObjectAnimationUsingKeyFrames BeginTime="00:00:00" Storyboard.TargetName="Search" Storyboard.TargetProperty="(UIElement.Visibility)">
+          <DiscreteObjectKeyFrame KeyTime="00:00:00" Value="{x:Static Visibility.Visible}"/>
+        </ObjectAnimationUsingKeyFrames>
+      </Storyboard>
+      <Storyboard x:Key="HideSearchPanel">
+        <DoubleAnimationUsingKeyFrames BeginTime="00:00:00" Storyboard.TargetName="Search" Storyboard.TargetProperty="(FrameworkElement.Height)">
+          <SplineDoubleKeyFrame KeyTime="00:00:00" Value="35"/>
+          <SplineDoubleKeyFrame KeyTime="00:00:00.2000000" Value="0"/>
+        </DoubleAnimationUsingKeyFrames>
+        <ObjectAnimationUsingKeyFrames BeginTime="00:00:00" Storyboard.TargetName="Search" Storyboard.TargetProperty="(UIElement.Visibility)">
+          <DiscreteObjectKeyFrame KeyTime="00:00:00.2000000" Value="{x:Static Visibility.Hidden}"/>
+        </ObjectAnimationUsingKeyFrames>
+      </Storyboard>
     </ResourceDictionary>
   </Window.Resources>
-  
+
   <Window.Triggers>
     <EventTrigger RoutedEvent="Mouse.MouseEnter" SourceName="Update">
       <BeginStoryboard Storyboard="{StaticResource UpdateMouseEnter}" x:Name="UpdateMouseEnter_BeginStoryboard" />
@@ -59,7 +59,7 @@
   </Window.Triggers>
 
   <DockPanel x:Name="LayoutRoot">
-    
+
     <!-- Header -->
     <Border DockPanel.Dock="Top" Height="35" Padding="10,0,10,0" x:Name="Header" Background="{DynamicResource PrimaryBackgroundBrush}">
       <Border.ContextMenu>
@@ -75,39 +75,39 @@
       </DockPanel>
     </Border>
     <Border DockPanel.Dock="Top" x:Name="Search" Background="#FFCEE8B9" IsEnabled="False" Height="0" Visibility="Hidden">
-    	<Grid>
-    		<Grid.ColumnDefinitions>
-    			<ColumnDefinition Width="Auto"/>
-    			<ColumnDefinition Width="*"/>
-    		</Grid.ColumnDefinitions>
-    		<Label Content="Search" Target="{Binding ElementName=FilterTextBox, Mode=OneWay}" VerticalAlignment="Center"/>
-    		<controls:FilterText x:Name="FilterTextBox" TextBox.TextChanged="FilterTextBox_TextChanged" Grid.Column="1" Margin="5,5,5,5"/>
-    	</Grid>
+      <Grid>
+        <Grid.ColumnDefinitions>
+          <ColumnDefinition Width="Auto"/>
+          <ColumnDefinition Width="*"/>
+        </Grid.ColumnDefinitions>
+        <Label Content="Search" Target="{Binding ElementName=FilterTextBox, Mode=OneWay}" VerticalAlignment="Center"/>
+        <controls:FilterText x:Name="FilterTextBox" TextBox.TextChanged="FilterTextBox_TextChanged" Grid.Column="1" Margin="5,5,5,5"/>
+      </Grid>
     </Border>
-    
+
     <!-- StatusBar-->
     <Border DockPanel.Dock="Bottom" Padding="5,2,5,2" Background="{DynamicResource StatusBackgroundBrush}" x:Name="StatusBar">
       <TextBlock x:Name="StatusTextBlock" TextWrapping="NoWrap" Foreground="#FFE4E4E4" Text="Login" TextTrimming="CharacterEllipsis" />
     </Border>
-    
+
     <!-- Main Content -->
     <Grid x:Name="Content">
       <TabControl x:Name="Tabs" IsSynchronizedWithCurrentItem="True" DockPanel.Dock="Top" SelectionChanged="Tabs_SelectionChanged">
-        
+
         <!-- Recent Tab -->
         <TabItem Header="Recent" Padding="2,1,2,1" x:Name="RecentTab">
           <Grid x:Name="Recent">
             <ListBox x:Name="TweetsListBox" ScrollViewer.CanContentScroll="False" IsSynchronizedWithCurrentItem="True" ItemTemplate="{DynamicResource TweetsTemplate}" ItemsSource="{Binding Mode=OneWay}" ScrollViewer.HorizontalScrollBarVisibility="Disabled" Margin="0,0,0,20" MouseLeftButtonUp="TweetsListBox_MouseLeftButtonUp" BorderThickness="0,0,0,0" >
-                            <ListBox.ContextMenu>
-                                <ContextMenu Name="recentContextMenu">
-                                    <MenuItem Header="Reply" Click="ContextMenuReply_Click"></MenuItem>
-                                    <MenuItem Header="Send Direct Message" Click="ContextMenuDirectMessage_Click"></MenuItem>
-                                    <MenuItem Header="Delete" Click="ContextMenuDelete_Click" IsEnabled="False"></MenuItem>
-                                    <MenuItem Header="Follow" Click="ContextMenuFollow_Click" IsEnabled="False"></MenuItem>
-                                </ContextMenu>
-                            </ListBox.ContextMenu>
-                        </ListBox>
-              <Border Height="21" Background="{StaticResource UpdateBackgroundBrush}" VerticalAlignment="Bottom" Padding="10,0,10,0" x:Name="Update" MouseLeftButtonUp="Update_MouseLeftButtonUp" BorderBrush="{DynamicResource PrimaryBackgroundBrush}" BorderThickness="0,0,0,1" ToolTip="Display update panel">
+              <ListBox.ContextMenu>
+                <ContextMenu Name="recentContextMenu">
+                  <MenuItem Header="Reply" Click="ContextMenuReply_Click"></MenuItem>
+                  <MenuItem Header="Send Direct Message" Click="ContextMenuDirectMessage_Click"></MenuItem>
+                  <MenuItem Header="Delete" Click="ContextMenuDelete_Click" IsEnabled="False"></MenuItem>
+                  <MenuItem Header="Follow" Click="ContextMenuFollow_Click" IsEnabled="False"></MenuItem>
+                </ContextMenu>
+              </ListBox.ContextMenu>
+            </ListBox>
+            <Border Height="21" Background="{StaticResource UpdateBackgroundBrush}" VerticalAlignment="Bottom" Padding="10,0,10,0" x:Name="Update" MouseLeftButtonUp="Update_MouseLeftButtonUp" BorderBrush="{DynamicResource PrimaryBackgroundBrush}" BorderThickness="0,0,0,1" ToolTip="Display update panel">
               <DockPanel OpacityMask="#FF000000" x:Name="dockPanel">
                 <TextBlock HorizontalAlignment="Center" DockPanel.Dock="Top" Text="Update" TextWrapping="Wrap" VerticalAlignment="Top" x:Name="UpdateTextBlock" Margin="0,2,0,0" />
                 <Grid Margin="0,5,0,10">
@@ -126,14 +126,14 @@
 
         <!-- Replies Tab -->
         <TabItem Header="Replies" Padding="2,1,2,1" x:Name="RepliesTab">
-            <ListBox x:Name="RepliesListBox" ScrollViewer.CanContentScroll="False" IsSynchronizedWithCurrentItem="True" ItemTemplate="{DynamicResource TweetsTemplate}" ScrollViewer.HorizontalScrollBarVisibility="Disabled" MouseLeftButtonUp="TweetsListBox_MouseLeftButtonUp" BorderThickness="0,0,0,0" >
-                        <ListBox.ContextMenu>
-                            <ContextMenu Name="RepliesContextMenu">
-                                <MenuItem Header="Reply" Click="ContextMenuReply_Click"></MenuItem>
-                                <MenuItem Header="Send Direct Message" Click="ContextMenuDirectMessage_Click"></MenuItem>
-                            </ContextMenu>
-                        </ListBox.ContextMenu>
-                    </ListBox>
+          <ListBox x:Name="RepliesListBox" ScrollViewer.CanContentScroll="False" IsSynchronizedWithCurrentItem="True" ItemTemplate="{DynamicResource TweetsTemplate}" ScrollViewer.HorizontalScrollBarVisibility="Disabled" MouseLeftButtonUp="TweetsListBox_MouseLeftButtonUp" BorderThickness="0,0,0,0" >
+            <ListBox.ContextMenu>
+              <ContextMenu Name="RepliesContextMenu">
+                <MenuItem Header="Reply" Click="ContextMenuReply_Click"></MenuItem>
+                <MenuItem Header="Send Direct Message" Click="ContextMenuDirectMessage_Click"></MenuItem>
+              </ContextMenu>
+            </ListBox.ContextMenu>
+          </ListBox>
         </TabItem>
 
         <!-- User Tab -->
@@ -212,12 +212,12 @@
             </Border>
           </Grid>
         </TabItem>
-        
+
       </TabControl>
-      
+
       <!-- Login Control -->
       <Witty:LoginControl HorizontalAlignment="Center" VerticalAlignment="Center" x:Name="LoginControl" Login="LoginControl_Login" Visibility="Visible" BitmapEffect="{DynamicResource LoginBitmapEffect}"/>
-      
+
     </Grid>
   </DockPanel>
 </Window>
