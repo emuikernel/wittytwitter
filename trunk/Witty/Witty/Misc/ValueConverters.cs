@@ -3,6 +3,10 @@ using System.Windows.Data;
 using TwitterLib;
 using log4net;
 using log4net.Config;
+using System.Windows.Media;
+using System.Windows.Media.Imaging;
+using System.IO;
+using System.Net;
 
 namespace Witty
 {
@@ -71,6 +75,36 @@ namespace Witty
         {
             // Convert back is not used in the binding
             logger.Error("Error converting value (IndexToIsAlternateRowConverter.ConvertBack is not implemented).");
+            throw new NotImplementedException("The method or operation is not implemented.");
+        }
+
+        #endregion
+    }
+
+    public sealed class ImageConverter : IValueConverter
+    {
+        private static readonly ILog logger = LogManager.GetLogger("Witty.Logging");
+
+        #region IValueConverter Members
+
+        public object Convert(object value, Type targetType, object parameter, System.Globalization.CultureInfo culture)
+        {
+            if (value != null)
+            {
+                //TODO: Implement fix for IE8 breaking images, see http://channel9.msdn.com/ShowPost.aspx?PostID=388896
+                return value;
+            }
+            else
+            {
+                logger.Debug("Image Uri was null and could not be converted.");
+                return null;
+            }
+        }
+
+        public object ConvertBack(object value, Type targetType, object parameter, System.Globalization.CultureInfo culture)
+        {
+            // Convert back is not used in the binding
+            logger.Error("Error converting value (ImageUrl.ConvertBack is not implemented).");
             throw new NotImplementedException("The method or operation is not implemented.");
         }
 

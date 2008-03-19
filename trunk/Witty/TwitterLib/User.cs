@@ -59,7 +59,10 @@ namespace TwitterLib
 
         public string ImageUrl
         {
-            get { return imageUrl; }
+            get 
+            { 
+                return imageUrl; 
+            }
             set
             {
                 if (value != imageUrl)
