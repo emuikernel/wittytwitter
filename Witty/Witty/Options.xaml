@@ -74,13 +74,12 @@
             <FlowDocument>
               <Section>
                 <Paragraph>
-                  Witty v0.1.6 Beta 3
+                  Witty v0.1.7
                   <LineBreak/>
                   Updated March 18, 2008
                 </Paragraph>
                 <Paragraph>
                   <Hyperlink NavigateUri="http://code.google.com/p/wittytwitter/" >Witty Google Code Page</Hyperlink>
-
                 </Paragraph>
               </Section>
             </FlowDocument>
