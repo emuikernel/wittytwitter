@@ -66,8 +66,7 @@ namespace Witty
             // Set how often to get updates from Twitter
             refreshInterval = new TimeSpan(0, int.Parse(AppSettings.RefreshInterval), 0);
 
-            // TODO: refactor this into a setting
-            AlwaysOnTopMenuItem.IsChecked = this.Topmost;
+            this.Topmost = AlwaysOnTopMenuItem.IsChecked = AppSettings.AlwaysOnTop;
 
             // Does the user need to login?
             if (string.IsNullOrEmpty(AppSettings.Username))
@@ -872,6 +871,9 @@ namespace Witty
                 this.Topmost = true;
             else
                 this.Topmost = false;
+
+            AppSettings.AlwaysOnTop = this.Topmost;
+            AppSettings.Save();
         }
 
         private void Url_MouseLeftButtonUp(object sender, MouseButtonEventArgs e)
@@ -1064,6 +1066,13 @@ namespace Witty
 
         void OnClosed(object sender, EventArgs e)
         {
+            if (!AppSettings.PersistLogin)
+            {
+                AppSettings.Username = string.Empty;
+                AppSettings.Password = string.Empty;
+                AppSettings.Save();
+            }
+
             m_notifyIcon.Dispose();
             m_notifyIcon = null;
         }
