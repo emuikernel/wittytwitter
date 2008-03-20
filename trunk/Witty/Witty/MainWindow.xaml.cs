@@ -1168,5 +1168,19 @@ namespace Witty
         }
 
         #endregion
+
+        #region Clear Methods
+
+        internal void ClearTweets()
+        {
+            tweets.Clear();
+        }
+
+        internal void ClearReplies()
+        {
+            replies.Clear();
+        }
+
+        #endregion
     }
 }
