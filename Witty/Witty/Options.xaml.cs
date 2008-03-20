@@ -47,6 +47,14 @@ namespace Witty
             PersistLogin = AppSettings.PersistLogin;
 
             #endregion
+
+            UseProxyCheckBox.IsChecked = AppSettings.UseProxy;
+            ProxyServerTextBox.Text = AppSettings.ProxyServer;
+            ProxyPortTextBox.Text = AppSettings.ProxyPort.ToString();
+            ProxyUsernameTextBox.Text = AppSettings.ProxyUsername;
+            ProxyPasswordTextBox.Password = AppSettings.ProxyPassword;
+
+            ToggleProxyFieldsEnabled(AppSettings.UseProxy);
         }
 
         #region PlaySounds
@@ -109,13 +117,93 @@ namespace Witty
 
         #endregion
 
+        #region Clear Event Handlers
+
+        private void ClearTweetsButton_Click(object sender, RoutedEventArgs e)
+        {
+            // Since, this window does not have access to the main Tweets collection,
+            // call the owner window methods to handle it
+            ((MainWindow)this.Owner).ClearTweets();
+        }
+
+        private void ClearRepliesButton_Click(object sender, RoutedEventArgs e)
+        {
+            // Since, this window does not have access to the replies collection,
+            // call the owner window methods to handle it
+            ((MainWindow)this.Owner).ClearReplies();
+        }
+
+        #endregion
+
+        #region Proxy Config
+
+        private void UseProxyCheckBox_Click(object sender, RoutedEventArgs e)
+        {
+            ToggleProxyFieldsEnabled((bool)UseProxyCheckBox.IsChecked);
+        }
+
+        private void ToggleProxyFieldsEnabled(bool enabled)
+        {
+            ProxyServerTextBox.IsEnabled = enabled;
+            ProxyPortTextBox.IsEnabled = enabled;
+            ProxyUsernameTextBox.IsEnabled = enabled;
+            ProxyPasswordTextBox.IsEnabled = enabled;
+        }
+
+        private void NotifyIfRestartNeeded()
+        {
+            if (AppSettings.UseProxy != (bool)UseProxyCheckBox.IsChecked ||
+                AppSettings.ProxyServer != ProxyServerTextBox.Text ||
+                AppSettings.ProxyPort != int.Parse(ProxyPortTextBox.Text) ||
+                AppSettings.ProxyUsername != ProxyUsernameTextBox.Text ||
+                AppSettings.ProxyPassword != ProxyPasswordTextBox.Password)
+            {
+                MessageBox.Show("Witty will need to be restarted before settings will take effect.");
+            }
+        }
+
+        private bool InputIsValid()
+        {
+            // Only checking for valid port number right now, but other validation could go here later
+
+            bool result = true;
+            if (ProxyPortTextBox.Text.Trim().Length > 0)
+            {
+                try
+                {
+                    int.Parse(ProxyPortTextBox.Text);
+                }
+                catch (Exception ex)
+                {
+                    result = false;
+                    MessageBox.Show("Invalid port number.");
+                }
+            }
+
+            return result;
+        }
+
+        #endregion
+
         private void DoneButton_Click(object sender, RoutedEventArgs e)
         {
-            AppSettings.RefreshInterval = SliderValueTextBlock.Text;
-            AppSettings.Save();
+            if (InputIsValid())
+            {
+                AppSettings.RefreshInterval = SliderValueTextBlock.Text;
 
-            DialogResult = true;
-            this.Close();
+                NotifyIfRestartNeeded();
+
+                AppSettings.UseProxy = (bool)UseProxyCheckBox.IsChecked;
+                AppSettings.ProxyServer = ProxyServerTextBox.Text;
+                AppSettings.ProxyPort = int.Parse(ProxyPortTextBox.Text);
+                AppSettings.ProxyUsername = ProxyUsernameTextBox.Text;
+                AppSettings.ProxyPassword = ProxyPasswordTextBox.Password;
+
+                AppSettings.Save();
+
+                DialogResult = true;
+                this.Close();
+            }
         }
 
         private void Logout_Click(object sender, RoutedEventArgs e)
@@ -164,23 +252,5 @@ namespace Witty
             AppSettings.AlwaysOnTop = this.Topmost;
             AppSettings.Save();
         }
-
-        #region Clear Event Handlers
-
-        private void ClearTweetsButton_Click(object sender, RoutedEventArgs e)
-        {
-            // Since, this window does not have access to the main Tweets collection,
-            // call the owner window methods to handle it
-            ((MainWindow)this.Owner).ClearTweets();
-        }
-
-        private void ClearRepliesButton_Click(object sender, RoutedEventArgs e)
-        {
-            // Since, this window does not have access to the replies collection,
-            // call the owner window methods to handle it
-            ((MainWindow)this.Owner).ClearReplies();
-        }
-
-        #endregion
     }
 }

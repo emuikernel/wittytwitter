@@ -77,7 +77,7 @@ namespace Witty
             {
                 LoginControl.Visibility = Visibility.Hidden;
 
-                twitter = new TwitterNet(AppSettings.Username, AppSettings.Password);
+                twitter = new TwitterNet(AppSettings.Username, AppSettings.Password, WebProxyHelper.GetConfiguredWebProxy());
 
                 // Let the user know what's going on
                 StatusTextBlock.Text = Properties.Resources.TryLogin;
@@ -124,7 +124,7 @@ namespace Witty
         private delegate void AddTweetUpdateDelegate(Tweet arg);
         private delegate void MessagesDelegate(DirectMessageCollection arg);
         private delegate void SendMessageDelegate(string user, string text);
-        private delegate void LoginDelegate(User arg);
+        private delegate void LoginDelegate(User arg);        
 
         // Settings used by the application
         private Properties.Settings AppSettings = Properties.Settings.Default;
@@ -260,10 +260,14 @@ namespace Witty
         {
             try
             {
-                //parse the text here and tiny up any URLs found.
-                TinyUrlHelper tinyUrls = new TinyUrlHelper();
-                string tinyfiedText = tinyUrls.ConvertUrlsToTinyUrls(tweetText);
-                Tweet tweet = twitter.AddTweet(tinyfiedText);
+                //bmsullivan If tweet is short enough, leave real URLs for clarity
+                if (tweetText.Length > 140)
+                {
+                    //parse the text here and tiny up any URLs found.
+                    TinyUrlHelper tinyUrls = new TinyUrlHelper();
+                    tweetText = tinyUrls.ConvertUrlsToTinyUrls(tweetText);
+                }
+                Tweet tweet = twitter.AddTweet(tweetText);
 
                 // Schedule the update function in the UI thread.
                 LayoutRoot.Dispatcher.BeginInvoke(
@@ -573,6 +577,12 @@ namespace Witty
             {
                 logger.Debug(String.Format("There was a problem logging in to Twitter: {0}", ex.ToString()));
             }
+            catch (ProxyAuthenticationRequiredException ex)
+            {
+                logger.Error("Incorrect proxy configuration.");
+                MessageBox.Show("Proxy server is configured incorrectly.  Please correct the settings on the Options menu.");
+                LayoutRoot.Dispatcher.BeginInvoke(DispatcherPriority.Normal, new NoArgDelegate(UpdateLoginFailedInterface));           
+            }
         }
 
         private void UpdatePostLoginInterface(User user)
@@ -594,9 +604,15 @@ namespace Witty
             refreshTimer.Start();
         }
 
+        private void UpdateLoginFailedInterface()
+        {
+            isLoggedIn = false;
+            OptionsButton.IsEnabled = true;
+        }
+
         private void LoginControl_Login(object sender, RoutedEventArgs e)
         {
-            twitter = new TwitterNet(AppSettings.Username, AppSettings.Password);
+            twitter = new TwitterNet(AppSettings.Username, AppSettings.Password, WebProxyHelper.GetConfiguredWebProxy());
 
             // fetch new tweets
             DelegateRecentFetch();

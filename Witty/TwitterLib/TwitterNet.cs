@@ -31,6 +31,7 @@ namespace TwitterLib
         private string destroyUrl;
         private string destroyDirectMessageUrl;
         private string format;
+        private IWebProxy webProxy;
 
         private User currentLoggedInUser;
 
@@ -77,6 +78,15 @@ namespace TwitterLib
         {
             get { return password; }
             set { password = value; }
+        }
+
+        /// <summary>
+        /// Web proxy to use when communicating with the Twitter service
+        /// </summary>
+        public IWebProxy WebProxy
+        {
+            get { return webProxy; }
+            set { webProxy = value; }
         }
 
         /// <summary>
@@ -371,6 +381,13 @@ namespace TwitterLib
             this.password = password;
         }
 
+        public TwitterNet(string username, string password, IWebProxy webProxy)
+        {
+            this.username = username;
+            this.password = password;
+            this.webProxy = webProxy;
+        }
+
         #endregion
 
         #region Public Methods
@@ -449,6 +466,9 @@ namespace TwitterLib
 
                 // Add credendtials to request  
                 request.Credentials = new NetworkCredential(username, password);
+
+                // Add configured web proxy
+                request.Proxy = webProxy;
 
                 try
                 {
@@ -552,6 +572,9 @@ namespace TwitterLib
             // Add authentication to request  
             request.Credentials = new NetworkCredential(username, password);
 
+            // Add configured web proxy
+            request.Proxy = webProxy;
+
             request.Method = "POST";
 
             // Set values for the request back
@@ -633,6 +656,9 @@ namespace TwitterLib
             // Add credendtials to request  
             request.Credentials = new NetworkCredential(username, password);
 
+            // Add configured web proxy
+            request.Proxy = webProxy;
+
             try
             {
                 using (HttpWebResponse response = request.GetResponse() as HttpWebResponse)
@@ -685,6 +711,8 @@ namespace TwitterLib
                             throw new RateLimitException("Rate limit exceeded. Clients may not make more than 70 requests per hour. Please try again in a few minutes.");
                         case 401: // unauthorized
                             return null;
+                        case 407: // proxy authentication required
+                            throw new ProxyAuthenticationRequiredException("Proxy authentication required.");
                         default:
                             throw;
                     }
@@ -705,6 +733,9 @@ namespace TwitterLib
 
             // Add credendtials to request  
             request.Credentials = new NetworkCredential(username, password);
+
+            // Add configured web proxy
+            request.Proxy = webProxy;
 
             try
             {
@@ -800,6 +831,9 @@ namespace TwitterLib
 
             // Add authentication to request  
             request.Credentials = new NetworkCredential(username, password);
+
+            // Add configured web proxy
+            request.Proxy = webProxy;
 
             request.Method = "POST";
 
@@ -913,6 +947,9 @@ namespace TwitterLib
             // Create the web request
             HttpWebRequest request = WebRequest.Create(timelineUrl) as HttpWebRequest;
 
+            // Add configured web proxy
+            request.Proxy = webProxy;
+
             // Friends and Replies timeline requests need to be authenticated
             if (timeline == Timeline.Friends || timeline == Timeline.Replies)
             {
@@ -1008,6 +1045,9 @@ namespace TwitterLib
             // Add authentication to request  
             request.Credentials = new NetworkCredential(username, password);
 
+            // Add configured web proxy
+            request.Proxy = webProxy;
+
             request.Method = "GET";
 
             try
@@ -1037,6 +1077,7 @@ namespace TwitterLib
                 }
             }
         }
+        
         #endregion
     }
 
