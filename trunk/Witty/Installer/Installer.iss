@@ -1,11 +1,11 @@
 ;Requires Inno Setup - http://www.jrsoftware.org/isinfo.php
 
 [Setup]
-AppName=Witty 0.1.7
-AppVerName=Witty 0.1.7
-AppVersion=0.1.7
-VersionInfoVersion=0.1.7
-OutputBaseFilename=Setup-Witty-0.1.7
+AppName=Witty 0.1.7 Beta 1
+AppVerName=Witty 0.1.7 Beta 1
+AppVersion=0.1.7 Beta 1
+VersionInfoVersion=0.1.7.1
+OutputBaseFilename=Setup-Witty-0.1.7-Beta1
 AppPublisherURL=http://code.google.com/p/wittytwitter/
 AppSupportURL=http://code.google.com/p/wittytwitter/
 AppUpdatesURL=http://code.google.com/p/wittytwitter/
