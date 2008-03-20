@@ -22,7 +22,7 @@ namespace Witty
 
         private void LoginButton_Click(object sender, RoutedEventArgs e)
         {
-            TwitterNet twitter = new TwitterNet(UsernameTextBox.Text, PasswordTextBox.Password);
+            TwitterNet twitter = new TwitterNet(UsernameTextBox.Text, PasswordTextBox.Password, WebProxyHelper.GetConfiguredWebProxy());
 
             // Attempt login in a new thread
             LoginButton.Dispatcher.BeginInvoke(
@@ -48,6 +48,11 @@ namespace Witty
             {
                 logger.Error("There was a rate limit exception.");
                 MessageBox.Show(ex.Message);
+            }
+            catch (ProxyAuthenticationRequiredException ex)
+            {
+                logger.Error("Incorrect proxy configuration.");
+                MessageBox.Show("Proxy server is configured incorrectly.  Please correct the settings on the Options menu.");
             }
         }
 

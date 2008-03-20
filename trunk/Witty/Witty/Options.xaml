@@ -60,8 +60,31 @@
       					<Button Content="Logout" x:Name="Logout" Click="Logout_Click" Width="75" Height="21.96" HorizontalAlignment="Left" Margin="0,10,0,0"/>
       				</StackPanel>
       			</GroupBox>
-      			<GroupBox Header="Proxy Info" Margin="0,5,0,0"/>
-      		</StackPanel>
+            <GroupBox Header="Proxy Info" Margin="0,5,0,0">
+              <Grid>
+                <Grid.ColumnDefinitions>
+                  <ColumnDefinition Width="100"/>
+                  <ColumnDefinition Width="*"/>
+                </Grid.ColumnDefinitions>
+                <Grid.RowDefinitions>
+                  <RowDefinition Height="Auto"/>
+                  <RowDefinition Height="Auto"/>
+                  <RowDefinition Height="Auto"/>
+                  <RowDefinition Height="Auto"/>
+                  <RowDefinition Height="Auto"/>
+                </Grid.RowDefinitions>
+                <CheckBox Grid.Row="0" Grid.ColumnSpan="2" Content="Use Proxy Server" x:Name="UseProxyCheckBox" Click="UseProxyCheckBox_Click" HorizontalAlignment="Left" Grid.Column="1" Margin="5,0,0,0"/>
+                <Label Content="Server" HorizontalAlignment="Right" Grid.Column="0" Grid.Row="1"/>
+                <TextBox x:Name="ProxyServerTextBox" TextWrapping="Wrap" Margin="5,2,20,2" IsEnabled="False" Grid.Column="1" Grid.Row="1"/>
+                <Label Content="Port" HorizontalAlignment="Right" Grid.Column="0" Grid.Row="2"/>
+                <TextBox x:Name="ProxyPortTextBox" TextWrapping="Wrap" Margin="5,2,20,2" IsEnabled="False" Grid.Column="1" Grid.Row="2" Width="75" HorizontalAlignment="Left" />
+                <Label Content="Username" HorizontalAlignment="Right" Grid.Column="0" Grid.Row="3"/>
+                <TextBox x:Name="ProxyUsernameTextBox" TextWrapping="Wrap" Margin="5,2,20,2" IsEnabled="False" Grid.Column="1" Grid.Row="3"/>
+                <Label Content="Password" HorizontalAlignment="Right" Grid.Column="0" Grid.Row="4"/>
+                <PasswordBox x:Name="ProxyPasswordTextBox" Margin="5,2,20,2" IsEnabled="False" Grid.Column="1" Grid.Row="4"/>
+              </Grid>
+            </GroupBox>
+          </StackPanel>
       	</Border>
       </TabItem>
       <TabItem Header="Appearance" x:Name="AppearanceTab">

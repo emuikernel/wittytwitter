@@ -11,7 +11,13 @@ namespace TwitterLib
     /// </summary>
     public class TinyUrlHelper
     {
+
         public string ConvertUrlsToTinyUrls(string text)
+        {
+            return ConvertUrlsToTinyUrls(text, null);
+        }
+
+        public string ConvertUrlsToTinyUrls(string text, IWebProxy webProxy)
         {
             if (text == null)
                 throw new ArgumentNullException("text");
@@ -25,15 +31,15 @@ namespace TwitterLib
                 {
                     foundUrl = true;
                     // replace found url with tinyurl
-                    textSplitIntoWords[i] = GetNewTinyUrl(textSplitIntoWords[i]);
+                    textSplitIntoWords[i] = GetNewTinyUrl(textSplitIntoWords[i], webProxy);
                 }
             }
 
             // reassemble if we found at least 1 url, otherwise return unaltered
             return foundUrl ? String.Join(" ", textSplitIntoWords) : text;
-        }
+        }        
 
-        public string GetNewTinyUrl(string sourceUrl)
+        public string GetNewTinyUrl(string sourceUrl, IWebProxy webProxy)
         {
             if (sourceUrl == null)
                 throw new ArgumentNullException("sourceUrl");
@@ -48,6 +54,8 @@ namespace TwitterLib
                 // tinyurl doesn't like urls w/o protocols so we'll ensure we have at least http
                 string requestUrl = BuildRequestUrl(EnsureMinimalProtocol(sourceUrl));
                 WebRequest request = HttpWebRequest.Create(requestUrl);
+
+                request.Proxy = webProxy;
 
                 try
                 {
