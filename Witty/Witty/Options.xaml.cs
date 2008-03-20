@@ -26,17 +26,10 @@ namespace Witty
             UsernameTextBox.Text = AppSettings.Username;
             PasswordTextBox.Password = AppSettings.Password;
 
-            Binding binding = new Binding();
-            binding.Path = new PropertyPath("Topmost");
-            binding.Source = this;
-            AlwaysOnTopCheckBox.SetBinding(CheckBox.IsCheckedProperty, binding);
-
             if (!string.IsNullOrEmpty(AppSettings.RefreshInterval))
             {
                 RefreshSlider.Value = Double.Parse(AppSettings.RefreshInterval);
             }
-
-            PlaySounds = AppSettings.PlaySounds;
 
             isSettingSkin = true;
             SkinsComboBox.ItemsSource = App.Skins;
@@ -47,7 +40,11 @@ namespace Witty
             }
             isSettingSkin = false;
 
+            AlwaysOnTopCheckBox.IsChecked = AppSettings.AlwaysOnTop;
+
+            PlaySounds = AppSettings.PlaySounds;
             MinimizeToTray = AppSettings.MinimizeToTray;
+            PersistLogin = AppSettings.PersistLogin;
 
             #endregion
         }
@@ -87,6 +84,26 @@ namespace Witty
         private static void OnMinimizeToTrayChanged(DependencyObject obj, DependencyPropertyChangedEventArgs args)
         {
             Properties.Settings.Default.MinimizeToTray = (bool)args.NewValue;
+            Properties.Settings.Default.Save();
+        }
+
+        #endregion
+
+        #region PersistLogin
+
+        public bool PersistLogin
+        {
+            get { return (bool)GetValue(PersistLoginProperty); }
+            set { SetValue(PersistLoginProperty, value); }
+        }
+
+        public static readonly DependencyProperty PersistLoginProperty =
+            DependencyProperty.Register("PersistLogin", typeof(bool), typeof(Options),
+            new FrameworkPropertyMetadata(false, new PropertyChangedCallback(OnPersistLoginChanged)));
+
+        private static void OnPersistLoginChanged(DependencyObject obj, DependencyPropertyChangedEventArgs args)
+        {
+            Properties.Settings.Default.PersistLogin = (bool)args.NewValue;
             Properties.Settings.Default.Save();
         }
 
@@ -135,6 +152,17 @@ namespace Witty
         private void Window_OnKeyDown(object sender, KeyEventArgs e)
         {
             if (e.Key == Key.Escape) { this.Close(); };
+        }
+
+        private void AlwaysOnTopCheckBox_Click(object sender, RoutedEventArgs e)
+        {
+            if ((bool)((CheckBox)sender).IsChecked)
+                this.Topmost = true;
+            else
+                this.Topmost = false;
+
+            AppSettings.AlwaysOnTop = this.Topmost;
+            AppSettings.Save();
         }
     }
 }

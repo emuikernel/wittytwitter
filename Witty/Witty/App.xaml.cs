@@ -48,8 +48,6 @@ namespace Witty
             }
 
             base.OnStartup(e);
-
-            logger.Info("Witty has completed startup.");
         }
 
         /// <summary>

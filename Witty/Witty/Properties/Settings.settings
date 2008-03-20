@@ -8,9 +8,6 @@
     <Setting Name="Password" Type="System.String" Scope="User">
       <Value Profile="(Default)" />
     </Setting>
-    <Setting Name="Timeline" Type="System.String" Scope="User">
-      <Value Profile="(Default)" />
-    </Setting>
     <Setting Name="RefreshInterval" Type="System.String" Scope="User">
       <Value Profile="(Default)">5</Value>
     </Setting>
@@ -21,13 +18,19 @@
       <Value Profile="(Default)">False</Value>
     </Setting>
     <Setting Name="Skin" Type="System.String" Scope="User">
-      <Value Profile="(Default)" />
+      <Value Profile="(Default)">.\Skins\Aero.xaml</Value>
     </Setting>
     <Setting Name="UpgradeSettings" Type="System.Boolean" Scope="User">
       <Value Profile="(Default)">True</Value>
     </Setting>
     <Setting Name="MinimizeToTray" Type="System.Boolean" Scope="User">
       <Value Profile="(Default)">True</Value>
+    </Setting>
+    <Setting Name="PersistLogin" Type="System.Boolean" Scope="User">
+      <Value Profile="(Default)">True</Value>
+    </Setting>
+    <Setting Name="AlwaysOnTop" Type="System.Boolean" Scope="User">
+      <Value Profile="(Default)">False</Value>
     </Setting>
   </Settings>
 </SettingsFile>

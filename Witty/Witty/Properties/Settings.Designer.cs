@@ -49,18 +49,6 @@ namespace Witty.Properties {
         
         [global::System.Configuration.UserScopedSettingAttribute()]
         [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
-        [global::System.Configuration.DefaultSettingValueAttribute("")]
-        public string Timeline {
-            get {
-                return ((string)(this["Timeline"]));
-            }
-            set {
-                this["Timeline"] = value;
-            }
-        }
-        
-        [global::System.Configuration.UserScopedSettingAttribute()]
-        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
         [global::System.Configuration.DefaultSettingValueAttribute("5")]
         public string RefreshInterval {
             get {
@@ -97,7 +85,7 @@ namespace Witty.Properties {
         
         [global::System.Configuration.UserScopedSettingAttribute()]
         [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
-        [global::System.Configuration.DefaultSettingValueAttribute("")]
+        [global::System.Configuration.DefaultSettingValueAttribute(".\\Skins\\Aero.xaml")]
         public string Skin {
             get {
                 return ((string)(this["Skin"]));
@@ -128,6 +116,30 @@ namespace Witty.Properties {
             }
             set {
                 this["MinimizeToTray"] = value;
+            }
+        }
+        
+        [global::System.Configuration.UserScopedSettingAttribute()]
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+        [global::System.Configuration.DefaultSettingValueAttribute("True")]
+        public bool PersistLogin {
+            get {
+                return ((bool)(this["PersistLogin"]));
+            }
+            set {
+                this["PersistLogin"] = value;
+            }
+        }
+        
+        [global::System.Configuration.UserScopedSettingAttribute()]
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+        [global::System.Configuration.DefaultSettingValueAttribute("False")]
+        public bool AlwaysOnTop {
+            get {
+                return ((bool)(this["AlwaysOnTop"]));
+            }
+            set {
+                this["AlwaysOnTop"] = value;
             }
         }
     }
