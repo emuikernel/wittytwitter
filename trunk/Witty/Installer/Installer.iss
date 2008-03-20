@@ -1,24 +1,24 @@
 ;Requires Inno Setup - http://www.jrsoftware.org/isinfo.php
 
 [Setup]
-AppName=Witty 0.1.6 Beta 2
-AppVerName=Witty 0.1.6
-AppVersion=0.1.6
-VersionInfoVersion=0.1.6
-OutputBaseFilename=Setup-Witty-0.1.6-Beta2
+AppName=Witty 0.1.7
+AppVerName=Witty 0.1.7
+AppVersion=0.1.7
+VersionInfoVersion=0.1.7
+OutputBaseFilename=Setup-Witty-0.1.7
 AppPublisherURL=http://code.google.com/p/wittytwitter/
 AppSupportURL=http://code.google.com/p/wittytwitter/
 AppUpdatesURL=http://code.google.com/p/wittytwitter/
 DefaultDirName={pf}\Witty
 DefaultGroupName=Witty
-AllowNoIcons=yes
+AllowNoIcons=true
 OutputDir=..\..\..\Installer
 SourceDir=..\Witty\bin\Release\
 AppID={{BA21EA94-D0A0-11DC-AE7E-C71856D89593}
 
-SetupIconFile=..\..\AppIcon.ico
+SetupIconFile=C:\Projects\Jon\WittyTwitter\Witty\Witty\Resources\AppIcon.ico
 Compression=lzma
-SolidCompression=yes
+SolidCompression=true
 
 [Languages]
 Name: english; MessagesFile: compiler:Default.isl
