@@ -10,7 +10,7 @@
   xmlns:controls="clr-namespace:Witty.Controls" 
   x:Class="Witty.MainWindow" 
   x:Name="Window" 
-  Title="Witty 0.1.7" 
+  Title="Witty 0.1.7 Beta 1" 
   Width="330" Height="570" MinWidth="200" MinHeight="200" 
   WindowStyle="SingleBorderWindow"
   Witty:WindowSettings.Save="True" KeyDown="MainWindow_OnKeyDown" Left="800" Top="50">
