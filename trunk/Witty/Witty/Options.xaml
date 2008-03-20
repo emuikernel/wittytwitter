@@ -41,19 +41,20 @@
         <Border Padding="15,15,15,15">
       		<StackPanel>
       			<GroupBox Header="Login Info">
-      				<StackPanel Height="100">
+      				<StackPanel>
       					<DockPanel>
-      						<Label Content="Username" Width="75"/>
+      						<Label Content="_Username" Width="75" Target="{Binding ElementName=UsernameTextBox}" />
       						<TextBox x:Name="UsernameTextBox" TextWrapping="Wrap" IsEnabled="False" Width="150" HorizontalAlignment="Left"/>
       					</DockPanel>
       					<DockPanel Margin="0,5,0,0">
-      						<Label Content="Password" Width="75"/>
+      						<Label Content="_Password" Width="75" Target="{Binding ElementName=UsernameTextBox}" />
       						<PasswordBox x:Name="PasswordTextBox" IsEnabled="False" Width="150" HorizontalAlignment="Left"/>
       					</DockPanel>
       					<CheckBox Content="Remember me on this computer" x:Name="PersistLoginCheckBox" IsChecked="{Binding Path=PersistLogin, ElementName=Window, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" Margin="5,5,0,0" />
+      					<Button Content="Logout" x:Name="Logout" Click="Logout_Click" Width="75" Height="21.96" HorizontalAlignment="Left" Margin="0,10,0,0"/>
       				</StackPanel>
       			</GroupBox>
-      			<Button Content="Logout" x:Name="Logout" Click="Logout_Click" Width="75" HorizontalAlignment="Left" Margin="5,15,0,0"/>
+      			<GroupBox Header="Proxy Info" Margin="0,5,0,0"/>
       		</StackPanel>
       	</Border>
       </TabItem>
@@ -61,7 +62,7 @@
         <Border Padding="15,15,15,15">
       		<StackPanel>
       			<DockPanel HorizontalAlignment="Left" Margin="0,15,0,0">
-      				<TextBlock Text="Skin" TextWrapping="Wrap" VerticalAlignment="Center" Margin="0,0,5,0"/>
+      				<Label Content="_Skin" Target="{Binding ElementName=SkinsComboBox}" VerticalAlignment="Center" Margin="0,0,5,0"/>
       				<ComboBox x:Name="SkinsComboBox" SelectionChanged="SkinsComboBox_SelectionChanged" Width="Auto"/>
       			</DockPanel>
       		</StackPanel>
