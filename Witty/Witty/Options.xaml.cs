@@ -164,5 +164,23 @@ namespace Witty
             AppSettings.AlwaysOnTop = this.Topmost;
             AppSettings.Save();
         }
+
+        #region Clear Event Handlers
+
+        private void ClearTweetsButton_Click(object sender, RoutedEventArgs e)
+        {
+            // Since, this window does not have access to the main Tweets collection,
+            // call the owner window methods to handle it
+            ((MainWindow)this.Owner).ClearTweets();
+        }
+
+        private void ClearRepliesButton_Click(object sender, RoutedEventArgs e)
+        {
+            // Since, this window does not have access to the replies collection,
+            // call the owner window methods to handle it
+            ((MainWindow)this.Owner).ClearReplies();
+        }
+
+        #endregion
     }
 }
