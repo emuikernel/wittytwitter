@@ -110,6 +110,18 @@
                 <Paragraph>
                   <Hyperlink NavigateUri="http://code.google.com/p/wittytwitter/" >Witty Google Code Page</Hyperlink>
                 </Paragraph>
+                <Paragraph>
+                  Keyboard Shortcuts<LineBreak/>
+                  * <Bold>ctrl-u</Bold> - Toggle the update area<LineBreak/>                  
+                  * <Bold>ctrl-r</Bold> - Add @screenname of the selected Tweets user to the update textbox<LineBreak/>
+                  * <Bold>ctrl-q</Bold> - Quit. Exit. Vamoose.<LineBreak/>
+                  * <Bold>ctrl-o</Bold> - Open the options dialog.<LineBreak/>
+                  * <Bold>ctrl-1</Bold> - Show the "Recent" tab.<LineBreak/>
+                  * <Bold>ctrl-2</Bold> - Show the "Replies" tab.<LineBreak/>
+                  * <Bold>ctrl-3</Bold> - Show the "User" tab.<LineBreak/>
+                  * <Bold>ctrl-4</Bold> - Show the "Messages" tab.<LineBreak/>
+                  * <Bold>F5</Bold> - refresh. It seemed best to stick with IE/Firefox's refresh key.<LineBreak/>
+                </Paragraph> 
               </Section>
             </FlowDocument>
           </FlowDocumentReader>
