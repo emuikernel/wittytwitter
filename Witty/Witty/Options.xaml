@@ -103,9 +103,9 @@
             <FlowDocument>
               <Section>
                 <Paragraph>
-                  Witty v0.1.7
+                  Witty v0.1.7 Beta 1
                   <LineBreak/>
-                  Updated March 18, 2008
+                  Updated March 20, 2008
                 </Paragraph>
                 <Paragraph>
                   <Hyperlink NavigateUri="http://code.google.com/p/wittytwitter/" >Witty Google Code Page</Hyperlink>
