@@ -47,6 +47,8 @@
     <UseVSHostingProcess>false</UseVSHostingProcess>
   </PropertyGroup>
   <ItemGroup>
+    <Reference Include="J832.Common, Version=0.0.0.0, Culture=neutral, processorArchitecture=MSIL" />
+    <Reference Include="J832.Wpf.BagOTricksLib, Version=0.0.0.0, Culture=neutral, processorArchitecture=MSIL" />
     <Reference Include="log4net, Version=1.2.10.0, Culture=neutral, PublicKeyToken=1b44e1d426115821, processorArchitecture=MSIL">
       <SpecificVersion>False</SpecificVersion>
       <HintPath>..\TwitterLib\Utilities\log4net.dll</HintPath>
@@ -150,6 +152,7 @@
     </Compile>
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="BagOfTricks\Code.cs" />
     <Compile Include="Controls\FilterText.xaml.cs">
       <DependentUpon>FilterText.xaml</DependentUpon>
     </Compile>
@@ -223,6 +226,10 @@
       <ProductName>Windows Installer 3.1</ProductName>
       <Install>true</Install>
     </BootstrapperPackage>
+  </ItemGroup>
+  <ItemGroup>
+    <Content Include="BagOfTricks\References\J832.Common.dll" />
+    <Content Include="BagOfTricks\References\J832.Wpf.BagOTricksLib.dll" />
   </ItemGroup>
   <Import Project="$(MSBuildBinPath)\Microsoft.CSharp.targets" />
   <PropertyGroup>
