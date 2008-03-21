@@ -60,6 +60,7 @@ namespace Witty
                         }
                     }
                     // clickable @name
+                    // REMARK: this should be done with regex. -Alan
                     else if (word.StartsWith("@"))
                     {
                         Hyperlink name = new Hyperlink();
@@ -95,6 +96,8 @@ namespace Witty
             }
         }
 
+        #region Clickable @name
+
         public static readonly RoutedEvent NameClickEvent = EventManager.RegisterRoutedEvent(
             "NameClick", RoutingStrategy.Bubble, typeof(RoutedEventHandler), typeof(TweetTextBlock));
 
@@ -106,7 +109,7 @@ namespace Witty
 
         static void name_Click(object sender, RoutedEventArgs e)
         {
-            //TODO: this should show the user in Witty.
+            //TODO: this should be configurable to show the user Witty or open in browser.
             try
             {
                 System.Diagnostics.Process.Start(((Hyperlink)sender).NavigateUri.ToString());
@@ -118,5 +121,7 @@ namespace Witty
                 MessageBox.Show("There was a problem launching the specified URL.", "Error", MessageBoxButton.OK, MessageBoxImage.Exclamation);
             }
         }
+
+        #endregion
     }
 }
