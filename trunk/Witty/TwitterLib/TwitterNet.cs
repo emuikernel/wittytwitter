@@ -500,7 +500,6 @@ namespace TwitterLib
 
                             users.Add(user);
                         }
-
                     }
                 }
                 catch (WebException webExcp)

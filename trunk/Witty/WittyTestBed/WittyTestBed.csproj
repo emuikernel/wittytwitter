@@ -69,6 +69,10 @@
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </ApplicationDefinition>
+    <Page Include="BagOfTricks\AnimatingTilePanel\AnimatingTilePanelPage.xaml">
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
+    </Page>
     <Page Include="Window1.xaml">
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
@@ -87,6 +91,9 @@
     </Compile>
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="BagOfTricks\AnimatingTilePanel\AnimatingTilePanelPage.xaml.cs">
+      <DependentUpon>AnimatingTilePanelPage.xaml</DependentUpon>
+    </Compile>
     <Compile Include="BagOfTricks\Code.cs" />
     <Compile Include="Properties\AssemblyInfo.cs">
       <SubType>Code</SubType>
@@ -107,6 +114,7 @@
     <EmbeddedResource Include="Properties\Resources.resx">
       <Generator>ResXFileCodeGenerator</Generator>
       <LastGenOutput>Resources.Designer.cs</LastGenOutput>
+      <SubType>Designer</SubType>
     </EmbeddedResource>
     <None Include="Properties\Settings.settings">
       <Generator>SettingsSingleFileGenerator</Generator>

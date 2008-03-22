@@ -157,6 +157,7 @@
       <DependentUpon>FilterText.xaml</DependentUpon>
     </Compile>
     <Compile Include="Controls\TweetTextBlock.cs" />
+    <Compile Include="Misc\SkinsManager.cs" />
     <Compile Include="Misc\WebProxyHelper.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <EmbeddedResource Include="Properties\Resources.resx">
