@@ -997,7 +997,10 @@ namespace Witty
 
         #endregion
 
-        #region filtering
+        #region Search Filtering
+
+        // Delegate for performing filter in background thread for performance improvements
+        private delegate void FilterDelegate();
 
         /// <summary>
         /// Handles the filtering and search
@@ -1005,6 +1008,17 @@ namespace Witty
         /// <param name="sender"></param>
         /// <param name="e"></param>
         private void FilterTextBox_TextChanged(object sender, TextChangedEventArgs e)
+        {
+            // Start an async operation that filters the list.
+            this.Dispatcher.BeginInvoke(
+                DispatcherPriority.ApplicationIdle,
+                new FilterDelegate(FilterWorker));          
+        }
+
+        /// <summary>
+        /// Worker method that filters the list.
+        /// </summary>
+        private void FilterWorker()
         {
             //Use collection view to filter the listbox
             ICollectionView collectionView = CollectionViewSource.GetDefaultView(tweets);
@@ -1060,7 +1074,6 @@ namespace Witty
             return (message.Text.ToLower().Contains(FilterTextBox.Text.ToLower()))
                    || (message.Sender.ScreenName.ToLower().Contains(FilterTextBox.Text.ToLower()));
         }
-
 
         private void SearchButton_Click(object sender, RoutedEventArgs e)
         {
