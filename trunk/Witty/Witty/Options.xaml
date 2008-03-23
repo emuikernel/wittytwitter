@@ -5,12 +5,12 @@
 	xmlns:Witty="clr-namespace:Witty"
 	x:Class="Witty.Options"
 	x:Name="Window"
-	Title="Options"
+	Title="Witty Options"
 	Width="500" Height="450" 
   KeyDown="Window_OnKeyDown" 
   WindowStartupLocation="CenterOwner"
   xmlns:lib="clr-namespace:Microsoft.Samples.KMoore.WPFSamples.Zap;assembly=J832.Wpf.BagOTricksLib"
-  ShowInTaskbar="False" xmlns:d="http://schemas.microsoft.com/expression/blend/2008">
+  ShowInTaskbar="False" xmlns:d="http://schemas.microsoft.com/expression/blend/2008" ResizeMode="NoResize">
 
   <Window.Resources>
     <Witty:RoundConverter x:Key="RoundConverter"/>
