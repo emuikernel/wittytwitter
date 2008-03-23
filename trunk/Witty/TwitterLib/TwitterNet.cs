@@ -22,7 +22,7 @@ namespace TwitterLib
         private string friendsTimelineUrl;
         private string userTimelineUrl;
         private string repliesTimelineUrl;
-        private string directMessagesUrl; 
+        private string directMessagesUrl;
         private string updateUrl;
         private string friendsUrl;
         private string followersUrl;
@@ -289,6 +289,7 @@ namespace TwitterLib
             }
             set { destroyUrl = value; }
         }
+
         /// <summary>
         /// Url to destroy a direct message from the authenticating user. Defaults to http://twitter.com/direct_messages/destroy/
         /// </summary>
@@ -392,6 +393,8 @@ namespace TwitterLib
 
         #region Public Methods
 
+        #region Timeline Methods
+
         /// <summary>
         /// Retrieves the public timeline
         /// </summary>
@@ -448,18 +451,40 @@ namespace TwitterLib
             return RetrieveTimeline(Timeline.Replies);
         }
 
-        public UserCollection RetrieveFriends()
+        #endregion
+
+        /// <summary>
+        /// Returns the authenticated user's friends who have most recently updated, each with current status inline.
+        /// </summary>
+        public UserCollection GetFriends()
+        {
+            return GetFriends(CurrentlyLoggedInUser.Id);
+        }
+
+        /// <summary>
+        /// Returns the user's friends who have most recently updated, each with current status inline.
+        /// </summary>
+        private UserCollection GetFriends(int id)
         {
             UserCollection users = new UserCollection();
+            int friendsCount = 0;
 
-            //Since the API docs state "Returns up to 100 of the authenticating user's friends", we need
-            // to use the page param and to fetch ALL of the users friends. We can find out how many pages
-            // we need by dividing the # of friends by 100 and rounding any remainder up.
-            // merging the responses from each request may be tricky.
-            int currentUsersFriendsCount = CurrentlyLoggedInUser.FollowingCount;
-            int numberOfPagesToFetch = (currentUsersFriendsCount / 100);
-            
-            for (int count = 1; count <= numberOfPagesToFetch;count++ )
+            if (CurrentlyLoggedInUser != null && CurrentlyLoggedInUser.Id == id)
+            {
+                // Since the API docs state "Returns up to 100 of the authenticating user's friends", we need
+                // to use the page param and to fetch ALL of the users friends. We can find out how many pages
+                // we need by dividing the # of friends by 100 and rounding any remainder up.
+                // merging the responses from each request may be tricky.
+                friendsCount = CurrentlyLoggedInUser.FollowingCount;
+            }
+            else
+            {
+                // TODO: Make GetFriends work for any UserId.
+            }
+
+            int numberOfPagesToFetch = (friendsCount / 100);
+
+            for (int count = 1; count <= numberOfPagesToFetch; count++)
             {
                 // Create the web request
                 HttpWebRequest request = WebRequest.Create(FriendsUrl + Format + "&page=" + count) as HttpWebRequest;
@@ -1069,14 +1094,14 @@ namespace TwitterLib
                     switch ((int)httpResponse.StatusCode)
                     {
                         case 401: // unauthorized
-                            throw new SecurityException("Not Authorized.",webExcp);
+                            throw new SecurityException("Not Authorized.", webExcp);
                         default:
                             throw;
                     }
                 }
             }
         }
-        
+
         #endregion
     }
 
