@@ -6,6 +6,7 @@ using System.Windows;
 using TwitterLib;
 using log4net;
 using log4net.Config;
+
 namespace Witty
 {
     /// <summary>
