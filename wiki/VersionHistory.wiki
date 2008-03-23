@@ -2,6 +2,15 @@
 #labels Featured,Documentation
 
 = v0.1.6 Beta 2=
+_March 20, 2008_
+
+  * Improved Options Window with more options
+  * Proxy support
+  * Context Menu for common functionality
+  * Clickable @names
+  * Error logging
+
+= v0.1.6 Beta 2=
 _February 6, 2008_
 
 http://wittytwitter.googlecode.com/files/Setup-Witty-0.1.6-Beta2.exe
