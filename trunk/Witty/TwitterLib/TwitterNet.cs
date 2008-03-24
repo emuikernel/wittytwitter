@@ -464,96 +464,108 @@ namespace TwitterLib
         /// <summary>
         /// Returns the user's friends who have most recently updated, each with current status inline.
         /// </summary>
-        private UserCollection GetFriends(int id)
+        public UserCollection GetFriends(int userId)
         {
-            UserCollection users = new UserCollection();
-            int friendsCount = 0;
+            UserCollection friends = new UserCollection();
 
-            if (CurrentlyLoggedInUser != null && CurrentlyLoggedInUser.Id == id)
+            // Twitter expects http://twitter.com/statuses/friends/12345.xml
+            string requestURL = FriendsUrl + "/" + userId + Format;
+
+            // Since the API docs state "Returns up to 100 of the authenticating user's friends", we need
+            // to use the page param and to fetch ALL of the users friends. We can find out how many pages
+            // we need by dividing the # of friends by 100 and rounding any remainder up.
+            User user = GetUser(userId);
+            int friendsCount = user.FollowersCount;
+
+            // Create the web request
+            HttpWebRequest request = WebRequest.Create(requestURL) as HttpWebRequest;
+
+            // Add configured web proxy
+            request.Proxy = webProxy;
+
+            // Get the Response  
+            using (HttpWebResponse response = request.GetResponse() as HttpWebResponse)
             {
-                // Since the API docs state "Returns up to 100 of the authenticating user's friends", we need
-                // to use the page param and to fetch ALL of the users friends. We can find out how many pages
-                // we need by dividing the # of friends by 100 and rounding any remainder up.
-                // merging the responses from each request may be tricky.
-                friendsCount = CurrentlyLoggedInUser.FollowingCount;
-            }
-            else
-            {
-                // TODO: Make GetFriends work for any UserId.
-            }
+                // Get the response stream  
+                StreamReader reader = new StreamReader(response.GetResponseStream());
 
-            int numberOfPagesToFetch = (friendsCount / 100);
+                // Create a new XmlDocument  
+                XmlDocument doc = new XmlDocument();
 
-            for (int count = 1; count <= numberOfPagesToFetch; count++)
-            {
-                // Create the web request
-                HttpWebRequest request = WebRequest.Create(FriendsUrl + Format + "&page=" + count) as HttpWebRequest;
+                // Load data  
+                doc.Load(reader);
 
-                // Add credendtials to request  
-                request.Credentials = new NetworkCredential(username, password);
+                // Get statuses with XPath  
+                XmlNodeList nodes = doc.SelectNodes("/users/user");
 
-                // Add configured web proxy
-                request.Proxy = webProxy;
-
-                try
+                foreach (XmlNode node in nodes)
                 {
-                    // Get the Response  
-                    using (HttpWebResponse response = request.GetResponse() as HttpWebResponse)
-                    {
-                        // Get the response stream  
-                        StreamReader reader = new StreamReader(response.GetResponseStream());
+                    User friend = new User();
+                    friend.Id = int.Parse(node.SelectSingleNode("id").InnerText);
+                    friend.Name = node.SelectSingleNode("name").InnerText;
+                    friend.ScreenName = node.SelectSingleNode("screen_name").InnerText;
+                    friend.ImageUrl = node.SelectSingleNode("profile_image_url").InnerText;
+                    friend.SiteUrl = node.SelectSingleNode("url").InnerText;
+                    friend.Location = node.SelectSingleNode("location").InnerText;
+                    friend.Description = node.SelectSingleNode("description").InnerText;
 
-                        // Create a new XmlDocument  
-                        XmlDocument doc = new XmlDocument();
-
-                        // Load data  
-                        doc.Load(reader);
-
-                        // Get statuses with XPath  
-                        XmlNodeList nodes = doc.SelectNodes("/users/user");
-
-                        foreach (XmlNode node in nodes)
-                        {
-                            User user = new User();
-                            user.Id = int.Parse(node.SelectSingleNode("id").InnerText);
-                            user.Name = node.SelectSingleNode("name").InnerText;
-                            user.ScreenName = node.SelectSingleNode("screen_name").InnerText;
-                            user.ImageUrl = node.SelectSingleNode("profile_image_url").InnerText;
-                            user.SiteUrl = node.SelectSingleNode("url").InnerText;
-                            user.Location = node.SelectSingleNode("location").InnerText;
-                            user.Description = node.SelectSingleNode("description").InnerText;
-
-                            users.Add(user);
-                        }
-                    }
-                }
-                catch (WebException webExcp)
-                {
-                    // Get the WebException status code.
-                    WebExceptionStatus status = webExcp.Status;
-                    // If status is WebExceptionStatus.ProtocolError, 
-                    //   there has been a protocol error and a WebResponse 
-                    //   should exist. Display the protocol error.
-                    if (status == WebExceptionStatus.ProtocolError)
-                    {
-                        // Get HttpWebResponse so that you can check the HTTP status code.
-                        HttpWebResponse httpResponse = (HttpWebResponse)webExcp.Response;
-
-                        switch ((int)httpResponse.StatusCode)
-                        {
-                            case 304:  // 304 Not modified = no new tweets so ignore error.
-                                break;
-                            case 400: // rate limit exceeded
-                                throw new RateLimitException("Rate limit exceeded. Clients may not make more than 70 requests per hour. Please try again in a few minutes.");
-                            case 401: // unauthorized
-                                throw new SecurityException("Not Authorized.");
-                            default:
-                                throw;
-                        }
-                    }
+                    friends.Add(friend);
                 }
             }
-            return users;
+
+            return friends;
+        }
+
+        public User GetUser(int userId)
+        {
+            User user = new User();
+
+            // Twitter expects http://twitter.com/users/show/12345.xml
+            string requestURL = UserShowUrl  + userId + Format;
+
+            // Create the web request
+            HttpWebRequest request = WebRequest.Create(requestURL) as HttpWebRequest;
+
+            // Add credendtials to request  
+            request.Credentials = new NetworkCredential(username, password);
+
+            // Add configured web proxy
+            request.Proxy = webProxy;
+
+            using (HttpWebResponse response = request.GetResponse() as HttpWebResponse)
+            {
+                // Get the response stream  
+                StreamReader reader = new StreamReader(response.GetResponseStream());
+
+                // Load the response data into a XmlDocument  
+                XmlDocument doc = new XmlDocument();
+                doc.Load(reader);
+
+                // Get statuses with XPath  
+                XmlNode userNode = doc.SelectSingleNode("user");
+
+                if (userNode != null)
+                {
+                    user.Id = int.Parse(userNode.SelectSingleNode("id").InnerText);
+                    user.Name = userNode.SelectSingleNode("name").InnerText;
+                    user.ScreenName = userNode.SelectSingleNode("screen_name").InnerText;
+                    user.ImageUrl = userNode.SelectSingleNode("profile_image_url").InnerText;
+                    user.SiteUrl = userNode.SelectSingleNode("url").InnerText;
+                    user.Location = userNode.SelectSingleNode("location").InnerText;
+                    user.Description = userNode.SelectSingleNode("description").InnerText;
+                    user.BackgroundColor = userNode.SelectSingleNode("profile_background_color").InnerText;
+                    user.TextColor = userNode.SelectSingleNode("profile_text_color").InnerText;
+                    user.LinkColor = userNode.SelectSingleNode("profile_link_color").InnerText;
+                    user.SidebarBorderColor = userNode.SelectSingleNode("profile_sidebar_border_color").InnerText;
+                    user.SidebarFillColor = userNode.SelectSingleNode("profile_sidebar_fill_color").InnerText;
+                    user.FollowingCount = int.Parse(userNode.SelectSingleNode("friends_count").InnerText);
+                    user.FavoritesCount = int.Parse(userNode.SelectSingleNode("favourites_count").InnerText);
+                    user.StatusesCount = int.Parse(userNode.SelectSingleNode("statuses_count").InnerText);
+                    user.FollowersCount = int.Parse(userNode.SelectSingleNode("followers_count").InnerText);
+                }
+            }
+
+            return user;
         }
 
         /// <summary>
@@ -699,6 +711,7 @@ namespace TwitterLib
 
                     if (userNode != null)
                     {
+                        user.Id = int.Parse(userNode.SelectSingleNode("id").InnerText);
                         user.Name = userNode.SelectSingleNode("name").InnerText;
                         user.ScreenName = userNode.SelectSingleNode("screen_name").InnerText;
                         user.ImageUrl = userNode.SelectSingleNode("profile_image_url").InnerText;
