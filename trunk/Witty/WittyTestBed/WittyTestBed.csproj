@@ -33,6 +33,7 @@
     <WarningLevel>4</WarningLevel>
   </PropertyGroup>
   <ItemGroup>
+    <Reference Include="FluidKit, Version=1.0.0.0, Culture=neutral, processorArchitecture=MSIL" />
     <Reference Include="J832.Common, Version=0.0.0.0, Culture=neutral, processorArchitecture=MSIL" />
     <Reference Include="J832.Wpf.BagOTricksLib, Version=0.0.0.0, Culture=neutral, processorArchitecture=MSIL" />
     <Reference Include="log4net, Version=1.2.10.0, Culture=neutral, PublicKeyToken=1b44e1d426115821, processorArchitecture=MSIL">
@@ -73,6 +74,10 @@
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </Page>
+    <Page Include="CustomWindow.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
     <Page Include="Followers.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
@@ -91,6 +96,9 @@
       <DependentUpon>AnimatingTilePanelPage.xaml</DependentUpon>
     </Compile>
     <Compile Include="BagOfTricks\Code.cs" />
+    <Compile Include="CustomWindow.xaml.cs">
+      <DependentUpon>CustomWindow.xaml</DependentUpon>
+    </Compile>
     <Compile Include="Followers.xaml.cs">
       <DependentUpon>Followers.xaml</DependentUpon>
     </Compile>
@@ -124,6 +132,7 @@
   <ItemGroup>
     <Content Include="BagOfTricks\References\J832.Common.dll" />
     <Content Include="BagOfTricks\References\J832.Wpf.BagOTricksLib.dll" />
+    <Content Include="FluidKit\References\FluidKit.dll" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\TwitterLib\TwitterLib.csproj">
