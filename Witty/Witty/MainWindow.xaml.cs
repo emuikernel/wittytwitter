@@ -760,6 +760,31 @@ namespace Witty
                     break;
             }
         }
+        #region Clear Methods
+
+        internal void ClearTweets()
+        {
+            tweets.Clear();
+        }
+
+        internal void ClearReplies()
+        {
+            replies.Clear();
+        }
+
+        private void Clear()
+        {
+            switch (currentView)
+            { 
+                case CurrentView.Recent:
+                    ClearTweets();
+                    break;
+                case CurrentView.Replies:
+                    ClearReplies();
+                    break;
+            }
+        }
+        #endregion
 
         private void Tabs_SelectionChanged(object sender, SelectionChangedEventArgs e)
         {
@@ -971,6 +996,7 @@ namespace Witty
                 PlayStoryboard("ShowLogin");
             }
         }
+        #region Context menu event handlers
 
         private void ContextMenuReply_Click(object sender, RoutedEventArgs e)
         {
@@ -994,6 +1020,11 @@ namespace Witty
             throw new NotImplementedException();
         }
 
+        private void ContextMenuClear_Click(object sender, RoutedEventArgs e)
+        {
+            Clear();
+        }
+        #endregion
 
         #endregion
 
@@ -1198,18 +1229,7 @@ namespace Witty
 
         #endregion
 
-        #region Clear Methods
 
-        internal void ClearTweets()
-        {
-            tweets.Clear();
-        }
-
-        internal void ClearReplies()
-        {
-            replies.Clear();
-        }
-
-        #endregion
+ 
     }
 }
