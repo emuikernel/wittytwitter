@@ -325,5 +325,21 @@ namespace TwitterLib
         }
 
         #endregion
+
+        /// <summary>
+        /// Removes all tweets above a count.
+        /// </summary>
+        /// <param name="count"></param>
+        public void Truncate(int count)
+        {
+            if (base.Count > count)
+            {
+                int max = base.Count - 1;
+                for (int i = max; i >= count; i--)
+                {
+                    base.RemoveItem(i);
+                }
+            }
+        }
     }
 }

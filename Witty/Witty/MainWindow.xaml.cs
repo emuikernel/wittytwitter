@@ -219,6 +219,7 @@ namespace Witty
 
             int tweetAdded = 0;
 
+            // Add the new tweets
             for (int i = newTweets.Count - 1; i >= 0; i--)
             {
                 Tweet tweet = newTweets[i];
@@ -231,9 +232,14 @@ namespace Witty
                 }
             }
 
+            // tweets listbox ScrollViewer.CanContentScroll is set to "False", which means it scrolls more smooth,
+            // However it disables Virtualization
+            // Remove tweets pass 100 should improve performance reasons.
+            tweets.Truncate(100);
+
             if (tweetAdded > 0 && AppSettings.PlaySounds)
             {
-                // Play tweets found sound
+                // Play tweets found sound for new tweets
                 SoundPlayer player = new SoundPlayer(Witty.Properties.Resources.alert);
                 player.Play();
             }
