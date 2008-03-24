@@ -35,7 +35,7 @@ namespace TwitterLib
 
         private User currentLoggedInUser;
 
-        // TODO: might need to fix this for globalization
+        // REMARK: might need to fix this for globalization
         private readonly string twitterCreatedAtDateFormat = "ddd MMM dd HH:mm:ss zzzz yyyy"; // Thu Apr 26 01:36:08 +0000 2007
         private readonly string twitterSinceDateFormat = "ddd MMM dd yyyy HH:mm:ss zzzz";
 
@@ -458,62 +458,89 @@ namespace TwitterLib
         /// </summary>
         public UserCollection GetFriends()
         {
-            return GetFriends(CurrentlyLoggedInUser.Id);
-        }
-
-        /// <summary>
-        /// Returns the user's friends who have most recently updated, each with current status inline.
-        /// </summary>
-        public UserCollection GetFriends(int userId)
-        {
-            UserCollection friends = new UserCollection();
+            UserCollection users = new UserCollection();
 
             // Twitter expects http://twitter.com/statuses/friends/12345.xml
-            string requestURL = FriendsUrl + "/" + userId + Format;
+            string requestURL = FriendsUrl + "/" + CurrentlyLoggedInUser.Id + Format;
 
-            // Since the API docs state "Returns up to 100 of the authenticating user's friends", we need
+            //Since the API docs state "Returns up to 100 of the authenticating user's friends", we need
             // to use the page param and to fetch ALL of the users friends. We can find out how many pages
             // we need by dividing the # of friends by 100 and rounding any remainder up.
-            User user = GetUser(userId);
-            int friendsCount = user.FollowersCount;
+            // merging the responses from each request may be tricky.
+            int currentUsersFriendsCount = CurrentlyLoggedInUser.FollowingCount;
+            int numberOfPagesToFetch = (currentUsersFriendsCount / 100) + 1;
 
-            // Create the web request
-            HttpWebRequest request = WebRequest.Create(requestURL) as HttpWebRequest;
+            string pageRequestUrl = requestURL;
 
-            // Add configured web proxy
-            request.Proxy = webProxy;
-
-            // Get the Response  
-            using (HttpWebResponse response = request.GetResponse() as HttpWebResponse)
+            for (int count = 1; count <= numberOfPagesToFetch; count++)
             {
-                // Get the response stream  
-                StreamReader reader = new StreamReader(response.GetResponseStream());
+                pageRequestUrl = requestURL + "?page=" + count;
+                // Create the web request
+                HttpWebRequest request = WebRequest.Create(pageRequestUrl) as HttpWebRequest;
 
-                // Create a new XmlDocument  
-                XmlDocument doc = new XmlDocument();
+                // Add credendtials to request  
+                request.Credentials = new NetworkCredential(username, password);
 
-                // Load data  
-                doc.Load(reader);
-
-                // Get statuses with XPath  
-                XmlNodeList nodes = doc.SelectNodes("/users/user");
-
-                foreach (XmlNode node in nodes)
+                try
                 {
-                    User friend = new User();
-                    friend.Id = int.Parse(node.SelectSingleNode("id").InnerText);
-                    friend.Name = node.SelectSingleNode("name").InnerText;
-                    friend.ScreenName = node.SelectSingleNode("screen_name").InnerText;
-                    friend.ImageUrl = node.SelectSingleNode("profile_image_url").InnerText;
-                    friend.SiteUrl = node.SelectSingleNode("url").InnerText;
-                    friend.Location = node.SelectSingleNode("location").InnerText;
-                    friend.Description = node.SelectSingleNode("description").InnerText;
+                    // Get the Response  
+                    using (HttpWebResponse response = request.GetResponse() as HttpWebResponse)
+                    {
+                        // Get the response stream  
+                        StreamReader reader = new StreamReader(response.GetResponseStream());
 
-                    friends.Add(friend);
+                        // Create a new XmlDocument  
+                        XmlDocument doc = new XmlDocument();
+
+                        // Load data  
+                        doc.Load(reader);
+
+                        // Get statuses with XPath  
+                        XmlNodeList nodes = doc.SelectNodes("/users/user");
+
+                        foreach (XmlNode node in nodes)
+                        {
+                            User user = new User();
+                            user.Id = int.Parse(node.SelectSingleNode("id").InnerText);
+                            user.Name = node.SelectSingleNode("name").InnerText;
+                            user.ScreenName = node.SelectSingleNode("screen_name").InnerText;
+                            user.ImageUrl = node.SelectSingleNode("profile_image_url").InnerText;
+                            user.SiteUrl = node.SelectSingleNode("url").InnerText;
+                            user.Location = node.SelectSingleNode("location").InnerText;
+                            user.Description = node.SelectSingleNode("description").InnerText;
+
+                            users.Add(user);
+                        }
+
+                    }
+                }
+                catch (WebException webExcp)
+                {
+                    // Get the WebException status code.
+                    WebExceptionStatus status = webExcp.Status;
+                    // If status is WebExceptionStatus.ProtocolError, 
+                    //   there has been a protocol error and a WebResponse 
+                    //   should exist. Display the protocol error.
+                    if (status == WebExceptionStatus.ProtocolError)
+                    {
+                        // Get HttpWebResponse so that you can check the HTTP status code.
+                        HttpWebResponse httpResponse = (HttpWebResponse)webExcp.Response;
+
+                        switch ((int)httpResponse.StatusCode)
+                        {
+                            case 304:  // 304 Not modified = no new tweets so ignore error.
+                                break;
+                            case 400: // rate limit exceeded
+                                throw new RateLimitException("Rate limit exceeded. Clients may not make more than 70 requests per hour. Please try again in a few minutes.");
+                            case 401: // unauthorized
+                                throw new SecurityException("Not Authorized.");
+                            default:
+                                throw;
+                        }
+                    }
                 }
             }
-
-            return friends;
+            return users;
         }
 
         public User GetUser(int userId)
