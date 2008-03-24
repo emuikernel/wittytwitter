@@ -97,7 +97,7 @@
         <!-- Recent Tab -->
         <TabItem Header="Recent" Padding="2,1,2,1" x:Name="RecentTab">
           <Grid x:Name="Recent">
-            <ListBox x:Name="TweetsListBox" IsSynchronizedWithCurrentItem="True" ItemTemplate="{DynamicResource TweetsTemplate}" ItemsSource="{Binding Mode=OneWay}" ScrollViewer.HorizontalScrollBarVisibility="Disabled" Margin="0,0,0,20" MouseLeftButtonUp="TweetsListBox_MouseLeftButtonUp" BorderThickness="0,0,0,0" >
+            <ListBox x:Name="TweetsListBox" ScrollViewer.CanContentScroll="False"  IsSynchronizedWithCurrentItem="True" ItemTemplate="{DynamicResource TweetsTemplate}" ItemsSource="{Binding Mode=OneWay}" ScrollViewer.HorizontalScrollBarVisibility="Disabled" Margin="0,0,0,20" MouseLeftButtonUp="TweetsListBox_MouseLeftButtonUp" BorderThickness="0,0,0,0" >
               <ListBox.ContextMenu>
                 <ContextMenu Name="recentContextMenu">
                   <MenuItem Header="Reply" Click="ContextMenuReply_Click"></MenuItem>
