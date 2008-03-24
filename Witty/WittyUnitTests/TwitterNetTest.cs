@@ -14,6 +14,7 @@ namespace WittyUnitTests
 
         protected int alanUserId;
         protected int alanFriendsCount;
+        protected User testUser;
 
         [SetUp]
         public void Init()
@@ -22,10 +23,8 @@ namespace WittyUnitTests
             password = "WittyTest";
             userId = 14203624; // WittyTest's Twitter id
 
-            alanUserId = 758185;
-            alanFriendsCount = 217;
-
-            friendsCount = 1;
+            TwitterNet twitter = new TwitterNet(username, password);
+            testUser = twitter.Login();
         }
         
         [Test]
@@ -41,27 +40,28 @@ namespace WittyUnitTests
         {
             TwitterNet twitter = new TwitterNet(username, password);
             UserCollection uc = twitter.GetFriends();
-            Assert.AreEqual(friendsCount, uc.Count);
+            Assert.AreEqual(testUser.FollowingCount, uc.Count);
         }
 
-        [Test]
-        public void GetFriendsUnauthenticated()
-        {
-            TwitterNet twitter = new TwitterNet();
-            UserCollection uc = twitter.GetFriends(userId);
-            Assert.AreEqual(friendsCount, uc.Count);
-        }
+        //Alan: It sucks that twitter requires authentication to get followers
+        //[Test]
+        //public void GetFriendsUnauthenticated()
+        //{
+        //    TwitterNet twitter = new TwitterNet();
+        //    UserCollection uc = twitter.GetFriends(userId);
+        //    Assert.AreEqual(friendsCount, uc.Count);
+        //}
 
-        /// <summary>
-        /// For testing GetFriends above 100.
-        /// </summary>
-        [Test]
-        public void GetAlanFriendsUnauthenticated()
-        {
-            TwitterNet twitter = new TwitterNet();
-            UserCollection uc = twitter.GetFriends(alanUserId);
-            Assert.AreEqual(alanFriendsCount, uc.Count); 
-        }
+        ///// <summary>
+        ///// For testing GetFriends above 100.
+        ///// </summary>
+        //[Test]
+        //public void GetAlanFriendsUnauthenticated()
+        //{
+        //    TwitterNet twitter = new TwitterNet();
+        //    UserCollection uc = twitter.GetFriends(alanUserId);
+        //    Assert.AreEqual(alanFriendsCount, uc.Count); 
+        //}
 
         [Test]
         public void GetUser()
