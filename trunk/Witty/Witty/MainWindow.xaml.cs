@@ -210,12 +210,7 @@ namespace Witty
             AppSettings.LastUpdated = lastUpdated.ToString();
             AppSettings.Save();
 
-            // Update existing tweets
-            foreach (Tweet tweet in tweets)
-            {
-                tweet.IsNew = false;
-                tweet.UpdateRelativeTime();
-            }
+            UpdateExistingTweets();
 
             int tweetAdded = 0;
 
@@ -245,6 +240,16 @@ namespace Witty
             }
 
             StopStoryboard("Fetching");
+        }
+
+        private void UpdateExistingTweets()
+        {
+            // Update existing tweets
+            foreach (Tweet tweet in tweets)
+            {
+                tweet.IsNew = false;
+                tweet.UpdateRelativeTime();
+            }
         }
 
         #endregion
@@ -480,6 +485,8 @@ namespace Witty
             PlayStoryboard("CollapseMessage");
             isMessageExpanded = false;
             MessageTextBox.Clear();
+
+            UpdateExistingTweets();
         }
 
         private void Message_MouseLeftButtonUp(object sender, MouseButtonEventArgs e)
@@ -504,6 +511,7 @@ namespace Witty
                 }
             }
         }
+
         #endregion
 
         #region User Timline
