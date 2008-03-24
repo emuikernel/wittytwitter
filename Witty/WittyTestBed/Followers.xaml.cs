@@ -9,19 +9,22 @@ using System.Windows.Documents;
 using System.Windows.Input;
 using System.Windows.Media;
 using System.Windows.Media.Imaging;
-using System.Windows.Navigation;
 using System.Windows.Shapes;
+using TwitterLib;
 
 namespace WittyTestBed
 {
     /// <summary>
-    /// Interaction logic for Window1.xaml
+    /// Interaction logic for Followers.xaml
     /// </summary>
-    public partial class Window1 : Window
+    public partial class Followers : Window
     {
-        public Window1()
+        public Followers()
         {
             InitializeComponent();
+
+            TwitterNet twitter = new TwitterNet();
+            FriendsListBox.ItemsSource = twitter.GetFriends();
         }
     }
 }
