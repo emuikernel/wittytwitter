@@ -382,6 +382,9 @@ namespace TwitterLib
             this.password = password;
         }
 
+        /// <summary>
+        /// Authenticated constructor with Proxy
+        /// </summary>
         public TwitterNet(string username, string password, IWebProxy webProxy)
         {
             this.username = username;
@@ -458,23 +461,44 @@ namespace TwitterLib
         /// </summary>
         public UserCollection GetFriends()
         {
+            return GetFriends(CurrentlyLoggedInUser.Id);
+        }
+
+        /// <summary>
+        /// Returns the user's friends who have most recently updated, each with current status inline.
+        /// </summary>
+        public UserCollection GetFriends(int userId)
+        {
             UserCollection users = new UserCollection();
 
             // Twitter expects http://twitter.com/statuses/friends/12345.xml
-            string requestURL = FriendsUrl + "/" + CurrentlyLoggedInUser.Id + Format;
+            string requestURL = FriendsUrl + "/" + userId + Format;
 
-            //Since the API docs state "Returns up to 100 of the authenticating user's friends", we need
+            int friendsCount = 0;
+
+            // Since the API docs state "Returns up to 100 of the authenticating user's friends", we need
             // to use the page param and to fetch ALL of the users friends. We can find out how many pages
             // we need by dividing the # of friends by 100 and rounding any remainder up.
             // merging the responses from each request may be tricky.
-            int currentUsersFriendsCount = CurrentlyLoggedInUser.FollowingCount;
-            int numberOfPagesToFetch = (currentUsersFriendsCount / 100) + 1;
+            if (currentLoggedInUser != null && currentLoggedInUser.Id == userId)
+            {
+                friendsCount = CurrentlyLoggedInUser.FollowingCount;
+            }
+            else
+            {
+                // need to make an extra call to twitter
+                User user = GetUser(userId);
+                friendsCount = user.FollowingCount;
+            }
+
+            int numberOfPagesToFetch = (friendsCount / 100) + 1;
 
             string pageRequestUrl = requestURL;
 
             for (int count = 1; count <= numberOfPagesToFetch; count++)
             {
                 pageRequestUrl = requestURL + "?page=" + count;
+
                 // Create the web request
                 HttpWebRequest request = WebRequest.Create(pageRequestUrl) as HttpWebRequest;
 
@@ -528,7 +552,7 @@ namespace TwitterLib
 
                         switch ((int)httpResponse.StatusCode)
                         {
-                            case 304:  // 304 Not modified = no new tweets so ignore error.
+                            case 304: // 304 Not modified = no new tweets so ignore error.
                                 break;
                             case 400: // rate limit exceeded
                                 throw new RateLimitException("Rate limit exceeded. Clients may not make more than 70 requests per hour. Please try again in a few minutes.");

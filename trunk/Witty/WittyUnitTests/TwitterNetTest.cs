@@ -43,6 +43,14 @@ namespace WittyUnitTests
             Assert.AreEqual(testUser.FollowingCount, uc.Count);
         }
 
+        [Test]
+        public void GetFriendsWithId()
+        {
+            TwitterNet twitter = new TwitterNet(username, password);
+            UserCollection uc = twitter.GetFriends(14203624);
+            Assert.AreEqual(testUser.FollowingCount, uc.Count);
+        }
+
         //Alan: It sucks that twitter requires authentication to get followers
         //[Test]
         //public void GetFriendsUnauthenticated()
