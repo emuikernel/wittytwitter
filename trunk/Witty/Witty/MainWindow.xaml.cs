@@ -1118,18 +1118,6 @@ namespace Witty
                    || (message.Sender.ScreenName.ToLower().Contains(FilterTextBox.Text.ToLower()));
         }
 
-        //private void FilterToggleButton_Click(object sender, RoutedEventArgs e)
-        //{
-        //    if (Filter.Visibility == Visibility.Hidden)
-        //    {
-        //        PlayStoryboard("ShowFilterPanel");
-        //    }
-        //    else
-        //    {
-        //        PlayStoryboard("HideFilterPanel");
-        //    }
-        //}
-
         #endregion
 
         #region Minimize to Tray
@@ -1240,5 +1228,10 @@ namespace Witty
         }
 
         #endregion
+
+        private void TweetScanButton_Click(object sender, RoutedEventArgs e)
+        {
+
+        }
     }
 }
