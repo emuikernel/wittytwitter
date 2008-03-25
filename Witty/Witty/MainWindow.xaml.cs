@@ -21,6 +21,10 @@ namespace Witty
         {
             this.InitializeComponent();
 
+#if DEBUG
+            Title = Title + " Debug";
+#endif
+
             #region Minimize to tray setup
 
             m_notifyIcon = new System.Windows.Forms.NotifyIcon();

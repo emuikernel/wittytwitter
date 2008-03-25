@@ -72,7 +72,6 @@ namespace TwitterLib
                 {
                     text = value;
                     OnPropertyChanged("Text");
-                    OnPropertyChanged("Hyperlink");
                 }
             }
         }
@@ -91,11 +90,6 @@ namespace TwitterLib
                     OnPropertyChanged("Source");
                 }
             }
-        }
-
-        public string Hyperlink
-        {
-            get { return StringHelper.GetHyperlink(text); }
         }
 
         /// <summary>
