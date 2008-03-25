@@ -11,7 +11,6 @@ namespace TwitterLib
     /// </summary>
     public class TinyUrlHelper
     {
-
         public string ConvertUrlsToTinyUrls(string text)
         {
             return ConvertUrlsToTinyUrls(text, null);
@@ -81,24 +80,17 @@ namespace TwitterLib
             return String.Format(tinyUrlFormat, sourceUrl);
         }
 
-        // REFACTOR: DRY vs. StringUtils - didn't want this static
-        private static bool IsUrl(string word)
+        public static bool IsUrl(string word)
         {
-            const string urlRegex =
-               @"(((ht|f)tp(s?))\:\/\/)?(www\.|[a-zA-Z]+\.)?[a-zA-Z0-9]+\.(com|edu|gov|mil|net|org|biz|info|name|museum|us|ca|uk)(\:[0-9]+)*(/($|[a-zA-Z0-9\.\,\;\?\'\\\+&%\$#\=~_\-]+))*(?=[\.\?!,;])";
+            if (!Uri.IsWellFormedUriString(word, UriKind.Absolute))
+                return false;
 
-            bool isUrl;
-            try
-            {
-                isUrl = Regex.IsMatch(word, urlRegex, RegexOptions.IgnorePatternWhitespace | RegexOptions.Multiline | RegexOptions.IgnoreCase);
-            }
-            catch (ArgumentException)
-            {
-                // issue with the regular expression
-                // TODO: not sure what overarching exhandling strategy is
-                throw;
-            }
-            return isUrl;
+            Uri uri = new Uri(word);
+            foreach (string acceptedScheme in new string[] { "http", "https", "ftp" })
+                if (uri.Scheme == acceptedScheme)
+                    return true;
+
+            return false;
         }
 
         private static string EnsureMinimalProtocol(string url)

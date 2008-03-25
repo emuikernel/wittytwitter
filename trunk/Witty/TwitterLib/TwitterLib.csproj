@@ -52,7 +52,6 @@
     <Compile Include="Tweet.cs" />
     <Compile Include="TwitterNet.cs" />
     <Compile Include="User.cs" />
-    <Compile Include="Utilities\StringHelper.cs" />
     <Compile Include="Utilities\TinyUrlHelper.cs" />
   </ItemGroup>
   <ItemGroup>

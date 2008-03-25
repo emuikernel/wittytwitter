@@ -9,17 +9,16 @@ namespace WittyUnitTests
     [TestFixture]
     public class TweetTest
     {
-        protected int count;
-
         [SetUp]
         public void Init()
         {
-            count = 10;
         }
 
         [Test]
         public void Truncate()
         {
+            int count = 10;
+
             TweetCollection tweets = new TweetCollection();
 
             for (int i = 0; i < 20; i++)

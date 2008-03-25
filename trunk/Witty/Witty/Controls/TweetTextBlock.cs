@@ -43,7 +43,7 @@ namespace Witty
                 foreach (string word in words)
                 {
                     // clickable hyperlinks
-                    if (StringHelper.IsHyperlink(word))
+                    if (TinyUrlHelper.IsUrl(word))
                     {
                         try
                         {
