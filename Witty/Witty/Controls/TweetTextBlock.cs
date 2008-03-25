@@ -1,4 +1,5 @@
 using System;
+using System.Text.RegularExpressions;
 using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Documents;
@@ -60,17 +61,21 @@ namespace Witty
                         }
                     }
                     // clickable @name
-                    // REMARK: this should be done with regex. -Alan
                     else if (word.StartsWith("@"))
                     {
-                        Hyperlink name = new Hyperlink();
-                        name.Inlines.Add(word.Remove(0, 1));
-                        name.NavigateUri = new Uri("http://twitter.com/" + word.Remove(0, 1));
-                        name.ToolTip = "Show user's profile";
-                        name.Click += new RoutedEventHandler(name_Click);
-
-                        textblock.Inlines.Add("@");
-                        textblock.Inlines.Add(name);
+                        string userName = String.Empty;
+                        Match foundUsername = Regex.Match(word, @"@(\w)+");
+                        if (foundUsername.Success)
+                        {
+                            userName = foundUsername.Value.Replace("@", "");
+                            Hyperlink name = new Hyperlink();
+                            name.Inlines.Add(word.Remove(0, 1));
+                            name.NavigateUri = new Uri("http://twitter.com/" + userName);
+                            name.ToolTip = "Show user's profile";
+                            name.Click += new RoutedEventHandler(name_Click);
+                            textblock.Inlines.Add("@");
+                            textblock.Inlines.Add(name);
+                        }
                     }
                     else
                     {
