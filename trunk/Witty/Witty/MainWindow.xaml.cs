@@ -866,7 +866,7 @@ namespace Witty
 
         private void TweetsListBox_MouseLeftButtonUp(object sender, MouseButtonEventArgs e)
         {
-            if (e.MouseDevice.DirectlyOver.GetType() == typeof(TextBlock))
+            if (e.MouseDevice.DirectlyOver != null && e.MouseDevice.DirectlyOver.GetType() == typeof(TextBlock))
             {
                 TextBlock textBlock = (TextBlock)e.MouseDevice.DirectlyOver;
 
