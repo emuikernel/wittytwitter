@@ -8,6 +8,7 @@
   xmlns:TwitterLib="clr-namespace:TwitterLib;assembly=TwitterLib" 
   xmlns:Witty="clr-namespace:Witty" 
   xmlns:controls="clr-namespace:Witty.Controls" 
+  xmlns:r="clr-namespace:Microsoft.Samples.KMoore.WPFSamples.Reveal;assembly=J832.Wpf.BagOTricksLib"
   x:Class="Witty.MainWindow" 
   x:Name="Window" 
   Title="Witty 0.1.7 Beta 1" 
@@ -17,29 +18,12 @@
 
   <Window.Resources>
     <ResourceDictionary>
-      <!-- Store storyboard animations in their own file to condense the markup -->
+      <!-- Placed storyboard animations in their own file to condense the markup -->
       <ResourceDictionary.MergedDictionaries>
         <ResourceDictionary Source="Resources\Storyboards.xaml" />
       </ResourceDictionary.MergedDictionaries>
+      
       <Witty:CharRemainingValueConverter x:Key="CharRemainingConverter" />
-      <Storyboard x:Key="ShowSearchPanel">
-        <DoubleAnimationUsingKeyFrames BeginTime="00:00:00" Storyboard.TargetName="Search" Storyboard.TargetProperty="(FrameworkElement.Height)">
-          <SplineDoubleKeyFrame KeyTime="00:00:00" Value="0"/>
-          <SplineDoubleKeyFrame KeyTime="00:00:00.2000000" Value="35"/>
-        </DoubleAnimationUsingKeyFrames>
-        <ObjectAnimationUsingKeyFrames BeginTime="00:00:00" Storyboard.TargetName="Search" Storyboard.TargetProperty="(UIElement.Visibility)">
-          <DiscreteObjectKeyFrame KeyTime="00:00:00" Value="{x:Static Visibility.Visible}"/>
-        </ObjectAnimationUsingKeyFrames>
-      </Storyboard>
-      <Storyboard x:Key="HideSearchPanel">
-        <DoubleAnimationUsingKeyFrames BeginTime="00:00:00" Storyboard.TargetName="Search" Storyboard.TargetProperty="(FrameworkElement.Height)">
-          <SplineDoubleKeyFrame KeyTime="00:00:00" Value="35"/>
-          <SplineDoubleKeyFrame KeyTime="00:00:00.2000000" Value="0"/>
-        </DoubleAnimationUsingKeyFrames>
-        <ObjectAnimationUsingKeyFrames BeginTime="00:00:00" Storyboard.TargetName="Search" Storyboard.TargetProperty="(UIElement.Visibility)">
-          <DiscreteObjectKeyFrame KeyTime="00:00:00.2000000" Value="{x:Static Visibility.Hidden}"/>
-        </ObjectAnimationUsingKeyFrames>
-      </Storyboard>
     </ResourceDictionary>
   </Window.Resources>
 
@@ -71,18 +55,20 @@
         <TextBlock Text="Witty" VerticalAlignment="Center" HorizontalAlignment="Center" FontSize="18" FontWeight="Bold" Foreground="{DynamicResource HeaderForegroundBrush}" />
         <Button Content="Refresh" Height="20" x:Name="RefreshButton" Click="RefreshButton_Click" IsEnabled="False" MinWidth="25" MinHeight="20" FontSize="9" DockPanel.Dock="Right" Width="50" ToolTip="Refresh Tweets" />
         <Button Content="Options" Height="20" x:Name="OptionsButton" Click="OptionsButton_Click" MinWidth="25" MinHeight="20" FontSize="9" DockPanel.Dock="Right" Margin="0,0,10,0" IsEnabled="False" Width="50" ToolTip="Show Options Window" />
-        <Button Content="Search" Height="20" x:Name="SearchButton" MinWidth="25" MinHeight="20" FontSize="9" IsEnabled="False" Width="50" ToolTip="Display Search Panel" DockPanel.Dock="Right" Click="SearchButton_Click" BorderThickness="0,0,10,0" Margin="0,0,10,0" />
+        <ToggleButton Content="Filter" Height="20" x:Name="FilterToggleButton" MinWidth="25" MinHeight="20" FontSize="9" IsEnabled="False" Width="50" ToolTip="Display Filter Panel" DockPanel.Dock="Right" BorderThickness="0,0,10,0" Margin="0,0,10,0" />
       </DockPanel>
     </Border>
-    <Border DockPanel.Dock="Top" x:Name="Search" Background="#FFCEE8B9" IsEnabled="False" Height="0" Visibility="Hidden">
-      <Grid>
-        <Grid.ColumnDefinitions>
-          <ColumnDefinition Width="Auto"/>
-          <ColumnDefinition Width="*"/>
-        </Grid.ColumnDefinitions>
-        <Label Content="Search" Target="{Binding ElementName=FilterTextBox, Mode=OneWay}" VerticalAlignment="Center"/>
-        <controls:FilterText x:Name="FilterTextBox" TextBox.TextChanged="FilterTextBox_TextChanged" Grid.Column="1" Margin="5,5,5,5"/>
-      </Grid>
+
+    <!-- Filter  -->
+    <Border DockPanel.Dock="Top" x:Name="Filter" Background="#FFCEE8B9" IsEnabled="False">
+  		<r:Reveal 
+  			VerticalReveal="FromTopToBottom" 
+  			IsExpanded="{Binding Path=IsChecked, ElementName=FilterToggleButton}" HorizontalAlignment="Left">
+  			<DockPanel Margin="0,0,5,5" VerticalAlignment="Stretch">
+  				<Label Content="Filter" Target="{Binding ElementName=FilterTextBox, Mode=OneWay}"/>
+  				<controls:FilterText x:Name="FilterTextBox" TextBoxBase.TextChanged="FilterTextBox_TextChanged" Width="150"/>
+  			</DockPanel>
+  		</r:Reveal>
     </Border>
 
     <!-- StatusBar-->

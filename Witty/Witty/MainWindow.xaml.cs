@@ -604,9 +604,9 @@ namespace Witty
             isLoggedIn = true;
             RefreshButton.IsEnabled = true;
             OptionsButton.IsEnabled = true;
-            SearchButton.IsEnabled = true;
+            FilterToggleButton.IsEnabled = true;
             AppSettings.LastUpdated = string.Empty;
-            Search.IsEnabled = true;
+            Filter.IsEnabled = true;
 
             App.LoggedInUser = user;
 
@@ -641,8 +641,8 @@ namespace Witty
             isExpanded = false;
             isLoggedIn = true;
             OptionsButton.IsEnabled = true;
-            SearchButton.IsEnabled = true;
-            Search.IsEnabled = true;
+            FilterToggleButton.IsEnabled = true;
+            Filter.IsEnabled = true;
         }
 
         #endregion
@@ -1005,7 +1005,7 @@ namespace Witty
                 isLoggedIn = false;
                 tweets.Clear();
                 StatusTextBlock.Text = "Login";
-                Search.IsEnabled = false;
+                Filter.IsEnabled = false;
 
                 PlayStoryboard("ShowLogin");
             }
@@ -1042,16 +1042,14 @@ namespace Witty
 
         #endregion
 
-        #region Search Filtering
+        #region Filter
 
         // Delegate for performing filter in background thread for performance improvements
         private delegate void FilterDelegate();
 
         /// <summary>
-        /// Handles the filtering and search
+        /// Handles the filtering
         /// </summary>
-        /// <param name="sender"></param>
-        /// <param name="e"></param>
         private void FilterTextBox_TextChanged(object sender, TextChangedEventArgs e)
         {
             // Start an async operation that filters the list.
@@ -1120,17 +1118,17 @@ namespace Witty
                    || (message.Sender.ScreenName.ToLower().Contains(FilterTextBox.Text.ToLower()));
         }
 
-        private void SearchButton_Click(object sender, RoutedEventArgs e)
-        {
-            if (Search.Visibility == Visibility.Hidden)
-            {
-                PlayStoryboard("ShowSearchPanel");
-            }
-            else
-            {
-                PlayStoryboard("HideSearchPanel");
-            }
-        }
+        //private void FilterToggleButton_Click(object sender, RoutedEventArgs e)
+        //{
+        //    if (Filter.Visibility == Visibility.Hidden)
+        //    {
+        //        PlayStoryboard("ShowFilterPanel");
+        //    }
+        //    else
+        //    {
+        //        PlayStoryboard("HideFilterPanel");
+        //    }
+        //}
 
         #endregion
 
