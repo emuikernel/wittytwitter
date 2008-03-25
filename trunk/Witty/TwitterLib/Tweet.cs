@@ -267,7 +267,7 @@ namespace TwitterLib
             get
             {
                 string applicationFolderAbsolutePath =
-                    Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.MyDocuments), Const.ApplicationFolderName);
+                    Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.ApplicationData), Const.ApplicationFolderName);
 
                 // Create the application directory if it doesn't already exist
                 if (!Directory.Exists(applicationFolderAbsolutePath))
