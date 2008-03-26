@@ -55,7 +55,7 @@
         <TextBlock Text="Witty" VerticalAlignment="Center" HorizontalAlignment="Center" FontSize="18" FontWeight="Bold" Foreground="{DynamicResource HeaderForegroundBrush}" />
         <Button Content="Refresh" Height="20" x:Name="RefreshButton" Click="RefreshButton_Click" IsEnabled="False" MinWidth="25" MinHeight="20" FontSize="9" DockPanel.Dock="Right" Width="50" ToolTip="Refresh Tweets" />
         <Button Content="Options" Height="20" x:Name="OptionsButton" Click="OptionsButton_Click" MinWidth="25" MinHeight="20" FontSize="9" DockPanel.Dock="Right" Margin="0,0,10,0" IsEnabled="False" Width="50" ToolTip="Show Options Window" />
-        <ToggleButton Content="Filter" Height="20" x:Name="FilterToggleButton" MinWidth="25" MinHeight="20" FontSize="9" IsEnabled="False" Width="50" ToolTip="Display Filter Panel" DockPanel.Dock="Right" BorderThickness="0,0,10,0" Margin="0,0,10,0" IsChecked="False" Visibility="Collapsed" />
+        <ToggleButton Content="Filter" Height="20" x:Name="FilterToggleButton" MinWidth="25" MinHeight="20" FontSize="9" IsEnabled="False" Width="50" ToolTip="Display Filter Panel" DockPanel.Dock="Right" BorderThickness="0,0,10,0" Margin="0,0,10,0" IsChecked="False" Unchecked="FilterToggleButton_Unchecked" />
       </DockPanel>
     </Border>
 

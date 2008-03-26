@@ -53,6 +53,7 @@
     <Compile Include="TwitterNet.cs" />
     <Compile Include="User.cs" />
     <Compile Include="Utilities\TinyUrlHelper.cs" />
+    <Compile Include="Utilities\TweetScanHelper.cs" />
   </ItemGroup>
   <ItemGroup>
     <None Include="TwitterLib.cd" />
