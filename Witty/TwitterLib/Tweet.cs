@@ -23,10 +23,12 @@ namespace TwitterLib
         private User user;
         private bool isNew;
         private int index;
+        private bool isSearchResult;
 
         #endregion
 
         #region Public Properties
+
         /// <summary>
         /// The Tweet id 
         /// </summary>
@@ -150,6 +152,18 @@ namespace TwitterLib
             }
         }
 
+        public bool IsSearchResult
+        {
+            get { return isSearchResult; }
+            set
+            {
+                if (value != isSearchResult)
+                {
+                    isSearchResult = value;
+                    OnPropertyChanged("IsSearchResult");
+                }
+            }
+        }
         #endregion
 
         #region INotifyPropertyChanged Members

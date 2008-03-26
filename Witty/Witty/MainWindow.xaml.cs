@@ -10,6 +10,7 @@ using System.Windows.Media.Animation;
 using System.Windows.Threading;
 using log4net;
 using TwitterLib;
+using TwitterLib.Utilities;
 
 namespace Witty
 {
@@ -1235,7 +1236,33 @@ namespace Witty
 
         private void TweetScanButton_Click(object sender, RoutedEventArgs e)
         {
+            TweetScanHelper ts = new TweetScanHelper();
+            TweetCollection searchResults = ts.GetSearchResults(FilterTextBox.Text);
 
+            // TODO: this should be displayed somewhere else instead of the main tweets listbox.
+            for (int i = searchResults.Count - 1; i >= 0; i--)
+            {
+                Tweet tweet = searchResults[i];
+                if (!tweets.Contains(tweet))
+                {
+                    tweets.Insert(0, tweet);
+                    tweet.Index = tweets.Count;
+                    tweet.IsNew = true;
+                    tweet.IsSearchResult = true;
+                }
+            }
+        }
+
+        private void FilterToggleButton_Unchecked(object sender, RoutedEventArgs e)
+        {
+            //TODO: how to fix this
+            //foreach (Tweet t in tweets)
+            //{
+            //    if (t.IsSearchResult)
+            //    {
+            //        tweets.Remove(t);
+            //    }
+            //}
         }
     }
 }

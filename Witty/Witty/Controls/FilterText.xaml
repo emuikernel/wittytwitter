@@ -1,4 +1,7 @@
-﻿<UserControl x:Class="Witty.Controls.FilterText" xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation" xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml">
+﻿<UserControl x:Class="Witty.Controls.FilterText" 
+  xmlns:itb="clr-namespace:Microsoft.Samples.KMoore.WPFSamples.InfoTextBox;assembly=J832.Wpf.BagOTricksLib"
+  xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation" 
+  xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml">
 
   <UserControl.Resources>
 
@@ -34,7 +37,7 @@
   <Border Style="{StaticResource BorderStyle}">
     <DockPanel Height="23">
       <Button x:Name="FilterButton" DockPanel.Dock="Right" Content="X" Click="FilterButton_Click" Width="21" Height="21" ToolTip="Clear Filter Text" />
-      <TextBox x:Name="FilterTextBox" DockPanel.Dock="Left" Style="{StaticResource TextStyle}" TextChanged="FilterTextBox_TextChanged" />
+      <itb:InfoTextBox TextBoxInfo="Type text here" x:Name="FilterTextBox" DockPanel.Dock="Left" Style="{StaticResource TextStyle}" TextChanged="FilterTextBox_TextChanged" />
     </DockPanel>
   </Border>
 
