@@ -38,6 +38,7 @@
     <Optimize>false</Optimize>
     <OutputPath>.\bin\Debug\</OutputPath>
     <DefineConstants>DEBUG;TRACE</DefineConstants>
+    <AllowUnsafeBlocks>true</AllowUnsafeBlocks>
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
     <DebugSymbols>false</DebugSymbols>
@@ -45,6 +46,7 @@
     <OutputPath>.\bin\Release\</OutputPath>
     <DefineConstants>TRACE</DefineConstants>
     <UseVSHostingProcess>false</UseVSHostingProcess>
+    <AllowUnsafeBlocks>true</AllowUnsafeBlocks>
   </PropertyGroup>
   <ItemGroup>
     <Reference Include="FluidKit, Version=1.0.0.0, Culture=neutral, processorArchitecture=MSIL" />
@@ -159,7 +161,9 @@
     </Compile>
     <Compile Include="Controls\TweetTextBlock.cs" />
     <Compile Include="Misc\SkinsManager.cs" />
+    <Compile Include="Misc\SnarlInterface.cs" />
     <Compile Include="Misc\WebProxyHelper.cs" />
+    <Compile Include="Misc\Win32.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <EmbeddedResource Include="Properties\Resources.resx">
       <Generator>ResXFileCodeGenerator</Generator>
