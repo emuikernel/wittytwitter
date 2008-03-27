@@ -38,6 +38,7 @@
     <Optimize>false</Optimize>
     <OutputPath>.\bin\Debug\</OutputPath>
     <DefineConstants>DEBUG;TRACE</DefineConstants>
+    <AllowUnsafeBlocks>false</AllowUnsafeBlocks>
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
     <DebugSymbols>false</DebugSymbols>
@@ -159,7 +160,9 @@
     </Compile>
     <Compile Include="Controls\TweetTextBlock.cs" />
     <Compile Include="Misc\SkinsManager.cs" />
+    <Compile Include="Misc\SnarlInterface.cs" />
     <Compile Include="Misc\WebProxyHelper.cs" />
+    <Compile Include="Misc\Win32.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <EmbeddedResource Include="Properties\Resources.resx">
       <Generator>ResXFileCodeGenerator</Generator>
