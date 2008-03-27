@@ -11,6 +11,7 @@ using System.Windows.Threading;
 using log4net;
 using TwitterLib;
 using TwitterLib.Utilities;
+using Snarl;
 
 namespace Witty
 {
@@ -219,6 +220,9 @@ namespace Witty
 
             int tweetAdded = 0;
 
+            //prevents huge number of notifications appearing on startup
+            bool displaySnarls = !(tweets.Count == 0);
+
             // Add the new tweets
             for (int i = newTweets.Count - 1; i >= 0; i--)
             {
@@ -227,7 +231,9 @@ namespace Witty
                 {
                     tweets.Insert(0, tweet);
                     tweet.Index = tweets.Count;
-                    tweet.IsNew = true;
+                    tweet.IsNew = true;                    
+                    if(displaySnarls)
+                        SnarlInterface.SendMessage(tweet.User.Name, tweet.Text, "", 10);
                     tweetAdded++;
                 }
             }
