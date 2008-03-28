@@ -18,6 +18,7 @@ namespace Witty
     public partial class MainWindow
     {
         private static readonly ILog logger = LogManager.GetLogger("Witty.Logging");
+        private IntPtr SnarlConfighWnd;
 
         public MainWindow()
         {
@@ -92,6 +93,15 @@ namespace Witty
                 // Create a Dispatcher to attempt login on new thread
                 NoArgDelegate loginFetcher = new NoArgDelegate(this.TryLogin);
                 loginFetcher.BeginInvoke(null, null);
+            }
+
+            //Register will Snarl if available
+            if (SnarlInterface.SnarlIsActive())
+            {
+                //We Create a Message Only window for communication
+                this.SnarlConfighWnd = Win32.CreateWindowEx(0, "Message", null, 0, 0, 0, 0, 0, new IntPtr(Win32.HWND_MESSAGE), IntPtr.Zero, IntPtr.Zero, IntPtr.Zero);
+                SnarlInterface.RegisterConfig("Witty", this.SnarlConfighWnd.ToInt32(), "");
+                //SnarlInterface.RegisterAlert("Witty", "New Tweet");
             }
         }
 
@@ -218,10 +228,7 @@ namespace Witty
 
             UpdateExistingTweets();
 
-            int tweetAdded = 0;
-
-            //prevents huge number of notifications appearing on startup
-            bool displaySnarls = !(tweets.Count == 0);
+            TweetCollection addedTweets = new TweetCollection();
 
             // Add the new tweets
             for (int i = newTweets.Count - 1; i >= 0; i--)
@@ -231,10 +238,8 @@ namespace Witty
                 {
                     tweets.Insert(0, tweet);
                     tweet.Index = tweets.Count;
-                    tweet.IsNew = true;                    
-                    if(displaySnarls)
-                        SnarlInterface.SendMessage(tweet.User.Name, tweet.Text, "", 10);
-                    tweetAdded++;
+                    tweet.IsNew = true;
+                    addedTweets.Add(tweet);
                 }
             }
 
@@ -243,14 +248,43 @@ namespace Witty
             // Remove tweets pass 100 should improve performance reasons.
             tweets.Truncate(100);
 
-            if (tweetAdded > 0 && AppSettings.PlaySounds)
+            if (addedTweets.Count > 0)
             {
+                NotifyOnNewTweets(addedTweets);
+                if( AppSettings.PlaySounds)
+                {
                 // Play tweets found sound for new tweets
                 SoundPlayer player = new SoundPlayer(Witty.Properties.Resources.alert);
                 player.Play();
+                }
             }
 
             StopStoryboard("Fetching");
+
+            
+        }
+
+        private void NotifyOnNewTweets(TweetCollection newTweets)
+        {
+            if (SnarlInterface.SnarlIsActive())
+            {
+                SnarlNotify(newTweets);
+            }
+        }
+
+        private void SnarlNotify(TweetCollection newTweets)
+        {
+            if (newTweets.Count > Double.Parse(AppSettings.MaximumIndividualAlerts))
+            {
+                SnarlInterface.SendMessage("New Tweets", string.Format("You have {0} new tweets!", newTweets.Count), "", 4);
+            }
+            else
+            {
+                foreach (Tweet tweet in newTweets)
+                {
+                    SnarlInterface.SendMessage(string.Format("New Tweet from {0}", tweet.User.ScreenName), string.Format("{0}\n\n{1}", tweet.Text, tweet.RelativeTime), "", 4);
+                }
+            }
         }
 
         private void UpdateExistingTweets()
@@ -1146,6 +1180,13 @@ namespace Witty
 
             m_notifyIcon.Dispose();
             m_notifyIcon = null;
+
+            if (SnarlInterface.SnarlIsActive() && this.SnarlConfighWnd != null)
+            {
+                SnarlInterface.RevokeConfig(this.SnarlConfighWnd.ToInt32());
+                Win32.DestroyWindow(this.SnarlConfighWnd);
+            }
+
         }
 
         void OnClosing(object sender, CancelEventArgs args)

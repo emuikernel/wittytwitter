@@ -3,14 +3,15 @@
 	xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
 	xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" mc:Ignorable="d"
 	xmlns:Witty="clr-namespace:Witty"
+  xmlns:lib="clr-namespace:Microsoft.Samples.KMoore.WPFSamples.Zap;assembly=J832.Wpf.BagOTricksLib"
+  xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
 	x:Class="Witty.Options"
 	x:Name="Window"
 	Title="Witty Options"
-	Width="500" Height="450" 
+	Width="600" Height="450" 
   KeyDown="Window_OnKeyDown" 
   WindowStartupLocation="CenterOwner"
-  xmlns:lib="clr-namespace:Microsoft.Samples.KMoore.WPFSamples.Zap;assembly=J832.Wpf.BagOTricksLib"
-  ShowInTaskbar="False" xmlns:d="http://schemas.microsoft.com/expression/blend/2008" ResizeMode="NoResize">
+  ShowInTaskbar="False" ResizeMode="NoResize">
 
   <Window.Resources>
     <Witty:RoundConverter x:Key="RoundConverter"/>
@@ -155,6 +156,14 @@
           </DockPanel>
         </StackPanel>
       </Border>
+	  
+	  <Border Tag="Notifications" >
+	  	<DockPanel Width="480" Height="240" LastChildFill="False">
+	  		<Label x:Name="_MaxIndAlerts" VerticalAlignment="Top" Width="Auto" Height="Auto" Content="Maximum Individual Notifications:"/>
+	  		<Slider x:Name="MaxIndSlider" VerticalAlignment="Top" Width="Auto" Height="Auto" LargeChange="5" Maximum="25" Minimum="1" SmallChange="1" TickFrequency="2" TickPlacement="BottomRight"/>
+	  		<TextBlock Margin="10,5,10,5" x:Name="MaxIndTextBlock" VerticalAlignment="Top" Width="20" Height="20" Text="{Binding Path=Value, Converter={StaticResource RoundConverter}, ElementName=MaxIndSlider, Mode=Default}" TextAlignment="Center" TextWrapping="Wrap"/>
+	  	</DockPanel>
+	  </Border>
 
       <Border Tag="About">
         <Grid>

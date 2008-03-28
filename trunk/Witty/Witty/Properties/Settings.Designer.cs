@@ -202,5 +202,17 @@ namespace Witty.Properties {
                 this["ProxyPassword"] = value;
             }
         }
+        
+        [global::System.Configuration.UserScopedSettingAttribute()]
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+        [global::System.Configuration.DefaultSettingValueAttribute("5")]
+        public string MaximumIndividualAlerts {
+            get {
+                return ((string)(this["MaximumIndividualAlerts"]));
+            }
+            set {
+                this["MaximumIndividualAlerts"] = value;
+            }
+        }
     }
 }
