@@ -55,6 +55,16 @@ namespace Witty
             ProxyPasswordTextBox.Password = AppSettings.ProxyPassword;
 
             ToggleProxyFieldsEnabled(AppSettings.UseProxy);
+
+            if (!string.IsNullOrEmpty(AppSettings.MaximumIndividualAlerts))
+            {
+                MaxIndSlider.Value = Double.Parse(AppSettings.MaximumIndividualAlerts);
+            }
+
+            
+
+            
+            
         }
 
         #region PlaySounds
@@ -198,6 +208,8 @@ namespace Witty
                 AppSettings.ProxyPort = int.Parse(ProxyPortTextBox.Text);
                 AppSettings.ProxyUsername = ProxyUsernameTextBox.Text;
                 AppSettings.ProxyPassword = ProxyPasswordTextBox.Password;
+
+                AppSettings.MaximumIndividualAlerts = MaxIndTextBlock.Text;
 
                 AppSettings.Save();
 
