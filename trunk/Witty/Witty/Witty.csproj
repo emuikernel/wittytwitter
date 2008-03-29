@@ -17,7 +17,7 @@
     <UpgradeBackupLocation>
     </UpgradeBackupLocation>
     <OldToolsVersion>2.0</OldToolsVersion>
-    <SignManifests>true</SignManifests>
+    <SignManifests>false</SignManifests>
     <ManifestCertificateThumbprint>E05F24771154009EE3570775B54E71663F186186</ManifestCertificateThumbprint>
     <ManifestKeyFile>Witty_TemporaryKey.pfx</ManifestKeyFile>
     <TargetZone>LocalIntranet</TargetZone>
