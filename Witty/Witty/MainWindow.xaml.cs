@@ -21,7 +21,7 @@ namespace Witty
 {
     public partial class MainWindow
     {
-        private static readonly ILog logger = LogManager.GetLogger("Witty.Logging");        
+
         private IntPtr SnarlConfighWnd;
 
         public MainWindow()
@@ -31,12 +31,15 @@ namespace Witty
 #if DEBUG
             Title = Title + " Debug";
 #endif
-
+            #region Minimize on closing setup
+            // used to override closings and minimize instead
             this.Closing += new CancelEventHandler(MainWindow_Closing);
+            #endregion
+
             #region Minimize to tray setup
 
             _notifyIcon = new System.Windows.Forms.NotifyIcon();
-            _notifyIcon.BalloonTipText = "Richt-click for more options";
+            _notifyIcon.BalloonTipText = "Right-click for more options";
             _notifyIcon.BalloonTipTitle = "Witty";
             _notifyIcon.Text = "Witty - The WPF Twitter Client";
             _notifyIcon.Icon = Witty.Properties.Resources.AppIcon;
@@ -108,7 +111,7 @@ namespace Witty
                 //We Create a Message Only window for communication
                 this.SnarlConfighWnd = Win32.CreateWindowEx(0, "Message", null, 0, 0, 0, 0, 0, new IntPtr(Win32.HWND_MESSAGE), IntPtr.Zero, IntPtr.Zero, IntPtr.Zero);
                 SnarlInterface.RegisterConfig("Witty", this.SnarlConfighWnd.ToInt32(), "");
-                //SnarlInterface.RegisterAlert("Witty", "New Tweet");
+                SnarlInterface.RegisterAlert("Witty", "New Tweet");
             }
         }
 
@@ -244,7 +247,7 @@ namespace Witty
             }
             catch (WebException ex)
             {
-                logger.Debug(String.Format("There was a problem fetching new tweets from Twitter.com: {0}", ex.ToString()));
+                App.Logger.Debug(String.Format("There was a problem fetching new tweets from Twitter.com: {0}", ex.ToString()));
             }
         }
 
@@ -397,7 +400,7 @@ namespace Witty
             catch (WebException ex)
             {
                 UpdateTextBlock.Text = "Update failed.";
-                logger.Debug(String.Format("There was a problem fetching new tweets from Twitter.com: {0}", ex.ToString()));
+                App.Logger.Debug(String.Format("There was a problem fetching new tweets from Twitter.com: {0}", ex.ToString()));
             }
         }
 
@@ -414,7 +417,7 @@ namespace Witty
             }
             else
             {
-                logger.Error("There was a problem posting your tweet to Twitter.com.");
+                App.Logger.Error("There was a problem posting your tweet to Twitter.com.");
                 MessageBox.Show("There was a problem posting your tweet to Twitter.com.");
             }
         }
@@ -470,7 +473,7 @@ namespace Witty
             }
             catch (WebException ex)
             {
-                logger.Debug(String.Format("There was a problem fetching your replies from Twitter.com. ", ex.Message));
+                App.Logger.Debug(String.Format("There was a problem fetching your replies from Twitter.com. ", ex.Message));
             }
         }
 
@@ -527,7 +530,7 @@ namespace Witty
             }
             catch (WebException ex)
             {
-                logger.Debug(String.Format("There was a problem fetching your direct messages from Twitter.com: {0}", ex.ToString()));
+                App.Logger.Debug(String.Format("There was a problem fetching your direct messages from Twitter.com: {0}", ex.ToString()));
             }
         }
 
@@ -583,7 +586,7 @@ namespace Witty
             catch (WebException ex)
             {
                 UpdateTextBlock.Text = "Message failed.";
-                logger.Debug(String.Format("There was a problem sending your message: {0}", ex.ToString()));
+                App.Logger.Debug(String.Format("There was a problem sending your message: {0}", ex.ToString()));
             }
         }
 
@@ -654,7 +657,7 @@ namespace Witty
             }
             catch (WebException ex)
             {
-                logger.Debug(String.Format("There was a problem fetching the user's timeline from Twitter.com: {0}", ex.ToString()));
+                App.Logger.Debug(String.Format("There was a problem fetching the user's timeline from Twitter.com: {0}", ex.ToString()));
             }
         }
 
@@ -698,11 +701,11 @@ namespace Witty
             }
             catch (WebException ex)
             {
-                logger.Debug(String.Format("There was a problem logging in to Twitter: {0}", ex.ToString()));
+                App.Logger.Debug(String.Format("There was a problem logging in to Twitter: {0}", ex.ToString()));
             }
             catch (ProxyAuthenticationRequiredException ex)
             {
-                logger.Error("Incorrect proxy configuration.");
+                App.Logger.Error("Incorrect proxy configuration.");
                 MessageBox.Show("Proxy server is configured incorrectly.  Please correct the settings on the Options menu.");
                 LayoutRoot.Dispatcher.BeginInvoke(DispatcherPriority.Normal, new NoArgDelegate(UpdateLoginFailedInterface));           
             }
@@ -1054,7 +1057,7 @@ namespace Witty
                 }
                 catch (Win32Exception ex)
                 {
-                    logger.Debug(String.Format("Exception: {0}", ex.ToString()));
+                    App.Logger.Debug(String.Format("Exception: {0}", ex.ToString()));
                 }
             }
         }
@@ -1083,7 +1086,7 @@ namespace Witty
                 }
                 catch (Win32Exception ex)
                 {
-                    logger.Debug(String.Format("Exception: {0}", ex.ToString()));
+                    App.Logger.Debug(String.Format("Exception: {0}", ex.ToString()));
                 }
             }
         }
@@ -1108,7 +1111,7 @@ namespace Witty
             }
             catch (Win32Exception ex)
             {
-                logger.Debug(String.Format("Exception: {0}", ex.ToString()));
+                App.Logger.Debug(String.Format("Exception: {0}", ex.ToString()));
             }
         }
 
@@ -1121,7 +1124,7 @@ namespace Witty
             }
             catch (Win32Exception ex)
             {
-                logger.Debug(String.Format("Exception: {0}", ex.ToString()));
+                App.Logger.Debug(String.Format("Exception: {0}", ex.ToString()));
             }
         }
 
@@ -1192,13 +1195,13 @@ namespace Witty
 
         private void ContextMenuFollow_Click(object sender, RoutedEventArgs e)
         {
-            logger.Debug("Follow not implemented.");
+            App.Logger.Debug("Follow not implemented.");
             throw new NotImplementedException();
         }
 
         private void ContextMenuDelete_Click(object sender, RoutedEventArgs e)
         {
-            logger.Debug("Delete not implemented.");
+            App.Logger.Debug("Delete not implemented.");
             throw new NotImplementedException();
         }
 

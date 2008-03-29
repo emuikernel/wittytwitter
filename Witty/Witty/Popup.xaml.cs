@@ -12,6 +12,7 @@ using System.Windows.Shapes;
 
 using System.Windows.Threading;
 using System.Windows.Media.Animation;
+using log4net;
 
 namespace Witty
 {
@@ -60,10 +61,16 @@ namespace Witty
 
         private void Window_MouseMove(object sender, MouseEventArgs e)
         {
-
-            ts = (TimeSpan)sbFadeOut.GetCurrentTime(this);
-            sbFadeOut.Stop(this);
-            this.Opacity = 1;
+            try
+            {
+                ts = (TimeSpan)sbFadeOut.GetCurrentTime(this);
+                sbFadeOut.Stop(this);
+                this.Opacity = 1;
+            }
+            catch (Exception ex)
+            {
+                App.Logger.Error("Popup SNARL Error", ex);
+            }
         }
 
         private void Grid_MouseLeave(object sender, MouseEventArgs e)

@@ -15,7 +15,7 @@ namespace Witty
 
     public partial class App : System.Windows.Application
     {
-        private static readonly ILog logger = LogManager.GetLogger("Witty.Logging");
+        public static readonly ILog Logger = LogManager.GetLogger("Witty.Logging");
 
         // Global variable for the user
         public static User LoggedInUser = null;
@@ -24,7 +24,7 @@ namespace Witty
         {
             DOMConfigurator.Configure();
 
-            logger.Info("Witty is starting.");
+            Logger.Info("Witty is starting.");
 
             Properties.Settings appSettings = Witty.Properties.Settings.Default;
             if (appSettings.UpgradeSettings)
@@ -43,7 +43,7 @@ namespace Witty
                 }
                 catch
                 {
-                    logger.Error("Selected skin not found");
+                    Logger.Error("Selected skin not found");
                     // REVIEW: Should witty do something smart here?
                 }
             }
