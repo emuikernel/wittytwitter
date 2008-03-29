@@ -9,7 +9,7 @@
     <WarningLevel>4</WarningLevel>
     <OutputType>winexe</OutputType>
     <MinFrameworkVersionRequired>3.0</MinFrameworkVersionRequired>
-    <IsWebBootstrapper>false</IsWebBootstrapper>
+    <IsWebBootstrapper>true</IsWebBootstrapper>
     <ApplicationIcon>Resources\AppIcon.ico</ApplicationIcon>
     <TargetFrameworkVersion>v3.0</TargetFrameworkVersion>
     <FileUpgradeFlags>
@@ -17,20 +17,30 @@
     <UpgradeBackupLocation>
     </UpgradeBackupLocation>
     <OldToolsVersion>2.0</OldToolsVersion>
-    <PublishUrl>Publish\</PublishUrl>
+    <SignManifests>true</SignManifests>
+    <ManifestCertificateThumbprint>E05F24771154009EE3570775B54E71663F186186</ManifestCertificateThumbprint>
+    <ManifestKeyFile>Witty_TemporaryKey.pfx</ManifestKeyFile>
+    <TargetZone>LocalIntranet</TargetZone>
+    <GenerateManifests>true</GenerateManifests>
+    <ApplicationManifest>Properties\app.manifest</ApplicationManifest>
+    <PublishUrl>c:\inetpub\wwwroot\Witty\</PublishUrl>
     <Install>true</Install>
     <InstallFrom>Web</InstallFrom>
     <UpdateEnabled>true</UpdateEnabled>
-    <UpdateMode>Foreground</UpdateMode>
-    <UpdateInterval>7</UpdateInterval>
-    <UpdateIntervalUnits>Days</UpdateIntervalUnits>
+    <UpdateMode>Background</UpdateMode>
+    <UpdateInterval>1</UpdateInterval>
+    <UpdateIntervalUnits>Hours</UpdateIntervalUnits>
     <UpdatePeriodically>false</UpdatePeriodically>
     <UpdateRequired>false</UpdateRequired>
-    <MapFileExtensions>false</MapFileExtensions>
-    <ApplicationRevision>0</ApplicationRevision>
-    <ApplicationVersion>1.0.0.%2a</ApplicationVersion>
+    <MapFileExtensions>true</MapFileExtensions>
+    <InstallUrl>http://localhost/witty/</InstallUrl>
+    <SupportUrl>http://code.google.com/p/wittytwitter/</SupportUrl>
+    <ProductName>Witty</ProductName>
+    <PublisherName>Witty Twitter</PublisherName>
+    <ApplicationRevision>5</ApplicationRevision>
+    <ApplicationVersion>0.1.7.5</ApplicationVersion>
     <UseApplicationTrust>false</UseApplicationTrust>
-    <BootstrapperEnabled>true</BootstrapperEnabled>
+    <BootstrapperEnabled>false</BootstrapperEnabled>
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
     <DebugSymbols>true</DebugSymbols>
@@ -59,6 +69,7 @@
     <Reference Include="PresentationFramework.Aero" />
     <Reference Include="System" />
     <Reference Include="System.Data" />
+    <Reference Include="System.Deployment" />
     <Reference Include="System.Drawing" />
     <Reference Include="System.Security" />
     <Reference Include="System.Windows.Forms" />
@@ -81,6 +92,10 @@
     <Reference Include="System.ServiceModel" />
     <Reference Include="System.Runtime.Serialization" />
     <Reference Include="System.IdentityModel" />
+    <Page Include="Controls\Options\ClickOnceOptions.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
     <Page Include="Controls\FilterText.xaml">
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
@@ -159,6 +174,11 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="BagOfTricks\Code.cs" />
+    <Compile Include="Controls\Options\ClickOnceOptions.xaml.cs">
+      <DependentUpon>ClickOnceOptions.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="ClickOnce\Deployment.cs" />
+    <Compile Include="ClickOnce\Utils.cs" />
     <Compile Include="Controls\FilterText.xaml.cs">
       <DependentUpon>FilterText.xaml</DependentUpon>
     </Compile>
@@ -187,6 +207,7 @@
       <DependentUpon>Settings.settings</DependentUpon>
     </Compile>
     <Compile Include="Misc\SingleInstanceManager.cs" />
+    <Compile Include="Settings.cs" />
     <Compile Include="StylesTest\ButtonStyles.xaml.cs">
       <SubType>Code</SubType>
       <DependentUpon>ButtonStyles.xaml</DependentUpon>
@@ -194,10 +215,12 @@
     <Compile Include="Misc\ValueConverters.cs" />
     <Compile Include="Misc\WindowSettings.cs" />
     <None Include="app.config" />
+    <None Include="Properties\app.manifest" />
     <None Include="Properties\Settings.settings">
       <Generator>SettingsSingleFileGenerator</Generator>
       <LastGenOutput>Settings.Designer.cs</LastGenOutput>
     </None>
+    <None Include="Witty_TemporaryKey.pfx" />
     <AppDesigner Include="Properties\" />
   </ItemGroup>
   <ItemGroup>

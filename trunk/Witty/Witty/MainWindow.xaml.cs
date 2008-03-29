@@ -10,6 +10,9 @@ using System.Windows.Media.Animation;
 using System.Windows.Threading;
 using log4net;
 using TwitterLib;
+using Witty.ClickOnce;
+using System.Deployment.Application;
+using System.Threading;
 using TwitterLib.Utilities;
 using Snarl;
 using System.Collections.Generic;
@@ -96,6 +99,8 @@ namespace Witty
                 loginFetcher.BeginInvoke(null, null);
             }
 
+            InitializeClickOnceTimer();
+
             //Register will Snarl if available
             if (SnarlInterface.SnarlIsActive())
             {
@@ -177,6 +182,9 @@ namespace Witty
         }
 
         private string displayUser;
+
+        private Deployment _clickOnce;
+        private System.Windows.Threading.DispatcherTimer _clickOnceUpdateTimer;
 
         private int popupCount = 0;
 
@@ -730,6 +738,54 @@ namespace Witty
         #endregion
 
         #region Misc Methods and Event Handlers
+        private void InitializeClickOnceTimer()
+        {
+            if (ApplicationDeployment.IsNetworkDeployed)
+            {
+                // Initialize clickonce deployment
+                _clickOnce = new Deployment(StatusTextBlock); 
+                _clickOnce.UpdateStartedEvent += new Deployment.UpdateStartedDelegate(clickOnce_UpdateStartedEvent);
+                _clickOnce.UpdateCompletedEvent += new Deployment.UpdateCompletedDelegate(clickOnce_UpdateCompletedEvent);
+
+                // initialize timer for click once updates
+                _clickOnceUpdateTimer = new DispatcherTimer();
+                _clickOnceUpdateTimer.Interval = new TimeSpan(0, 0, AppSettings.ClickOnceUpdateInterval);
+                _clickOnceUpdateTimer.IsEnabled = true;
+                _clickOnceUpdateTimer.Start();
+                _clickOnceUpdateTimer.Tick += new EventHandler(_clickOnceUpdateTimer_Tick);
+                
+                // update window with clickonce version number
+                this.Title = AppSettings.ApplicationName + " " + ApplicationDeployment.CurrentDeployment.CurrentVersion.ToString();
+            }
+        }
+
+        void _clickOnceUpdateTimer_Tick(object sender, EventArgs e)
+        {
+            StatusTextBlock.Text = "Starting update...";
+            _clickOnce.UpdateApplication();
+        }
+
+        void clickOnce_UpdateCompletedEvent(bool restartApplication)
+        {
+            // restart the timeer
+            _clickOnceUpdateTimer.Start();
+            
+            if (restartApplication)
+            {
+                System.Windows.Forms.Application.Restart();
+                Application.Current.Shutdown();
+            }
+            else
+            {
+                StatusTextBlock.Text = "Last updated: " + AppSettings.LastUpdated;
+            }
+        }
+
+        void clickOnce_UpdateStartedEvent()
+        {
+            StatusTextBlock.Text = "Update started...";
+            _clickOnceUpdateTimer.Stop();
+        }
 
         /// <summary>
         /// Checks for keyboard shortcuts
