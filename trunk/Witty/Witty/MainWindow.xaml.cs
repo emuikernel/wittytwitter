@@ -68,7 +68,7 @@ namespace Witty
             // Enforce single instance for release mode
 #if !DEBUG
             Application.Current.Exit += new ExitEventHandler(Current_Exit);
-            m_Event = new SingleInstanceManager(this, ShowApplication);
+            _instanceManager = new SingleInstanceManager(this, ShowApplication);
 #endif
             #endregion
 
@@ -1417,6 +1417,7 @@ namespace Witty
         #endregion
 
         #region Single Instance
+        SingleInstanceManager _instanceManager;
 
         public void ShowApplication()
         {
