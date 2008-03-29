@@ -1373,7 +1373,10 @@ namespace Witty
                     hideTimer.Start();
                 }
                 else
+                {
                     _storedWindowState = WindowState;
+                    this.trayed = false;
+                }
             }
         }
 
