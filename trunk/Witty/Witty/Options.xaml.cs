@@ -44,6 +44,7 @@ namespace Witty
 
             PlaySounds = AppSettings.PlaySounds;
             MinimizeToTray = AppSettings.MinimizeToTray;
+            MinimizeOnClose = AppSettings.MinimizeOnClose;
             PersistLogin = AppSettings.PersistLogin;
 
             #endregion
@@ -102,6 +103,28 @@ namespace Witty
         private static void OnMinimizeToTrayChanged(DependencyObject obj, DependencyPropertyChangedEventArgs args)
         {
             Properties.Settings.Default.MinimizeToTray = (bool)args.NewValue;
+            Properties.Settings.Default.Save();
+        }
+
+        public bool MinimizeOnClose
+        {
+            get
+            {
+                return (bool)GetValue(MinimizeOnCloseProperty); 
+            }
+            set
+            {
+                SetValue(MinimizeOnCloseProperty, value);
+            }
+        }
+
+        public static readonly DependencyProperty MinimizeOnCloseProperty =
+        DependencyProperty.Register("MinimizeOnClose", typeof(bool), typeof(Options),
+        new FrameworkPropertyMetadata(false, new PropertyChangedCallback(OnMinimizeOnCloseChanged)));
+
+        private static void OnMinimizeOnCloseChanged(DependencyObject obj, DependencyPropertyChangedEventArgs args)
+        {
+            Properties.Settings.Default.MinimizeOnClose = (bool)args.NewValue;
             Properties.Settings.Default.Save();
         }
 
