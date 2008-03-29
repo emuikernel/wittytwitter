@@ -32,14 +32,15 @@ namespace Witty
             Title = Title + " Debug";
 #endif
 
+            this.Closing += new CancelEventHandler(MainWindow_Closing);
             #region Minimize to tray setup
 
-            m_notifyIcon = new System.Windows.Forms.NotifyIcon();
-            m_notifyIcon.BalloonTipText = "Richt-click for more options";
-            m_notifyIcon.BalloonTipTitle = "Witty";
-            m_notifyIcon.Text = "Witty - The WPF Twitter Client";
-            m_notifyIcon.Icon = Witty.Properties.Resources.AppIcon;
-            m_notifyIcon.Click += new EventHandler(m_notifyIcon_Click);
+            _notifyIcon = new System.Windows.Forms.NotifyIcon();
+            _notifyIcon.BalloonTipText = "Richt-click for more options";
+            _notifyIcon.BalloonTipTitle = "Witty";
+            _notifyIcon.Text = "Witty - The WPF Twitter Client";
+            _notifyIcon.Icon = Witty.Properties.Resources.AppIcon;
+            _notifyIcon.Click += new EventHandler(m_notifyIcon_Click);
 
             System.Windows.Forms.ContextMenu notifyMenu = new System.Windows.Forms.ContextMenu();
             System.Windows.Forms.MenuItem openMenuItem = new System.Windows.Forms.MenuItem();
@@ -53,7 +54,7 @@ namespace Witty
             exitMenuItem.Text = "Exit";
             exitMenuItem.Click += new EventHandler(exitMenuItem_Click);
 
-            m_notifyIcon.ContextMenu = notifyMenu;
+            _notifyIcon.ContextMenu = notifyMenu;
             this.Closed += new EventHandler(OnClosed);
             this.StateChanged += new EventHandler(OnStateChanged);
             this.IsVisibleChanged += new DependencyPropertyChangedEventHandler(OnIsVisibleChanged);
@@ -109,6 +110,24 @@ namespace Witty
                 SnarlInterface.RegisterConfig("Witty", this.SnarlConfighWnd.ToInt32(), "");
                 //SnarlInterface.RegisterAlert("Witty", "New Tweet");
             }
+        }
+
+        void MainWindow_Closing(object sender, CancelEventArgs e)
+        {
+            // If the user selected to minimize on close and the window state is normal
+            // just minimize the app
+            if (AppSettings.MinimizeOnClose && this.WindowState == WindowState.Normal)
+            {
+                e.Cancel = true;
+                this.WindowState = WindowState.Minimized;
+                if (_notifyIcon != null)
+                {
+                    _notifyIcon.ShowBalloonTip(2000);
+                }
+
+                _storedWindowState = WindowState.Minimized;
+            }
+
         }
 
         #region Fields and Properties
@@ -1204,7 +1223,7 @@ namespace Witty
             if (this.WindowState == WindowState.Minimized)
             {
                 Show();
-                WindowState = m_storedWindowState;
+                WindowState = _storedWindowState;
             }            
             createReply(screenName);
         }
@@ -1214,7 +1233,7 @@ namespace Witty
             if (this.WindowState == WindowState.Minimized)
             {
                 Show();
-                WindowState = m_storedWindowState;
+                WindowState = _storedWindowState;
             }
             createDirectMessage(screenName);
         }
@@ -1224,7 +1243,7 @@ namespace Witty
             if (this.WindowState == WindowState.Minimized)
             {
                 Show();
-                WindowState = m_storedWindowState;
+                WindowState = _storedWindowState;
             }
         }
 
@@ -1312,7 +1331,7 @@ namespace Witty
 
         #region Minimize to Tray
 
-        private System.Windows.Forms.NotifyIcon m_notifyIcon;
+        private System.Windows.Forms.NotifyIcon _notifyIcon;
 
         void OnClosed(object sender, EventArgs e)
         {
@@ -1322,9 +1341,9 @@ namespace Witty
                 AppSettings.Password = string.Empty;
                 AppSettings.Save();
             }
-
-            m_notifyIcon.Dispose();
-            m_notifyIcon = null;
+            
+            _notifyIcon.Dispose();
+            _notifyIcon = null;
 
             if (SnarlInterface.SnarlIsActive() && this.SnarlConfighWnd != null)
             {
@@ -1334,20 +1353,7 @@ namespace Witty
 
         }
 
-        void OnClosing(object sender, CancelEventArgs args)
-        {
-            args.Cancel = true;
-
-            if (WindowState == WindowState.Normal)
-            {
-                if (m_notifyIcon != null)
-                    m_notifyIcon.ShowBalloonTip(2000);
-            }
-            else
-                m_storedWindowState = WindowState;
-        }
-
-        private WindowState m_storedWindowState = WindowState.Normal;
+        private WindowState _storedWindowState = WindowState.Normal;
 
         DispatcherTimer hideTimer = new DispatcherTimer();
 
@@ -1362,7 +1368,7 @@ namespace Witty
                     hideTimer.Start();
                 }
                 else
-                    m_storedWindowState = WindowState;
+                    _storedWindowState = WindowState;
             }
         }
 
@@ -1380,7 +1386,7 @@ namespace Witty
         void m_notifyIcon_Click(object sender, EventArgs e)
         {
             Show();
-            WindowState = m_storedWindowState;
+            WindowState = _storedWindowState;
         }
 
         void CheckTrayIcon()
@@ -1390,14 +1396,14 @@ namespace Witty
 
         void ShowTrayIcon(bool show)
         {
-            if (m_notifyIcon != null)
-                m_notifyIcon.Visible = show;
+            if (_notifyIcon != null)
+                _notifyIcon.Visible = show;
         }
 
         void openMenuItem_Click(object sender, EventArgs e)
         {
             Show();
-            WindowState = m_storedWindowState;
+            WindowState = _storedWindowState;
         }
 
         void exitMenuItem_Click(object sender, EventArgs e)
@@ -1408,8 +1414,6 @@ namespace Witty
         #endregion
 
         #region Single Instance
-
-        SingleInstanceManager m_Event;
 
         public void ShowApplication()
         {
