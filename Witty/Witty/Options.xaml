@@ -91,7 +91,7 @@
         <StackPanel>
           <CheckBox Content="Always on top" x:Name="AlwaysOnTopCheckBox" Click="AlwaysOnTopCheckBox_Click" />
             <CheckBox Content="Minimize to the System Tray" x:Name="MinimizeToTrayCheckBox" IsChecked="{Binding Path=MinimizeToTray, ElementName=Window, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" Margin="0,15,0,0"/>
-            <CheckBox x:Name="MinimizeOnCloseCheckBox" Margin="0,15,0,0" IsChecked="{Binding Path=MinimizeOnClose, ElementName=Window, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}">Minimize if close button pressed.</CheckBox>
+            <CheckBox x:Name="MinimizeOnCloseCheckBox" Margin="0,15,0,0" IsChecked="{Binding Path=MinimizeOnClose, ElementName=Window, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}">Minimize to task tray if close button is pressed</CheckBox>
             <CheckBox Content="Play Sounds on new Tweets" x:Name="PlaySoundsCheckBox" IsChecked="{Binding Path=PlaySounds, ElementName=Window, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" Margin="0,15,0,0" />
           <Label Content="Minutes between updates" d:LayoutOverrides="GridBox" Margin="0,15,0,0"/>
           <StackPanel Orientation="Horizontal" Margin="5,0,0,0">
