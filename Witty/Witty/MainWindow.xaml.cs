@@ -23,6 +23,7 @@ namespace Witty
     {
 
         private IntPtr SnarlConfighWnd;
+        private bool trayed = false;
 
         public MainWindow()
         {
@@ -119,16 +120,17 @@ namespace Witty
         {
             // If the user selected to minimize on close and the window state is normal
             // just minimize the app
-            if (AppSettings.MinimizeOnClose && this.WindowState == WindowState.Normal)
+            if (AppSettings.MinimizeOnClose && this.trayed == false)
             {
                 e.Cancel = true;
+                _storedWindowState = this.WindowState;
                 this.WindowState = WindowState.Minimized;
                 if (_notifyIcon != null)
                 {
                     _notifyIcon.ShowBalloonTip(2000);
                 }
+                this.trayed = true;
 
-                _storedWindowState = WindowState.Minimized;
             }
 
         }
