@@ -3,6 +3,7 @@
 	xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
 	xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" mc:Ignorable="d"
 	xmlns:Witty="clr-namespace:Witty"
+    xmlns:ClickOnce="clr-namespace:Witty.Controls.Options"
   xmlns:lib="clr-namespace:Microsoft.Samples.KMoore.WPFSamples.Zap;assembly=J832.Wpf.BagOTricksLib"
   xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
 	x:Class="Witty.Options"
@@ -32,7 +33,7 @@
       <lib:ZapScroller.Resources>
 
         <Style TargetType="{x:Type Button}" BasedOn="{StaticResource {x:Type Button}}" x:Key="pageButtonStyle">
-          <Setter Property="Width" Value="100" />
+          <Setter Property="Width" Value="90" />
           <Setter Property="Margin" Value="5" />
           <Setter Property="ContentTemplate">
             <Setter.Value>
@@ -165,7 +166,14 @@
 	  	</DockPanel>
 	  </Border>
 
-      <Border Tag="About">
+        <Border Padding="15,15,15,15" Tag="Updates">
+            
+            <StackPanel>
+                    <ClickOnce:ClickOnceOptions x:Name="ucClickOnce"></ClickOnce:ClickOnceOptions>
+                </StackPanel>
+        </Border>
+
+            <Border Tag="About">
         <Grid>
           <FlowDocumentReader>
             <FlowDocument>
