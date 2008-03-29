@@ -1,0 +1,51 @@
+<Window
+    xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+    x:Class="Witty.Popup"
+    Title="Popup" Height="125" Width="300" AllowsTransparency="True" WindowStyle="None" ShowInTaskbar="False" Background="{x:Null}" WindowStartupLocation="Manual">
+    <Window.Resources>
+        <Storyboard x:Key="sbFadeOut">
+            <DoubleAnimationUsingKeyFrames BeginTime="00:00:00" Storyboard.TargetName="{x:Null}" Storyboard.TargetProperty="(UIElement.Opacity)">
+                <SplineDoubleKeyFrame KeyTime="00:00:00" Value="1"/>
+                <SplineDoubleKeyFrame KeyTime="00:00:10" Value="1"/>
+                <SplineDoubleKeyFrame KeyTime="00:00:11" Value="0"/>
+            </DoubleAnimationUsingKeyFrames>
+        </Storyboard>
+    </Window.Resources>
+    <Grid  MouseEnter="Window_MouseMove" MouseLeave="Grid_MouseLeave">
+        <Grid.ContextMenu>
+            <ContextMenu>
+                <MenuItem Header="Reply" Click="ContextMenuReply_Click"></MenuItem>
+                <MenuItem Header="Send Direct Message" Click="ContextMenuDirectMessageClick_Click"></MenuItem>
+            </ContextMenu>
+        </Grid.ContextMenu>
+        <Border CornerRadius="5,5,5,5">
+            <Border.Background>
+                <LinearGradientBrush StartPoint="0,0" EndPoint="0,1">
+                    <GradientBrush.GradientStops>
+                        <GradientStopCollection>
+                            <GradientStop Color="#FFF" Offset="0.0" />
+                            <GradientStop Color="#CCC" Offset="1.0" />
+                        </GradientStopCollection>
+                    </GradientBrush.GradientStops>
+                </LinearGradientBrush>
+            </Border.Background>
+        </Border>
+        <Grid>
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition Width="50" />
+                <ColumnDefinition Width="*" />
+            </Grid.ColumnDefinitions>
+            <Grid.RowDefinitions>
+                <RowDefinition Height="30"></RowDefinition>
+                <RowDefinition Height="*"></RowDefinition>
+            </Grid.RowDefinitions>
+            <Image x:Name="avatarImage" Grid.Column="0" Grid.RowSpan="2" Margin="5" Height="40" Width="40" VerticalAlignment="Top" HorizontalAlignment="Left"  Source="http://s3.amazonaws.com/twitter_production/profile_images/51583290/antitrumpet_bigger.png">
+            </Image>
+            <TextBlock x:Name="userName" Grid.Row="0" Grid.Column="1" Width="150" Margin="5" Height="25" HorizontalAlignment="Left" VerticalAlignment="Top" FontWeight="Bold" FontSize="16" Text="testuser">            
+            </TextBlock>
+            <TextBlock x:Name="tweetText" Grid.Row="1" Grid.Column="1" TextWrapping="Wrap" TextAlignment="Left" Margin="5,5,3,10" Text="Lorem ipsum dolor sit amet, consectetuer adipiscing elit. Vivamus elementum dui quis ipsum. Vivamus lorem. Aenean vehicula, tortor sit amet">            
+        </TextBlock>
+        </Grid>
+    </Grid>
+</Window>

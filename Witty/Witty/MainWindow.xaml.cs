@@ -12,12 +12,13 @@ using log4net;
 using TwitterLib;
 using TwitterLib.Utilities;
 using Snarl;
+using System.Collections.Generic;
 
 namespace Witty
 {
     public partial class MainWindow
     {
-        private static readonly ILog logger = LogManager.GetLogger("Witty.Logging");
+        private static readonly ILog logger = LogManager.GetLogger("Witty.Logging");        
         private IntPtr SnarlConfighWnd;
 
         public MainWindow()
@@ -177,6 +178,8 @@ namespace Witty
 
         private string displayUser;
 
+        private int popupCount = 0;
+
         #endregion
 
         #region Retrieve new tweets
@@ -230,6 +233,9 @@ namespace Witty
 
             TweetCollection addedTweets = new TweetCollection();
 
+            //prevents huge number of notifications appearing on startup
+            bool displayPopups = !(tweets.Count == 0);
+
             // Add the new tweets
             for (int i = newTweets.Count - 1; i >= 0; i--)
             {
@@ -269,6 +275,37 @@ namespace Witty
             if (SnarlInterface.SnarlIsActive())
             {
                 SnarlNotify(newTweets);
+            }
+            else
+            {
+                PopUpNotify(newTweets);
+            }
+        }
+
+        private void PopUpNotify(TweetCollection newTweets)
+        {
+            if (newTweets.Count > Double.Parse(AppSettings.MaximumIndividualAlerts))
+            {
+                Popup p = new Popup(this, 0, "New Tweets", string.Format("You have {0} new tweets!", newTweets.Count), twitter.CurrentlyLoggedInUser.ImageUrl);
+                p.FadeOutFinished += new FadeOutFinishedDelegate(RemovePopup);
+                p.ReplyClicked += new PopupReplyClickedDelegate(PopupReplyClicked);
+                p.DirectMessageClicked += new PopupDirectMessageClickedDelegate(PopupDirectMessageClicked);
+                p.MouseLeftButtonUp += new MouseButtonEventHandler(PopupClicked);
+                p.Show();
+            }
+            else
+            {
+                int index = 0;
+                foreach (Tweet tweet in newTweets)
+                {
+                    Popup p = new Popup(this, index++, tweet.User.Name, tweet.Text, tweet.User.ImageUrl);
+                    p.FadeOutFinished += new FadeOutFinishedDelegate(RemovePopup);
+                    p.ReplyClicked += new PopupReplyClickedDelegate(PopupReplyClicked);
+                    p.DirectMessageClicked += new PopupDirectMessageClickedDelegate(PopupDirectMessageClicked);
+                    p.MouseLeftButtonUp += new MouseButtonEventHandler(PopupClicked);
+                    p.Show();
+                }
+
             }
         }
 
@@ -751,6 +788,14 @@ namespace Witty
         }
 
         private void createDirectMessage()
+        {            
+            if (null != TweetsListBox.SelectedItem)
+            {
+                createDirectMessage(((Tweet)TweetsListBox.SelectedItem).User.ScreenName);
+            }            
+        }
+
+        private void createDirectMessage(string screenName)
         {
             //Direct message to user
             if (!isExpanded)
@@ -759,10 +804,8 @@ namespace Witty
             }
             TweetTextBox.Text = "";
             TweetTextBox.Text = "D ";
-            if (null != TweetsListBox.SelectedItem)
-            {
-                TweetTextBox.Text += ((Tweet)TweetsListBox.SelectedItem).User.ScreenName;
-            }
+
+            TweetTextBox.Text += screenName;
             TweetTextBox.Select(TweetTextBox.Text.Length, 0);
         }
 
@@ -785,15 +828,20 @@ namespace Witty
 
             if (null != selectedTweet)
             {
-                if (!isExpanded)
-                {
-                    this.Tabs.SelectedIndex = 0;
-                    ToggleUpdate();
-                }
-                TweetTextBox.Text = "";
-                TweetTextBox.Text = "@" + selectedTweet.User.ScreenName + " ";
-                TweetTextBox.Select(TweetTextBox.Text.Length, 0);
+                createReply(selectedTweet.User.ScreenName);
             }
+        }
+
+        private void createReply(string screenName)
+        {
+            if (!isExpanded)
+            {
+                this.Tabs.SelectedIndex = 0;
+                ToggleUpdate();
+            }
+            TweetTextBox.Text = "";
+            TweetTextBox.Text = "@" + screenName + " ";
+            TweetTextBox.Select(TweetTextBox.Text.Length, 0);
         }
 
         private void RefreshButton_Click(object sender, RoutedEventArgs e)
@@ -1082,8 +1130,49 @@ namespace Witty
         private void ContextMenuClear_Click(object sender, RoutedEventArgs e)
         {
             Clear();
-        }
+        }        
+
         #endregion
+
+        #region Popup Event Handlers
+
+        private void RemovePopup(Popup popup)
+        {
+            popupCount--;
+            popup.Close();
+            popup = null;
+        }
+
+        private void PopupReplyClicked(string screenName)
+        {            
+            if (this.WindowState == WindowState.Minimized)
+            {
+                Show();
+                WindowState = m_storedWindowState;
+            }            
+            createReply(screenName);
+        }
+
+        private void PopupDirectMessageClicked(string screenName)
+        {
+            if (this.WindowState == WindowState.Minimized)
+            {
+                Show();
+                WindowState = m_storedWindowState;
+            }
+            createDirectMessage(screenName);
+        }
+
+        void PopupClicked(object sender, MouseButtonEventArgs e)
+        {
+            if (this.WindowState == WindowState.Minimized)
+            {
+                Show();
+                WindowState = m_storedWindowState;
+            }
+        }
+
+        #endregion        
 
         #endregion
 
@@ -1279,7 +1368,7 @@ namespace Witty
             Environment.Exit(0);
         }
 
-        #endregion
+        #endregion        
 
         private void TweetScanButton_Click(object sender, RoutedEventArgs e)
         {
@@ -1310,6 +1399,6 @@ namespace Witty
             //        tweets.Remove(t);
             //    }
             //}
-        }
+        }        
     }
 }
