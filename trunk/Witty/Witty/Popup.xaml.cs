@@ -46,6 +46,8 @@ namespace Witty
             ImageSourceConverter conv = new ImageSourceConverter();
             avatarImage.Source = (ImageSource)conv.ConvertFromString(imageSource);
 
+            this.Topmost = true;
+
             sbFadeOut = (Storyboard)FindResource("sbFadeOut");
             sbFadeOut.Completed += new EventHandler(sbFadeOut_Completed);
             sbFadeOut.Begin(this, true);

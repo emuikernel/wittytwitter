@@ -328,7 +328,7 @@ namespace Witty
                 int index = 0;
                 foreach (Tweet tweet in newTweets)
                 {
-                    Popup p = new Popup(this, index++, tweet.User.Name, tweet.Text, tweet.User.ImageUrl);
+                    Popup p = new Popup(this, index++, tweet.User.ScreenName, tweet.Text, tweet.User.ImageUrl);
                     p.FadeOutFinished += new FadeOutFinishedDelegate(RemovePopup);
                     p.ReplyClicked += new PopupReplyClickedDelegate(PopupReplyClicked);
                     p.DirectMessageClicked += new PopupDirectMessageClickedDelegate(PopupDirectMessageClicked);
