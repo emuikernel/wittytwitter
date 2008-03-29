@@ -23,7 +23,7 @@ namespace Witty
     {
 
         private IntPtr SnarlConfighWnd;
-        private bool trayed = false;
+        private bool reallyexit = false;
 
         public MainWindow()
         {
@@ -120,7 +120,7 @@ namespace Witty
         {
             // If the user selected to minimize on close and the window state is normal
             // just minimize the app
-            if (AppSettings.MinimizeOnClose && this.trayed == false)
+            if (AppSettings.MinimizeOnClose && this.reallyexit == false)
             {
                 e.Cancel = true;
                 _storedWindowState = this.WindowState;
@@ -129,9 +129,9 @@ namespace Witty
                 {
                     _notifyIcon.ShowBalloonTip(2000);
                 }
-                this.trayed = true;
 
             }
+            
 
         }
 
@@ -1375,7 +1375,6 @@ namespace Witty
                 else
                 {
                     _storedWindowState = WindowState;
-                    this.trayed = false;
                 }
             }
         }
@@ -1416,6 +1415,7 @@ namespace Witty
 
         void exitMenuItem_Click(object sender, EventArgs e)
         {
+            this.reallyexit = true;
             this.Close();
         }
 
