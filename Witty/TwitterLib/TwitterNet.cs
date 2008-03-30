@@ -709,7 +709,7 @@ namespace TwitterLib
                     tweet.DateCreated = DateTime.ParseExact(
                         dateString,
                         twitterCreatedAtDateFormat,
-                        CultureInfo.CurrentCulture, DateTimeStyles.AllowWhiteSpaces);
+                        CultureInfo.GetCultureInfoByIetfLanguageTag("en-us"), DateTimeStyles.AllowWhiteSpaces);
                 }
                 tweet.IsNew = true;
 
@@ -852,7 +852,7 @@ namespace TwitterLib
                             message.DateCreated = DateTime.ParseExact(
                                 dateString,
                                 twitterCreatedAtDateFormat,
-                                CultureInfo.CurrentCulture, DateTimeStyles.AllowWhiteSpaces);
+                                CultureInfo.GetCultureInfoByIetfLanguageTag("en-us"), DateTimeStyles.AllowWhiteSpaces);
                         }
 
                         User sender = new User();
@@ -1075,7 +1075,7 @@ namespace TwitterLib
                             tweet.DateCreated = DateTime.ParseExact(
                                 dateString,
                                 twitterCreatedAtDateFormat,
-                                CultureInfo.CurrentCulture, DateTimeStyles.AllowWhiteSpaces);
+                                CultureInfo.GetCultureInfoByIetfLanguageTag("en-us"), DateTimeStyles.AllowWhiteSpaces);
                         }
 
                         User user = new User();
