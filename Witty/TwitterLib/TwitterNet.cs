@@ -15,7 +15,6 @@ namespace TwitterLib
     public class TwitterNet
     {
         #region Private Fields
-
         private string username;
         private SecureString password;
         private string publicTimelineUrl;
@@ -30,6 +29,7 @@ namespace TwitterLib
         private string sendMessageUrl;
         private string destroyUrl;
         private string destroyDirectMessageUrl;
+        private string createFriendshipUrl;
         private string format;
         private IWebProxy webProxy;
 
@@ -67,8 +67,7 @@ namespace TwitterLib
         /// </summary>
         public string UserName
         {
-            get { return username; }
-            set { username = value; }
+            get { return (null == currentLoggedInUser ? currentLoggedInUser.Name: String.Empty) ; }
         }
 
         /// <summary>
@@ -306,6 +305,23 @@ namespace TwitterLib
                     return destroyDirectMessageUrl;
             }
             set { destroyDirectMessageUrl = value; }
+        }
+
+
+
+        public string CreateFriendshipUrl
+        {
+            get {
+                if (string.IsNullOrEmpty(createFriendshipUrl))
+                {
+                    return "http://twitter.com/friendships/create/";
+                }
+                else
+                {
+                    return createFriendshipUrl;
+                }
+            }
+            set { createFriendshipUrl = value; }
         }
 
         /// <summary>
@@ -625,7 +641,7 @@ namespace TwitterLib
         /// <param name="id">id of the Tweet to delete</param>
         public void DestroyTweet(double id)
         {
-            string urlToCall = DestroyUrl + id + format;
+            string urlToCall = DestroyUrl + id + Format;
             MakeDestroyRequestCall(urlToCall);
         }
 
@@ -1032,6 +1048,16 @@ namespace TwitterLib
             }
         }
 
+        /// <summary>
+        /// Follow the user specified by userId
+        /// </summary>
+        /// <param name="userId"></param>
+        public void FollowUser(string userName)
+        {
+            string followUrl = CreateFriendshipUrl + userName + "." + Format;
+            MakeTwitterApiCall(followUrl);
+        }
+
         #endregion
 
         #region Private Methods
@@ -1194,6 +1220,17 @@ namespace TwitterLib
         /// <param name="urlToCall"></param>
         private void MakeDestroyRequestCall(string urlToCall)
         {
+            MakeTwitterApiCall(urlToCall);
+        }
+
+        /// <summary>
+        /// Generic Twitter API call. Use this when you don't need/want to parse the return message
+        ///  and just want to make a succeed/fail call to the API.
+        /// </summary>
+        /// <param name="urlToCall"></param>
+        private void MakeTwitterApiCall(string urlToCall)
+        {
+            //REMARK: We may want to refactor this to return the message returned by the API.
             // Create the web request  
             HttpWebRequest request = WebRequest.Create(urlToCall) as HttpWebRequest;
 
@@ -1203,7 +1240,7 @@ namespace TwitterLib
             // Add configured web proxy
             request.Proxy = webProxy;
 
-            request.Method = "GET";
+            //request.Method = "GET";
 
             try
             {

@@ -213,6 +213,26 @@ namespace Witty
 
         private int popupCount = 0;
 
+        internal Tweet SelectedTweet
+        {
+            get
+            {
+                Tweet selectedTweet = null;
+                if (this.currentView == CurrentView.Replies)
+                {
+                    if (null != RepliesListBox.SelectedItem) selectedTweet = (Tweet)RepliesListBox.SelectedItem;
+                }
+                else if (this.currentView == CurrentView.Messages)
+                {
+                    if (null != MessagesListBox.SelectedItem) selectedTweet = (Tweet)MessagesListBox.SelectedItem;
+                }
+                else
+                {
+                    if (null != TweetsListBox.SelectedItem) selectedTweet = (Tweet)TweetsListBox.SelectedItem;
+                }
+                return selectedTweet;
+            }
+        }
         #endregion
 
         #region Retrieve new tweets
@@ -876,10 +896,10 @@ namespace Witty
         }
 
         private void createDirectMessage()
-        {            
-            if (null != TweetsListBox.SelectedItem)
+        {
+            if (null != SelectedTweet)
             {
-                createDirectMessage(((Tweet)TweetsListBox.SelectedItem).User.ScreenName);
+                createDirectMessage(SelectedTweet.User.ScreenName);
             }            
         }
 
@@ -899,24 +919,10 @@ namespace Witty
 
         private void createReply()
         {
-            Tweet selectedTweet = null;
             //reply to user
-            if (this.currentView == CurrentView.Replies)
+            if (null != SelectedTweet)
             {
-                if (null != RepliesListBox.SelectedItem) selectedTweet = (Tweet)RepliesListBox.SelectedItem;
-            }
-            else if (this.currentView == CurrentView.Messages)
-            {
-                if (null != MessagesListBox.SelectedItem) selectedTweet = (Tweet)MessagesListBox.SelectedItem;
-            }
-            else
-            {
-                if (null != TweetsListBox.SelectedItem) selectedTweet = (Tweet)TweetsListBox.SelectedItem;
-            }
-
-            if (null != selectedTweet)
-            {
-                createReply(selectedTweet.User.ScreenName);
+                createReply(SelectedTweet.User.ScreenName);
             }
         }
 
@@ -930,6 +936,41 @@ namespace Witty
             TweetTextBox.Text = "";
             TweetTextBox.Text = "@" + screenName + " ";
             TweetTextBox.Select(TweetTextBox.Text.Length, 0);
+        }
+
+        private void deleteTweet()
+        {
+            if (null != SelectedTweet)
+            {
+                deleteTweet(SelectedTweet.Id);
+            }
+        }
+
+        private void deleteTweet(double id)
+        {
+            twitter.DestroyTweet(id);
+            if (tweets.Contains(SelectedTweet))
+            {
+                tweets.Remove(SelectedTweet);
+            }
+            else if(replies.Contains(SelectedTweet)) 
+            {
+                replies.Remove(SelectedTweet);
+            }
+        }
+
+        private void deleteDirectMessage()
+        {
+            if (null != SelectedTweet)
+            {
+                deleteDirectMessage(SelectedTweet.Id);
+            }
+
+        }
+
+        private void deleteDirectMessage(double id)
+        {
+            twitter.DestroyDirectMessage(id);
         }
 
         private void RefreshButton_Click(object sender, RoutedEventArgs e)
@@ -1205,14 +1246,15 @@ namespace Witty
 
         private void ContextMenuFollow_Click(object sender, RoutedEventArgs e)
         {
-            App.Logger.Debug("Follow not implemented.");
-            throw new NotImplementedException();
+            if (null != SelectedTweet)
+            {
+               twitter.FollowUser(SelectedTweet.User.Name);
+            }
         }
 
         private void ContextMenuDelete_Click(object sender, RoutedEventArgs e)
         {
-            App.Logger.Debug("Delete not implemented.");
-            throw new NotImplementedException();
+            deleteTweet();
         }
 
         private void ContextMenuClear_Click(object sender, RoutedEventArgs e)
