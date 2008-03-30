@@ -1,9 +1,6 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Text;
 using System.Net;
 using log4net;
-using System.Windows.Forms;
 
 namespace Witty
 {

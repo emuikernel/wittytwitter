@@ -1,8 +1,7 @@
-﻿using System.Windows;
-using TwitterLib;
-using System.Net;
+﻿using System.Net;
+using System.Windows;
 using log4net;
-using log4net.Config;
+using TwitterLib;
 
 namespace Witty
 {

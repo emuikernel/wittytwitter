@@ -1,12 +1,7 @@
 using System;
 using System.Windows.Data;
-using TwitterLib;
 using log4net;
-using log4net.Config;
-using System.Windows.Media;
-using System.Windows.Media.Imaging;
-using System.IO;
-using System.Net;
+using TwitterLib;
 
 namespace Witty
 {
