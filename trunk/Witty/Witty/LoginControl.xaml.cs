@@ -22,7 +22,7 @@ namespace Witty
 
         private void LoginButton_Click(object sender, RoutedEventArgs e)
         {
-            TwitterNet twitter = new TwitterNet(UsernameTextBox.Text, PasswordTextBox.Password, WebProxyHelper.GetConfiguredWebProxy());
+            TwitterNet twitter = new TwitterNet(UsernameTextBox.Text, TwitterNet.ToSecureString(PasswordTextBox.Password), WebProxyHelper.GetConfiguredWebProxy());
 
             // Attempt login in a new thread
             LoginButton.Dispatcher.BeginInvoke(
@@ -62,7 +62,7 @@ namespace Witty
             if (App.LoggedInUser != null)
             {
                 AppSettings.Username = UsernameTextBox.Text;
-                AppSettings.Password = PasswordTextBox.Password;
+                AppSettings.Password = TwitterNet.EncryptString(TwitterNet.ToSecureString(PasswordTextBox.Password));
                 AppSettings.LastUpdated = string.Empty;
 
                 AppSettings.Save();
