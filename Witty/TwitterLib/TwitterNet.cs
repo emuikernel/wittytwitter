@@ -17,7 +17,7 @@ namespace TwitterLib
         #region Private Fields
 
         private string username;
-        private string password;
+        private SecureString password;
         private string publicTimelineUrl;
         private string friendsTimelineUrl;
         private string userTimelineUrl;
@@ -74,7 +74,7 @@ namespace TwitterLib
         /// <summary>
         /// Twitter password
         /// </summary>
-        public string Password
+        public SecureString Password
         {
             get { return password; }
             set { password = value; }
@@ -376,7 +376,7 @@ namespace TwitterLib
         /// <summary>
         /// Authenticated constructor
         /// </summary>
-        public TwitterNet(string username, string password)
+        public TwitterNet(string username, SecureString password)
         {
             this.username = username;
             this.password = password;
@@ -385,7 +385,7 @@ namespace TwitterLib
         /// <summary>
         /// Authenticated constructor with Proxy
         /// </summary>
-        public TwitterNet(string username, string password, IWebProxy webProxy)
+        public TwitterNet(string username, SecureString password, IWebProxy webProxy)
         {
             this.username = username;
             this.password = password;
@@ -503,7 +503,7 @@ namespace TwitterLib
                 HttpWebRequest request = WebRequest.Create(pageRequestUrl) as HttpWebRequest;
 
                 // Add credendtials to request  
-                request.Credentials = new NetworkCredential(username, password);
+                request.Credentials = new NetworkCredential(username, TwitterNet.ToInsecureString(password));
 
                 try
                 {
@@ -578,7 +578,7 @@ namespace TwitterLib
             HttpWebRequest request = WebRequest.Create(requestURL) as HttpWebRequest;
 
             // Add credendtials to request  
-            request.Credentials = new NetworkCredential(username, password);
+            request.Credentials = new NetworkCredential(username, TwitterNet.ToInsecureString(password));
 
             // Add configured web proxy
             request.Proxy = webProxy;
@@ -657,7 +657,7 @@ namespace TwitterLib
             HttpWebRequest request = WebRequest.Create(UpdateUrl + Format) as HttpWebRequest;
 
             // Add authentication to request  
-            request.Credentials = new NetworkCredential(username, password);
+            request.Credentials = new NetworkCredential(username, TwitterNet.ToInsecureString(password));
 
             // Add configured web proxy
             request.Proxy = webProxy;
@@ -741,7 +741,7 @@ namespace TwitterLib
             HttpWebRequest request = WebRequest.Create(timelineUrl) as HttpWebRequest;
 
             // Add credendtials to request  
-            request.Credentials = new NetworkCredential(username, password);
+            request.Credentials = new NetworkCredential(username, TwitterNet.ToInsecureString(password));
 
             // Add configured web proxy
             request.Proxy = webProxy;
@@ -812,6 +812,73 @@ namespace TwitterLib
             return user;
         }
 
+        static byte[] entropy = System.Text.Encoding.Unicode.GetBytes("WittyPasswordSalt");
+
+        /// <summary>
+        /// 
+        /// </summary>
+        /// <param name="input"></param>
+        /// <returns></returns>
+        public static string EncryptString(System.Security.SecureString input)
+        {
+            byte[] encryptedData = System.Security.Cryptography.ProtectedData.Protect(
+                System.Text.Encoding.Unicode.GetBytes(ToInsecureString(input)),
+                entropy,
+                System.Security.Cryptography.DataProtectionScope.CurrentUser);
+            return Convert.ToBase64String(encryptedData);
+        }
+
+        public static SecureString ToSecureString(string input)
+        {
+            SecureString secure = new SecureString();
+            foreach (char c in input)
+            {
+                secure.AppendChar(c);
+            }
+            secure.MakeReadOnly();
+            return secure;
+        }
+
+        public static string ToInsecureString(SecureString input)
+        {
+            string returnValue = string.Empty;
+            IntPtr ptr = System.Runtime.InteropServices.Marshal.SecureStringToBSTR(input);
+            try
+            {
+                returnValue = System.Runtime.InteropServices.Marshal.PtrToStringBSTR(ptr);
+            }
+            finally
+            {
+                System.Runtime.InteropServices.Marshal.ZeroFreeBSTR(ptr);
+            }
+            return returnValue;
+        }
+
+        /// <summary>
+        /// 
+        /// </summary>
+        /// <param name="encryptedData"></param>
+        /// <returns></returns>
+        public static SecureString DecryptString(string encryptedData)
+        {
+            try
+            {
+                byte[] decryptedData = System.Security.Cryptography.ProtectedData.Unprotect(
+                    Convert.FromBase64String(encryptedData),
+                    entropy,
+                    System.Security.Cryptography.DataProtectionScope.CurrentUser);
+                return ToSecureString(System.Text.Encoding.Unicode.GetString(decryptedData));
+            }
+            catch
+            {
+                return new SecureString();
+            }
+        }
+
+        /// <summary>
+        /// Gets direct messages for the user
+        /// </summary>
+        /// <returns>Collection of direct messages</returns>
         public DirectMessageCollection RetrieveMessages()
         {
             DirectMessageCollection messages = new DirectMessageCollection();
@@ -820,7 +887,7 @@ namespace TwitterLib
             HttpWebRequest request = WebRequest.Create(DirectMessagesUrl + Format) as HttpWebRequest;
 
             // Add credendtials to request  
-            request.Credentials = new NetworkCredential(username, password);
+            request.Credentials = new NetworkCredential(username, TwitterNet.ToInsecureString(password));
 
             // Add configured web proxy
             request.Proxy = webProxy;
@@ -918,7 +985,7 @@ namespace TwitterLib
             HttpWebRequest request = WebRequest.Create(SendMessageUrl + Format) as HttpWebRequest;
 
             // Add authentication to request  
-            request.Credentials = new NetworkCredential(username, password);
+            request.Credentials = new NetworkCredential(username, TwitterNet.ToInsecureString(password));
 
             // Add configured web proxy
             request.Proxy = webProxy;
@@ -1042,7 +1109,7 @@ namespace TwitterLib
             if (timeline == Timeline.Friends || timeline == Timeline.Replies)
             {
                 // Add credendtials to request  
-                request.Credentials = new NetworkCredential(username, password);
+                request.Credentials = new NetworkCredential(username, TwitterNet.ToInsecureString(password));
             }
 
             try
@@ -1131,7 +1198,7 @@ namespace TwitterLib
             HttpWebRequest request = WebRequest.Create(urlToCall) as HttpWebRequest;
 
             // Add authentication to request  
-            request.Credentials = new NetworkCredential(username, password);
+            request.Credentials = new NetworkCredential(username, TwitterNet.ToInsecureString(password));
 
             // Add configured web proxy
             request.Proxy = webProxy;

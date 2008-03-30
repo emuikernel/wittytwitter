@@ -12,7 +12,7 @@ namespace WittyTestBed
         {
             InitializeComponent();
 
-            TwitterNet twitter = new TwitterNet("WittyTest", "WittyTest");
+            TwitterNet twitter = new TwitterNet("WittyTest", TwitterNet.ToSecureString("WittyTest"));
             FriendsListBox.ItemsSource = twitter.GetFriends();
         }
     }

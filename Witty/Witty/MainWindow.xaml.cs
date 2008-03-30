@@ -93,7 +93,8 @@ namespace Witty
             {
                 LoginControl.Visibility = Visibility.Hidden;
 
-                twitter = new TwitterNet(AppSettings.Username, AppSettings.Password, WebProxyHelper.GetConfiguredWebProxy());
+                System.Security.SecureString password = TwitterNet.DecryptString(AppSettings.Password);
+                twitter = new TwitterNet(AppSettings.Username, password, WebProxyHelper.GetConfiguredWebProxy());
 
                 // Let the user know what's going on
                 StatusTextBlock.Text = Properties.Resources.TryLogin;
@@ -715,21 +716,28 @@ namespace Witty
 
         private void UpdatePostLoginInterface(User user)
         {
-            isLoggedIn = true;
-            RefreshButton.IsEnabled = true;
-            OptionsButton.IsEnabled = true;
-            FilterToggleButton.IsEnabled = true;
-            AppSettings.LastUpdated = string.Empty;
-            Filter.IsEnabled = true;
-
             App.LoggedInUser = user;
+            if (App.LoggedInUser != null)
+            {
+                isLoggedIn = true;
+                RefreshButton.IsEnabled = true;
+                OptionsButton.IsEnabled = true;
+                FilterToggleButton.IsEnabled = true;
+                AppSettings.LastUpdated = string.Empty;
+                Filter.IsEnabled = true;
 
-            DelegateRecentFetch();
+                DelegateRecentFetch();
 
-            // Setup refresh timer
-            refreshTimer.Interval = refreshInterval;
-            refreshTimer.Tick += new EventHandler(Timer_Elapsed);
-            refreshTimer.Start();
+                // Setup refresh timer
+                refreshTimer.Interval = refreshInterval;
+                refreshTimer.Tick += new EventHandler(Timer_Elapsed);
+                refreshTimer.Start();
+            }
+            else
+            {
+                // login info from user settings is not valid, re-display the login screen.
+                PlayStoryboard("ShowLogin");
+            }
         }
 
         private void UpdateLoginFailedInterface()
@@ -740,7 +748,7 @@ namespace Witty
 
         private void LoginControl_Login(object sender, RoutedEventArgs e)
         {
-            twitter = new TwitterNet(AppSettings.Username, AppSettings.Password, WebProxyHelper.GetConfiguredWebProxy());
+            twitter = new TwitterNet(AppSettings.Username, TwitterNet.DecryptString(AppSettings.Password), WebProxyHelper.GetConfiguredWebProxy());
 
             // fetch new tweets
             DelegateRecentFetch();
