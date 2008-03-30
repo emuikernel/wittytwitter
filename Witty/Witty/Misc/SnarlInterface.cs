@@ -1,10 +1,8 @@
 using System;
-using System.Collections.Generic;
-using System.Text;
 using System.Runtime.InteropServices;
 
 namespace Snarl
-{    
+{
     enum SNARL_COMMANDS
     {
         SNARL_SHOW = 1,
@@ -22,48 +20,49 @@ namespace Snarl
         SNARL_EX_SHOW = 0x20
     };
 
-        [StructLayout(LayoutKind.Sequential, CharSet=CharSet.Ansi)]
-		struct SNARLSTRUCT {
-			public int cmd;
-            public int id;
-            public int timeout;
-            public int lngData2;
-          [MarshalAs(UnmanagedType.ByValArray, SizeConst=SnarlInterface.SNARL_STRING_LENGTH)]
-            public char[] title;
-          [MarshalAs(UnmanagedType.ByValArray, SizeConst=SnarlInterface.SNARL_STRING_LENGTH)]
-            public char[] text;
-          [MarshalAs(UnmanagedType.ByValArray, SizeConst=SnarlInterface.SNARL_STRING_LENGTH)]
-            public char[] icon;
-		};
-        
-        [StructLayout(LayoutKind.Sequential, CharSet=CharSet.Ansi)]
-        struct SNARLSTRUCTEX
-        {
-            public SNARLSTRUCT snarlStruct;
-          [MarshalAs(UnmanagedType.ByValArray, SizeConst=SnarlInterface.SNARL_STRING_LENGTH)]
-            public char[] snarlClass;
-          [MarshalAs(UnmanagedType.ByValArray, SizeConst=SnarlInterface.SNARL_STRING_LENGTH)]
-            public char[] extra;
-          [MarshalAs(UnmanagedType.ByValArray, SizeConst=SnarlInterface.SNARL_STRING_LENGTH)]
-            public char[] extra2;
-            public int reserved1;
-            public int reserved2;
-        }
+    [StructLayout(LayoutKind.Sequential, CharSet = CharSet.Ansi)]
+    struct SNARLSTRUCT
+    {
+        public int cmd;
+        public int id;
+        public int timeout;
+        public int lngData2;
+        [MarshalAs(UnmanagedType.ByValArray, SizeConst = SnarlInterface.SNARL_STRING_LENGTH)]
+        public char[] title;
+        [MarshalAs(UnmanagedType.ByValArray, SizeConst = SnarlInterface.SNARL_STRING_LENGTH)]
+        public char[] text;
+        [MarshalAs(UnmanagedType.ByValArray, SizeConst = SnarlInterface.SNARL_STRING_LENGTH)]
+        public char[] icon;
+    };
 
-        struct COPYDATASTRUCT
-        {
-            public int dwData;
-            public int cbData;
-            public IntPtr lpData;
-        }
+    [StructLayout(LayoutKind.Sequential, CharSet = CharSet.Ansi)]
+    struct SNARLSTRUCTEX
+    {
+        public SNARLSTRUCT snarlStruct;
+        [MarshalAs(UnmanagedType.ByValArray, SizeConst = SnarlInterface.SNARL_STRING_LENGTH)]
+        public char[] snarlClass;
+        [MarshalAs(UnmanagedType.ByValArray, SizeConst = SnarlInterface.SNARL_STRING_LENGTH)]
+        public char[] extra;
+        [MarshalAs(UnmanagedType.ByValArray, SizeConst = SnarlInterface.SNARL_STRING_LENGTH)]
+        public char[] extra2;
+        public int reserved1;
+        public int reserved2;
+    }
+
+    struct COPYDATASTRUCT
+    {
+        public int dwData;
+        public int cbData;
+        public IntPtr lpData;
+    }
 
     class SnarlInterface
     {
-        public const int SNARL_STRING_LENGTH = 1024;        
+        public const int SNARL_STRING_LENGTH = 1024;
 
         public static int SendMessage(string title, string message, string iconPath, int timeout)
         {
-            SNARLSTRUCT snarlStruct = new SNARLSTRUCT();            
+            SNARLSTRUCT snarlStruct = new SNARLSTRUCT();
 
             snarlStruct.cmd = (int)SNARL_COMMANDS.SNARL_SHOW;
 
@@ -87,7 +86,7 @@ namespace Snarl
             snarlStructEx.snarlClass = alertClass.PadRight(SNARL_STRING_LENGTH, '\0').ToCharArray();
             snarlStructEx.extra = soundPath.PadRight(SNARL_STRING_LENGTH, '\0').ToCharArray();
             snarlStructEx.snarlStruct.timeout = timeout;
-            
+
             return Send(snarlStructEx);
         }
 
@@ -122,8 +121,6 @@ namespace Snarl
             return Send(snarlStruct);
         }
 
-
-
         public static void HideMessage(int id)
         {
             SNARLSTRUCT snarlStruct = new SNARLSTRUCT();
@@ -132,7 +129,7 @@ namespace Snarl
             snarlStruct.id = id;
 
             int x = Send(snarlStruct);
-        }        
+        }
 
         public static int GetVersionEx()
         {
@@ -168,7 +165,7 @@ namespace Snarl
             Marshal.FreeCoTaskMem(snarlStructPtr);
 
             return id;
-        }        
+        }
 
         private static int Send(SNARLSTRUCTEX snarlStruct)
         {
@@ -192,7 +189,6 @@ namespace Snarl
             Marshal.FreeCoTaskMem(snarlStructPtr);
 
             return id;
-        }        
-
+        }
     }
 }

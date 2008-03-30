@@ -1,5 +1,6 @@
 ﻿using System;
 using System.ComponentModel;
+using System.Deployment.Application;
 using System.Media;
 using System.Net;
 using System.Windows;
@@ -8,14 +9,10 @@ using System.Windows.Data;
 using System.Windows.Input;
 using System.Windows.Media.Animation;
 using System.Windows.Threading;
-using log4net;
-using TwitterLib;
-using Witty.ClickOnce;
-using System.Deployment.Application;
-using System.Threading;
-using TwitterLib.Utilities;
 using Snarl;
-using System.Collections.Generic;
+using TwitterLib;
+using TwitterLib.Utilities;
+using Witty.ClickOnce;
 
 namespace Witty
 {
@@ -358,7 +355,6 @@ namespace Witty
                     p.MouseLeftButtonUp += new MouseButtonEventHandler(PopupClicked);
                     p.Show();
                 }
-
             }
         }
 
