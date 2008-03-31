@@ -64,12 +64,12 @@ namespace Witty
                     else if (word.StartsWith("@"))
                     {
                         string userName = String.Empty;
-                        Match foundUsername = Regex.Match(word, @"@(\w)+");
+                        Match foundUsername = Regex.Match(word, @"@(\w+)");
                         if (foundUsername.Success)
                         {
-                            userName = foundUsername.Value.Replace("@", "");
+                            userName = foundUsername.Groups[1].Captures[0].Value;
                             Hyperlink name = new Hyperlink();
-                            name.Inlines.Add(word.Remove(0, 1));
+                            name.Inlines.Add(userName);
                             name.NavigateUri = new Uri("http://twitter.com/" + userName);
                             name.ToolTip = "Show user's profile";
                             name.Click += new RoutedEventHandler(name_Click);
