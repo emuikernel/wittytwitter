@@ -1054,7 +1054,7 @@ namespace TwitterLib
         /// <param name="userId"></param>
         public void FollowUser(string userName)
         {
-            string followUrl = CreateFriendshipUrl + userName + "." + Format;
+            string followUrl = CreateFriendshipUrl + userName + Format;
             MakeTwitterApiCall(followUrl);
         }
 
