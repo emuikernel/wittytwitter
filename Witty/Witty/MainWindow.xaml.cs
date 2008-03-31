@@ -958,6 +958,20 @@ namespace Witty
             }
         }
 
+        private void FollowUser()
+        {
+            if (null != SelectedTweet)
+            {
+                FollowUser(SelectedTweet.User.ScreenName);
+            }
+        }
+
+        private void FollowUser(string username)
+        {
+            LayoutRoot.Dispatcher.BeginInvoke(DispatcherPriority.Normal,
+                new OneStringArgDelegate(twitter.FollowUser), username);
+        }
+
         private void deleteDirectMessage()
         {
             if (null != SelectedTweet)
@@ -1245,10 +1259,7 @@ namespace Witty
 
         private void ContextMenuFollow_Click(object sender, RoutedEventArgs e)
         {
-            if (null != SelectedTweet)
-            {
-               twitter.FollowUser(SelectedTweet.User.Name);
-            }
+            FollowUser();
         }
 
         private void ContextMenuDelete_Click(object sender, RoutedEventArgs e)
