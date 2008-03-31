@@ -17,6 +17,7 @@ namespace Witty
     {        
         private MainWindow parent;
         private Storyboard sbFadeOut;
+        private Storyboard ShowPopup;
         private TimeSpan ts = new TimeSpan();
         public event FadeOutFinishedDelegate FadeOutFinished;
         public event PopupReplyClickedDelegate ReplyClicked;
@@ -40,6 +41,16 @@ namespace Witty
 
             sbFadeOut = (Storyboard)FindResource("sbFadeOut");
             sbFadeOut.Completed += new EventHandler(sbFadeOut_Completed);
+
+            ShowPopup = (Storyboard)FindResource("ShowPopup");
+            ShowPopup.Completed += new EventHandler(ShowPopup_Completed);
+            ShowPopup.Begin(this, true);
+
+
+        }
+
+        void ShowPopup_Completed(object sender, EventArgs e)
+        {
             sbFadeOut.Begin(this, true);
         }
 
