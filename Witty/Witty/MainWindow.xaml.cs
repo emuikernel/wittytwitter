@@ -168,7 +168,8 @@ namespace Witty
         private delegate void AddTweetUpdateDelegate(Tweet arg);
         private delegate void MessagesDelegate(DirectMessageCollection arg);
         private delegate void SendMessageDelegate(string user, string text);
-        private delegate void LoginDelegate(User arg);        
+        private delegate void LoginDelegate(User arg);
+        private delegate void DeleteTweetDelegate(double id);
 
         // Settings used by the application
         private Properties.Settings AppSettings = Properties.Settings.Default;
@@ -944,7 +945,9 @@ namespace Witty
 
         private void deleteTweet(double id)
         {
-            twitter.DestroyTweet(id);
+            LayoutRoot.Dispatcher.BeginInvoke(
+                DispatcherPriority.Normal, 
+                new DeleteTweetDelegate(twitter.DestroyTweet), id);
             if (tweets.Contains(SelectedTweet))
             {
                 tweets.Remove(SelectedTweet);
