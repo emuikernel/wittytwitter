@@ -29,10 +29,6 @@ namespace Witty
 #if DEBUG
             Title = Title + " Debug";
 #endif
-            #region Minimize on closing setup
-            // used to override closings and minimize instead
-            this.Closing += new CancelEventHandler(MainWindow_Closing);
-            #endregion
 
             #region Minimize to tray setup
 
@@ -59,6 +55,9 @@ namespace Witty
             this.Closed += new EventHandler(OnClosed);
             this.StateChanged += new EventHandler(OnStateChanged);
             this.IsVisibleChanged += new DependencyPropertyChangedEventHandler(OnIsVisibleChanged);
+
+            // used to override closings and minimize instead
+            this.Closing += new CancelEventHandler(MainWindow_Closing);
 
             #endregion
 
@@ -129,7 +128,7 @@ namespace Witty
                 }
 
             }
-            
+
 
         }
 
@@ -308,17 +307,17 @@ namespace Witty
             if (addedTweets.Count > 0)
             {
                 NotifyOnNewTweets(addedTweets);
-                if( AppSettings.PlaySounds)
+                if (AppSettings.PlaySounds)
                 {
-                // Play tweets found sound for new tweets
-                SoundPlayer player = new SoundPlayer(Witty.Properties.Resources.alert);
-                player.Play();
+                    // Play tweets found sound for new tweets
+                    SoundPlayer player = new SoundPlayer(Witty.Properties.Resources.alert);
+                    player.Play();
                 }
             }
 
             StopStoryboard("Fetching");
 
-            
+
         }
 
         private void NotifyOnNewTweets(TweetCollection newTweets)
@@ -727,7 +726,7 @@ namespace Witty
             {
                 App.Logger.Error("Incorrect proxy configuration.");
                 MessageBox.Show("Proxy server is configured incorrectly.  Please correct the settings on the Options menu.");
-                LayoutRoot.Dispatcher.BeginInvoke(DispatcherPriority.Normal, new NoArgDelegate(UpdateLoginFailedInterface));           
+                LayoutRoot.Dispatcher.BeginInvoke(DispatcherPriority.Normal, new NoArgDelegate(UpdateLoginFailedInterface));
             }
         }
 
@@ -792,7 +791,7 @@ namespace Witty
             if (ApplicationDeployment.IsNetworkDeployed)
             {
                 // Initialize clickonce deployment
-                _clickOnce = new Deployment(StatusTextBlock); 
+                _clickOnce = new Deployment(StatusTextBlock);
                 _clickOnce.UpdateStartedEvent += new Deployment.UpdateStartedDelegate(clickOnce_UpdateStartedEvent);
                 _clickOnce.UpdateCompletedEvent += new Deployment.UpdateCompletedDelegate(clickOnce_UpdateCompletedEvent);
 
@@ -802,7 +801,7 @@ namespace Witty
                 _clickOnceUpdateTimer.IsEnabled = true;
                 _clickOnceUpdateTimer.Start();
                 _clickOnceUpdateTimer.Tick += new EventHandler(_clickOnceUpdateTimer_Tick);
-                
+
                 // update window with clickonce version number
                 this.Title = AppSettings.ApplicationName + " " + ApplicationDeployment.CurrentDeployment.CurrentVersion.ToString();
             }
@@ -818,7 +817,7 @@ namespace Witty
         {
             // restart the timeer
             _clickOnceUpdateTimer.Start();
-            
+
             if (restartApplication)
             {
                 System.Windows.Forms.Application.Restart();
@@ -897,7 +896,7 @@ namespace Witty
             if (null != SelectedTweet)
             {
                 createDirectMessage(SelectedTweet.User.ScreenName);
-            }            
+            }
         }
 
         private void createDirectMessage(string screenName)
@@ -946,13 +945,14 @@ namespace Witty
         private void deleteTweet(double id)
         {
             LayoutRoot.Dispatcher.BeginInvoke(
-                DispatcherPriority.Normal, 
+                DispatcherPriority.Normal,
                 new DeleteTweetDelegate(twitter.DestroyTweet), id);
+
             if (tweets.Contains(SelectedTweet))
             {
                 tweets.Remove(SelectedTweet);
             }
-            else if(replies.Contains(SelectedTweet)) 
+            else if (replies.Contains(SelectedTweet))
             {
                 replies.Remove(SelectedTweet);
             }
@@ -1024,7 +1024,7 @@ namespace Witty
         private void Clear()
         {
             switch (currentView)
-            { 
+            {
                 case CurrentView.Recent:
                     ClearTweets();
                     break;
@@ -1270,7 +1270,7 @@ namespace Witty
         private void ContextMenuClear_Click(object sender, RoutedEventArgs e)
         {
             Clear();
-        }        
+        }
 
         #endregion
 
@@ -1284,12 +1284,12 @@ namespace Witty
         }
 
         private void PopupReplyClicked(string screenName)
-        {            
+        {
             if (this.WindowState == WindowState.Minimized)
             {
                 Show();
                 WindowState = _storedWindowState;
-            }            
+            }
             createReply(screenName);
         }
 
@@ -1312,7 +1312,7 @@ namespace Witty
             }
         }
 
-        #endregion        
+        #endregion
 
         #endregion
 
@@ -1329,7 +1329,7 @@ namespace Witty
             // Start an async operation that filters the list.
             this.Dispatcher.BeginInvoke(
                 DispatcherPriority.ApplicationIdle,
-                new FilterDelegate(FilterWorker));          
+                new FilterDelegate(FilterWorker));
         }
 
         /// <summary>
@@ -1406,7 +1406,7 @@ namespace Witty
                 AppSettings.Password = string.Empty;
                 AppSettings.Save();
             }
-            
+
             _notifyIcon.Dispose();
             _notifyIcon = null;
 
@@ -1497,7 +1497,9 @@ namespace Witty
             Environment.Exit(0);
         }
 
-        #endregion        
+        #endregion
+
+        #region Filter and Search
 
         private void TweetScanButton_Click(object sender, RoutedEventArgs e)
         {
@@ -1520,7 +1522,8 @@ namespace Witty
 
         private void FilterToggleButton_Unchecked(object sender, RoutedEventArgs e)
         {
-            //TODO: how to fix this
+            //TODO: fix this
+            //TODO: need to remove the search tweets from the main list.
             //foreach (Tweet t in tweets)
             //{
             //    if (t.IsSearchResult)
@@ -1528,6 +1531,8 @@ namespace Witty
             //        tweets.Remove(t);
             //    }
             //}
-        }        
+        }
+
+        #endregion
     }
 }
