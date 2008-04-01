@@ -59,11 +59,6 @@ namespace Witty
             {
                 MaxIndSlider.Value = Double.Parse(AppSettings.MaximumIndividualAlerts);
             }
-
-            
-
-            
-            
         }
 
         #region PlaySounds

@@ -653,7 +653,6 @@ namespace TwitterLib
         {
             string urlToCall = DestroyDirectMessageUrl + id + "." + Format;
             MakeDestroyRequestCall(urlToCall);
-
         }
 
         /// <summary>
