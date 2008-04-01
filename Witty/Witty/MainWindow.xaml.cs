@@ -128,8 +128,6 @@ namespace Witty
                 }
 
             }
-
-
         }
 
         #region Fields and Properties

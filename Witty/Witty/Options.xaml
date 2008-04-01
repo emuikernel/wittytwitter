@@ -3,7 +3,7 @@
   xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
   xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" mc:Ignorable="d"
   xmlns:Witty="clr-namespace:Witty"
-  xmlns:ClickOnce="clr-namespace:Witty.Controls.Options"
+  xmlns:options="clr-namespace:Witty.Controls.Options"
   xmlns:lib="clr-namespace:Microsoft.Samples.KMoore.WPFSamples.Zap;assembly=J832.Wpf.BagOTricksLib"
   xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
   x:Class="Witty.Options"
@@ -46,7 +46,6 @@
           </Setter>
         </Style>
 
-
         <Style TargetType="{x:Type ItemsControl}" x:Key="ZapScrollerCommandItemsControlStyle">
           <Setter Property="Template">
             <Setter.Value>
@@ -71,9 +70,8 @@
           <DockPanel>
             <StackPanel Orientation="Horizontal" DockPanel.Dock="Top" HorizontalAlignment="Center" >
               <ItemsControl ItemsSource="{Binding RelativeSource={RelativeSource TemplatedParent}, Path=Commands}"
-                              Style="{StaticResource ZapScrollerCommandItemsControlStyle}"/>
+                 Style="{StaticResource ZapScrollerCommandItemsControlStyle}"/>
             </StackPanel>
-
             <lib:ZapDecorator Name="PART_ZapDecorator">
               <lib:ZapPanel IsItemsHost="true" />
             </lib:ZapDecorator>
@@ -164,63 +162,18 @@
           <Label x:Name="_MaxIndAlerts" VerticalAlignment="Top" Width="Auto" Height="Auto" Content="Maximum Individual Notifications:"/>
           <Slider x:Name="MaxIndSlider" VerticalAlignment="Top" Width="Auto" Height="Auto" LargeChange="5" Maximum="25" Minimum="1" SmallChange="1" TickFrequency="2" TickPlacement="BottomRight"/>
           <TextBlock Margin="10,5,10,5" x:Name="MaxIndTextBlock" VerticalAlignment="Top" Width="20" Height="20" Text="{Binding Path=Value, Converter={StaticResource RoundConverter}, ElementName=MaxIndSlider, Mode=Default}" TextAlignment="Center" TextWrapping="Wrap"/>
-	  	</DockPanel>
+        </DockPanel>
       </Border>
 
       <Border Padding="15,15,15,15" Tag="Updates">
-
         <StackPanel>
-          <ClickOnce:ClickOnceOptions x:Name="ucClickOnce"></ClickOnce:ClickOnceOptions>
+          <options:ClickOnceOptions x:Name="ClickOnceOptions"/>
         </StackPanel>
       </Border>
 
       <Border Tag="About">
         <Grid>
-          <FlowDocumentReader>
-            <FlowDocument>
-              <Section>
-                <Paragraph>
-                  Witty v0.1.7 Beta 1
-                  <LineBreak/>
-                  Updated March 20, 2008
-                </Paragraph>
-                <Paragraph>
-                  <Hyperlink NavigateUri="http://code.google.com/p/wittytwitter/" >Witty Google Code Page</Hyperlink>
-                </Paragraph>
-                <Paragraph>
-                  Keyboard Shortcuts
-                  <LineBreak/>
-                  *
-                  <Bold>ctrl-u</Bold> - Toggle the update area
-                  <LineBreak/>
-                  *
-                  <Bold>ctrl-r</Bold> - Add @screenname of the selected Tweets user to the update textbox
-                  <LineBreak/>
-                  *
-                  <Bold>ctrl-q</Bold> - Quit. Exit. Vamoose.
-                  <LineBreak/>
-                  *
-                  <Bold>ctrl-o</Bold> - Open the options dialog.
-                  <LineBreak/>
-                  *
-                  <Bold>ctrl-1</Bold> - Show the "Recent" tab.
-                  <LineBreak/>
-                  *
-                  <Bold>ctrl-2</Bold> - Show the "Replies" tab.
-                  <LineBreak/>
-                  *
-                  <Bold>ctrl-3</Bold> - Show the "User" tab.
-                  <LineBreak/>
-                  *
-                  <Bold>ctrl-4</Bold> - Show the "Messages" tab.
-                  <LineBreak/>
-                  *
-                  <Bold>F5</Bold> - refresh. It seemed best to stick with IE/Firefox's refresh key.
-                  <LineBreak/>
-                </Paragraph>
-              </Section>
-            </FlowDocument>
-          </FlowDocumentReader>
+          <options:AboutOptions x:Name="AboutOptions"/>
         </Grid>
       </Border>
 

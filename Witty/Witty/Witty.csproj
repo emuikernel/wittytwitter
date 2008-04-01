@@ -93,6 +93,10 @@
     <Reference Include="System.ServiceModel" />
     <Reference Include="System.Runtime.Serialization" />
     <Reference Include="System.IdentityModel" />
+    <Page Include="Controls\Options\AboutOptions.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
     <Page Include="Controls\Options\ClickOnceOptions.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
@@ -175,6 +179,9 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="BagOfTricks\Code.cs" />
+    <Compile Include="Controls\Options\AboutOptions.xaml.cs">
+      <DependentUpon>AboutOptions.xaml</DependentUpon>
+    </Compile>
     <Compile Include="Controls\Options\ClickOnceOptions.xaml.cs">
       <DependentUpon>ClickOnceOptions.xaml</DependentUpon>
     </Compile>
