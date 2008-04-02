@@ -45,8 +45,6 @@ namespace Witty
             ShowPopup = (Storyboard)FindResource("ShowPopup");
             ShowPopup.Completed += new EventHandler(ShowPopup_Completed);
             ShowPopup.Begin(this, true);
-
-
         }
 
         void ShowPopup_Completed(object sender, EventArgs e)

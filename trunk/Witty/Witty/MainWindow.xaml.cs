@@ -103,7 +103,7 @@ namespace Witty
 
             InitializeClickOnceTimer();
 
-            //Register will Snarl if available
+            //Register with Snarl if available
             if (SnarlInterface.SnarlIsActive())
             {
                 //We Create a Message Only window for communication
@@ -1007,6 +1007,7 @@ namespace Witty
                     break;
             }
         }
+
         #region Clear Methods
 
         internal void ClearTweets()
@@ -1243,6 +1244,7 @@ namespace Witty
                 PlayStoryboard("ShowLogin");
             }
         }
+
         #region Context menu event handlers
 
         private void ContextMenuReply_Click(object sender, RoutedEventArgs e)
@@ -1413,7 +1415,6 @@ namespace Witty
                 SnarlInterface.RevokeConfig(this.SnarlConfighWnd.ToInt32());
                 Win32.DestroyWindow(this.SnarlConfighWnd);
             }
-
         }
 
         private WindowState _storedWindowState = WindowState.Normal;
