@@ -88,20 +88,28 @@
       <Border Padding="15,15,15,15" Tag="General">
         <StackPanel>
           <CheckBox Content="Always on top" x:Name="AlwaysOnTopCheckBox" Click="AlwaysOnTopCheckBox_Click" />
-          <CheckBox Content="Minimize to the System Tray" x:Name="MinimizeToTrayCheckBox" IsChecked="{Binding Path=MinimizeToTray, ElementName=Window, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" Margin="0,15,0,0"/>
-          <CheckBox x:Name="MinimizeOnCloseCheckBox" Margin="0,15,0,0" IsChecked="{Binding Path=MinimizeOnClose, ElementName=Window, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}">Minimize to task tray if close button is pressed</CheckBox>
-          <CheckBox Content="Play Sounds on new Tweets" x:Name="PlaySoundsCheckBox" IsChecked="{Binding Path=PlaySounds, ElementName=Window, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" Margin="0,15,0,0" />
-          <Label Content="Minutes between updates" d:LayoutOverrides="GridBox" Margin="0,15,0,0"/>
+          <CheckBox Content="Minimize to the System Tray" x:Name="MinimizeToTrayCheckBox" IsChecked="{Binding Path=MinimizeToTray, ElementName=Window, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" Margin="0,10,0,0"/>
+          <CheckBox x:Name="MinimizeOnCloseCheckBox" Margin="0,10,0,0" IsChecked="{Binding Path=MinimizeOnClose, ElementName=Window, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}">Minimize to task tray if close button is pressed</CheckBox>
+          <CheckBox Content="Play Sounds on new Tweets" x:Name="PlaySoundsCheckBox" IsChecked="{Binding Path=PlaySounds, ElementName=Window, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" Margin="0,10,0,0" />
+          <CheckBox Content="Smooth Scrolling" x:Name="SmoothScrollingCheckBox" IsChecked="{Binding Path=SmoothScroll, ElementName=Window, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" Margin="0,10,0,0" />
+          <Label Content="Minutes between updates" d:LayoutOverrides="GridBox" Margin="0,10,0,0"/>
           <StackPanel Orientation="Horizontal" Margin="5,0,0,0">
             <Slider Width="200" Minimum="0" Maximum="30" SmallChange="1" LargeChange="5" TickPlacement="BottomRight" x:Name="RefreshSlider" AutoToolTipPlacement="TopLeft" TickFrequency="2"/>
             <TextBlock Text="{Binding Path=Value, Converter={StaticResource RoundConverter}, ElementName=RefreshSlider, Mode=Default}" TextWrapping="Wrap" VerticalAlignment="Center" x:Name="SliderValueTextBlock" Width="20" Margin="5,0,0,0"/>
       			</StackPanel>
           <GroupBox Header="Clear Tweets" Margin="0,15,0,0">
-            <StackPanel Margin="0,10,0,10">
-              <Button x:Name="ClearTweetsButton" Width="120" Content="Clear All Tweets" Click="ClearTweetsButton_Click" HorizontalAlignment="Left"/>
-              <Button x:Name="ClearRepliesButton" Width="120" Content="Clear All Replies" Click="ClearRepliesButton_Click" HorizontalAlignment="Left" Margin="0,10,0,0"/>
+            <StackPanel Margin="0,10,0,10" Orientation="Horizontal">
+                <Button x:Name="ClearTweetsButton" Width="120" Height="20" Content="Clear All Tweets" Click="ClearTweetsButton_Click" HorizontalAlignment="Left"/>
+                <Button x:Name="ClearRepliesButton" Width="120" Height="20" Content="Clear All Replies" Click="ClearRepliesButton_Click" HorizontalAlignment="Left" Margin="5"/>
+                <Label Target="{Binding ElementName=SkinsComboBox}" Content="Keep Latest" VerticalAlignment="Center" Margin="0,0,5,0"/>
+                <ComboBox x:Name="KeepLatestComboBox" SelectionChanged="KeepLatestComboBox_SelectionChanged" Height="23" Width="120">
+                    <ComboBoxItem Content="10"/>
+                    <ComboBoxItem Content="50"/>
+                    <ComboBoxItem Content="100" Selector.IsSelected="True" />
+                    <ComboBoxItem Content="All"/>
+                </ComboBox>
             </StackPanel>
-          </GroupBox>
+           </GroupBox>
         </StackPanel>
       </Border>
 

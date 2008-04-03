@@ -13,7 +13,7 @@ namespace Witty
         private readonly Properties.Settings AppSettings = Properties.Settings.Default;
 
         // bool to prevent endless recursion
-        private bool isSettingSkin = false;
+        private bool isInitializing = false;
 
         public Options()
         {
@@ -29,14 +29,17 @@ namespace Witty
                 RefreshSlider.Value = Double.Parse(AppSettings.RefreshInterval);
             }
 
-            isSettingSkin = true;
+            isInitializing = true;
             SkinsComboBox.ItemsSource = App.Skins;
             // select the current skin
             if (!string.IsNullOrEmpty(AppSettings.Skin))
             {
                 SkinsComboBox.SelectedItem = AppSettings.Skin;
             }
-            isSettingSkin = false;
+
+            // select number of tweets to keep
+            SkinsComboBox.SelectedItem = AppSettings.KeepLatest;
+            isInitializing = false;
 
             AlwaysOnTopCheckBox.IsChecked = AppSettings.AlwaysOnTop;
 
@@ -47,6 +50,7 @@ namespace Witty
 
             #endregion
 
+            SmoothScrollingCheckBox.IsChecked = AppSettings.SmoothScrolling;
             UseProxyCheckBox.IsChecked = AppSettings.UseProxy;
             ProxyServerTextBox.Text = AppSettings.ProxyServer;
             ProxyPortTextBox.Text = AppSettings.ProxyPort.ToString();
@@ -219,6 +223,7 @@ namespace Witty
 
                 NotifyIfRestartNeeded();
 
+                AppSettings.SmoothScrolling = (bool)SmoothScrollingCheckBox.IsChecked;
                 AppSettings.UseProxy = (bool)UseProxyCheckBox.IsChecked;
                 AppSettings.ProxyServer = ProxyServerTextBox.Text;
                 AppSettings.ProxyPort = int.Parse(ProxyPortTextBox.Text);
@@ -248,7 +253,7 @@ namespace Witty
 
         private void SkinsComboBox_SelectionChanged(object sender, SelectionChangedEventArgs e)
         {
-            if ((!(isSettingSkin)) && (e.AddedItems.Count >= 0))
+            if ((!(isInitializing)) && (e.AddedItems.Count >= 0))
             {
                 string skin = e.AddedItems[0] as string;
                 ResourceDictionary rd = Application.LoadComponent(new Uri(skin, UriKind.Relative)) as ResourceDictionary;
@@ -279,6 +284,15 @@ namespace Witty
 
             AppSettings.AlwaysOnTop = this.Topmost;
             AppSettings.Save();
+        }
+
+        private void KeepLatestComboBox_SelectionChanged(object sender, SelectionChangedEventArgs e)
+        {
+            if (e.AddedItems.Count >= 0)
+            {
+                AppSettings.KeepLatest = e.AddedItems[0] as int? ?? 0;
+                AppSettings.Save();
+            }
         }
     }
 }

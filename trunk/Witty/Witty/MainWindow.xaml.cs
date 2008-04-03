@@ -103,6 +103,8 @@ namespace Witty
 
             InitializeClickOnceTimer();
 
+            ScrollViewer.SetCanContentScroll(TweetsListBox, !AppSettings.SmoothScrolling);
+
             //Register with Snarl if available
             if (SnarlInterface.SnarlIsActive())
             {
@@ -300,7 +302,8 @@ namespace Witty
             // tweets listbox ScrollViewer.CanContentScroll is set to "False", which means it scrolls more smooth,
             // However it disables Virtualization
             // Remove tweets pass 100 should improve performance reasons.
-            tweets.Truncate(100);
+            if(AppSettings.KeepLatest != 0)
+                tweets.Truncate(AppSettings.KeepLatest);
 
             if (addedTweets.Count > 0)
             {
