@@ -58,7 +58,22 @@ namespace Witty.Properties {
                 this["RefreshInterval"] = value;
             }
         }
-        
+
+        [global::System.Configuration.UserScopedSettingAttribute()]
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+        [global::System.Configuration.DefaultSettingValueAttribute("100")]
+        public int KeepLatest
+        {
+            get
+            {
+                return ((int)(this["KeepLatest"]));
+            }
+            set
+            {
+                this["KeepLatest"] = value;
+            }
+        }
+
         [global::System.Configuration.UserScopedSettingAttribute()]
         [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
         [global::System.Configuration.DefaultSettingValueAttribute("")]
@@ -130,7 +145,22 @@ namespace Witty.Properties {
                 this["PersistLogin"] = value;
             }
         }
-        
+
+        [global::System.Configuration.UserScopedSettingAttribute()]
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+        [global::System.Configuration.DefaultSettingValueAttribute("True")]
+        public bool SmoothScrolling
+        {
+            get
+            {
+                return ((bool)(this["SmoothScrolling"]));
+            }
+            set
+            {
+                this["SmoothScrolling"] = value;
+            }
+        }
+
         [global::System.Configuration.UserScopedSettingAttribute()]
         [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
         [global::System.Configuration.DefaultSettingValueAttribute("False")]
