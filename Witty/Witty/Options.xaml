@@ -102,7 +102,7 @@
                 <Button x:Name="ClearTweetsButton" Width="120" Height="20" Content="Clear All Tweets" Click="ClearTweetsButton_Click" HorizontalAlignment="Left"/>
                 <Button x:Name="ClearRepliesButton" Width="120" Height="20" Content="Clear All Replies" Click="ClearRepliesButton_Click" HorizontalAlignment="Left" Margin="5"/>
                 <Label Target="{Binding ElementName=SkinsComboBox}" Content="Keep Latest" VerticalAlignment="Center" Margin="0,0,5,0"/>
-                <ComboBox x:Name="KeepLatestComboBox" SelectionChanged="KeepLatestComboBox_SelectionChanged" Height="23" Width="120">
+                <ComboBox x:Name="KeepLatestComboBox" Height="23" Width="120">
                     <ComboBoxItem Content="10"/>
                     <ComboBoxItem Content="50"/>
                     <ComboBoxItem Content="100" Selector.IsSelected="True" />

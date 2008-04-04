@@ -38,7 +38,7 @@ namespace Witty
             }
 
             // select number of tweets to keep
-            SkinsComboBox.SelectedItem = AppSettings.KeepLatest;
+            KeepLatestComboBox.Text = AppSettings.KeepLatest.ToString();
             isInitializing = false;
 
             AlwaysOnTopCheckBox.IsChecked = AppSettings.AlwaysOnTop;
@@ -232,6 +232,12 @@ namespace Witty
 
                 AppSettings.MaximumIndividualAlerts = MaxIndTextBlock.Text;
 
+                int setting;
+                if (int.TryParse(((ComboBox)KeepLatestComboBox).Text, out setting))
+                    AppSettings.KeepLatest = setting;
+                else
+                    AppSettings.KeepLatest = 0;
+
                 AppSettings.Save();
 
                 DialogResult = true;
@@ -284,15 +290,6 @@ namespace Witty
 
             AppSettings.AlwaysOnTop = this.Topmost;
             AppSettings.Save();
-        }
-
-        private void KeepLatestComboBox_SelectionChanged(object sender, SelectionChangedEventArgs e)
-        {
-            if (e.AddedItems.Count >= 0)
-            {
-                AppSettings.KeepLatest = e.AddedItems[0] as int? ?? 0;
-                AppSettings.Save();
-            }
         }
     }
 }
