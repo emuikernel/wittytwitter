@@ -337,7 +337,7 @@ namespace Witty
         {
             if (newTweets.Count > Double.Parse(AppSettings.MaximumIndividualAlerts))
             {
-                Popup p = new Popup(this, 0, "New Tweets", string.Format("You have {0} new tweets!", newTweets.Count), twitter.CurrentlyLoggedInUser.ImageUrl);
+                Popup p = new Popup(this, 0, "New Tweets", BuiltNewTweetMessage(newTweets), twitter.CurrentlyLoggedInUser.ImageUrl);
                 p.FadeOutFinished += new FadeOutFinishedDelegate(RemovePopup);
                 p.ReplyClicked += new PopupReplyClickedDelegate(PopupReplyClicked);
                 p.DirectMessageClicked += new PopupDirectMessageClickedDelegate(PopupDirectMessageClicked);
@@ -359,11 +359,27 @@ namespace Witty
             }
         }
 
+        private static string BuiltNewTweetMessage(TweetCollection newTweets)
+        {
+            string message = string.Format("You have {0} new tweets!\n", newTweets.Count);
+            foreach (Tweet tweet in newTweets)
+            {
+                message += " " + tweet.User.ScreenName;
+            }
+            if (message.Length > 140)
+            {
+                message = message.Substring(0, 135);
+                int lastSpace = message.LastIndexOf(' ');
+                message = message.Substring(0, lastSpace) + "...";
+            }
+            return message;
+        }
+
         private void SnarlNotify(TweetCollection newTweets)
         {
             if (newTweets.Count > Double.Parse(AppSettings.MaximumIndividualAlerts))
             {
-                SnarlInterface.SendMessage("New Tweets", string.Format("You have {0} new tweets!", newTweets.Count), "", 4);
+                SnarlInterface.SendMessage("New Tweets", BuiltNewTweetMessage(newTweets), "", 4);
             }
             else
             {
