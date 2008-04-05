@@ -17,7 +17,7 @@
     <UpgradeBackupLocation>
     </UpgradeBackupLocation>
     <OldToolsVersion>2.0</OldToolsVersion>
-    <SignManifests>false</SignManifests>
+    <SignManifests>true</SignManifests>
     <ManifestCertificateThumbprint>E05F24771154009EE3570775B54E71663F186186</ManifestCertificateThumbprint>
     <ManifestKeyFile>Witty_TemporaryKey.pfx</ManifestKeyFile>
     <TargetZone>LocalIntranet</TargetZone>
@@ -37,8 +37,8 @@
     <SupportUrl>http://code.google.com/p/wittytwitter/</SupportUrl>
     <ProductName>Witty</ProductName>
     <PublisherName>Witty Twitter</PublisherName>
-    <ApplicationRevision>8</ApplicationRevision>
-    <ApplicationVersion>0.1.7.8</ApplicationVersion>
+    <ApplicationRevision>9</ApplicationRevision>
+    <ApplicationVersion>0.1.7.9</ApplicationVersion>
     <UseApplicationTrust>false</UseApplicationTrust>
     <BootstrapperEnabled>false</BootstrapperEnabled>
   </PropertyGroup>
