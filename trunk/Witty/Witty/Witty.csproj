@@ -37,8 +37,8 @@
     <SupportUrl>http://code.google.com/p/wittytwitter/</SupportUrl>
     <ProductName>Witty</ProductName>
     <PublisherName>Witty Twitter</PublisherName>
-    <ApplicationRevision>5</ApplicationRevision>
-    <ApplicationVersion>0.1.7.5</ApplicationVersion>
+    <ApplicationRevision>8</ApplicationRevision>
+    <ApplicationVersion>0.1.7.8</ApplicationVersion>
     <UseApplicationTrust>false</UseApplicationTrust>
     <BootstrapperEnabled>false</BootstrapperEnabled>
   </PropertyGroup>
