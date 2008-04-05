@@ -103,6 +103,8 @@ namespace Witty
 
             InitializeClickOnceTimer();
 
+            InitializeSoundPlayer();
+
             ScrollViewer.SetCanContentScroll(TweetsListBox, !AppSettings.SmoothScrolling);
 
             //Register with Snarl if available
@@ -230,6 +232,8 @@ namespace Witty
                 return selectedTweet;
             }
         }
+
+        SoundPlayer _player; 
         #endregion
 
         #region Retrieve new tweets
@@ -310,9 +314,23 @@ namespace Witty
                 NotifyOnNewTweets(addedTweets);
                 if (AppSettings.PlaySounds)
                 {
-                    // Play tweets found sound for new tweets
-                    SoundPlayer player = new SoundPlayer(Witty.Properties.Resources.alert);
-                    player.Play();
+                    // Author: Keith Elder
+                    // I wrapped a try catch around this and added logging.
+                    // I found that the Popup screen and this were causing 
+                    // a threading issue.  At least that is my theory.  When
+                    // new items would come in, and play a sound as well as 
+                    // pop a new message there was no need to recreate and load
+                    // the wave file.  InitializeSoundPlayer() was added on load
+                    // to do that just once.
+                    try
+                    {
+                        // Play tweets found sound for new tweets
+                        _player.Play();
+                    }
+                    catch (Exception ex)
+                    {
+                        App.Logger.Error("Error playing sound", ex);
+                    }
                 }
             }
 
@@ -822,6 +840,12 @@ namespace Witty
                 // update window with clickonce version number
                 this.Title = AppSettings.ApplicationName + " " + ApplicationDeployment.CurrentDeployment.CurrentVersion.ToString();
             }
+        }
+
+        private void InitializeSoundPlayer()
+        {
+            _player = new SoundPlayer(Witty.Properties.Resources.alert);
+            _player.LoadAsync();
         }
 
         void _clickOnceUpdateTimer_Tick(object sender, EventArgs e)
