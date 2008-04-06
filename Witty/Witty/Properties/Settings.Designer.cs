@@ -223,7 +223,7 @@ namespace Witty.Properties {
         
         [global::System.Configuration.UserScopedSettingAttribute()]
         [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
-        [global::System.Configuration.DefaultSettingValueAttribute("0")]
+        [global::System.Configuration.DefaultSettingValueAttribute("")]
         public string ProxyPassword {
             get {
                 return ((string)(this["ProxyPassword"]));
@@ -272,6 +272,30 @@ namespace Witty.Properties {
             }
             set {
                 this["MinimizeOnClose"] = value;
+            }
+        }
+		
+		[global::System.Configuration.UserScopedSettingAttribute()]
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+        [global::System.Configuration.DefaultSettingValueAttribute("True")]
+        public bool DisplayNotifications {
+            get {
+                return ((bool)(this["DisplayNotifications"]));
+            }
+            set {
+                this["DisplayNotifications"] = value;
+            }
+        }
+		
+		[global::System.Configuration.UserScopedSettingAttribute()]
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+        [global::System.Configuration.DefaultSettingValueAttribute("10")]
+        public string NotificationDisplayTime {
+            get {
+                return ((string)(this["NotificationDisplayTime"]));
+            }
+            set {
+                this["NotificationDisplayTime"] = value;
             }
         }
     }

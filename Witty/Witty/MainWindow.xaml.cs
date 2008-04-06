@@ -311,7 +311,9 @@ namespace Witty
 
             if (addedTweets.Count > 0)
             {
-                NotifyOnNewTweets(addedTweets);
+                if (AppSettings.DisplayNotifications)
+                    NotifyOnNewTweets(addedTweets);                
+
                 if (AppSettings.PlaySounds)
                 {
                     // Author: Keith Elder

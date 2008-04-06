@@ -63,6 +63,15 @@ namespace Witty
             {
                 MaxIndSlider.Value = Double.Parse(AppSettings.MaximumIndividualAlerts);
             }
+
+            DisplayNotificationsCheckBox.IsChecked = AppSettings.DisplayNotifications;
+
+            if (!string.IsNullOrEmpty(AppSettings.NotificationDisplayTime))
+            {
+                NotificationDisplayTimeSlider.Value = Double.Parse(AppSettings.NotificationDisplayTime);
+            }
+
+
         }
 
         #region PlaySounds
@@ -215,6 +224,26 @@ namespace Witty
 
         #endregion
 
+        #region "Notifications"
+
+        public bool DisplayNotifications
+        {
+            get { return (bool)GetValue(DisplayNotificationsProperty); }
+            set { SetValue(MinimizeToTrayProperty, value); }
+        }
+
+        public static readonly DependencyProperty DisplayNotificationsProperty =
+            DependencyProperty.Register("DisplayNotifications", typeof(bool), typeof(Options),
+            new FrameworkPropertyMetadata(false, new PropertyChangedCallback(OnDisplayNotificationsChanged)));
+
+        private static void OnDisplayNotificationsChanged(DependencyObject obj, DependencyPropertyChangedEventArgs args)
+        {
+            Properties.Settings.Default.DisplayNotifications = (bool)args.NewValue;
+            Properties.Settings.Default.Save();
+        }
+
+        #endregion
+
         private void DoneButton_Click(object sender, RoutedEventArgs e)
         {
             if (InputIsValid())
@@ -231,6 +260,7 @@ namespace Witty
                 AppSettings.ProxyPassword = ProxyPasswordTextBox.Password;
 
                 AppSettings.MaximumIndividualAlerts = MaxIndTextBlock.Text;
+                AppSettings.NotificationDisplayTime = NotificationDisplayTimeTextBlock.Text;
 
                 int setting;
                 if (int.TryParse(((ComboBox)KeepLatestComboBox).Text, out setting))

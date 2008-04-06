@@ -17,7 +17,7 @@ namespace Witty
     {        
         private MainWindow parent;
         private Storyboard sbFadeOut;
-        private Storyboard ShowPopup;
+        private Storyboard ShowPopup;        
         private TimeSpan ts = new TimeSpan();
         public event FadeOutFinishedDelegate FadeOutFinished;
         public event PopupReplyClickedDelegate ReplyClicked;
@@ -39,8 +39,18 @@ namespace Witty
 
             this.Topmost = true;
 
-            sbFadeOut = (Storyboard)FindResource("sbFadeOut");
+            sbFadeOut = (Storyboard)FindResource("sbFadeOut");            
             sbFadeOut.Completed += new EventHandler(sbFadeOut_Completed);
+
+            DoubleAnimationUsingKeyFrames animation = new DoubleAnimationUsingKeyFrames();
+            Storyboard.SetTargetName(animation, "MainGrid");
+            Storyboard.SetTargetProperty(animation, new PropertyPath(UIElement.OpacityProperty));            
+
+            animation.KeyFrames.Add(new SplineDoubleKeyFrame(1, KeyTime.FromTimeSpan(TimeSpan.FromSeconds(0))));
+            animation.KeyFrames.Add(new SplineDoubleKeyFrame(1, KeyTime.FromTimeSpan(TimeSpan.FromSeconds(Double.Parse(Properties.Settings.Default.NotificationDisplayTime)))));
+            animation.KeyFrames.Add(new SplineDoubleKeyFrame(0, KeyTime.FromTimeSpan(TimeSpan.FromSeconds(Double.Parse(Properties.Settings.Default.NotificationDisplayTime) + 1))));
+
+            sbFadeOut.Children.Add(animation);
 
             ShowPopup = (Storyboard)FindResource("ShowPopup");
             ShowPopup.Completed += new EventHandler(ShowPopup_Completed);
