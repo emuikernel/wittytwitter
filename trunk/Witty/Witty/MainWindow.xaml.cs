@@ -13,6 +13,7 @@ using Snarl;
 using TwitterLib;
 using TwitterLib.Utilities;
 using Witty.ClickOnce;
+using Witty.Properties;
 
 namespace Witty
 {
@@ -29,6 +30,9 @@ namespace Witty
 #if DEBUG
             Title = Title + " Debug";
 #endif
+
+            // Trap unhandled exceptions
+            LayoutRoot.Dispatcher.UnhandledException += new DispatcherUnhandledExceptionEventHandler(Dispatcher_UnhandledException);
 
             #region Minimize to tray setup
 
@@ -823,6 +827,33 @@ namespace Witty
         #endregion
 
         #region Misc Methods and Event Handlers
+
+        /// <summary>
+        /// This event is VERY important since it traps errors that happen unexpectedly.  Witty has been unstable
+        /// due to the fact that there are actions in the API that don't account for the business rules.  So when 
+        /// an action occurs, witty crashes.  This handler traps those errors and logs them.  
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="e"></param>
+        void Dispatcher_UnhandledException(object sender, DispatcherUnhandledExceptionEventArgs e)
+        {
+            //TODO: Figure out a better option to do with these unhandled exceptions.  Maybe email them or something?
+            App.Logger.Error("Unhandled exception occurred.", e.Exception);
+#if DEBUG
+            string error = String.Empty;
+            if (e.Exception.InnerException != null)
+            {
+                error = e.Exception.InnerException.Message;
+            }
+            else
+            {
+                error = e.Exception.Message;
+            }
+            MessageBox.Show("An unhandled error occurred. See the log for details.\nError: " + error, "Error", MessageBoxButton.OK, MessageBoxImage.Error);
+#endif
+            e.Handled = true;
+        }
+
         private void InitializeClickOnceTimer()
         {
             if (ApplicationDeployment.IsNetworkDeployed)
@@ -987,9 +1018,21 @@ namespace Witty
 
         private void deleteTweet(double id)
         {
-            LayoutRoot.Dispatcher.BeginInvoke(
-                DispatcherPriority.Normal,
-                new DeleteTweetDelegate(twitter.DestroyTweet), id);
+
+            /* By: Keith Elder
+             * You can only destroy a tweet if you are the one that created it
+             * or if it is a direct message to you.  This is causing exceptions.
+             */
+            if (SelectedTweet.User.ScreenName == Settings.Default.Username)
+            {
+                if (MessageBoxResult.Yes == MessageBox.Show("Are you sure you want to permanently delete your tweet?\nThis action is irreversible. Select No to only delete it from the application or Yes to delete permanently.", Settings.Default.ApplicationName, MessageBoxButton.YesNo, MessageBoxImage.Question))
+                {
+                    LayoutRoot.Dispatcher.BeginInvoke(
+                                    DispatcherPriority.Normal,
+                                    new DeleteTweetDelegate(twitter.DestroyTweet), id);
+                }
+            }
+            
 
             if (tweets.Contains(SelectedTweet))
             {
@@ -1578,5 +1621,6 @@ namespace Witty
         }
 
         #endregion
+
     }
 }
