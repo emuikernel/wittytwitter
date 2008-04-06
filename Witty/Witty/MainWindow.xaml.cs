@@ -41,7 +41,7 @@ namespace Witty
             _notifyIcon.BalloonTipTitle = "Witty";
             _notifyIcon.Text = "Witty - The WPF Twitter Client";
             _notifyIcon.Icon = Witty.Properties.Resources.AppIcon;
-            _notifyIcon.Click += new EventHandler(m_notifyIcon_Click);
+            _notifyIcon.DoubleClick += new EventHandler(m_notifyIcon_Click);
 
             System.Windows.Forms.ContextMenu notifyMenu = new System.Windows.Forms.ContextMenu();
             System.Windows.Forms.MenuItem openMenuItem = new System.Windows.Forms.MenuItem();
