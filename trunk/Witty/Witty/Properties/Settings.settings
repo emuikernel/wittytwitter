@@ -45,7 +45,7 @@
       <Value Profile="(Default)" />
     </Setting>
     <Setting Name="ProxyPassword" Type="System.String" Scope="User">
-      <Value Profile="(Default)">0</Value>
+      <Value Profile="(Default)" />
     </Setting>
     <Setting Name="MaximumIndividualAlerts" Type="System.String" Scope="User">
       <Value Profile="(Default)">5</Value>
@@ -58,6 +58,12 @@
     </Setting>
     <Setting Name="MinimizeOnClose" Type="System.Boolean" Scope="User">
       <Value Profile="(Default)">False</Value>
+    </Setting>
+	<Setting Name="DisplayNotifications" Type="System.Boolean" Scope="User">
+      <Value Profile="(Default)">True</Value>
+    </Setting>
+	<Setting Name="NotificationDisplayTime" Type="System.String" Scope="User">
+      <Value Profile="(Default)">10</Value>
     </Setting>
   </Settings>
 </SettingsFile>

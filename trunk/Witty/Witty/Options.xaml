@@ -165,13 +165,21 @@
         </StackPanel>
       </Border>
 
-      <Border Tag="Notifications" >
-        <DockPanel Width="480" Height="240" LastChildFill="False">
-          <Label x:Name="_MaxIndAlerts" VerticalAlignment="Top" Width="Auto" Height="Auto" Content="Maximum Individual Notifications:"/>
-          <Slider x:Name="MaxIndSlider" VerticalAlignment="Top" Width="Auto" Height="Auto" LargeChange="5" Maximum="25" Minimum="1" SmallChange="1" TickFrequency="2" TickPlacement="BottomRight"/>
-          <TextBlock Margin="10,5,10,5" x:Name="MaxIndTextBlock" VerticalAlignment="Top" Width="20" Height="20" Text="{Binding Path=Value, Converter={StaticResource RoundConverter}, ElementName=MaxIndSlider, Mode=Default}" TextAlignment="Center" TextWrapping="Wrap"/>
-        </DockPanel>
-      </Border>
+      <Border Padding="15,15,15,15" Tag="Notifications" >
+        <StackPanel>
+            <CheckBox Content="Display notifications" x:Name="DisplayNotificationsCheckBox" IsChecked="{Binding Path=DisplayNotifications, ElementName=Window, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"/>
+            <DockPanel LastChildFill="False">
+                <Label x:Name="_MaxIndAlerts" VerticalAlignment="Top" Width="Auto" Height="Auto" Content="Maximum Individual Notifications:"/>
+                <Slider x:Name="MaxIndSlider" VerticalAlignment="Top" Width="Auto" Height="Auto" LargeChange="5" Maximum="25" Minimum="1" SmallChange="1" TickFrequency="2" TickPlacement="BottomRight"/>
+                <TextBlock Margin="10,5,10,5" x:Name="MaxIndTextBlock" VerticalAlignment="Top" Width="20" Height="20" Text="{Binding Path=Value, Converter={StaticResource RoundConverter}, ElementName=MaxIndSlider, Mode=Default}" TextAlignment="Center" TextWrapping="Wrap"/>
+            </DockPanel>
+            <DockPanel LastChildFill="False">
+                <Label x:Name="_NotificationDisplayTime" VerticalAlignment="Top" Width="Auto" Height="Auto" Content="Number of seconds to display notifications:"/>
+                <Slider x:Name="NotificationDisplayTimeSlider" VerticalAlignment="Top" Width="Auto" Height="Auto" LargeChange="5" Maximum="60" Minimum="1" SmallChange="1" TickFrequency="5" TickPlacement="BottomRight"/>
+                <TextBlock Margin="10,5,10,5" x:Name="NotificationDisplayTimeTextBlock" VerticalAlignment="Top" Width="20" Height="20" Text="{Binding Path=Value, Converter={StaticResource RoundConverter}, ElementName=NotificationDisplayTimeSlider, Mode=Default}" TextAlignment="Center" TextWrapping="Wrap"/>
+            </DockPanel>
+        </StackPanel>
+    </Border>
 
       <Border Padding="15,15,15,15" Tag="Updates">
         <StackPanel>

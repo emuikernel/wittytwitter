@@ -9,13 +9,8 @@
     ShowInTaskbar="False" 
     Background="{x:Null}" 
     WindowStartupLocation="Manual">
-  <Window.Resources>
-    <Storyboard x:Key="sbFadeOut">
-      <DoubleAnimationUsingKeyFrames BeginTime="00:00:00" Storyboard.TargetName="MainGrid" Storyboard.TargetProperty="(UIElement.Opacity)">
-        <SplineDoubleKeyFrame KeyTime="00:00:00" Value="1"/>
-        <SplineDoubleKeyFrame KeyTime="00:00:10" Value="1"/>
-        <SplineDoubleKeyFrame KeyTime="00:00:11" Value="0"/>
-      </DoubleAnimationUsingKeyFrames>
+  <Window.Resources>    
+    <Storyboard x:Key="sbFadeOut">      
     </Storyboard>
     <Storyboard x:Key="ShowPopup">
       <DoubleAnimationUsingKeyFrames BeginTime="00:00:00" Storyboard.TargetName="MainGrid" Storyboard.TargetProperty="(FrameworkElement.Height)">
