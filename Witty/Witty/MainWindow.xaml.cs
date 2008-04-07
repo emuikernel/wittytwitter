@@ -366,6 +366,7 @@ namespace Witty
                 p.ReplyClicked += new PopupReplyClickedDelegate(PopupReplyClicked);
                 p.DirectMessageClicked += new PopupDirectMessageClickedDelegate(PopupDirectMessageClicked);
                 p.MouseLeftButtonUp += new MouseButtonEventHandler(PopupClicked);
+                p.CloseButtonClicked += new PopupCloseButtonClickedDelegate(RemovePopup);
                 p.Show();
             }
             else
@@ -378,6 +379,7 @@ namespace Witty
                     p.ReplyClicked += new PopupReplyClickedDelegate(PopupReplyClicked);
                     p.DirectMessageClicked += new PopupDirectMessageClickedDelegate(PopupDirectMessageClicked);
                     p.MouseLeftButtonUp += new MouseButtonEventHandler(PopupClicked);
+                    p.CloseButtonClicked += new PopupCloseButtonClickedDelegate(RemovePopup);
                     p.Show();
                 }
             }

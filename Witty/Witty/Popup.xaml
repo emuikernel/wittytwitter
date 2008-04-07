@@ -24,8 +24,8 @@
         <SplineDoubleKeyFrame KeyTime="00:00:00.5000000" Value="0" KeySpline="0,0,0,1"/>
         <SplineDoubleKeyFrame KeyTime="00:00:00.7000000" Value="290" KeySpline="0,0,0,1"/>
       </DoubleAnimationUsingKeyFrames>
-    </Storyboard>
-  </Window.Resources>
+    </Storyboard>                                
+    </Window.Resources>
   <Grid x:Name="MainGrid" MouseEnter="Window_MouseMove" MouseLeave="Grid_MouseLeave" HorizontalAlignment="Center" VerticalAlignment="Center">
     <Grid.BitmapEffect>
       <OuterGlowBitmapEffect GlowColor="#FF000000" Opacity="0.75" />
@@ -55,6 +55,7 @@
       <Grid.ColumnDefinitions>
         <ColumnDefinition Width="50" />
         <ColumnDefinition Width="*" />
+        <ColumnDefinition Width="30" />
       </Grid.ColumnDefinitions>
       <Grid.RowDefinitions>
         <RowDefinition Height="30"></RowDefinition>
@@ -62,7 +63,24 @@
       </Grid.RowDefinitions>
       <Image x:Name="avatarImage" Grid.Column="0" Grid.RowSpan="2" Margin="5" Height="40" Width="40" VerticalAlignment="Top" HorizontalAlignment="Left"  Source="http://s3.amazonaws.com/twitter_production/profile_images/51583290/antitrumpet_bigger.png"/>
       <TextBlock x:Name="userName" Grid.Row="0" Grid.Column="1" Width="150" Margin="5" Height="25" HorizontalAlignment="Left" VerticalAlignment="Top" FontWeight="Bold" FontSize="16" Text="testuser"/> 
-      <TextBlock x:Name="tweetText" Grid.Row="1" Grid.Column="1" TextWrapping="Wrap" TextAlignment="Left" Margin="5,5,3,10" Text="Lorem ipsum dolor sit amet, consectetuer adipiscing elit. Vivamus elementum dui quis ipsum. Vivamus lorem. Aenean vehicula, tortor sit amet"/>
+      <TextBlock x:Name="tweetText" Grid.Row="1" Grid.Column="1" Grid.ColumnSpan="2" TextWrapping="Wrap" TextAlignment="Left" Margin="5,5,3,10" Text="Lorem ipsum dolor sit amet, consectetuer adipiscing elit. Vivamus elementum dui quis ipsum. Vivamus lorem. Aenean vehicula, tortor sit amet"/>                  
+        <Button x:Name="closeButton" Grid.Column="2" Grid.Row="0" Margin="5" Click="closeButton_Click">
+            <Button.Template>
+                <ControlTemplate>
+                    <Grid>
+                        <Canvas>
+                            <Rectangle Width="16" Height="16" Canvas.Left="2" Canvas.Top="2" Stretch="Fill" StrokeLineJoin="Round" Stroke="#FF5D5D5D"/>
+                            <Viewbox Width="12" Height="12" Canvas.Left="4" Canvas.Top="4">
+                                <Canvas Width="12" Height="12">
+                                    <Path Width="12" Height="12" Canvas.Left="0" Canvas.Top="0" Stretch="Fill" Fill="#FF5D5D5D" Data="F1 M 0,9.94287L 9.94284,3.05176e-005L 12,2.05716L 2.05716,12L 0,9.94287 Z "/>
+                                    <Path Width="12" Height="12" Canvas.Left="0" Canvas.Top="0" Stretch="Fill" Fill="#FF5D5D5D" Data="F1 M 2.05716,0L 12,9.94284L 9.94284,12L 0,2.05713L 2.05716,0 Z "/>
+                                </Canvas>
+                            </Viewbox>
+                        </Canvas>                
+                    </Grid>
+                </ControlTemplate>
+            </Button.Template>
+        </Button>        
     </Grid>
   </Grid>
 </Window>

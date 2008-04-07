@@ -8,7 +8,8 @@ namespace Witty
 {
     public delegate void FadeOutFinishedDelegate(Popup p);
     public delegate void PopupReplyClickedDelegate(string screenName);
-    public delegate void PopupDirectMessageClickedDelegate(string screenName);    
+    public delegate void PopupDirectMessageClickedDelegate(string screenName);
+    public delegate void PopupCloseButtonClickedDelegate(Popup p);
 
     /// <summary>
     /// Interaction logic for Popup.xaml
@@ -21,7 +22,8 @@ namespace Witty
         private TimeSpan ts = new TimeSpan();
         public event FadeOutFinishedDelegate FadeOutFinished;
         public event PopupReplyClickedDelegate ReplyClicked;
-        public event PopupDirectMessageClickedDelegate DirectMessageClicked;        
+        public event PopupDirectMessageClickedDelegate DirectMessageClicked;
+        public event PopupCloseButtonClickedDelegate CloseButtonClicked;
         
         public Popup(MainWindow parent, Int32 numPopups, String heading, String body, String imageSource)
         {
@@ -96,6 +98,11 @@ namespace Witty
         private void ContextMenuDirectMessageClick_Click(object sender, RoutedEventArgs e)
         {
             DirectMessageClicked(userName.Text);
+        }        
+
+        private void closeButton_Click(object sender, RoutedEventArgs e)
+        {
+            CloseButtonClicked(this);
         }        
     }
 }
