@@ -315,7 +315,7 @@ namespace Witty
 
             if (addedTweets.Count > 0)
             {
-                if (AppSettings.DisplayNotifications)
+                if (AppSettings.DisplayNotifications && !(bool)this.IsActive)
                     NotifyOnNewTweets(addedTweets);                
 
                 if (AppSettings.PlaySounds)
