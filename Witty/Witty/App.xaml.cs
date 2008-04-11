@@ -6,6 +6,7 @@ using System.Windows;
 using TwitterLib;
 using log4net;
 using log4net.Config;
+using System.Windows.Threading;
 
 namespace Witty
 {
@@ -52,7 +53,7 @@ namespace Witty
         }
 
         /// <summary>
-        /// Gets the collection of skins
+        /// Get the collection of skins
         /// </summary>
         public static NameValueCollection Skins
         {
@@ -60,6 +61,18 @@ namespace Witty
             {
                 return SkinsManager.GetSkins();
             }
+        }
+
+        /// <summary>
+        /// DispatcherUnhandledException is used to catch all unhandled exceptions.
+        /// </summary>
+        private void App_DispatcherUnhandledException(object sender, DispatcherUnhandledExceptionEventArgs e)
+        {
+            // log error for debugging.
+            App.Logger.Error("Unhandled Exception", e.Exception);
+
+            //REMARK: Should we handle the exception and do something more user-friendly here?
+            MessageBox.Show("Witty has encountered an unexpected error. Please restart Witty");
         }
     }
 }
