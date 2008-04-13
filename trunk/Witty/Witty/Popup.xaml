@@ -26,7 +26,7 @@
       </DoubleAnimationUsingKeyFrames>
     </Storyboard>                                
     </Window.Resources>
-  <Grid x:Name="MainGrid" MouseEnter="Window_MouseMove" MouseLeave="Grid_MouseLeave" HorizontalAlignment="Center" VerticalAlignment="Center">
+  <Grid x:Name="MainGrid" MouseEnter="Window_MouseMove" MouseLeave="Grid_MouseLeave" MouseLeftButtonUp="MainGrid_MouseLeftButtonUp" HorizontalAlignment="Center" VerticalAlignment="Center">
     <Grid.BitmapEffect>
       <OuterGlowBitmapEffect GlowColor="#FF000000" Opacity="0.75" />
     </Grid.BitmapEffect>
