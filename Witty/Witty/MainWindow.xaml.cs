@@ -361,11 +361,11 @@ namespace Witty
         {
             if (newTweets.Count > Double.Parse(AppSettings.MaximumIndividualAlerts))
             {
-                Popup p = new Popup(this, 0, "New Tweets", BuiltNewTweetMessage(newTweets), twitter.CurrentlyLoggedInUser.ImageUrl);
+                Popup p = new Popup("New Tweets", BuiltNewTweetMessage(newTweets), twitter.CurrentlyLoggedInUser.ImageUrl, 0);
                 p.FadeOutFinished += new FadeOutFinishedDelegate(RemovePopup);
                 p.ReplyClicked += new PopupReplyClickedDelegate(PopupReplyClicked);
                 p.DirectMessageClicked += new PopupDirectMessageClickedDelegate(PopupDirectMessageClicked);
-                p.MouseLeftButtonUp += new MouseButtonEventHandler(PopupClicked);
+                p.Clicked += new PopupClickedDelegate(PopupClicked);
                 p.CloseButtonClicked += new PopupCloseButtonClickedDelegate(RemovePopup);
                 p.Show();
             }
@@ -374,11 +374,11 @@ namespace Witty
                 int index = 0;
                 foreach (Tweet tweet in newTweets)
                 {
-                    Popup p = new Popup(this, index++, tweet.User.ScreenName, tweet.Text, tweet.User.ImageUrl);
+                    Popup p = new Popup(tweet, index++);
                     p.FadeOutFinished += new FadeOutFinishedDelegate(RemovePopup);
                     p.ReplyClicked += new PopupReplyClickedDelegate(PopupReplyClicked);
                     p.DirectMessageClicked += new PopupDirectMessageClickedDelegate(PopupDirectMessageClicked);
-                    p.MouseLeftButtonUp += new MouseButtonEventHandler(PopupClicked);
+                    p.Clicked += new PopupClickedDelegate(PopupClicked);
                     p.CloseButtonClicked += new PopupCloseButtonClickedDelegate(RemovePopup);
                     p.Show();
                 }
@@ -1393,12 +1393,17 @@ namespace Witty
             createDirectMessage(screenName);
         }
 
-        void PopupClicked(object sender, MouseButtonEventArgs e)
+        void PopupClicked(Tweet tweet)
         {
             if (this.WindowState == WindowState.Minimized)
             {
                 Show();
                 WindowState = _storedWindowState;
+            }
+
+            if (tweet != null)
+            {
+                TweetsListBox.ScrollIntoView(tweet);
             }
         }
 

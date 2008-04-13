@@ -3,6 +3,7 @@ using System.Windows;
 using System.Windows.Input;
 using System.Windows.Media;
 using System.Windows.Media.Animation;
+using TwitterLib;
 
 namespace Witty
 {
@@ -10,13 +11,14 @@ namespace Witty
     public delegate void PopupReplyClickedDelegate(string screenName);
     public delegate void PopupDirectMessageClickedDelegate(string screenName);
     public delegate void PopupCloseButtonClickedDelegate(Popup p);
+    public delegate void PopupClickedDelegate(Tweet tweet);
 
     /// <summary>
     /// Interaction logic for Popup.xaml
     /// </summary>
     public partial class Popup : Window
-    {        
-        private MainWindow parent;
+    {
+        private Tweet _tweet;
         private Storyboard sbFadeOut;
         private Storyboard ShowPopup;        
         private TimeSpan ts = new TimeSpan();
@@ -24,14 +26,19 @@ namespace Witty
         public event PopupReplyClickedDelegate ReplyClicked;
         public event PopupDirectMessageClickedDelegate DirectMessageClicked;
         public event PopupCloseButtonClickedDelegate CloseButtonClicked;
-        
-        public Popup(MainWindow parent, Int32 numPopups, String heading, String body, String imageSource)
+        public event PopupClickedDelegate Clicked;
+
+        public Popup(Tweet tweet, Int32 numPopups) : this(tweet.User.ScreenName, tweet.Text, tweet.User.ImageUrl, numPopups)
+        {
+            _tweet = tweet;             
+        }
+
+        public Popup(String heading, String body, String imageSource, Int32 numPopups)
         {
             InitializeComponent();
 
             this.Left = SystemParameters.VirtualScreenWidth - this.Width;
             this.Top = SystemParameters.WorkArea.Height - (this.Height * (numPopups + 1));
-            this.parent = parent;
 
             tweetText.Text = body;
             userName.Text = heading;
@@ -103,6 +110,11 @@ namespace Witty
         private void closeButton_Click(object sender, RoutedEventArgs e)
         {
             CloseButtonClicked(this);
+        }
+
+        private void MainGrid_MouseLeftButtonUp(object sender, MouseButtonEventArgs e)
+        {
+            Clicked(_tweet);
         }        
     }
 }
