@@ -134,7 +134,6 @@ namespace Witty
                 {
                     _notifyIcon.ShowBalloonTip(2000);
                 }
-
             }
         }
 
