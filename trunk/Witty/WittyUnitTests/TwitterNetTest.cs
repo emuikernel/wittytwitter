@@ -1,6 +1,7 @@
 ﻿using NUnit.Framework;
 using System;
 using TwitterLib;
+using System.Security;
 
 namespace WittyUnitTests
 {
@@ -8,7 +9,7 @@ namespace WittyUnitTests
     public class TwitterNetTest
     {
         protected string username;
-        protected string password;
+        protected SecureString password;
         protected int userId;
         protected int friendsCount;
 
@@ -20,7 +21,7 @@ namespace WittyUnitTests
         public void Init()
         {
             username = "WittyTest";
-            password = "WittyTest";
+            password = TwitterNet.ToSecureString("WittyTest");
             userId = 14203624; // WittyTest's Twitter id
 
             TwitterNet twitter = new TwitterNet(username, password);
