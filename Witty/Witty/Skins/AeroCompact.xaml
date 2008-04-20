@@ -84,32 +84,21 @@
         </ColorAnimationUsingKeyFrames>
       </Storyboard>
     </DataTemplate.Resources>
-    <Grid x:Name="grid" Background="#01FFFFFF">
-      <Grid.ColumnDefinitions>
-        <ColumnDefinition Width="65" />
-        <ColumnDefinition Width="*" />
-      </Grid.ColumnDefinitions>
-      <Grid.RowDefinitions>
-        <RowDefinition Height="Auto" />
-        <RowDefinition Height="*" />
-      </Grid.RowDefinitions>
-      <aero:SystemDropShadowChrome Grid.RowSpan="2" HorizontalAlignment="Left" VerticalAlignment="Top" Margin="5,5,0,0">
-        <Border Width="50" Height="50" Background="#FFF" BorderBrush="{DynamicResource ImageBorderBrush}" BorderThickness="2">
-          <Image Width="48" Height="48" Source="{Binding Path=Sender.ImageUrl}" x:Name="UserImage" />
-        </Border>
-      </aero:SystemDropShadowChrome>
-      <DockPanel Grid.Row="0" Grid.Column="1" VerticalAlignment="Top">
-        <TextBlock Text="{Binding Path=Sender.ScreenName, FallbackValue=Screen Name}" FontWeight="Bold" FontSize="16" VerticalAlignment="Bottom" HorizontalAlignment="Left" x:Name="ScreenName" Cursor="Hand" ToolTip="View this user's recent tweets" />
-        <Button Width="20" Height="20" HorizontalAlignment="Right" Margin="0,0,5,0" Visibility="Collapsed" x:Name="ReplyButton">
-          <TextBlock TextWrapping="Wrap" Text="@" VerticalAlignment="Center" />
-        </Button>
-      </DockPanel>
-      <WrapPanel Grid.Column="1" Grid.Row="1">
-        <local:TweetTextBlock x:Name="TweetText" TweetText="{Binding Path=Text, FallbackValue=Tweet Text}" TextWrapping="Wrap" Margin="0,0,5,0" />
-        <TextBlock Text="{Binding Path=RelativeTime, FallbackValue=1 minute ago}" FontStyle="Italic" Margin="0,0,3.5,0" Foreground="{DynamicResource SubForegroundBrush}" ToolTip="{Binding Path=DateCreated, Mode=Default}" />
-      </WrapPanel>
-    </Grid>
-    <DataTemplate.Triggers>
+        <DockPanel x:Name="grid" Background="#01FFFFFF">
+            <Image DockPanel.Dock="Left" Width="35" Height="35" Margin="0,0,5,0" Source="{Binding Path=Sender.ImageUrl, Converter={StaticResource ImageConverter}}" x:Name="UserImage" />
+            <StackPanel DockPanel.Dock="Right" Width="Auto">
+                <DockPanel VerticalAlignment="Top">
+                    <TextBlock Text="{Binding Path=Sender.ScreenName, FallbackValue=Screen Name}" FontWeight="Bold" FontSize="12" VerticalAlignment="Bottom" HorizontalAlignment="Left" x:Name="ScreenName" Cursor="Hand" ToolTip="View this user's recent tweets" />
+                <Button Width="20" Height="Auto" HorizontalAlignment="Right" Margin="0,0,2,0" Visibility="Collapsed" x:Name="ReplyButton">
+                    <TextBlock TextWrapping="Wrap" Text="@" VerticalAlignment="Center" x:Name="textBlock" />
+                </Button>
+                <TextBlock VerticalAlignment="Center" FontSize="9" Text="{Binding Path=RelativeTime, FallbackValue=1 minute ago}" FontStyle="Italic" Margin="2,2,2,2" Foreground="{DynamicResource SubForegroundBrush}" ToolTip="{Binding Path=DateCreated, Mode=Default}" />
+                <TextBlock VerticalAlignment="Center" FontSize="9" Text="{Binding Path=Source, Mode=Default, FallbackValue=from web}" FontStyle="Italic" TextTrimming="CharacterEllipsis" Foreground="{DynamicResource SubForegroundBrush}" />
+              </DockPanel>
+                <local:TweetTextBlock x:Name="TweetText" FontSize="11" TweetText="{Binding Path=Text, FallbackValue=Tweet Text}" TextWrapping="Wrap" Margin="0,0,1,0" />
+            </StackPanel>
+        </DockPanel>
+        <DataTemplate.Triggers>
       <DataTrigger Binding="{Binding Path=IsNew}" Value="True">
         <DataTrigger.EnterActions>
           <BeginStoryboard Storyboard="{StaticResource YellowFade}" />
