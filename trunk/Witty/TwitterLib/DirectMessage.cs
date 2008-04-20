@@ -191,6 +191,16 @@ namespace TwitterLib
         }
 
         #endregion
+
+        public Tweet ToTweet()
+        {
+            Tweet tweet = new Tweet();
+            tweet.DateCreated = this.DateCreated;
+            tweet.User = this.Sender;
+            tweet.Text = this.Text;
+            tweet.Id = this.Id;
+            return tweet;
+        }
     }
 
     public class DirectMessageCollection : ObservableCollection<DirectMessage>

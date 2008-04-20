@@ -226,7 +226,7 @@ namespace Witty
                 }
                 else if (this.currentView == CurrentView.Messages)
                 {
-                    if (null != MessagesListBox.SelectedItem) selectedTweet = (Tweet)MessagesListBox.SelectedItem;
+                    if (null != MessagesListBox.SelectedItem) selectedTweet = ((DirectMessage)MessagesListBox.SelectedItem).ToTweet();
                 }
                 else
                 {
@@ -968,9 +968,10 @@ namespace Witty
 
         private void createDirectMessage()
         {
-            if (null != SelectedTweet)
+            Tweet selectedTweet = SelectedTweet as Tweet;
+            if (null != selectedTweet)
             {
-                createDirectMessage(SelectedTweet.User.ScreenName);
+                createDirectMessage(selectedTweet.User.ScreenName);
             }
         }
 
@@ -979,6 +980,7 @@ namespace Witty
             //Direct message to user
             if (!isExpanded)
             {
+                this.Tabs.SelectedIndex = 0;
                 ToggleUpdate();
             }
             TweetTextBox.Text = "";
@@ -991,9 +993,10 @@ namespace Witty
         private void createReply()
         {
             //reply to user
-            if (null != SelectedTweet)
+            Tweet selectedTweet = SelectedTweet as Tweet;
+            if (null != selectedTweet)
             {
-                createReply(SelectedTweet.User.ScreenName);
+                createReply(selectedTweet.User.ScreenName);
             }
         }
 
