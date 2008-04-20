@@ -1,11 +1,11 @@
 ;Requires Inno Setup - http://www.jrsoftware.org/isinfo.php
 
 [Setup]
-AppName=Witty 0.1.7 Beta 1
-AppVerName=Witty 0.1.7 Beta 1
-AppVersion=0.1.7 Beta 1
-VersionInfoVersion=0.1.7.1
-OutputBaseFilename=Setup-Witty-0.1.7-Beta1
+AppName=Witty - Nightly Build
+AppVerName=Witty Nightly
+AppVersion=0.1.7 Nightly
+VersionInfoVersion=0.1.7.99
+OutputBaseFilename=Setup-Witty-Nightly
 AppPublisherURL=http://code.google.com/p/wittytwitter/
 AppSupportURL=http://code.google.com/p/wittytwitter/
 AppUpdatesURL=http://code.google.com/p/wittytwitter/
@@ -16,7 +16,7 @@ OutputDir=..\..\..\Installer
 SourceDir=..\Witty\bin\Release\
 AppID={{BA21EA94-D0A0-11DC-AE7E-C71856D89593}
 
-SetupIconFile=C:\Projects\Jon\WittyTwitter\Witty\Witty\Resources\AppIcon.ico
+SetupIconFile=..\..\Resources\AppIcon.ico
 Compression=lzma
 SolidCompression=true
 
