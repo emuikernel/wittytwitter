@@ -1,6 +1,7 @@
 ﻿using System.Collections.Specialized;
 using System.Globalization;
 using System.IO;
+using System.Reflection;
 
 namespace Witty
 {
@@ -10,7 +11,9 @@ namespace Witty
         {
             NameValueCollection skins = new NameValueCollection();
 
-            foreach (string folder in Directory.GetDirectories(@".\"))
+            var rootFolder = new FileInfo(Assembly.GetExecutingAssembly().Location).DirectoryName;
+
+            foreach (string folder in Directory.GetDirectories(rootFolder))
             {
                 foreach (string file in Directory.GetFiles(folder))
                 {
@@ -21,7 +24,7 @@ namespace Witty
                         //skins.Add(fileInfo.Name.Remove(fileInfo.Name.IndexOf(".xaml")),
                         //    Path.Combine(folder, fileInfo.Name));
 
-                        skins.Add(Path.Combine(folder, fileInfo.Name), Path.Combine(folder, fileInfo.Name));
+                        skins.Add(fileInfo.FullName.Substring(rootFolder.Length + 1), fileInfo.FullName);
                     }
                 }
             }
