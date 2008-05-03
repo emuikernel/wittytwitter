@@ -651,7 +651,7 @@ namespace TwitterLib
         /// <param name="id">id of the direct message to delete</param>
         public void DestroyDirectMessage(double id)
         {
-            string urlToCall = DestroyDirectMessageUrl + id + "." + Format;
+            string urlToCall = DestroyDirectMessageUrl + id + Format;
             MakeDestroyRequestCall(urlToCall);
         }
 
