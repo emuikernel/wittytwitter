@@ -27,7 +27,7 @@ namespace Witty.ClickOnce
     /// the application.
     /// 
     /// The only requirement needed is to pass into the constructor the TextBlock control
-    /// that is going to display the updates.  Only there are two events that fire:
+    /// that is going to display the updates.  There are two events that fire when an update is started:
     /// UpdatedStarted and UpdateCompleted.  Use these to turn timers on or off so
     /// updates don't overlap if the application is running and the user is away 
     /// from the computer for a period of time.
@@ -78,7 +78,7 @@ namespace Witty.ClickOnce
         /// </summary>
         /// <param name="downLoadStatusLabel">TextBlock control used to display download and update information.</param>
         /// <exception cref="NullReferenceException">
-        ///  Throws NullReferenceException is TextBlock is null.
+        ///  Throws NullReferenceException if TextBlock is null.
         /// </exception>
         public Deployment(TextBlock downLoadStatusLabel)
         {
