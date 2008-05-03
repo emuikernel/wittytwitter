@@ -993,10 +993,9 @@ namespace Witty
         private void createReply()
         {
             //reply to user
-            Tweet selectedTweet = SelectedTweet as Tweet;
-            if (null != selectedTweet)
+            if (null != SelectedTweet)
             {
-                createReply(selectedTweet.User.ScreenName);
+                createReply(SelectedTweet.User.ScreenName);
             }
         }
 
@@ -1035,16 +1034,15 @@ namespace Witty
                                     DispatcherPriority.Normal,
                                     new DeleteTweetDelegate(twitter.DestroyTweet), id);
                 }
-            }
-            
 
-            if (tweets.Contains(SelectedTweet))
-            {
-                tweets.Remove(SelectedTweet);
-            }
-            else if (replies.Contains(SelectedTweet))
-            {
-                replies.Remove(SelectedTweet);
+                if (tweets.Contains(SelectedTweet))
+                {
+                    tweets.Remove(SelectedTweet);
+                }
+                else if (replies.Contains(SelectedTweet))
+                {
+                    replies.Remove(SelectedTweet);
+                }
             }
         }
 
