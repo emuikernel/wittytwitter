@@ -3,8 +3,8 @@
 [Setup]
 AppName=Witty - Nightly Build
 AppVerName=Witty Nightly
-AppVersion=0.1.7 Nightly
-VersionInfoVersion=0.1.7.99
+AppVersion=0.1.8 Nightly
+VersionInfoVersion=0.1.8.99
 OutputBaseFilename=Setup-Witty-Nightly
 AppPublisherURL=http://code.google.com/p/wittytwitter/
 AppSupportURL=http://code.google.com/p/wittytwitter/
