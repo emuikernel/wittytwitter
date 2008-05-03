@@ -397,6 +397,17 @@ namespace Witty
                 int lastSpace = message.LastIndexOf(' ');
                 message = message.Substring(0, lastSpace) + "...";
             }
+            return TruncateMessage(message);
+        }
+
+        private static string TruncateMessage(string message)
+        {
+            if (message.Length > 140)
+            {
+                message = message.Substring(0, 135);
+                int lastSpace = message.LastIndexOf(' ');
+                message = message.Substring(0, lastSpace) + "...";
+            }
             return message;
         }
 
@@ -932,6 +943,9 @@ namespace Witty
                         case Key.R:
                             createReply();
                             break;
+                        case Key.F:
+                            createRetweet();
+                            break;
                         case Key.O:
                             showOptions();
                             break;
@@ -1034,7 +1048,6 @@ namespace Witty
                                     DispatcherPriority.Normal,
                                     new DeleteTweetDelegate(twitter.DestroyTweet), id);
                 }
-
                 if (tweets.Contains(SelectedTweet))
                 {
                     tweets.Remove(SelectedTweet);
@@ -1062,11 +1075,15 @@ namespace Witty
 
         private void deleteDirectMessage()
         {
-            if (null != SelectedTweet)
+            DirectMessage message = MessagesListBox.SelectedItem as DirectMessage;
+            if (message != null)
             {
-                deleteDirectMessage(SelectedTweet.Id);
+                deleteDirectMessage(message.Id);
+                if (messages.Contains(message))
+                {
+                    messages.Remove(message);
+                }
             }
-
         }
 
         private void deleteDirectMessage(double id)
@@ -1341,6 +1358,35 @@ namespace Witty
         {
             createReply();
         }
+
+        private void ContextMenuRetweet_Click(object sender, RoutedEventArgs e)
+        {
+            createRetweet();
+        }
+
+        private void createRetweet()
+        {
+            Tweet selectedTweet = SelectedTweet as Tweet;
+            if (selectedTweet != null)
+            {
+                if (!isExpanded)
+                {
+                    this.Tabs.SelectedIndex = 0;
+                    ToggleUpdate();
+                }
+                string message = string.Format("retweet @{0}: {1}", selectedTweet.User.ScreenName, selectedTweet.Text);
+                message = TruncateMessage(message);
+                TweetTextBox.Text = message;
+                TweetTextBox.Select(TweetTextBox.Text.Length, 0);
+            }
+
+        }
+
+        private void ContextMenuDeleteMessage_Click(object sender, RoutedEventArgs e)
+        {
+            deleteDirectMessage();
+        }
+
 
         private void ContextMenuDirectMessage_Click(object sender, RoutedEventArgs e)
         {
