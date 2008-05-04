@@ -26,7 +26,9 @@ namespace Witty
 
             if (!string.IsNullOrEmpty(AppSettings.RefreshInterval))
             {
-                RefreshSlider.Value = Double.Parse(AppSettings.RefreshInterval);
+                Double refreshInterval = Double.Parse(AppSettings.RefreshInterval);
+                if (refreshInterval < 1) refreshInterval = 1; //Previously the options screen allowed setting to 0
+                RefreshSlider.Value = refreshInterval;
             }
 
             isInitializing = true;
