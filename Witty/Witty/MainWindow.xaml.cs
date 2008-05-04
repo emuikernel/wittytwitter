@@ -426,15 +426,20 @@ namespace Witty
             }
         }
 
-        private void UpdateExistingTweets()
-        {
-            // Update existing tweets
-            foreach (Tweet tweet in tweets)
-            {
-                tweet.IsNew = false;
-                tweet.UpdateRelativeTime();
-            }
-        }
+         private void UpdateExistingTweets()
+         {
+             UpdateExistingTweets(tweets);
+         }
+
+         private static void UpdateExistingTweets(TweetCollection oldTweets)
+         {
+             // Update existing tweets
+             foreach (Tweet tweet in oldTweets)
+             {
+                 tweet.IsNew = false;
+                 tweet.UpdateRelativeTime();
+             }
+         }
 
         #endregion
 
@@ -554,6 +559,8 @@ namespace Witty
             repliesLastUpdated = DateTime.Now;
             StatusTextBlock.Text = "Replies Updated: " + repliesLastUpdated.ToLongTimeString();
 
+            UpdateExistingTweets(replies);
+
             for (int i = newReplies.Count - 1; i >= 0; i--)
             {
                 Tweet reply = newReplies[i];
@@ -562,11 +569,6 @@ namespace Witty
                     replies.Insert(0, reply);
                     reply.Index = replies.Count;
                     reply.IsNew = true;
-                }
-                else
-                {
-                    // update the relativetime for existing tweets
-                    replies[i].UpdateRelativeTime();
                 }
             }
 
