@@ -64,7 +64,7 @@ namespace Witty
                     else if (word.StartsWith("@"))
                     {
                         string userName = String.Empty;
-                        Match foundUsername = Regex.Match(word, @"@(\w+)");
+                        Match foundUsername = Regex.Match(word, @"@(\w+)(?<suffix>.*)");
                         if (foundUsername.Success)
                         {
                             userName = foundUsername.Groups[1].Captures[0].Value;
@@ -75,6 +75,7 @@ namespace Witty
                             name.Click += new RoutedEventHandler(name_Click);
                             textblock.Inlines.Add("@");
                             textblock.Inlines.Add(name);
+                            textblock.Inlines.Add(foundUsername.Groups["suffix"].Captures[0].Value);
                         }
                     }
                     else
