@@ -49,6 +49,7 @@
   <ItemGroup>
     <Compile Include="DirectMessage.cs" />
     <Compile Include="Exceptions.cs" />
+    <Compile Include="ITwitterNet.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Tweet.cs" />
     <Compile Include="TwitterNet.cs" />
