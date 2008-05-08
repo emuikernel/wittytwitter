@@ -332,7 +332,7 @@ namespace TwitterLib
             return tweets;
         }
 
-        #endregion
+
 
         /// <summary>
         /// Removes all tweets above a count.
@@ -349,5 +349,7 @@ namespace TwitterLib
                 }
             }
         }
+        #endregion
     }
+
 }
