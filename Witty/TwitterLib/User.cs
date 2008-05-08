@@ -8,7 +8,7 @@ namespace TwitterLib
     /// A Twitter User
     /// </summary>
     [Serializable]
-    public class User : INotifyPropertyChanged
+    public class User : INotifyPropertyChanged, TwitterLib.IUser
     {
         private int id;
         private string name;

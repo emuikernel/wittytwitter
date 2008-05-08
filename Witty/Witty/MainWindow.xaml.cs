@@ -156,7 +156,7 @@ namespace Witty
         private DateTime messagesLastUpdated;
 
         // Main TwitterNet object used to make Twitter API calls
-        private TwitterNet twitter;
+        private ITwitterNet twitter;
 
         // Timer used for automatic tweet updates
         private DispatcherTimer refreshTimer = new DispatcherTimer();
@@ -310,7 +310,7 @@ namespace Witty
             // However it disables Virtualization
             // Remove tweets pass 100 should improve performance reasons.
             if(AppSettings.KeepLatest != 0)
-                tweets.Truncate(AppSettings.KeepLatest);
+                tweets.TruncateAfter(AppSettings.KeepLatest);
 
             if (addedTweets.Count > 0)
             {

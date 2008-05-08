@@ -12,7 +12,7 @@ namespace TwitterLib
     /// <summary>
     /// .NET wrapper for interacting with the Twitter API
     /// </summary>
-    public class TwitterNet : TwitterLib.ITwitterNet
+    public class TwitterNet : ITwitterNet
     {
         #region Private Fields
         private string username;
@@ -816,6 +816,8 @@ namespace TwitterLib
                             return null;
                         case 407: // proxy authentication required
                             throw new ProxyAuthenticationRequiredException("Proxy authentication required.");
+                        case 502 : //Bad Gateway, Twitter is freaking out.
+                            throw new BadGatewayException("There was a problem calling the Twitter API");
                         default:
                             throw;
                     }
