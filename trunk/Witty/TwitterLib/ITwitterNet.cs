@@ -1,7 +1,7 @@
 ﻿using System;
 namespace TwitterLib
 {
-    interface ITwitterNet
+    public interface ITwitterNet
     {
         Tweet AddTweet(string text);
 
