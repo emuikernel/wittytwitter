@@ -7,6 +7,8 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "TwitterLib", "TwitterLib\Tw
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "WittyTestBed", "WittyTestBed\WittyTestBed.csproj", "{2FE0F3B5-0E5D-4C04-A9B0-078312A16B76}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "WittyUnitTests", "WittyUnitTests\WittyUnitTests.csproj", "{1DC7F2FB-9B66-4FCA-B8F4-6A4DEE880A68}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -25,6 +27,10 @@ Global
 		{2FE0F3B5-0E5D-4C04-A9B0-078312A16B76}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{2FE0F3B5-0E5D-4C04-A9B0-078312A16B76}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{2FE0F3B5-0E5D-4C04-A9B0-078312A16B76}.Release|Any CPU.Build.0 = Release|Any CPU
+		{1DC7F2FB-9B66-4FCA-B8F4-6A4DEE880A68}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{1DC7F2FB-9B66-4FCA-B8F4-6A4DEE880A68}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{1DC7F2FB-9B66-4FCA-B8F4-6A4DEE880A68}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{1DC7F2FB-9B66-4FCA-B8F4-6A4DEE880A68}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

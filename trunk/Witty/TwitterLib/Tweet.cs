@@ -11,7 +11,7 @@ namespace TwitterLib
     /// Represents the status post for a Twitter User.
     /// </summary>
     [Serializable]
-    public class Tweet : INotifyPropertyChanged, IEquatable<Tweet>
+    public class Tweet : INotifyPropertyChanged, IEquatable<Tweet>, TwitterLib.ITweet
     {
         #region Private fields
 
@@ -338,7 +338,7 @@ namespace TwitterLib
         /// Removes all tweets above a count.
         /// </summary>
         /// <param name="count"></param>
-        public void Truncate(int count)
+        public void TruncateAfter(int count)
         {
             if (base.Count > count)
             {

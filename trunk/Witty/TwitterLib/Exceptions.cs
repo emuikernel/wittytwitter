@@ -45,4 +45,19 @@ namespace TwitterLib
         { 
         }
     }
+
+    /// <summary>
+    /// Custom exception for when the Twitter API is freaking out.
+    /// </summary>
+    [Serializable]
+    public class BadGatewayException : Exception
+    {
+        public BadGatewayException() {}
+
+        public BadGatewayException(string message) : base(message) { }
+
+        public BadGatewayException(string message, Exception inner) : base(message, inner) { }
+
+        protected BadGatewayException(SerializationInfo info, StreamingContext context) : base(info, context) { }
+    }
 }
