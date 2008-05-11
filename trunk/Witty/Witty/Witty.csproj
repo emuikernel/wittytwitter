@@ -183,7 +183,6 @@
     <Compile Include="Controls\FilterText.xaml.cs">
       <DependentUpon>FilterText.xaml</DependentUpon>
     </Compile>
-    <Compile Include="Misc\SkinsManager.cs" />
     <Compile Include="Misc\SnarlInterface.cs" />
     <Compile Include="Misc\WebProxyHelper.cs" />
     <Compile Include="Misc\Win32.cs" />
@@ -208,6 +207,7 @@
     </Compile>
     <Compile Include="Misc\SingleInstanceManager.cs" />
     <Compile Include="Settings.cs" />
+    <Compile Include="Skins\SkinsManager.cs" />
     <Compile Include="StylesTest\ButtonStyles.xaml.cs">
       <SubType>Code</SubType>
       <DependentUpon>ButtonStyles.xaml</DependentUpon>

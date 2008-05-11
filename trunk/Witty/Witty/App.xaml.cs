@@ -7,6 +7,7 @@ using TwitterLib;
 using log4net;
 using log4net.Config;
 using System.Windows.Threading;
+using System.Collections.Generic;
 
 namespace Witty
 {
@@ -38,9 +39,7 @@ namespace Witty
             {
                 try
                 {
-                    ResourceDictionary rd = new ResourceDictionary();
-                    rd.MergedDictionaries.Add(Application.LoadComponent(new Uri(appSettings.Skin, UriKind.Relative)) as ResourceDictionary);
-                    Application.Current.Resources = rd;
+                    SkinsManager.ChangeSkin(appSettings.Skin);
                 }
                 catch
                 {
@@ -50,17 +49,6 @@ namespace Witty
             }
 
             base.OnStartup(e);
-        }
-
-        /// <summary>
-        /// Get the collection of skins
-        /// </summary>
-        public static NameValueCollection Skins
-        {
-            get
-            {
-                return SkinsManager.GetSkins();
-            }
         }
 
         /// <summary>
