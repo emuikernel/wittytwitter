@@ -58,22 +58,7 @@ namespace Witty.Properties {
                 this["RefreshInterval"] = value;
             }
         }
-
-        [global::System.Configuration.UserScopedSettingAttribute()]
-        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
-        [global::System.Configuration.DefaultSettingValueAttribute("100")]
-        public int KeepLatest
-        {
-            get
-            {
-                return ((int)(this["KeepLatest"]));
-            }
-            set
-            {
-                this["KeepLatest"] = value;
-            }
-        }
-
+        
         [global::System.Configuration.UserScopedSettingAttribute()]
         [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
         [global::System.Configuration.DefaultSettingValueAttribute("")]
@@ -95,18 +80,6 @@ namespace Witty.Properties {
             }
             set {
                 this["PlaySounds"] = value;
-            }
-        }
-        
-        [global::System.Configuration.UserScopedSettingAttribute()]
-        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
-        [global::System.Configuration.DefaultSettingValueAttribute(".\\Skins\\Aero.xaml")]
-        public string Skin {
-            get {
-                return ((string)(this["Skin"]));
-            }
-            set {
-                this["Skin"] = value;
             }
         }
         
@@ -145,22 +118,7 @@ namespace Witty.Properties {
                 this["PersistLogin"] = value;
             }
         }
-
-        [global::System.Configuration.UserScopedSettingAttribute()]
-        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
-        [global::System.Configuration.DefaultSettingValueAttribute("True")]
-        public bool SmoothScrolling
-        {
-            get
-            {
-                return ((bool)(this["SmoothScrolling"]));
-            }
-            set
-            {
-                this["SmoothScrolling"] = value;
-            }
-        }
-
+        
         [global::System.Configuration.UserScopedSettingAttribute()]
         [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
         [global::System.Configuration.DefaultSettingValueAttribute("False")]
@@ -274,8 +232,8 @@ namespace Witty.Properties {
                 this["MinimizeOnClose"] = value;
             }
         }
-		
-		[global::System.Configuration.UserScopedSettingAttribute()]
+        
+        [global::System.Configuration.UserScopedSettingAttribute()]
         [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
         [global::System.Configuration.DefaultSettingValueAttribute("True")]
         public bool DisplayNotifications {
@@ -286,8 +244,8 @@ namespace Witty.Properties {
                 this["DisplayNotifications"] = value;
             }
         }
-		
-		[global::System.Configuration.UserScopedSettingAttribute()]
+        
+        [global::System.Configuration.UserScopedSettingAttribute()]
         [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
         [global::System.Configuration.DefaultSettingValueAttribute("10")]
         public string NotificationDisplayTime {
@@ -296,6 +254,42 @@ namespace Witty.Properties {
             }
             set {
                 this["NotificationDisplayTime"] = value;
+            }
+        }
+        
+        [global::System.Configuration.UserScopedSettingAttribute()]
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+        [global::System.Configuration.DefaultSettingValueAttribute("Aero")]
+        public string Skin {
+            get {
+                return ((string)(this["Skin"]));
+            }
+            set {
+                this["Skin"] = value;
+            }
+        }
+        
+        [global::System.Configuration.UserScopedSettingAttribute()]
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+        [global::System.Configuration.DefaultSettingValueAttribute("100")]
+        public int KeepLatest {
+            get {
+                return ((int)(this["KeepLatest"]));
+            }
+            set {
+                this["KeepLatest"] = value;
+            }
+        }
+        
+        [global::System.Configuration.UserScopedSettingAttribute()]
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+        [global::System.Configuration.DefaultSettingValueAttribute("True")]
+        public bool SmoothScrolling {
+            get {
+                return ((bool)(this["SmoothScrolling"]));
+            }
+            set {
+                this["SmoothScrolling"] = value;
             }
         }
     }
