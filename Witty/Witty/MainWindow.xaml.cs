@@ -156,7 +156,7 @@ namespace Witty
         private DateTime messagesLastUpdated;
 
         // Main TwitterNet object used to make Twitter API calls
-        private ITwitterNet twitter;
+        private IServiceApi twitter;
 
         // Timer used for automatic tweet updates
         private DispatcherTimer refreshTimer = new DispatcherTimer();
@@ -450,6 +450,7 @@ namespace Witty
             if (!string.IsNullOrEmpty(TweetTextBox.Text))
             {
                 // Schedule posting the tweet
+
                 UpdateButton.Dispatcher.BeginInvoke(
                     DispatcherPriority.Normal,
                     new OneStringArgDelegate(AddTweet), TweetTextBox.Text);
@@ -467,12 +468,22 @@ namespace Witty
                     TinyUrlHelper tinyUrls = new TinyUrlHelper();
                     tweetText = tinyUrls.ConvertUrlsToTinyUrls(tweetText);
                 }
-                Tweet tweet = twitter.AddTweet(tweetText);
-
-                // Schedule the update function in the UI thread.
-                LayoutRoot.Dispatcher.BeginInvoke(
+                BackgroundWorker worker = new BackgroundWorker();
+                Tweet tweet = null;
+                worker.DoWork += delegate(object s, DoWorkEventArgs arg)
+                {
+                    tweet = twitter.AddTweet(tweetText);
+                };
+                worker.RunWorkerCompleted += delegate(object s, RunWorkerCompletedEventArgs rwcargs)
+                {
+                    // Schedule the update function in the UI thread.
+                    LayoutRoot.Dispatcher.BeginInvoke(
                     DispatcherPriority.Normal,
                     new AddTweetUpdateDelegate(UpdatePostUserInterface), tweet);
+                };
+                worker.RunWorkerAsync();
+
+
             }
             catch (WebException ex)
             {
