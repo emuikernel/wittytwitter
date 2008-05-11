@@ -43,7 +43,7 @@ namespace Witty
                 }
                 catch
                 {
-                    Logger.Error("Selected skin not found");
+                    Logger.Error("Selected skin " + appSettings.Skin + " + not found");
                     // REVIEW: Should witty do something smart here?
                 }
             }
