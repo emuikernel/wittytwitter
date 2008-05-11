@@ -12,7 +12,7 @@ namespace TwitterLib
     /// <summary>
     /// .NET wrapper for interacting with the Twitter API
     /// </summary>
-    public class TwitterNet : ITwitterNet
+    public class TwitterNet : IServiceApi
     {
         #region Private Fields
         private string username;
