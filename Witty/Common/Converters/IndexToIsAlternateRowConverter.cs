@@ -1,30 +1,24 @@
-using System;
+﻿using System;
 using System.Windows.Data;
-using log4net;
-using TwitterLib;
 
-namespace Witty
+namespace Common.Converters
 {
-    public class CharRemainingValueConverter : IValueConverter
+    public sealed class IndexToIsAlternateRowConverter : IValueConverter
     {
-        private static readonly ILog logger = LogManager.GetLogger("Witty.Logging");
-
         #region IValueConverter Members
 
         public object Convert(object value, Type targetType, object parameter, System.Globalization.CultureInfo culture)
         {
-            return TwitterNet.CharacterLimit - (int)value;
+            int index = (int)value;
+            return (index % 2 == 1);
         }
 
         public object ConvertBack(object value, Type targetType, object parameter, System.Globalization.CultureInfo culture)
         {
-            logger.Error("Error converting value (CharRemainingValueConverter.ConvertBack is not implemented).");
+            // Convert back is not used in the binding
             throw new NotImplementedException("The method or operation is not implemented.");
         }
 
         #endregion
     }
-
-
 }
-

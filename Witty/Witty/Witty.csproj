@@ -128,20 +128,6 @@
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </Page>
-    <Page Include="Skins\Aero.xaml">
-      <Generator>MSBuild:Compile</Generator>
-      <SubType>Designer</SubType>
-      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
-    </Page>
-    <Page Include="Skins\AeroCompact.xaml">
-      <Generator>MSBuild:Compile</Generator>
-      <SubType>Designer</SubType>
-    </Page>
-    <Page Include="Skins\CoolBlue.xaml">
-      <Generator>MSBuild:Compile</Generator>
-      <SubType>Designer</SubType>
-      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
-    </Page>
     <Page Include="StylesTest\ButtonStyles.xaml">
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
@@ -197,7 +183,6 @@
     <Compile Include="Controls\FilterText.xaml.cs">
       <DependentUpon>FilterText.xaml</DependentUpon>
     </Compile>
-    <Compile Include="Controls\TweetTextBlock.cs" />
     <Compile Include="Misc\SkinsManager.cs" />
     <Compile Include="Misc\SnarlInterface.cs" />
     <Compile Include="Misc\WebProxyHelper.cs" />
@@ -239,9 +224,17 @@
     <AppDesigner Include="Properties\" />
   </ItemGroup>
   <ItemGroup>
+    <ProjectReference Include="..\Common\Common.csproj">
+      <Project>{EA9BEE27-11D2-4346-83D9-9A056282B7B9}</Project>
+      <Name>Common</Name>
+    </ProjectReference>
     <ProjectReference Include="..\TwitterLib\TwitterLib.csproj">
       <Project>{6CB55919-6C11-43A1-8769-57461BE5B0AE}</Project>
       <Name>TwitterLib</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\WittySkins\WittySkins.csproj">
+      <Project>{3084D65D-4013-486E-A7ED-63777A17E36F}</Project>
+      <Name>WittySkins</Name>
     </ProjectReference>
   </ItemGroup>
   <ItemGroup>
@@ -284,6 +277,7 @@
   </ItemGroup>
   <Import Project="$(MSBuildBinPath)\Microsoft.CSharp.targets" />
   <PropertyGroup>
-    <PreBuildEvent>xcopy ..\..\Skins .\Skins /y /s /i</PreBuildEvent>
+    <PreBuildEvent>
+    </PreBuildEvent>
   </PropertyGroup>
 </Project>

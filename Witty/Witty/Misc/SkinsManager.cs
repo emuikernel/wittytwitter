@@ -2,6 +2,8 @@
 using System.Globalization;
 using System.IO;
 using System.Reflection;
+using System.Windows;
+using System;
 
 namespace Witty
 {
@@ -11,24 +13,17 @@ namespace Witty
         {
             NameValueCollection skins = new NameValueCollection();
 
-            var rootFolder = new FileInfo(Assembly.GetExecutingAssembly().Location).DirectoryName;
+            skins.Add("Aero", "pack://application:,,,/WittySkins;Component/Aero.xaml");
+            skins.Add("AeroCompact", "pack://application:,,,/WittySkins;Component/AeroCompact.xaml");
+            skins.Add("CoolBlue", "pack://application:,,,/WittySkins;Component/CoolBlue.xaml");
 
-            foreach (string folder in Directory.GetDirectories(rootFolder))
-            {
-                foreach (string file in Directory.GetFiles(folder))
-                {
-                    FileInfo fileInfo = new FileInfo(file);
-                    if (string.Compare(fileInfo.Extension, ".xaml", true, CultureInfo.InvariantCulture) == 0)
-                    {
-                        // Use the first part of the resource file name for the menu item name.
-                        //skins.Add(fileInfo.Name.Remove(fileInfo.Name.IndexOf(".xaml")),
-                        //    Path.Combine(folder, fileInfo.Name));
-
-                        skins.Add(fileInfo.FullName.Substring(rootFolder.Length + 1), fileInfo.FullName);
-                    }
-                }
-            }
             return skins;
+        }
+
+        internal static void ChangeSkin(string skin)
+        {
+            Uri uri = new Uri("pack://application:,,,/WittySkins;Component/" + skin + ".xaml");
+            Application.Current.Resources.Source = uri;
         }
     }
 }

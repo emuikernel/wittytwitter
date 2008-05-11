@@ -1,30 +1,31 @@
-using System;
+﻿using System;
 using System.Windows.Data;
-using log4net;
-using TwitterLib;
 
-namespace Witty
+namespace Common.Converters
 {
-    public class CharRemainingValueConverter : IValueConverter
+    public sealed class ImageConverter : IValueConverter
     {
-        private static readonly ILog logger = LogManager.GetLogger("Witty.Logging");
-
         #region IValueConverter Members
 
         public object Convert(object value, Type targetType, object parameter, System.Globalization.CultureInfo culture)
         {
-            return TwitterNet.CharacterLimit - (int)value;
+            if (value != null)
+            {
+                //TODO: Implement fix for IE8 breaking images, see http://channel9.msdn.com/ShowPost.aspx?PostID=388896
+                return value;
+            }
+            else
+            {
+                return null;
+            }
         }
 
         public object ConvertBack(object value, Type targetType, object parameter, System.Globalization.CultureInfo culture)
         {
-            logger.Error("Error converting value (CharRemainingValueConverter.ConvertBack is not implemented).");
+            // Convert back is not used in the binding
             throw new NotImplementedException("The method or operation is not implemented.");
         }
 
         #endregion
     }
-
-
 }
-

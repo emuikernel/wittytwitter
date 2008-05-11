@@ -7,7 +7,7 @@
   <Application.Resources>
     <ResourceDictionary>
       <ResourceDictionary.MergedDictionaries>
-      	<ResourceDictionary Source="Skins\Aero.xaml"/>
+        <ResourceDictionary Source="pack://application:,,,/WittySkins;Component/Aero.xaml"/>
       </ResourceDictionary.MergedDictionaries>
     </ResourceDictionary>
   </Application.Resources>
