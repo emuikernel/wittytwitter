@@ -294,10 +294,9 @@ namespace Witty
             if ((!(isInitializing)) && (e.AddedItems.Count >= 0))
             {
                 string skin = e.AddedItems[0] as string;
-                ResourceDictionary rd = Application.LoadComponent(new Uri(skin, UriKind.Relative)) as ResourceDictionary;
-                Application.Current.Resources = rd;
 
-                // save the skin setting
+                SkinsManager.ChangeSkin(skin);
+
                 AppSettings.Skin = skin;
                 AppSettings.Save();
             }

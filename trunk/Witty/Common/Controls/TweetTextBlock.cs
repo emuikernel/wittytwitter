@@ -3,18 +3,15 @@ using System.Text.RegularExpressions;
 using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Documents;
-using log4net;
 using TwitterLib;
 
-namespace Witty
+namespace Common.Controls
 {
     /// <summary>
     /// Custom TextBlock to allow parsing hyperlinks and @names
     /// </summary>
     public class TweetTextBlock : TextBlock
     {
-        private static readonly ILog logger = LogManager.GetLogger("Witty.Logging");
-
         #region Dependency properties
 
         public string TweetText
@@ -96,7 +93,6 @@ namespace Witty
             }
             catch
             {
-                logger.Error("There was a problem launching the specified URL.");
                 //TODO: Log specific URL that caused error
                 MessageBox.Show("There was a problem launching the specified URL.", "Error", MessageBoxButton.OK, MessageBoxImage.Exclamation);
             }
@@ -122,7 +118,6 @@ namespace Witty
             }
             catch
             {
-                logger.Error("There was a problem launching the specified URL.");
                 //TODO: Log specific URL that caused error
                 MessageBox.Show("There was a problem launching the specified URL.", "Error", MessageBoxButton.OK, MessageBoxImage.Exclamation);
             }
