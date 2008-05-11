@@ -34,8 +34,14 @@
   </PropertyGroup>
   <ItemGroup>
     <Reference Include="FluidKit, Version=1.0.0.0, Culture=neutral, processorArchitecture=MSIL" />
-    <Reference Include="J832.Common, Version=0.0.0.0, Culture=neutral, processorArchitecture=MSIL" />
-    <Reference Include="J832.Wpf.BagOTricksLib, Version=0.0.0.0, Culture=neutral, processorArchitecture=MSIL" />
+    <Reference Include="J832.Common, Version=0.0.0.0, Culture=neutral, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\..\ExternalDependencies\BagOfTricks\J832.Common.dll</HintPath>
+    </Reference>
+    <Reference Include="J832.Wpf.BagOTricksLib, Version=0.0.0.0, Culture=neutral, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\..\ExternalDependencies\BagOfTricks\J832.Wpf.BagOTricksLib.dll</HintPath>
+    </Reference>
     <Reference Include="log4net, Version=1.2.10.0, Culture=neutral, PublicKeyToken=1b44e1d426115821, processorArchitecture=MSIL">
       <SpecificVersion>False</SpecificVersion>
       <HintPath>..\TwitterLib\Utilities\log4net.dll</HintPath>
@@ -70,10 +76,6 @@
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </ApplicationDefinition>
-    <Page Include="BagOfTricks\AnimatingTilePanel\AnimatingTilePanelPage.xaml">
-      <Generator>MSBuild:Compile</Generator>
-      <SubType>Designer</SubType>
-    </Page>
     <Page Include="CustomWindow.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
@@ -81,10 +83,6 @@
     <Page Include="Followers.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
-    </Page>
-    <Page Include="BagOfTricks\Zap\ZapPage.xaml">
-      <Generator>MSBuild:Compile</Generator>
-      <SubType>Designer</SubType>
     </Page>
     <Page Include="MainWindow.xaml">
       <SubType>Designer</SubType>
@@ -100,10 +98,6 @@
     </Compile>
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="BagOfTricks\AnimatingTilePanel\AnimatingTilePanelPage.xaml.cs">
-      <DependentUpon>AnimatingTilePanelPage.xaml</DependentUpon>
-    </Compile>
-    <Compile Include="BagOfTricks\Code.cs" />
     <Compile Include="CustomWindow.xaml.cs">
       <DependentUpon>CustomWindow.xaml</DependentUpon>
     </Compile>
@@ -126,9 +120,6 @@
       <DesignTimeSharedInput>True</DesignTimeSharedInput>
       <DependentUpon>Settings.settings</DependentUpon>
     </Compile>
-    <Compile Include="BagOfTricks\Zap\ZapPage.xaml.cs">
-      <DependentUpon>ZapPage.xaml</DependentUpon>
-    </Compile>
     <Compile Include="tweetscan.xaml.cs">
       <DependentUpon>tweetscan.xaml</DependentUpon>
     </Compile>
@@ -144,8 +135,6 @@
     <AppDesigner Include="Properties\" />
   </ItemGroup>
   <ItemGroup>
-    <Content Include="BagOfTricks\References\J832.Common.dll" />
-    <Content Include="BagOfTricks\References\J832.Wpf.BagOTricksLib.dll" />
     <Content Include="FluidKit\References\FluidKit.dll" />
   </ItemGroup>
   <ItemGroup>

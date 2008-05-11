@@ -24,6 +24,8 @@ namespace Witty
         {
             Uri resourceLocator = new Uri("WittySkins;Component/" + skin + ".xaml", UriKind.RelativeOrAbsolute);
             Application.Current.Resources =  Application.LoadComponent(resourceLocator) as ResourceDictionary;
+
+            CurrentSkin = skin;
         }
     }
 }
