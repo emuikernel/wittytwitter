@@ -59,8 +59,14 @@
   </PropertyGroup>
   <ItemGroup>
     <Reference Include="FluidKit, Version=1.0.0.0, Culture=neutral, processorArchitecture=MSIL" />
-    <Reference Include="J832.Common, Version=0.0.0.0, Culture=neutral, processorArchitecture=MSIL" />
-    <Reference Include="J832.Wpf.BagOTricksLib, Version=0.0.0.0, Culture=neutral, processorArchitecture=MSIL" />
+    <Reference Include="J832.Common, Version=0.0.0.0, Culture=neutral, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\..\ExternalDependencies\BagOfTricks\J832.Common.dll</HintPath>
+    </Reference>
+    <Reference Include="J832.Wpf.BagOTricksLib, Version=0.0.0.0, Culture=neutral, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\..\ExternalDependencies\BagOfTricks\J832.Wpf.BagOTricksLib.dll</HintPath>
+    </Reference>
     <Reference Include="log4net, Version=1.2.10.0, Culture=neutral, PublicKeyToken=1b44e1d426115821, processorArchitecture=MSIL">
       <SpecificVersion>False</SpecificVersion>
       <HintPath>..\TwitterLib\Utilities\log4net.dll</HintPath>
@@ -171,7 +177,6 @@
     </Compile>
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="BagOfTricks\Code.cs" />
     <Compile Include="Controls\Options\AboutOptions.xaml.cs">
       <DependentUpon>AboutOptions.xaml</DependentUpon>
     </Compile>
@@ -270,9 +275,10 @@
     </BootstrapperPackage>
   </ItemGroup>
   <ItemGroup>
-    <Content Include="BagOfTricks\References\J832.Common.dll" />
-    <Content Include="BagOfTricks\References\J832.Wpf.BagOTricksLib.dll" />
     <Content Include="FluidKit\FluidKit.dll" />
+  </ItemGroup>
+  <ItemGroup>
+    <Folder Include="BagOfTricks\References\" />
   </ItemGroup>
   <Import Project="$(MSBuildBinPath)\Microsoft.CSharp.targets" />
   <PropertyGroup>

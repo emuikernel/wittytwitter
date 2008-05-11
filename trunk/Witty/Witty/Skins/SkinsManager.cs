@@ -1,19 +1,18 @@
-﻿using System.Collections.Specialized;
-using System.Globalization;
-using System.IO;
-using System.Reflection;
-using System.Windows;
-using System;
+﻿using System;
 using System.Collections.Generic;
+using System.Windows;
 
 namespace Witty
 {
     internal class SkinsManager
     {
+        internal static string CurrentSkin;
+
         internal static List<string> GetSkins()
         {
             List<string> skins = new List<string>();
 
+            //TODO: make this dynamic by checking against WittySkins assembly
             skins.Add("Aero");
             skins.Add("AeroCompact");
             skins.Add("CoolBlue");
@@ -23,10 +22,7 @@ namespace Witty
 
         internal static void ChangeSkin(string skin)
         {
-            //Uri uri = new Uri("pack://application:,,,/WittySkins;Component/" + skin + ".xaml");
-            //Application.Current.Resources.Source = uri;
-
-            Uri resourceLocator = new Uri("WittySkins;component/" + Path.ChangeExtension(skin, ".xaml"), UriKind.RelativeOrAbsolute);
+            Uri resourceLocator = new Uri("WittySkins;Component/" + skin + ".xaml", UriKind.RelativeOrAbsolute);
             Application.Current.Resources =  Application.LoadComponent(resourceLocator) as ResourceDictionary;
         }
     }
