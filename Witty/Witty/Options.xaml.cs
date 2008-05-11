@@ -32,7 +32,8 @@ namespace Witty
             }
 
             isInitializing = true;
-            SkinsComboBox.ItemsSource = App.Skins;
+            SkinsComboBox.ItemsSource = SkinsManager.GetSkins();
+
             // select the current skin
             if (!string.IsNullOrEmpty(AppSettings.Skin))
             {
