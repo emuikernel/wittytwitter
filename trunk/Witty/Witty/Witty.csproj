@@ -212,7 +212,6 @@
       <SubType>Code</SubType>
       <DependentUpon>ButtonStyles.xaml</DependentUpon>
     </Compile>
-    <Compile Include="Misc\ValueConverters.cs" />
     <Compile Include="Misc\WindowSettings.cs" />
     <None Include="app.config" />
     <None Include="Properties\app.manifest" />

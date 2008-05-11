@@ -8,6 +8,7 @@
   xmlns:TwitterLib="clr-namespace:TwitterLib;assembly=TwitterLib" 
   xmlns:Witty="clr-namespace:Witty" 
   xmlns:controls="clr-namespace:Witty.Controls" 
+  xmlns:converters="clr-namespace:Common.Converters;assembly=Common"
   xmlns:r="clr-namespace:Microsoft.Samples.KMoore.WPFSamples.Reveal;assembly=J832.Wpf.BagOTricksLib"
   x:Class="Witty.MainWindow" 
   x:Name="Window" 
@@ -23,7 +24,7 @@
         <ResourceDictionary Source="Resources\Storyboards.xaml" />
       </ResourceDictionary.MergedDictionaries>
       
-      <Witty:CharRemainingValueConverter x:Key="CharRemainingConverter" />
+      <converters:CharRemainingValueConverter x:Key="CharRemainingConverter" />
     </ResourceDictionary>
   </Window.Resources>
 
