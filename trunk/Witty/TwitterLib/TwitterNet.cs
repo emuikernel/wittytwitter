@@ -1138,7 +1138,10 @@ namespace TwitterLib
                 // Add credendtials to request  
                 request.Credentials = new NetworkCredential(username, TwitterNet.ToInsecureString(password));
             }
-
+            
+            // moved this out of the try catch to use it later on in the XMLException
+            // trying to fix a bug someone report
+            XmlDocument doc = new XmlDocument();
             try
             {
                 // Get the Web Response  
@@ -1148,9 +1151,7 @@ namespace TwitterLib
                     StreamReader reader = new StreamReader(response.GetResponseStream());
 
                     // Load the response data into a XmlDocument  
-                    XmlDocument doc = new XmlDocument();
                     doc.Load(reader);
-
                     // Get statuses with XPath  
                     XmlNodeList nodes = doc.SelectNodes("/statuses/status");
 
@@ -1188,6 +1189,13 @@ namespace TwitterLib
 
                     tweets.SaveToDisk();
                 }
+            }
+            catch (XmlException exXML)
+            {
+                // adding the XML document data to the exception so it will get logged
+                // so we can debug the issue
+                exXML.Data.Add("XMLDoc", doc);
+                throw;
             }
             catch (WebException webExcp)
             {
