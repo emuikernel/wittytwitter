@@ -6,14 +6,11 @@
 
 using System.Windows;
 using System.Windows.Controls;
-using log4net;
 
-namespace Witty.Controls
+namespace Common.Controls
 {
     public partial class FilterText : System.Windows.Controls.UserControl
     {
-        private static readonly ILog logger = LogManager.GetLogger("Witty.Logging");
-
         public static readonly RoutedEvent ResetFilterEvent = EventManager.RegisterRoutedEvent(
             "ResetFilter", RoutingStrategy.Bubble, typeof(RoutedEventHandler), typeof(FilterText));
 

@@ -1,4 +1,4 @@
-﻿<UserControl x:Class="Witty.Controls.FilterText" 
+﻿<UserControl x:Class="Common.Controls.FilterText" 
   xmlns:itb="clr-namespace:Microsoft.Samples.KMoore.WPFSamples.InfoTextBox;assembly=J832.Wpf.BagOTricksLib"
   xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation" 
   xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml">
