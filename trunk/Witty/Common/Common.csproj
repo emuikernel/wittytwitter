@@ -31,6 +31,14 @@
     <WarningLevel>4</WarningLevel>
   </PropertyGroup>
   <ItemGroup>
+    <Reference Include="J832.Common, Version=0.0.0.0, Culture=neutral, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\..\ExternalDependencies\BagOfTricks\J832.Common.dll</HintPath>
+    </Reference>
+    <Reference Include="J832.Wpf.BagOTricksLib, Version=0.0.0.0, Culture=neutral, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\..\ExternalDependencies\BagOfTricks\J832.Wpf.BagOTricksLib.dll</HintPath>
+    </Reference>
     <Reference Include="PresentationCore">
       <RequiredTargetFramework>3.0</RequiredTargetFramework>
     </Reference>
@@ -57,6 +65,9 @@
     </Reference>
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="Controls\FilterText.xaml.cs">
+      <DependentUpon>FilterText.xaml</DependentUpon>
+    </Compile>
     <Compile Include="Controls\TweetTextBlock.cs" />
     <Compile Include="Converters\CharRemainingConverter.cs" />
     <Compile Include="Converters\ImageConverter.cs" />
@@ -69,6 +80,12 @@
       <Project>{6CB55919-6C11-43A1-8769-57461BE5B0AE}</Project>
       <Name>TwitterLib</Name>
     </ProjectReference>
+  </ItemGroup>
+  <ItemGroup>
+    <Page Include="Controls\FilterText.xaml">
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
+    </Page>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
