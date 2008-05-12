@@ -1,11 +1,8 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Text;
-using System.Deployment.Application;
-using System.Windows.Forms;
-using System.Windows.Controls;
 using System.ComponentModel;
-using Witty.Properties;
+using System.Deployment.Application;
+using System.Windows.Controls;
+using System.Windows.Forms;
 
 
 ////////////////////////////////////////////////

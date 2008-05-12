@@ -7,7 +7,6 @@
 using System.Windows;
 using System.Windows.Controls;
 using log4net;
-using log4net.Config;
 
 namespace Witty.Controls
 {

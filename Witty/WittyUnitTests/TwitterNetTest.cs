@@ -1,7 +1,6 @@
-﻿using NUnit.Framework;
-using System;
+﻿using System.Security;
+using NUnit.Framework;
 using TwitterLib;
-using System.Security;
 
 namespace WittyUnitTests
 {

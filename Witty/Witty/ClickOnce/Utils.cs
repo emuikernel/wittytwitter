@@ -1,7 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Text;
-using System.Deployment.Application;
+﻿using System.Deployment.Application;
 
 namespace Witty.ClickOnce
 {
