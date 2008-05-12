@@ -1,5 +1,4 @@
-﻿using System;
-namespace TwitterLib
+﻿namespace TwitterLib
 {
     interface IUser
     {

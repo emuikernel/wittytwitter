@@ -1,10 +1,8 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Text;
-using System.Net;
 using System.IO;
-using System.Xml;
+using System.Net;
 using System.Web;
+using System.Xml;
 
 namespace TwitterLib.Utilities
 {

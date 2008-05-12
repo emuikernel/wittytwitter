@@ -1,13 +1,8 @@
-using System;
-using System.Collections.Specialized;
-using System.Globalization;
-using System.IO;
 using System.Windows;
-using TwitterLib;
+using System.Windows.Threading;
 using log4net;
 using log4net.Config;
-using System.Windows.Threading;
-using System.Collections.Generic;
+using TwitterLib;
 
 namespace Witty
 {
