@@ -450,10 +450,7 @@ namespace Witty
             if (!string.IsNullOrEmpty(TweetTextBox.Text))
             {
                 // Schedule posting the tweet
-
-                UpdateButton.Dispatcher.BeginInvoke(
-                    DispatcherPriority.Normal,
-                    new OneStringArgDelegate(AddTweet), TweetTextBox.Text);
+                AddTweet(TweetTextBox.Text);
             }
         }
 
@@ -461,19 +458,10 @@ namespace Witty
         {
             try
             {
-                //bmsullivan If tweet is short enough, leave real URLs for clarity
-                if (tweetText.Length > 140)
-                {
-                    //parse the text here and tiny up any URLs found.
-                    TinyUrlHelper tinyUrls = new TinyUrlHelper();
-                    tweetText = tinyUrls.ConvertUrlsToTinyUrls(tweetText);
-                }
                 Tweet tweet = twitter.AddTweet(tweetText); ;
 
                 // Schedule the update function in the UI thread.
-                LayoutRoot.Dispatcher.BeginInvoke(
-                DispatcherPriority.Normal,
-                new AddTweetUpdateDelegate(UpdatePostUserInterface), tweet);
+                UpdatePostUserInterface(tweet);
             }
             catch (WebException ex)
             {
@@ -533,21 +521,14 @@ namespace Witty
 
             PlayStoryboard("Fetching");
 
-            // Create a Dispatcher to fetching new tweets
-            NoArgDelegate fetcher = new NoArgDelegate(
-                this.GetReplies);
-
-            fetcher.BeginInvoke(null, null);
+            this.GetReplies();
         }
 
         private void GetReplies()
         {
             try
             {
-                // Schedule the update function in the UI thread.
-                LayoutRoot.Dispatcher.BeginInvoke(
-                    DispatcherPriority.Normal,
-                    new OneArgDelegate(UpdateRepliesInterface), twitter.GetReplies());
+                UpdateRepliesInterface(twitter.GetReplies());
             }
             catch (WebException ex)
             {
@@ -1047,9 +1028,7 @@ namespace Witty
             {
                 if (MessageBoxResult.Yes == MessageBox.Show("Are you sure you want to permanently delete your tweet?\nThis action is irreversible. Select No to only delete it from the application or Yes to delete permanently.", Settings.Default.ApplicationName, MessageBoxButton.YesNo, MessageBoxImage.Question))
                 {
-                    LayoutRoot.Dispatcher.BeginInvoke(
-                                    DispatcherPriority.Normal,
-                                    new DeleteTweetDelegate(twitter.DestroyTweet), id);
+                    twitter.DestroyTweet(id);
                 }
                 if (tweets.Contains(SelectedTweet))
                 {
@@ -1072,8 +1051,7 @@ namespace Witty
 
         private void FollowUser(string username)
         {
-            LayoutRoot.Dispatcher.BeginInvoke(DispatcherPriority.Normal,
-                new OneStringArgDelegate(twitter.FollowUser), username);
+            twitter.FollowUser(username);
         }
 
         private void deleteDirectMessage()
@@ -1470,10 +1448,7 @@ namespace Witty
         /// </summary>
         private void FilterTextBox_TextChanged(object sender, TextChangedEventArgs e)
         {
-            // Start an async operation that filters the list.
-            this.Dispatcher.BeginInvoke(
-                DispatcherPriority.ApplicationIdle,
-                new FilterDelegate(FilterWorker));
+            FilterWorker();
         }
 
         /// <summary>
