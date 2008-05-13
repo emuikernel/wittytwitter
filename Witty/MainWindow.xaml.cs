@@ -458,10 +458,20 @@ namespace Witty
         {
             try
             {
-                Tweet tweet = twitter.AddTweet(tweetText); ;
+                BackgroundWorker worker = new BackgroundWorker();
+                Tweet tweet = null;
+                this.UpdateButton.IsEnabled = false;
+                worker.DoWork += delegate(object sender, DoWorkEventArgs args){
+                    tweet = twitter.AddTweet(tweetText);
+                };
 
-                // Schedule the update function in the UI thread.
-                UpdatePostUserInterface(tweet);
+                worker.RunWorkerCompleted += delegate(object sender, RunWorkerCompletedEventArgs args)
+                {
+                    this.UpdateButton.IsEnabled = true;
+                    // Schedule the update function in the UI thread.
+                    UpdatePostUserInterface(tweet);
+                };
+                worker.RunWorkerAsync();
             }
             catch (WebException ex)
             {
