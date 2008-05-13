@@ -468,22 +468,12 @@ namespace Witty
                     TinyUrlHelper tinyUrls = new TinyUrlHelper();
                     tweetText = tinyUrls.ConvertUrlsToTinyUrls(tweetText);
                 }
-                BackgroundWorker worker = new BackgroundWorker();
-                Tweet tweet = null;
-                worker.DoWork += delegate(object s, DoWorkEventArgs arg)
-                {
-                    tweet = twitter.AddTweet(tweetText);
-                };
-                worker.RunWorkerCompleted += delegate(object s, RunWorkerCompletedEventArgs rwcargs)
-                {
-                    // Schedule the update function in the UI thread.
-                    LayoutRoot.Dispatcher.BeginInvoke(
-                    DispatcherPriority.Normal,
-                    new AddTweetUpdateDelegate(UpdatePostUserInterface), tweet);
-                };
-                worker.RunWorkerAsync();
+                Tweet tweet = twitter.AddTweet(tweetText); ;
 
-
+                // Schedule the update function in the UI thread.
+                LayoutRoot.Dispatcher.BeginInvoke(
+                DispatcherPriority.Normal,
+                new AddTweetUpdateDelegate(UpdatePostUserInterface), tweet);
             }
             catch (WebException ex)
             {
