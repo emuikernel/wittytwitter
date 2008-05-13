@@ -250,12 +250,7 @@ namespace Witty
             StatusTextBlock.Text = "Retrieving tweets...";
 
             PlayStoryboard("Fetching");
-
-            // Create a Dispatcher to fetching new tweets
-            NoArgDelegate fetcher = new NoArgDelegate(
-                this.GetTweets);
-
-            fetcher.BeginInvoke(null, null);
+            this.GetTweets();
         }
 
         private void Timer_Elapsed(object sender, EventArgs e)
@@ -268,9 +263,16 @@ namespace Witty
             try
             {
                 // Schedule the update function in the UI thread.
-                LayoutRoot.Dispatcher.BeginInvoke(
-                    DispatcherPriority.Normal,
-                    new OneArgDelegate(UpdateUserInterface), twitter.GetFriendsTimeline());
+                TweetCollection tweets = null;
+                BackgroundWorker worker = new BackgroundWorker();
+                worker.DoWork += delegate(object sender, DoWorkEventArgs args)
+                {
+                    tweets = twitter.GetFriendsTimeline();
+                };
+                worker.RunWorkerCompleted += delegate(object sender, RunWorkerCompletedEventArgs args) {
+                    UpdateUserInterface(tweets);
+                };
+                worker.RunWorkerAsync();
             }
             catch (WebException ex)
             {
@@ -538,7 +540,17 @@ namespace Witty
         {
             try
             {
-                UpdateRepliesInterface(twitter.GetReplies());
+                BackgroundWorker worker = new BackgroundWorker();
+                TweetCollection replies = null;
+                worker.DoWork += delegate(object sender, DoWorkEventArgs args)
+                {
+                    replies = twitter.GetReplies();
+                };
+                worker.RunWorkerCompleted += delegate(object sender, RunWorkerCompletedEventArgs args)
+                {
+                    UpdateRepliesInterface(replies);
+                };
+                worker.RunWorkerAsync();
             }
             catch (WebException ex)
             {
