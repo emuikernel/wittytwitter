@@ -601,10 +601,23 @@ namespace Witty
         {
             try
             {
-                // Schedule the update function in the UI thread.
-                LayoutRoot.Dispatcher.BeginInvoke(
-                    DispatcherPriority.Normal,
-                    new MessagesDelegate(UpdateMessagesInterface), twitter.RetrieveMessages());
+
+                BackgroundWorker worker = new BackgroundWorker();
+                DirectMessageCollection messages = null;
+                worker.DoWork += delegate(object sender, DoWorkEventArgs args)
+                {
+
+                    messages = twitter.RetrieveMessages();
+                };
+                worker.RunWorkerCompleted += delegate(object sender, RunWorkerCompletedEventArgs args)
+                {
+                    // Schedule the update function in the UI thread.
+                    LayoutRoot.Dispatcher.BeginInvoke(
+                        DispatcherPriority.Normal,
+                        new MessagesDelegate(UpdateMessagesInterface), messages);
+
+                };
+                worker.RunWorkerAsync();
             }
             catch (WebException ex)
             {
