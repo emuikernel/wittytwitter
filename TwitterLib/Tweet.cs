@@ -73,13 +73,6 @@ namespace TwitterLib
                 if (value != text)
                 {
                     text = value;
-                    //bmsullivan If tweet is short enough, leave real URLs for clarity
-                    if (text.Length > 140)
-                    {
-                        //parse the text here and tiny up any URLs found.
-                        TinyUrlHelper tinyUrls = new TinyUrlHelper();
-                        text = tinyUrls.ConvertUrlsToTinyUrls(text);
-                    }
                     OnPropertyChanged("Text");
                 }
             }
