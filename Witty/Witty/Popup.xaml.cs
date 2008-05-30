@@ -37,7 +37,7 @@ namespace Witty
         {
             InitializeComponent();
 
-            this.Left = SystemParameters.VirtualScreenWidth - this.Width;
+            this.Left = SystemParameters.WorkArea.Width - this.Width;
             this.Top = SystemParameters.WorkArea.Height - (this.Height * (numPopups + 1));
 
             tweetText.Text = body;
