@@ -11,7 +11,7 @@
     <MinFrameworkVersionRequired>3.0</MinFrameworkVersionRequired>
     <IsWebBootstrapper>true</IsWebBootstrapper>
     <ApplicationIcon>Resources\AppIcon.ico</ApplicationIcon>
-    <TargetFrameworkVersion>v3.5</TargetFrameworkVersion>
+    <TargetFrameworkVersion>v3.0</TargetFrameworkVersion>
     <FileUpgradeFlags>
     </FileUpgradeFlags>
     <UpgradeBackupLocation>
@@ -78,9 +78,6 @@
     <Reference Include="PresentationFramework.Aero" />
     <Reference Include="System" />
     <Reference Include="System.configuration" />
-    <Reference Include="System.Core">
-      <RequiredTargetFramework>3.5</RequiredTargetFramework>
-    </Reference>
     <Reference Include="System.Data" />
     <Reference Include="System.Deployment" />
     <Reference Include="System.Drawing" />
