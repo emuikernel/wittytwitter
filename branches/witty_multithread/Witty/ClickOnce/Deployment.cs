@@ -133,7 +133,6 @@ namespace Witty.ClickOnce
             ad.CheckForUpdateCompleted -= new CheckForUpdateCompletedEventHandler(ad_CheckForUpdateCompleted);
             if (e.Error != null)
             {
-                ShowMessage("ERROR: Could not retrieve new version of the application. Reason: \n" + e.Error.Message + "\nPlease report this error to the system administrator.");
                 UpdateCompleted();
                 return;
             }
