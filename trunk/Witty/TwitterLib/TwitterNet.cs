@@ -778,21 +778,21 @@ namespace TwitterLib
                     if (userNode != null)
                     {
                         user.Id = int.Parse(userNode.SelectSingleNode("id").InnerText);
-                        user.Name = userNode.SelectSingleNode("name").InnerText;
-                        user.ScreenName = userNode.SelectSingleNode("screen_name").InnerText;
-                        user.ImageUrl = userNode.SelectSingleNode("profile_image_url").InnerText;
-                        user.SiteUrl = userNode.SelectSingleNode("url").InnerText;
-                        user.Location = userNode.SelectSingleNode("location").InnerText;
-                        user.Description = userNode.SelectSingleNode("description").InnerText;
-                        user.BackgroundColor = userNode.SelectSingleNode("profile_background_color").InnerText;
-                        user.TextColor = userNode.SelectSingleNode("profile_text_color").InnerText;
-                        user.LinkColor = userNode.SelectSingleNode("profile_link_color").InnerText;
-                        user.SidebarBorderColor = userNode.SelectSingleNode("profile_sidebar_border_color").InnerText;
-                        user.SidebarFillColor = userNode.SelectSingleNode("profile_sidebar_fill_color").InnerText;
-                        user.FollowingCount = int.Parse(userNode.SelectSingleNode("friends_count").InnerText);
-                        user.FavoritesCount = int.Parse(userNode.SelectSingleNode("favourites_count").InnerText);
-                        user.StatusesCount = int.Parse(userNode.SelectSingleNode("statuses_count").InnerText);
-                        user.FollowersCount = int.Parse(userNode.SelectSingleNode("followers_count").InnerText);
+                        user.Name = this.GetInnerTextIfNotNull(userNode, "name");
+                        user.ScreenName = this.GetInnerTextIfNotNull(userNode, "screen_name");
+                        user.ImageUrl = this.GetInnerTextIfNotNull(userNode, "profile_image_url");
+                        user.SiteUrl = this.GetInnerTextIfNotNull(userNode, "url");
+                        user.Location = this.GetInnerTextIfNotNull(userNode, "location");
+                        user.Description = this.GetInnerTextIfNotNull(userNode, "description");
+                        user.BackgroundColor = this.GetInnerTextIfNotNull(userNode, "profile_background_color");
+                        user.TextColor = this.GetInnerTextIfNotNull(userNode, "profile_text_color");
+                        user.LinkColor = this.GetInnerTextIfNotNull(userNode, "profile_link_color");
+                        user.SidebarBorderColor = this.GetInnerTextIfNotNull(userNode, "profile_sidebar_border_color");
+                        user.SidebarFillColor = this.GetInnerTextIfNotNull(userNode, "profile_sidebar_fill_color");
+                        user.FollowingCount = this.GetIntIfNotNull(userNode, "friends_count");
+                        user.FavoritesCount = this.GetIntIfNotNull(userNode, "favourites_count");
+                        user.StatusesCount = this.GetIntIfNotNull(userNode, "statuses_count");
+                        user.FollowersCount = this.GetIntIfNotNull(userNode, "followers_count");
                     }
                 }
             }
@@ -1062,6 +1062,36 @@ namespace TwitterLib
         #endregion
 
         #region Private Methods
+
+        /// <summary>
+        /// Get the inner text if the child XML node is not null.
+        /// </summary>
+        private string GetInnerTextIfNotNull(XmlNode parentNode, string nodeName)
+        {
+            string innerText = string.Empty;
+            XmlNode child = parentNode[nodeName];
+
+            if (child != null)
+            {
+                innerText = child.InnerText;
+            }
+
+            return innerText;
+        }
+
+        /// <summary>
+        /// Get an integer value of the inner text of a child node if it's not null.
+        /// </summary>
+        private int GetIntIfNotNull(XmlNode parentNode, string nodeName)
+        {
+            int val = 0;
+
+            XmlNode child = parentNode[nodeName];
+            if (child != null && int.TryParse(child.InnerText, out val)) { };
+
+            return val;
+        }
+
 
         /// <summary>
         /// Retrieves the specified timeline from Twitter
