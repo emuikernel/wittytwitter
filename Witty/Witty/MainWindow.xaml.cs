@@ -1156,6 +1156,11 @@ namespace Witty
             {
                 case CurrentView.Recent:
                     DelegateRecentFetch();
+
+                    // After a manual refresh, reset the timer
+                    refreshTimer.Stop();
+                    refreshTimer.Start();
+
                     break;
                 case CurrentView.Replies:
                     DelegateRepliesFetch();
