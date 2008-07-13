@@ -195,7 +195,12 @@ namespace TwitterLib
             if (other == null)
                 throw new ArgumentNullException("other");
 
-            return (Id == other.Id);
+            if (id != other.id)
+                return false;
+            if (Id == -1)  // special type of tweet, so compare the user and text
+                return ((user.Id == other.user.Id) && (text == other.text));
+            
+            return true;
         }
 
         #endregion

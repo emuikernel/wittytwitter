@@ -26,6 +26,55 @@ namespace TwitterLib
         }
     }
 
+    /// <summary>
+    /// Custom Exception when a specific user id is not recognized by Twitter.
+    /// </summary>
+    [Serializable]
+    public class UserNotFoundException : Exception
+    {
+        private string _userId;
+
+        public UserNotFoundException()
+        {
+        }
+
+        public UserNotFoundException(string userId)
+        {
+            _userId = userId;
+        }
+
+        public UserNotFoundException(string userId, string message)
+            : base(message)
+        {
+            _userId = userId;
+        }
+
+        public UserNotFoundException(string userId, string message, Exception inner)
+            : base(message, inner)
+        {
+            _userId = userId;
+        }
+
+        protected UserNotFoundException(SerializationInfo info, StreamingContext context)
+            : base(info, context)
+        {
+        }
+
+        public string UserId
+        {
+            get
+            {
+                return _userId;
+            }
+            set
+            {
+                if (_userId == value)
+                    return;
+                _userId = value;
+            }
+        }
+        
+    }
     [Serializable]
     public class ProxyAuthenticationRequiredException : Exception
     { 

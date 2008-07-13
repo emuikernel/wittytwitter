@@ -31,7 +31,8 @@ namespace TwitterLib
         private string destroyDirectMessageUrl;
         private string createFriendshipUrl;
         private string format;
-        private IWebProxy webProxy;
+        private IWebProxy webProxy = HttpWebRequest.DefaultWebProxy;  // Jason Follas: Added initialization
+        private string twitterServerUrl;                              // Jason Follas
 
         private User currentLoggedInUser;
 
@@ -88,6 +89,30 @@ namespace TwitterLib
             set { webProxy = value; }
         }
 
+
+        /// <summary>
+        /// URL of the Twitter host.  Defaults to http://twitter.com/.  Why would
+        /// you need to override this?  Think: Alternate endpoints, like other
+        /// services with identical API's, or maybe a Twitter Proxy.
+        /// </summary>
+        public string TwitterServerUrl
+        {
+            get
+            {
+                if (String.IsNullOrEmpty(twitterServerUrl))
+                    return "http://twitter.com/";
+                else
+                    return twitterServerUrl;
+            }
+            set
+            {
+                twitterServerUrl = value;
+
+                if (!twitterServerUrl.EndsWith("/"))
+                    twitterServerUrl += "/";
+            }
+        }
+        
         /// <summary>
         ///  Url to the Twitter Public Timeline. Defaults to http://twitter.com/statuses/public_timeline
         /// </summary>
@@ -99,7 +124,7 @@ namespace TwitterLib
             get
             {
                 if (string.IsNullOrEmpty(publicTimelineUrl))
-                    return "http://twitter.com/statuses/public_timeline";
+                    return TwitterServerUrl + "statuses/public_timeline";
                 else
                     return publicTimelineUrl;
             }
@@ -117,7 +142,7 @@ namespace TwitterLib
             get
             {
                 if (string.IsNullOrEmpty(friendsTimelineUrl))
-                    return "http://twitter.com/statuses/friends_timeline";
+                    return TwitterServerUrl + "statuses/friends_timeline";
                 else
                     return friendsTimelineUrl;
             }
@@ -135,7 +160,7 @@ namespace TwitterLib
             get
             {
                 if (string.IsNullOrEmpty(userTimelineUrl))
-                    return "http://twitter.com/statuses/user_timeline";
+                    return TwitterServerUrl + "statuses/user_timeline";
                 else
                     return userTimelineUrl;
             }
@@ -154,7 +179,7 @@ namespace TwitterLib
             get
             {
                 if (string.IsNullOrEmpty(repliesTimelineUrl))
-                    return "http://twitter.com/statuses/replies";
+                    return TwitterServerUrl + "statuses/replies";
                 else
                     return repliesTimelineUrl;
             }
@@ -172,7 +197,7 @@ namespace TwitterLib
             get
             {
                 if (string.IsNullOrEmpty(directMessagesUrl))
-                    return "http://twitter.com/direct_messages";
+                    return TwitterServerUrl + "direct_messages";
                 else
                     return directMessagesUrl;
             }
@@ -190,7 +215,7 @@ namespace TwitterLib
             get
             {
                 if (string.IsNullOrEmpty(updateUrl))
-                    return "http://twitter.com/statuses/update";
+                    return TwitterServerUrl + "statuses/update";
                 else
                     return updateUrl;
             }
@@ -208,7 +233,7 @@ namespace TwitterLib
             get
             {
                 if (string.IsNullOrEmpty(friendsUrl))
-                    return "http://twitter.com/statuses/friends";
+                    return TwitterServerUrl + "statuses/friends";
                 else
                     return friendsUrl;
             }
@@ -226,7 +251,7 @@ namespace TwitterLib
             get
             {
                 if (string.IsNullOrEmpty(followersUrl))
-                    return "http://twitter.com/statuses/followers";
+                    return TwitterServerUrl + "statuses/followers";
                 else
                     return followersUrl;
             }
@@ -246,7 +271,7 @@ namespace TwitterLib
             get
             {
                 if (string.IsNullOrEmpty(userShowUrl))
-                    return "http://twitter.com/users/show/";
+                    return TwitterServerUrl + "users/show/";
                 else
                     return userShowUrl;
             }
@@ -264,7 +289,7 @@ namespace TwitterLib
             get
             {
                 if (string.IsNullOrEmpty(sendMessageUrl))
-                    return "http://twitter.com/direct_messages/new";
+                    return TwitterServerUrl + "direct_messages/new";
                 else
                     return sendMessageUrl;
             }
@@ -282,7 +307,7 @@ namespace TwitterLib
             get
             {
                 if (string.IsNullOrEmpty(destroyUrl))
-                    return "http://twitter.com/statuses/destroy/";
+                    return TwitterServerUrl + "statuses/destroy/";
                 else
                     return destroyUrl;
             }
@@ -300,7 +325,7 @@ namespace TwitterLib
             get
             {
                 if (string.IsNullOrEmpty(destroyDirectMessageUrl))
-                    return "http://twitter.com/direct_messages/destroy/";
+                    return TwitterServerUrl + "direct_messages/destroy/";
                 else
                     return destroyDirectMessageUrl;
             }
@@ -314,7 +339,7 @@ namespace TwitterLib
             get {
                 if (string.IsNullOrEmpty(createFriendshipUrl))
                 {
-                    return "http://twitter.com/friendships/create/";
+                    return TwitterServerUrl + "friendships/create/";
                 }
                 else
                 {
@@ -399,8 +424,14 @@ namespace TwitterLib
         }
 
         /// <summary>
-        /// Authenticated constructor with Proxy
+        /// Authenticated constructor with Proxy.
         /// </summary>
+        /// <remarks>
+        /// JMF: Note that this constructor should not be necessary.  The default proxy
+        /// (HttpWebRequest.DefaultWebProxy) needs to be set to the user-configured
+        /// proxy setting during app startup so that WPF controls that access the 
+        /// internet directly (like Image controls) can do so.
+        /// </remarks>
         public TwitterNet(string username, SecureString password, IWebProxy webProxy)
         {
             this.username = username;
@@ -540,15 +571,7 @@ namespace TwitterLib
 
                         foreach (XmlNode node in nodes)
                         {
-                            User user = new User();
-                            user.Id = int.Parse(node.SelectSingleNode("id").InnerText);
-                            user.Name = node.SelectSingleNode("name").InnerText;
-                            user.ScreenName = node.SelectSingleNode("screen_name").InnerText;
-                            user.ImageUrl = node.SelectSingleNode("profile_image_url").InnerText;
-                            user.SiteUrl = node.SelectSingleNode("url").InnerText;
-                            user.Location = node.SelectSingleNode("location").InnerText;
-                            user.Description = node.SelectSingleNode("description").InnerText;
-
+                            User user = CreateUser(node);
                             users.Add(user);
                         }
 
@@ -613,22 +636,7 @@ namespace TwitterLib
 
                 if (userNode != null)
                 {
-                    user.Id = int.Parse(userNode.SelectSingleNode("id").InnerText);
-                    user.Name = userNode.SelectSingleNode("name").InnerText;
-                    user.ScreenName = userNode.SelectSingleNode("screen_name").InnerText;
-                    user.ImageUrl = userNode.SelectSingleNode("profile_image_url").InnerText;
-                    user.SiteUrl = userNode.SelectSingleNode("url").InnerText;
-                    user.Location = userNode.SelectSingleNode("location").InnerText;
-                    user.Description = userNode.SelectSingleNode("description").InnerText;
-                    user.BackgroundColor = userNode.SelectSingleNode("profile_background_color").InnerText;
-                    user.TextColor = userNode.SelectSingleNode("profile_text_color").InnerText;
-                    user.LinkColor = userNode.SelectSingleNode("profile_link_color").InnerText;
-                    user.SidebarBorderColor = userNode.SelectSingleNode("profile_sidebar_border_color").InnerText;
-                    user.SidebarFillColor = userNode.SelectSingleNode("profile_sidebar_fill_color").InnerText;
-                    user.FollowingCount = int.Parse(userNode.SelectSingleNode("friends_count").InnerText);
-                    user.FavoritesCount = int.Parse(userNode.SelectSingleNode("favourites_count").InnerText);
-                    user.StatusesCount = int.Parse(userNode.SelectSingleNode("statuses_count").InnerText);
-                    user.FollowersCount = int.Parse(userNode.SelectSingleNode("followers_count").InnerText);
+                    user = CreateUser(userNode);
                 }
             }
 
@@ -728,18 +736,68 @@ namespace TwitterLib
                 }
                 tweet.IsNew = true;
 
-                User user = new User();
+
                 XmlNode userNode = node.SelectSingleNode("user");
-                user.Name = userNode.SelectSingleNode("name").InnerText;
-                user.ScreenName = userNode.SelectSingleNode("screen_name").InnerText;
-                user.ImageUrl = userNode.SelectSingleNode("profile_image_url").InnerText;
-                user.SiteUrl = userNode.SelectSingleNode("url").InnerText;
-                user.Location = userNode.SelectSingleNode("location").InnerText;
-                user.Description = userNode.SelectSingleNode("description").InnerText;
+                User user = CreateUser(userNode); 
                 tweet.User = user;
             }
 
             return tweet;
+        }
+
+        protected string GetPropertyFromXml(XmlNode twitterNode, string propertyName)
+        {
+            if (twitterNode != null)
+            {
+                XmlNode propertyNode = twitterNode.SelectSingleNode(propertyName);
+                if (propertyNode != null)
+                {
+                    return propertyNode.InnerText;
+                }
+            }
+            return String.Empty;
+        }
+
+        private User CreateUser(XmlNode userNode)
+        {
+            User user = new User();
+
+            if (userNode != null)
+            {
+                int temp = -1;
+                int.TryParse(GetPropertyFromXml(userNode, "id"), out temp);
+                user.Id = temp;
+
+                user.Name = GetPropertyFromXml(userNode, "name");
+                user.ScreenName = GetPropertyFromXml(userNode, "screen_name");
+                user.ImageUrl = GetPropertyFromXml(userNode, "profile_image_url");
+                user.SiteUrl = GetPropertyFromXml(userNode, "url");
+                user.Location = GetPropertyFromXml(userNode, "location");
+                user.Description = GetPropertyFromXml(userNode, "description");
+                user.BackgroundColor = GetPropertyFromXml(userNode, "profile_background_color");
+                user.TextColor = GetPropertyFromXml(userNode, "profile_text_color");
+                user.LinkColor = GetPropertyFromXml(userNode, "profile_link_color");
+                user.SidebarBorderColor = GetPropertyFromXml(userNode, "profile_sidebar_border_color");
+                user.SidebarFillColor = GetPropertyFromXml(userNode, "profile_sidebar_fill_color");
+
+                temp = 0;
+                int.TryParse(GetPropertyFromXml(userNode, "friends_count"), out temp);
+                user.FollowingCount = temp;
+
+                temp = 0;
+                int.TryParse(GetPropertyFromXml(userNode, "favourites_count"), out temp);
+                user.FavoritesCount = temp;
+
+                temp = 0;
+                int.TryParse(GetPropertyFromXml(userNode, "statuses_count"), out temp);
+                user.StatusesCount = temp;
+
+                temp = 0;
+                int.TryParse(GetPropertyFromXml(userNode, "followers_count"), out temp);
+                user.FollowersCount = temp;
+            }
+
+            return user;
         }
 
         /// <summary>
@@ -777,22 +835,7 @@ namespace TwitterLib
 
                     if (userNode != null)
                     {
-                        user.Id = int.Parse(userNode.SelectSingleNode("id").InnerText);
-                        user.Name = this.GetInnerTextIfNotNull(userNode, "name");
-                        user.ScreenName = this.GetInnerTextIfNotNull(userNode, "screen_name");
-                        user.ImageUrl = this.GetInnerTextIfNotNull(userNode, "profile_image_url");
-                        user.SiteUrl = this.GetInnerTextIfNotNull(userNode, "url");
-                        user.Location = this.GetInnerTextIfNotNull(userNode, "location");
-                        user.Description = this.GetInnerTextIfNotNull(userNode, "description");
-                        user.BackgroundColor = this.GetInnerTextIfNotNull(userNode, "profile_background_color");
-                        user.TextColor = this.GetInnerTextIfNotNull(userNode, "profile_text_color");
-                        user.LinkColor = this.GetInnerTextIfNotNull(userNode, "profile_link_color");
-                        user.SidebarBorderColor = this.GetInnerTextIfNotNull(userNode, "profile_sidebar_border_color");
-                        user.SidebarFillColor = this.GetInnerTextIfNotNull(userNode, "profile_sidebar_fill_color");
-                        user.FollowingCount = this.GetIntIfNotNull(userNode, "friends_count");
-                        user.FavoritesCount = this.GetIntIfNotNull(userNode, "favourites_count");
-                        user.StatusesCount = this.GetIntIfNotNull(userNode, "statuses_count");
-                        user.FollowersCount = this.GetIntIfNotNull(userNode, "followers_count");
+                        user = CreateUser(userNode);
                     }
                 }
             }
@@ -939,26 +982,12 @@ namespace TwitterLib
                                 CultureInfo.GetCultureInfoByIetfLanguageTag("en-us"), DateTimeStyles.AllowWhiteSpaces);
                         }
 
-                        User sender = new User();
                         XmlNode senderNode = node.SelectSingleNode("sender");
-                        sender.Name = senderNode.SelectSingleNode("name").InnerText;
-                        sender.ScreenName = senderNode.SelectSingleNode("screen_name").InnerText;
-                        sender.ImageUrl = senderNode.SelectSingleNode("profile_image_url").InnerText;
-                        sender.SiteUrl = senderNode.SelectSingleNode("url").InnerText;
-                        sender.Location = senderNode.SelectSingleNode("location").InnerText;
-                        sender.Description = senderNode.SelectSingleNode("description").InnerText;
-
+                        User sender = CreateUser(senderNode);
                         message.Sender = sender;
 
-                        User recipient = new User();
                         XmlNode recipientNode = node.SelectSingleNode("recipient");
-                        recipient.Name = recipientNode.SelectSingleNode("name").InnerText;
-                        recipient.ScreenName = recipientNode.SelectSingleNode("screen_name").InnerText;
-                        recipient.ImageUrl = recipientNode.SelectSingleNode("profile_image_url").InnerText;
-                        recipient.SiteUrl = recipientNode.SelectSingleNode("url").InnerText;
-                        recipient.Location = recipientNode.SelectSingleNode("location").InnerText;
-                        recipient.Description = recipientNode.SelectSingleNode("description").InnerText;
-
+                        User recipient = CreateUser(recipientNode);
                         message.Recipient = recipient;
 
                         messages.Add(message);
@@ -993,6 +1022,10 @@ namespace TwitterLib
 
         public void SendMessage(string user, string text)
         {
+            // Jason Follas: Make sure that the user isn't trying to DM themselves.
+            if (String.Compare(user, CurrentlyLoggedInUser.ScreenName, true) == 0)
+                return;
+
             if (string.IsNullOrEmpty(text))
                 return;
 
@@ -1055,6 +1088,10 @@ namespace TwitterLib
         /// <param name="userId"></param>
         public void FollowUser(string userName)
         {
+            // Jason Follas: Make sure that the user isn't trying to follow themselves.
+            if (String.Compare(userName, CurrentlyLoggedInUser.ScreenName, true) == 0)
+                return;
+
             string followUrl = CreateFriendshipUrl + userName + Format;
             MakeTwitterApiCall(followUrl);
         }
@@ -1062,36 +1099,6 @@ namespace TwitterLib
         #endregion
 
         #region Private Methods
-
-        /// <summary>
-        /// Get the inner text if the child XML node is not null.
-        /// </summary>
-        private string GetInnerTextIfNotNull(XmlNode parentNode, string nodeName)
-        {
-            string innerText = string.Empty;
-            XmlNode child = parentNode[nodeName];
-
-            if (child != null)
-            {
-                innerText = child.InnerText;
-            }
-
-            return innerText;
-        }
-
-        /// <summary>
-        /// Get an integer value of the inner text of a child node if it's not null.
-        /// </summary>
-        private int GetIntIfNotNull(XmlNode parentNode, string nodeName)
-        {
-            int val = 0;
-
-            XmlNode child = parentNode[nodeName];
-            if (child != null && int.TryParse(child.InnerText, out val)) { };
-
-            return val;
-        }
-
 
         /// <summary>
         /// Retrieves the specified timeline from Twitter
@@ -1162,13 +1169,16 @@ namespace TwitterLib
             // Add configured web proxy
             request.Proxy = webProxy;
 
-            // Friends and Replies timeline requests need to be authenticated
-            if (timeline == Timeline.Friends || timeline == Timeline.Replies)
-            {
-                // Add credendtials to request  
-                request.Credentials = new NetworkCredential(username, TwitterNet.ToInsecureString(password));
-            }
-            
+            // Begin JMF Edits: Authenticate for all timelines so you can get protected tweets
+            //if (timeline == Timeline.Friends || timeline == Timeline.Replies)
+
+            // Add credentials to request  
+            request.Credentials = new NetworkCredential(username, TwitterNet.ToInsecureString(password));
+
+            // End JMF Edits
+
+
+
             // moved this out of the try catch to use it later on in the XMLException
             // trying to fix a bug someone report
             XmlDocument doc = new XmlDocument();
@@ -1203,15 +1213,8 @@ namespace TwitterLib
                                 CultureInfo.GetCultureInfoByIetfLanguageTag("en-us"), DateTimeStyles.AllowWhiteSpaces);
                         }
 
-                        User user = new User();
                         XmlNode userNode = node.SelectSingleNode("user");
-                        user.Name = userNode.SelectSingleNode("name").InnerText;
-                        user.ScreenName = userNode.SelectSingleNode("screen_name").InnerText;
-                        user.ImageUrl = userNode.SelectSingleNode("profile_image_url").InnerText;
-                        user.SiteUrl = userNode.SelectSingleNode("url").InnerText;
-                        user.Location = userNode.SelectSingleNode("location").InnerText;
-                        user.Description = userNode.SelectSingleNode("description").InnerText;
-
+                        User user = CreateUser(userNode);
                         tweet.User = user;
 
                         tweets.Add(tweet);
@@ -1245,6 +1248,11 @@ namespace TwitterLib
                             break;
                         case 400: // rate limit exceeded
                             throw new RateLimitException("Rate limit exceeded. Clients may not make more than 70 requests per hour. Please try again in a few minutes.");
+                        case 404: // Not Found = specified user does not exist
+                            if (timeline == Timeline.User)
+                                throw new UserNotFoundException(userId, "@" + userId + " does not exist (probably mispelled)");
+                            else // what if a 404 happens to occur in another scenario?
+                                throw;
                         default:
                             throw;
                     }
