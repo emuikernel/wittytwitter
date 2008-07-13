@@ -1326,30 +1326,30 @@ namespace Witty
             AppSettings.Save();
         }
 
+        private void LaunchUrlIfValid(string candidateUrlString)
+        {
+            if (Uri.IsWellFormedUriString(candidateUrlString, UriKind.Absolute))
+            {
+                try
+                {
+                    System.Diagnostics.Process.Start(candidateUrlString);
+                }
+                catch (Win32Exception ex)
+                {
+                    App.Logger.Debug(String.Format("Exception: {0}", ex.ToString()));
+                }
+            }
+        }
         private void Url_MouseLeftButtonUp(object sender, MouseButtonEventArgs e)
         {
             TextBlock textBlock = (TextBlock)sender;
-            try
-            {
-                System.Diagnostics.Process.Start(textBlock.Text);
-            }
-            catch (Win32Exception ex)
-            {
-                App.Logger.Debug(String.Format("Exception: {0}", ex.ToString()));
-            }
+            LaunchUrlIfValid(textBlock.Text);
         }
 
         private void ScreenName_MouseLeftButtonUp(object sender, MouseButtonEventArgs e)
         {
             TextBlock textBlock = (TextBlock)sender;
-            try
-            {
-                System.Diagnostics.Process.Start(textBlock.Tag.ToString());
-            }
-            catch (Win32Exception ex)
-            {
-                App.Logger.Debug(String.Format("Exception: {0}", ex.ToString()));
-            }
+            LaunchUrlIfValid(textBlock.Tag.ToString());
         }
 
         private void OptionsButton_Click(object sender, RoutedEventArgs e)
