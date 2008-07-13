@@ -69,7 +69,7 @@ namespace Common.Controls
                             Hyperlink name = new Hyperlink();
                             name.Inlines.Add(userName);
                             name.NavigateUri = new Uri("http://twitter.com/" + userName);
-                            name.ToolTip = "Show user's tweets";
+                            name.ToolTip = "View @" + userName + "'s recent tweets";
                             name.Tag = userName;
 
                             name.Click += new RoutedEventHandler(name_Click);
