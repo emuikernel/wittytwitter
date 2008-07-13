@@ -15,7 +15,8 @@
   Title="Witty 0.1.8 Beta 1" 
   Width="330" Height="570" MinWidth="200" MinHeight="200" 
   WindowStyle="SingleBorderWindow"
-  Witty:WindowSettings.Save="True" KeyDown="MainWindow_OnKeyDown" Left="800" Top="50">
+  Witty:WindowSettings.Save="True" KeyDown="MainWindow_OnKeyDown" Left="800" Top="50"
+  >
 
   <Window.Resources>
     <ResourceDictionary>
@@ -25,6 +26,7 @@
       </ResourceDictionary.MergedDictionaries>
       
       <converters:CharRemainingValueConverter x:Key="CharRemainingConverter" />
+      <converters:CharRemainingForegroundColorConverter x:Key="CharRemainingColorConverter" />
     </ResourceDictionary>
   </Window.Resources>
 
@@ -55,7 +57,7 @@
       <DockPanel LastChildFill="False">
         <TextBlock Text="Witty" VerticalAlignment="Center" HorizontalAlignment="Center" FontSize="18" FontWeight="Bold" Foreground="{DynamicResource HeaderForegroundBrush}" />
         <Button Content="Refresh" Height="20" x:Name="RefreshButton" Click="RefreshButton_Click" IsEnabled="False" MinWidth="25" MinHeight="20" FontSize="9" DockPanel.Dock="Right" Width="50" ToolTip="Refresh Tweets" />
-        <Button Content="Options" Height="20" x:Name="OptionsButton" Click="OptionsButton_Click" MinWidth="25" MinHeight="20" FontSize="9" DockPanel.Dock="Right" Margin="0,0,10,0" IsEnabled="False" Width="50" ToolTip="Show Options Window" />
+        <Button Content="Options" Height="20" x:Name="OptionsButton" Click="OptionsButton_Click" MinWidth="25" MinHeight="20" FontSize="9" DockPanel.Dock="Right" Margin="0,0,10,0" IsEnabled="True" Width="50" ToolTip="Show Options Window" />
         <ToggleButton Content="Filter" Height="25" x:Name="FilterToggleButton" MinWidth="25" MinHeight="20" FontSize="9" IsEnabled="False" Width="55" ToolTip="Display Filter Panel" DockPanel.Dock="Right" BorderThickness="1,1,1,1" Margin="0,0,10,0" IsChecked="False" Unchecked="FilterToggleButton_Unchecked" Background="{DynamicResource NormalBrush}" Foreground="{DynamicResource LightBrush}" BorderBrush="{DynamicResource NormalBorderBrush}" Visibility="Collapsed">
 		      <ToggleButton.Clip>
 			      <RectangleGeometry Rect="3,3,50,20" RadiusX="5" RadiusY="5" />
@@ -89,7 +91,8 @@
         <!-- Recent Tab -->
         <TabItem Header="Recent" Padding="2,1,2,1" x:Name="RecentTab">
           <Grid x:Name="Recent">
-            <ListBox x:Name="TweetsListBox" ScrollViewer.CanContentScroll="False" IsSynchronizedWithCurrentItem="True" ItemTemplate="{DynamicResource TweetsTemplate}" ItemsSource="{Binding Mode=OneWay}" ScrollViewer.HorizontalScrollBarVisibility="Disabled" Margin="0,0,0,20" MouseLeftButtonUp="TweetsListBox_MouseLeftButtonUp" BorderThickness="0,0,0,0" >
+            <ListBox x:Name="TweetsListBox" ScrollViewer.CanContentScroll="False" IsSynchronizedWithCurrentItem="True" ItemTemplate="{DynamicResource TweetsTemplate}" ItemsSource="{Binding Mode=OneWay}" ScrollViewer.HorizontalScrollBarVisibility="Disabled" Margin="0,0,0,20" MouseLeftButtonUp="TweetsListBox_MouseLeftButtonUp" BorderThickness="0,0,0,0" 
+              controls:TweetTextBlock.NameClick="NameClickedInTweet">
               <ListBox.ContextMenu>
                 <ContextMenu Name="recentContextMenu">
                   <MenuItem Header="Reply" Click="ContextMenuReply_Click"></MenuItem>
@@ -110,8 +113,16 @@
                     <ColumnDefinition Width="Auto" />
                   </Grid.ColumnDefinitions>
                   <TextBox Text="" TextWrapping="Wrap" x:Name="TweetTextBox" SpellCheck.IsEnabled="True" />
-                  <TextBlock Text="{Binding Path=Text.Length, Converter={StaticResource CharRemainingConverter}, ElementName=TweetTextBox, Mode=Default}" FontSize="18" Grid.Column="1" VerticalAlignment="Top" HorizontalAlignment="Left" Margin="10,0,0,0" FontFamily="Georgia" x:Name="CharRemainingCounter" Foreground="#FF52626F" />
-                  <Button VerticalAlignment="Bottom" Width="75" Height="23" Content="Update" Grid.Column="1" x:Name="UpdateButton" Click="UpdateButton_Click" Margin="10,0,0,0" IsDefault="True" />
+                  <TextBlock	Text="{Binding Path=Text.Length, Converter={StaticResource CharRemainingConverter}, ElementName=TweetTextBox, Mode=Default}" 
+								FontSize="18" 
+								Grid.Column="1" 
+								VerticalAlignment="Top" 
+								HorizontalAlignment="Left" 
+								Margin="10,0,0,0" 
+								FontFamily="Georgia" 
+								x:Name="CharRemainingCounter" 
+								Foreground="{Binding Path=Text.Length, ElementName=TweetTextBox, Converter={StaticResource CharRemainingColorConverter}}" />
+				  <Button VerticalAlignment="Bottom" Width="75" Height="23" Content="Update" Grid.Column="1" x:Name="UpdateButton" Click="UpdateButton_Click" Margin="10,0,0,0" IsDefault="True" />
                 </Grid>
               </DockPanel>
             </Border>
@@ -120,7 +131,8 @@
 
         <!-- Replies Tab -->
         <TabItem Header="Replies" Padding="2,1,2,1" x:Name="RepliesTab">
-          <ListBox x:Name="RepliesListBox" ScrollViewer.CanContentScroll="False" IsSynchronizedWithCurrentItem="True" ItemTemplate="{DynamicResource TweetsTemplate}" ScrollViewer.HorizontalScrollBarVisibility="Disabled" MouseLeftButtonUp="TweetsListBox_MouseLeftButtonUp" BorderThickness="0,0,0,0" >
+          <ListBox x:Name="RepliesListBox" ScrollViewer.CanContentScroll="False" IsSynchronizedWithCurrentItem="True" ItemTemplate="{DynamicResource TweetsTemplate}" ScrollViewer.HorizontalScrollBarVisibility="Disabled" MouseLeftButtonUp="TweetsListBox_MouseLeftButtonUp" BorderThickness="0,0,0,0" 
+              controls:TweetTextBlock.NameClick="NameClickedInTweet">
             <ListBox.ContextMenu>
               <ContextMenu Name="RepliesContextMenu">
                 <MenuItem Header="Reply" Click="ContextMenuReply_Click"></MenuItem>
@@ -178,14 +190,27 @@
                 </Grid>
               </Grid>
             </Border>
-            <ListBox x:Name="UserTimelineListBox" ItemsSource="{Binding Mode=OneWay}" ScrollViewer.CanContentScroll="False" IsSynchronizedWithCurrentItem="True" ItemTemplate="{DynamicResource UserTimeLineTemplate}" ScrollViewer.HorizontalScrollBarVisibility="Disabled" MouseLeftButtonUp="TweetsListBox_MouseLeftButtonUp" BorderThickness="0,0,0,0" DockPanel.Dock="Bottom" />
+            <ListBox x:Name="UserTimelineListBox" ItemsSource="{Binding Mode=OneWay}" ScrollViewer.CanContentScroll="False" IsSynchronizedWithCurrentItem="True" ItemTemplate="{DynamicResource UserTimeLineTemplate}" ScrollViewer.HorizontalScrollBarVisibility="Disabled" MouseLeftButtonUp="TweetsListBox_MouseLeftButtonUp" BorderThickness="0,0,0,0" DockPanel.Dock="Bottom" 
+              controls:TweetTextBlock.NameClick="NameClickedInTweet">
+				<ListBox.ContextMenu>
+					<ContextMenu Name="UserContextMenu">
+						<MenuItem Header="Reply" Click="ContextMenuReply_Click"></MenuItem>
+						<MenuItem Header="Follow" Click="ContextMenuFollow_Click" IsEnabled="True"></MenuItem>
+						<MenuItem Header="Send Direct Message" Click="ContextMenuDirectMessage_Click"></MenuItem>
+						<MenuItem Header="Re-tweet" Click="ContextMenuRetweet_Click" IsEnabled="True"></MenuItem>
+						<MenuItem Header="Refresh" Click="RefreshButton_Click"></MenuItem>
+						<MenuItem Header="Clear All Tweets" Click="ContextMenuClear_Click"></MenuItem>						
+					</ContextMenu>
+				</ListBox.ContextMenu>
+			</ListBox>
           </DockPanel>
         </TabItem>
 
         <!-- Messages Tab -->
         <TabItem Header="Messages" Padding="2,1,2,1" x:Name="MessagesTab">
           <Grid x:Name="Messages">
-            <ListBox x:Name="MessagesListBox" ScrollViewer.CanContentScroll="False" IsSynchronizedWithCurrentItem="True" ItemTemplate="{DynamicResource MessagesTemplate}" ItemsSource="{Binding Mode=OneWay}" ScrollViewer.HorizontalScrollBarVisibility="Disabled" Margin="0,0,0,20" MouseLeftButtonUp="MessagesListBox_MouseLeftButtonUp" BorderThickness="0,0,0,0">
+            <ListBox x:Name="MessagesListBox" ScrollViewer.CanContentScroll="False" IsSynchronizedWithCurrentItem="True" ItemTemplate="{DynamicResource MessagesTemplate}" ItemsSource="{Binding Mode=OneWay}" ScrollViewer.HorizontalScrollBarVisibility="Disabled" Margin="0,0,0,20" MouseLeftButtonUp="MessagesListBox_MouseLeftButtonUp" BorderThickness="0,0,0,0"
+              controls:TweetTextBlock.NameClick="NameClickedInTweet">
                 <ListBox.ContextMenu>
                     <ContextMenu Name="MessagesContextMenu">
                         <MenuItem Header="Reply" Click="ContextMenuReply_Click"></MenuItem>
@@ -212,7 +237,16 @@
                     <TextBox Text="" TextWrapping="Wrap" VerticalAlignment="Center" Width="120" Margin="0,0,0,2" x:Name="MessageUserTextBox" />
                   </StackPanel>
                   <TextBox Grid.Row="1" Text="" TextWrapping="Wrap" x:Name="MessageTextBox" SpellCheck.IsEnabled="True" />
-                  <TextBlock Grid.Row="1" Text="{Binding Path=Text.Length, Converter={StaticResource CharRemainingConverter}, ElementName=MessageTextBox, Mode=Default}" FontSize="18" Grid.Column="1" VerticalAlignment="Top" HorizontalAlignment="Left" Margin="10,0,0,0" FontFamily="Georgia" x:Name="MessageCharRemainingCounter" Foreground="#FF52626F" />
+                  <TextBlock	Grid.Row="1" 
+								Text="{Binding Path=Text.Length, Converter={StaticResource CharRemainingConverter}, ElementName=MessageTextBox, Mode=Default}" 
+								FontSize="18" 
+								Grid.Column="1" 
+								VerticalAlignment="Top" 
+								HorizontalAlignment="Left" 
+								Margin="10,0,0,0" 
+								FontFamily="Georgia" 
+								x:Name="MessageCharRemainingCounter"
+								Foreground="{Binding Path=Text.Length, ElementName=MessageTextBox, Converter={StaticResource CharRemainingColorConverter}}" />
                   <Button Grid.Row="1" VerticalAlignment="Bottom" Width="75" Height="23" Content="Send" Grid.Column="1" x:Name="SendMessageButton" Click="SendMessageButton_Click" Margin="10,0,0,0" IsDefault="True" />
                 </Grid>
               </DockPanel>

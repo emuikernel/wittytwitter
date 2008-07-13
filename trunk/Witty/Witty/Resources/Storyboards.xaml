@@ -62,7 +62,7 @@
       <DiscreteBooleanKeyFrame KeyTime="00:00:00" Value="False"/>
     </BooleanAnimationUsingKeyFrames>
     <BooleanAnimationUsingKeyFrames BeginTime="00:00:00" Duration="00:00:00.0010000" Storyboard.TargetName="OptionsButton" Storyboard.TargetProperty="(UIElement.IsEnabled)">
-      <DiscreteBooleanKeyFrame KeyTime="00:00:00" Value="False"/>
+      <DiscreteBooleanKeyFrame KeyTime="00:00:00" Value="True"/>
     </BooleanAnimationUsingKeyFrames>
   </Storyboard>
   <Storyboard x:Key="HideLogin">

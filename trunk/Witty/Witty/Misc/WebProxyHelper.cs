@@ -17,7 +17,13 @@ namespace Witty
                 try
                 {
                     proxy = new WebProxy(AppSettings.ProxyServer, AppSettings.ProxyPort);
-                    proxy.Credentials = new NetworkCredential(AppSettings.ProxyUsername, AppSettings.ProxyPassword);
+
+                    string[] user = AppSettings.ProxyUsername.Split('\\');
+
+                    if (user.Length == 2)
+                        proxy.Credentials = new NetworkCredential(user[1], AppSettings.ProxyPassword, user[0]);
+                    else
+                        proxy.Credentials = new NetworkCredential(AppSettings.ProxyUsername, AppSettings.ProxyPassword);
                 }
                 catch (UriFormatException ex)
                 {

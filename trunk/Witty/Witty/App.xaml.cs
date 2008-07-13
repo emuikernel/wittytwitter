@@ -3,6 +3,7 @@ using System.Windows.Threading;
 using log4net;
 using log4net.Config;
 using TwitterLib;
+using System.Net;
 
 namespace Witty
 {
@@ -29,6 +30,14 @@ namespace Witty
                 Witty.Properties.Settings.Default.Upgrade();
                 appSettings.UpgradeSettings = false;
             }
+
+            // Set the default proxy here once and for all (should then be used by
+            // WPF controls, like images that fetch their source from the internet)
+            if (appSettings.UseProxy)
+            {
+                HttpWebRequest.DefaultWebProxy = WebProxyHelper.GetConfiguredWebProxy();
+            }
+
 
             if (!string.IsNullOrEmpty(appSettings.Skin))
             {

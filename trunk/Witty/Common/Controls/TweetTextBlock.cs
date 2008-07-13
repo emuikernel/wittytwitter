@@ -4,6 +4,7 @@ using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Documents;
 using TwitterLib;
+using System.Windows.Input;
 
 namespace Common.Controls
 {
@@ -68,11 +69,36 @@ namespace Common.Controls
                             Hyperlink name = new Hyperlink();
                             name.Inlines.Add(userName);
                             name.NavigateUri = new Uri("http://twitter.com/" + userName);
-                            name.ToolTip = "Show user's profile";
+                            name.ToolTip = "Show user's tweets";
+                            name.Tag = userName;
+
                             name.Click += new RoutedEventHandler(name_Click);
+
                             textblock.Inlines.Add("@");
                             textblock.Inlines.Add(name);
                             textblock.Inlines.Add(foundUsername.Groups["suffix"].Captures[0].Value);
+                        }
+                    }
+
+                    // clickable #hashtag
+                    else if (word.StartsWith("#"))
+                    {
+                        string hashtag = String.Empty;
+                        Match foundHashtag = Regex.Match(word, @"#(\w+)(?<suffix>.*)");
+                        if (foundHashtag.Success)
+                        {
+                            hashtag = foundHashtag.Groups[1].Captures[0].Value;
+                            Hyperlink tag = new Hyperlink();
+                            tag.Inlines.Add(hashtag);
+                            tag.NavigateUri = new Uri("http://twemes.com/" + hashtag);
+                            tag.ToolTip = "Show this hashtag on Twemes.com";
+                            tag.Tag = hashtag;
+
+                            tag.Click += new RoutedEventHandler(link_Click);
+
+                            textblock.Inlines.Add("#");
+                            textblock.Inlines.Add(tag);
+                            textblock.Inlines.Add(foundHashtag.Groups["suffix"].Captures[0].Value);
                         }
                     }
                     else
@@ -114,7 +140,19 @@ namespace Common.Controls
             //TODO: this should be configurable to show the user Witty or open in browser.
             try
             {
+                if (e.OriginalSource is Hyperlink)
+                {
+                    Hyperlink h = e.OriginalSource as Hyperlink;
+                    if (h.Parent is TweetTextBlock)
+                    {
+                        TweetTextBlock p = h.Parent as TweetTextBlock;
+                        p.RaiseEvent(new RoutedEventArgs(NameClickEvent, h));
+                        return;
+                    }
+                }
+
                 System.Diagnostics.Process.Start(((Hyperlink)sender).NavigateUri.ToString());
+
             }
             catch
             {

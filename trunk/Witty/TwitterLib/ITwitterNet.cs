@@ -43,5 +43,7 @@
 
         System.Security.SecureString Password { get; set; }
         System.Net.IWebProxy WebProxy { get; set; }
+
+        string TwitterServerUrl { get; set; }
     }
 }

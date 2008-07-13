@@ -119,10 +119,12 @@
           <GroupBox Header="Login Info">
             <StackPanel>
               <DockPanel>
+                <Label Content="_TwitterHost" Width="75" Target="{Binding ElementName=TwitterHostTextBox}" />
+                <TextBox x:Name="TwitterHostTextBox" TextWrapping="Wrap" IsEnabled="True" Width="250" HorizontalAlignment="Left"/>
+              </DockPanel>              
+              <DockPanel Margin="0,5,0,0">
                 <Label Content="_Username" Width="75" Target="{Binding ElementName=UsernameTextBox}" />
                 <TextBox x:Name="UsernameTextBox" TextWrapping="Wrap" IsEnabled="False" Width="150" HorizontalAlignment="Left"/>
-              </DockPanel>
-              <DockPanel Margin="0,5,0,0">
                 <Label Content="_Password" Width="75" Target="{Binding ElementName=UsernameTextBox}" />
                 <PasswordBox x:Name="PasswordTextBox" IsEnabled="False" Width="150" HorizontalAlignment="Left"/>
               </DockPanel>

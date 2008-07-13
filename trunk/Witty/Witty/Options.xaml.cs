@@ -23,6 +23,7 @@ namespace Witty
 
             UsernameTextBox.Text = AppSettings.Username;
             PasswordTextBox.Password = AppSettings.Password;
+            TwitterHostTextBox.Text = AppSettings.TwitterHost;
 
             if (!string.IsNullOrEmpty(AppSettings.RefreshInterval))
             {
@@ -254,6 +255,11 @@ namespace Witty
                 AppSettings.RefreshInterval = SliderValueTextBlock.Text;
 
                 NotifyIfRestartNeeded();
+
+                AppSettings.TwitterHost = TwitterHostTextBox.Text;
+
+                if (!AppSettings.TwitterHost.EndsWith("/"))
+                    AppSettings.TwitterHost += "/";
 
                 AppSettings.SmoothScrolling = (bool)SmoothScrollingCheckBox.IsChecked;
                 AppSettings.UseProxy = (bool)UseProxyCheckBox.IsChecked;

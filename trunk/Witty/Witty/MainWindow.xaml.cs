@@ -14,6 +14,7 @@ using TwitterLib;
 using TwitterLib.Utilities;
 using Witty.ClickOnce;
 using Witty.Properties;
+using System.Windows.Documents;
 
 namespace Witty
 {
@@ -94,7 +95,13 @@ namespace Witty
                 LoginControl.Visibility = Visibility.Hidden;
 
                 System.Security.SecureString password = TwitterNet.DecryptString(AppSettings.Password);
-                twitter = new TwitterNet(AppSettings.Username, password, WebProxyHelper.GetConfiguredWebProxy());
+
+                // Jason Follas: Reworked Web Proxy - don't need to explicitly pass into TwitterNet ctor
+                //twitter = new TwitterNet(AppSettings.Username, password, WebProxyHelper.GetConfiguredWebProxy());
+                twitter = new TwitterNet(AppSettings.Username, password);
+
+                // Jason Follas: Twitter proxy servers, anyone?  (Network Nazis who block twitter.com annoy me)
+                twitter.TwitterServerUrl = AppSettings.TwitterHost;
 
                 // Let the user know what's going on
                 StatusTextBlock.Text = Properties.Resources.TryLogin;
@@ -119,6 +126,8 @@ namespace Witty
                 SnarlInterface.RegisterConfig("Witty", this.SnarlConfighWnd.ToInt32(), "");
                 SnarlInterface.RegisterAlert("Witty", "New Tweet");
             }
+
+            
         }
 
         void MainWindow_Closing(object sender, CancelEventArgs e)
@@ -701,13 +710,15 @@ namespace Witty
 
         #endregion
 
-        #region User Timline
+        #region User Timeline
 
         private void DelegateUserTimelineFetch(string userId)
         {
             displayUser = userId;
 
             UserTab.IsSelected = true;
+            UserContextMenu.IsEnabled = true;  // JMF
+
             userTweets.Clear();
 
             // Let the user know what's going on
@@ -729,6 +740,28 @@ namespace Witty
                 LayoutRoot.Dispatcher.BeginInvoke(
                     DispatcherPriority.Normal,
                     new OneArgDelegate(UpdateUsersTimelineInterface), twitter.GetUserTimeline(userId));
+            }
+
+            // Jason Follas: Added the following UI feedback behavior for when users weren't found.
+            catch (UserNotFoundException userNotFoundEx)
+            {
+                
+                TweetCollection fakeTweets = new TweetCollection();
+                fakeTweets.Add(new Tweet());
+                fakeTweets[0].Id = -1;
+                fakeTweets[0].Text = userNotFoundEx.Message;
+                fakeTweets[0].Source = "Witty Error Handler"; 
+                fakeTweets[0].User = new User();
+                fakeTweets[0].User.ScreenName = "@" + userNotFoundEx.UserId;
+                fakeTweets[0].User.Description = userNotFoundEx.Message;
+
+
+                StopStoryboard("Fetching");
+
+                this.UserContextMenu.IsEnabled = false;
+
+                UpdateUsersTimelineInterface(fakeTweets);
+                
             }
             catch (WebException ex)
             {
@@ -820,7 +853,12 @@ namespace Witty
 
         private void LoginControl_Login(object sender, RoutedEventArgs e)
         {
-            twitter = new TwitterNet(AppSettings.Username, TwitterNet.DecryptString(AppSettings.Password), WebProxyHelper.GetConfiguredWebProxy());
+            // Jason Follas: Reworked Web Proxy - don't need to explicitly pass into TwitterNet ctor
+            //twitter = new TwitterNet(AppSettings.Username, TwitterNet.DecryptString(AppSettings.Password), WebProxyHelper.GetConfiguredWebProxy());
+            twitter = new TwitterNet(AppSettings.Username, TwitterNet.DecryptString(AppSettings.Password)); 
+            
+            // Jason Follas: Twitter proxy servers, anyone?  (Network Nazis who block twitter.com annoy me)
+            twitter.TwitterServerUrl = AppSettings.TwitterHost;
 
             // fetch new tweets
             DelegateRecentFetch();
@@ -980,6 +1018,19 @@ namespace Witty
                 if (e.Key == Key.F5) { this.Refresh(); };
 
                 if (e.Key == Key.Escape) { this.WindowState = WindowState.Minimized; };
+            }
+        }
+
+        private void NameClickedInTweet(object sender, RoutedEventArgs reArgs)
+        {
+            if (reArgs.OriginalSource is System.Windows.Documents.Hyperlink)
+            {
+                Hyperlink h = reArgs.OriginalSource as Hyperlink;
+                
+                string userId = h.Tag.ToString();
+                DelegateUserTimelineFetch(userId);
+                
+                reArgs.Handled = true;
             }
         }
 

@@ -21,7 +21,12 @@ namespace Witty
 
         private void LoginButton_Click(object sender, RoutedEventArgs e)
         {
-            TwitterNet twitter = new TwitterNet(UsernameTextBox.Text, TwitterNet.ToSecureString(PasswordTextBox.Password), WebProxyHelper.GetConfiguredWebProxy());
+            // Jason Follas: Reworked Web Proxy - don't need to explicitly pass into TwitterNet ctor
+            //TwitterNet twitter = new TwitterNet(UsernameTextBox.Text, TwitterNet.ToSecureString(PasswordTextBox.Password), WebProxyHelper.GetConfiguredWebProxy());
+            TwitterNet twitter = new TwitterNet(UsernameTextBox.Text, TwitterNet.ToSecureString(PasswordTextBox.Password)); //, WebProxyHelper.GetConfiguredWebProxy());
+
+            // Jason Follas: Twitter proxy servers, anyone?  (Network Nazis who block twitter.com annoy me)
+            twitter.TwitterServerUrl = AppSettings.TwitterHost;
 
             // Attempt login in a new thread
             LoginButton.Dispatcher.BeginInvoke(
