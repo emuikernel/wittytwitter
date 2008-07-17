@@ -95,6 +95,29 @@ namespace TwitterLib
         }
     }
 
+    [Serializable]
+    public class ProxyNotFoundException : Exception
+    {
+        public ProxyNotFoundException()
+        {
+        }
+
+        public ProxyNotFoundException(string message)
+            : base(message)
+        {
+        }
+
+        public ProxyNotFoundException(string message, Exception inner)
+            : base(message, inner)
+        {
+        }
+
+        protected ProxyNotFoundException(SerializationInfo info, StreamingContext context)
+            : base(info, context)
+        {
+        }
+    }
+
     /// <summary>
     /// Custom exception for when the Twitter API is freaking out.
     /// </summary>

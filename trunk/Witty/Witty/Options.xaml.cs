@@ -3,6 +3,7 @@ using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Input;
 using log4net;
+using System.Net;
 
 namespace Witty
 {
@@ -59,7 +60,14 @@ namespace Witty
             ProxyServerTextBox.Text = AppSettings.ProxyServer;
             ProxyPortTextBox.Text = AppSettings.ProxyPort.ToString();
             ProxyUsernameTextBox.Text = AppSettings.ProxyUsername;
-            ProxyPasswordTextBox.Password = AppSettings.ProxyPassword;
+
+            // JMF: Thinking about the user experience here, rolling out something that
+            //      may very well invalidate their stored settings.  I'll just flag
+            //      values that are now encrypted with a prefix when saved to the AppSetting.
+            if (!AppSettings.ProxyPassword.StartsWith("WittyEncrypted:"))
+                ProxyPasswordTextBox.Password = AppSettings.ProxyPassword;
+            else
+                ProxyPasswordTextBox.Password = DecryptString(AppSettings.ProxyPassword);
 
             ToggleProxyFieldsEnabled(AppSettings.UseProxy);
 
@@ -193,13 +201,22 @@ namespace Witty
             ProxyPasswordTextBox.IsEnabled = enabled;
         }
 
+        bool _RestartOnProxyChange = false;
+
         private void NotifyIfRestartNeeded()
         {
-            if (AppSettings.UseProxy != (bool)UseProxyCheckBox.IsChecked ||
-                AppSettings.ProxyServer != ProxyServerTextBox.Text ||
-                AppSettings.ProxyPort != int.Parse(ProxyPortTextBox.Text) ||
-                AppSettings.ProxyUsername != ProxyUsernameTextBox.Text ||
-                AppSettings.ProxyPassword != ProxyPasswordTextBox.Password)
+            // JMF: The HttpWebRequest.DefaultWebProxy is now being set when AppSettings are
+            //      saved, so a restart is probably not necessary just because the config'd
+            //      proxy settings changed.
+            if (_RestartOnProxyChange &&
+                    (
+                        AppSettings.UseProxy != (bool)UseProxyCheckBox.IsChecked ||
+                        AppSettings.ProxyServer != ProxyServerTextBox.Text ||
+                        AppSettings.ProxyPort != int.Parse(ProxyPortTextBox.Text) ||
+                        AppSettings.ProxyUsername != ProxyUsernameTextBox.Text ||
+                        AppSettings.ProxyPassword != "WittyEncrypted:" + EncryptString(ProxyPasswordTextBox.Password)
+                    )
+                )
             {
                 MessageBox.Show("Witty will need to be restarted before settings will take effect.");
             }
@@ -266,7 +283,7 @@ namespace Witty
                 AppSettings.ProxyServer = ProxyServerTextBox.Text;
                 AppSettings.ProxyPort = int.Parse(ProxyPortTextBox.Text);
                 AppSettings.ProxyUsername = ProxyUsernameTextBox.Text;
-                AppSettings.ProxyPassword = ProxyPasswordTextBox.Password;
+                AppSettings.ProxyPassword = "WittyEncrypted:" + EncryptString(ProxyPasswordTextBox.Password);
 
                 AppSettings.MaximumIndividualAlerts = MaxIndTextBlock.Text;
                 AppSettings.NotificationDisplayTime = NotificationDisplayTimeTextBlock.Text;
@@ -279,8 +296,20 @@ namespace Witty
 
                 AppSettings.Save();
 
+
+
+                // Set (unset?) the default proxy here once and for all (should then be 
+                // used by WPF controls, like images that fetch their source from the 
+                // internet)
+                HttpWebRequest.DefaultWebProxy = WebProxyHelper.GetConfiguredWebProxy();
+                
+
+
+
                 DialogResult = true;
                 this.Close();
+
+
             }
         }
 
@@ -328,6 +357,38 @@ namespace Witty
 
             AppSettings.AlwaysOnTop = this.Topmost;
             AppSettings.Save();
+        }
+
+
+        // REMARK: This is same encryption scheme that is used in TwitterNet class.  Should it
+        //         be abstracted into a utility class?
+        static byte[] entropy = System.Text.Encoding.Unicode.GetBytes("WittyPasswordSalt");
+        private static string DecryptString(string encryptedData)
+        {
+            if (encryptedData.StartsWith("WittyEncrypted:"))
+                encryptedData = encryptedData.Substring(15);
+
+            try
+            {
+                byte[] decryptedData = System.Security.Cryptography.ProtectedData.Unprotect(
+                    Convert.FromBase64String(encryptedData),
+                    entropy,
+                    System.Security.Cryptography.DataProtectionScope.CurrentUser);
+                return System.Text.Encoding.Unicode.GetString(decryptedData);
+            }
+            catch
+            {
+                return String.Empty;
+            }
+        }
+
+        private static string EncryptString(string input)
+        {
+            byte[] encryptedData = System.Security.Cryptography.ProtectedData.Protect(
+                System.Text.Encoding.Unicode.GetBytes(input),
+                entropy,
+                System.Security.Cryptography.DataProtectionScope.CurrentUser);
+            return Convert.ToBase64String(encryptedData);
         }
     }
 }
