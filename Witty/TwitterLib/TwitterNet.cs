@@ -597,10 +597,17 @@ namespace TwitterLib
                                 throw new RateLimitException("Rate limit exceeded. Clients may not make more than 70 requests per hour. Please try again in a few minutes.");
                             case 401: // unauthorized
                                 throw new SecurityException("Not Authorized.");
+                            case 407: // proxy authentication required
+                                throw new ProxyAuthenticationRequiredException("Proxy authentication required.");
                             default:
                                 throw;
                         }
                     }
+                    else if (status == WebExceptionStatus.ProxyNameResolutionFailure)
+                    {
+                        throw new ProxyNotFoundException("The proxy server could not be found.  Check that it was entered correctly in the Options dialog.  You may need to disable your web proxy in the Options, if for instance you use a proxy server at work and are now at home.");
+                    }
+
                 }
             }
             return users;
@@ -865,6 +872,11 @@ namespace TwitterLib
                             throw;
                     }
                 }
+                else if (status == WebExceptionStatus.ProxyNameResolutionFailure)
+                {
+                    throw new ProxyNotFoundException("The proxy server could not be found.  Check that it was entered correctly in the Options dialog.  You may need to disable your web proxy in the Options, if for instance you use a proxy server at work and are now at home.");
+                }
+
                 else
                     throw;
             }
@@ -1016,6 +1028,11 @@ namespace TwitterLib
                             throw;
                     }
                 }
+                else if (status == WebExceptionStatus.ProxyNameResolutionFailure)
+                {
+                    throw new ProxyNotFoundException("The proxy server could not be found.  Check that it was entered correctly in the Options dialog.  You may need to disable your web proxy in the Options, if for instance you use a proxy server at work and are now at home." );
+                }
+
             }
             return messages;
         }
@@ -1079,7 +1096,13 @@ namespace TwitterLib
                             throw;
                     }
                 }
+                else if (status == WebExceptionStatus.ProxyNameResolutionFailure)
+                {
+                    throw new ProxyNotFoundException("The proxy server could not be found.  Check that it was entered correctly in the Options dialog.  You may need to disable your web proxy in the Options, if for instance you use a proxy server at work and are now at home.");
+                }
+
             }
+
         }
 
         /// <summary>
@@ -1253,9 +1276,15 @@ namespace TwitterLib
                                 throw new UserNotFoundException(userId, "@" + userId + " does not exist (probably mispelled)");
                             else // what if a 404 happens to occur in another scenario?
                                 throw;
+                        case 407: // proxy authentication required
+                            throw new ProxyAuthenticationRequiredException("Proxy authentication required.");
                         default:
                             throw;
                     }
+                }
+                else if (status == WebExceptionStatus.ProxyNameResolutionFailure)
+                {
+                    throw new ProxyNotFoundException("The proxy server could not be found.  Check that it was entered correctly in the Options dialog.  You may need to disable your web proxy in the Options, if for instance you use a proxy server at work and are now at home.");
                 }
             }
             return tweets;
@@ -1314,6 +1343,11 @@ namespace TwitterLib
                             throw;
                     }
                 }
+                else if (status == WebExceptionStatus.ProxyNameResolutionFailure)
+                {
+                    throw new ProxyNotFoundException("The proxy server could not be found.  Check that it was entered correctly in the Options dialog.  You may need to disable your web proxy in the Options, if for instance you use a proxy server at work and are now at home.");
+                }
+
             }
         }
 

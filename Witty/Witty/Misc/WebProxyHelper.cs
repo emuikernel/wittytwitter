@@ -21,9 +21,9 @@ namespace Witty
                     string[] user = AppSettings.ProxyUsername.Split('\\');
 
                     if (user.Length == 2)
-                        proxy.Credentials = new NetworkCredential(user[1], AppSettings.ProxyPassword, user[0]);
+                        proxy.Credentials = new NetworkCredential(user[1], DecryptString(AppSettings.ProxyPassword), user[0]);
                     else
-                        proxy.Credentials = new NetworkCredential(AppSettings.ProxyUsername, AppSettings.ProxyPassword);
+                        proxy.Credentials = new NetworkCredential(AppSettings.ProxyUsername, DecryptString(AppSettings.ProxyPassword));
                 }
                 catch (UriFormatException ex)
                 {
@@ -31,6 +31,30 @@ namespace Witty
                 }
             }
             return proxy;
+        }
+
+
+
+        // REMARK: This is same encryption scheme that is used in TwitterNet class.  Should it
+        //         be abstracted into a utility class?
+        private static byte[] entropy = System.Text.Encoding.Unicode.GetBytes("WittyPasswordSalt");
+        private static string DecryptString(string encryptedData)
+        {
+            if (encryptedData.StartsWith("WittyEncrypted:"))
+                encryptedData = encryptedData.Substring(15);
+
+            try
+            {
+                byte[] decryptedData = System.Security.Cryptography.ProtectedData.Unprotect(
+                    Convert.FromBase64String(encryptedData),
+                    entropy,
+                    System.Security.Cryptography.DataProtectionScope.CurrentUser);
+                return System.Text.Encoding.Unicode.GetString(decryptedData);
+            }
+            catch
+            {
+                return String.Empty;
+            }
         }
     }
 }

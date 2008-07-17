@@ -265,6 +265,7 @@ namespace Witty
                 this.GetTweets);
 
             fetcher.BeginInvoke(null, null);
+
         }
 
         private void Timer_Elapsed(object sender, EventArgs e)
@@ -285,6 +286,17 @@ namespace Witty
             {
                 App.Logger.Debug(String.Format("There was a problem fetching new tweets from Twitter.com: {0}", ex.ToString()));
             }
+            catch (ProxyAuthenticationRequiredException ex)
+            {
+                App.Logger.Error("Incorrect proxy configuration.");
+                MessageBox.Show("Proxy server is configured incorrectly.  Please correct the settings on the Options menu.");
+            }
+            catch (ProxyNotFoundException ex)
+            {
+                App.Logger.Error("Incorrect proxy configuration.");
+                MessageBox.Show(ex.Message);
+            }
+
         }
 
         private void UpdateUserInterface(TweetCollection newTweets)
@@ -489,6 +501,17 @@ namespace Witty
                 UpdateTextBlock.Text = "Update failed.";
                 App.Logger.Debug(String.Format("There was a problem fetching new tweets from Twitter.com: {0}", ex.ToString()));
             }
+            catch (ProxyAuthenticationRequiredException ex)
+            {
+                App.Logger.Error("Incorrect proxy configuration.");
+                MessageBox.Show("Proxy server is configured incorrectly.  Please correct the settings on the Options menu.");
+            }
+            catch (ProxyNotFoundException ex)
+            {
+                App.Logger.Error("Incorrect proxy configuration.");
+                MessageBox.Show(ex.Message);
+            }
+
         }
 
         private void UpdatePostUserInterface(Tweet newlyAdded)
@@ -562,6 +585,17 @@ namespace Witty
             {
                 App.Logger.Debug(String.Format("There was a problem fetching your replies from Twitter.com. ", ex.Message));
             }
+            catch (ProxyAuthenticationRequiredException ex)
+            {
+                App.Logger.Error("Incorrect proxy configuration.");
+                MessageBox.Show("Proxy server is configured incorrectly.  Please correct the settings on the Options menu.");
+            }
+            catch (ProxyNotFoundException ex)
+            {
+                App.Logger.Error("Incorrect proxy configuration.");
+                MessageBox.Show(ex.Message);
+            }
+
         }
 
         private void UpdateRepliesInterface(TweetCollection newReplies)
@@ -616,6 +650,17 @@ namespace Witty
             {
                 App.Logger.Debug(String.Format("There was a problem fetching your direct messages from Twitter.com: {0}", ex.ToString()));
             }
+            catch (ProxyAuthenticationRequiredException ex)
+            {
+                App.Logger.Error("Incorrect proxy configuration.");
+                MessageBox.Show("Proxy server is configured incorrectly.  Please correct the settings on the Options menu.");
+            }
+            catch (ProxyNotFoundException ex)
+            {
+                App.Logger.Error("Incorrect proxy configuration.");
+                MessageBox.Show(ex.Message);
+            }
+
         }
 
         private void UpdateMessagesInterface(DirectMessageCollection newMessages)
@@ -672,6 +717,17 @@ namespace Witty
                 UpdateTextBlock.Text = "Message failed.";
                 App.Logger.Debug(String.Format("There was a problem sending your message: {0}", ex.ToString()));
             }
+            catch (ProxyAuthenticationRequiredException ex)
+            {
+                App.Logger.Error("Incorrect proxy configuration.");
+                MessageBox.Show("Proxy server is configured incorrectly.  Please correct the settings on the Options menu.");
+            }
+            catch (ProxyNotFoundException ex)
+            {
+                App.Logger.Error("Incorrect proxy configuration.");
+                MessageBox.Show(ex.Message);
+            }
+
         }
 
         private void UpdateMessageUserInterface()
@@ -767,6 +823,17 @@ namespace Witty
             {
                 App.Logger.Debug(String.Format("There was a problem fetching the user's timeline from Twitter.com: {0}", ex.ToString()));
             }
+            catch (ProxyAuthenticationRequiredException ex)
+            {
+                App.Logger.Error("Incorrect proxy configuration.");
+                MessageBox.Show("Proxy server is configured incorrectly.  Please correct the settings on the Options menu.");
+            }
+            catch (ProxyNotFoundException ex)
+            {
+                App.Logger.Error("Incorrect proxy configuration.");
+                MessageBox.Show(ex.Message);
+            }
+
         }
 
         private void UpdateUsersTimelineInterface(TweetCollection newTweets)
@@ -817,6 +884,12 @@ namespace Witty
                 MessageBox.Show("Proxy server is configured incorrectly.  Please correct the settings on the Options menu.");
                 LayoutRoot.Dispatcher.BeginInvoke(DispatcherPriority.Normal, new NoArgDelegate(UpdateLoginFailedInterface));
             }
+            catch (ProxyNotFoundException ex)
+            {
+                App.Logger.Error("Incorrect proxy configuration.");
+                MessageBox.Show(ex.Message);
+                LayoutRoot.Dispatcher.BeginInvoke(DispatcherPriority.Normal, new NoArgDelegate(UpdateLoginFailedInterface));
+            }
         }
 
         private void UpdatePostLoginInterface(User user)
@@ -849,6 +922,8 @@ namespace Witty
         {
             isLoggedIn = false;
             OptionsButton.IsEnabled = true;
+            PlayStoryboard("ShowLogin");
+
         }
 
         private void LoginControl_Login(object sender, RoutedEventArgs e)
@@ -1389,6 +1464,11 @@ namespace Witty
                         refreshTimer.Interval = refreshInterval;
                         refreshTimer.Start();
                     }
+
+                    // Set (unset?) the web proxy after options have been saved
+                    if (twitter != null)
+                        twitter.WebProxy = WebProxyHelper.GetConfiguredWebProxy();
+
 
                     StatusTextBlock.Text = "Options Updated";
 
