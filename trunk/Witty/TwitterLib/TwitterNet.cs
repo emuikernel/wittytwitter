@@ -593,12 +593,19 @@ namespace TwitterLib
                         {
                             case 304: // 304 Not modified = no new tweets so ignore error.
                                 break;
+
                             case 400: // rate limit exceeded
                                 throw new RateLimitException("Rate limit exceeded. Clients may not make more than 70 requests per hour. Please try again in a few minutes.");
+
                             case 401: // unauthorized
                                 throw new SecurityException("Not Authorized.");
+
                             case 407: // proxy authentication required
                                 throw new ProxyAuthenticationRequiredException("Proxy authentication required.");
+
+                            case 502: //Bad Gateway, Twitter is freaking out.
+                                throw new BadGatewayException("Fail Whale!  There was a problem calling the Twitter API.  Please try again in a few minutes.");
+
                             default:
                                 throw;
                         }
@@ -862,12 +869,16 @@ namespace TwitterLib
                     {
                         case 400: // rate limit exceeded
                             throw new RateLimitException("Rate limit exceeded. Clients may not make more than 70 requests per hour. Please try again in a few minutes.");
+
                         case 401: // unauthorized
                             return null;
+
                         case 407: // proxy authentication required
                             throw new ProxyAuthenticationRequiredException("Proxy authentication required.");
+
                         case 502 : //Bad Gateway, Twitter is freaking out.
-                            throw new BadGatewayException("There was a problem calling the Twitter API");
+                            throw new BadGatewayException("Fail Whale!  There was a problem calling the Twitter API.  Please try again in a few minutes.");
+
                         default:
                             throw;
                     }
@@ -1022,8 +1033,13 @@ namespace TwitterLib
                     {
                         case 400: // rate limit exceeded
                             throw new RateLimitException("Rate limit exceeded. Clients may not make more than 70 requests per hour. Please try again in a few minutes.");
+
                         case 401: // unauthorized
                             throw new SecurityException("Not Authorized.");
+
+                        case 502: //Bad Gateway, Twitter is freaking out.
+                            throw new BadGatewayException("Fail Whale!  There was a problem calling the Twitter API.  Please try again in a few minutes.");
+
                         default:
                             throw;
                     }
@@ -1092,6 +1108,10 @@ namespace TwitterLib
                     {
                         case 401: // unauthorized
                             throw new SecurityException("Not Authorized.");
+
+                        case 502: //Bad Gateway, Twitter is freaking out.
+                            throw new BadGatewayException("Fail Whale!  There was a problem calling the Twitter API.  Please try again in a few minutes.");
+
                         default:
                             throw;
                     }
@@ -1269,15 +1289,28 @@ namespace TwitterLib
                     {
                         case 304:  // 304 Not modified = no new tweets so ignore error.
                             break;
+
                         case 400: // rate limit exceeded
                             throw new RateLimitException("Rate limit exceeded. Clients may not make more than 70 requests per hour. Please try again in a few minutes.");
+
                         case 404: // Not Found = specified user does not exist
                             if (timeline == Timeline.User)
                                 throw new UserNotFoundException(userId, "@" + userId + " does not exist (probably mispelled)");
                             else // what if a 404 happens to occur in another scenario?
                                 throw;
+
                         case 407: // proxy authentication required
                             throw new ProxyAuthenticationRequiredException("Proxy authentication required.");
+
+                        case 401: // unauthorized, but is this because the user's password
+                                  // is wrong, or because user is trying to access protected
+                                  // tweets...  Since we got this far, I'm going to assume
+                                  // that the password is correct.
+                            throw new SecurityException("Not Authorized.", webExcp);
+
+                        case 502: //Bad Gateway, Twitter is freaking out.
+                            throw new BadGatewayException("Fail Whale!  There was a problem calling the Twitter API.  Please try again in a few minutes.");
+
                         default:
                             throw;
                     }
@@ -1339,6 +1372,10 @@ namespace TwitterLib
                     {
                         case 401: // unauthorized
                             throw new SecurityException("Not Authorized.", webExcp);
+
+                        case 502: //Bad Gateway, Twitter is freaking out.
+                            throw new BadGatewayException("Fail Whale!  There was a problem calling the Twitter API.  Please try again in a few minutes.");
+
                         default:
                             throw;
                     }

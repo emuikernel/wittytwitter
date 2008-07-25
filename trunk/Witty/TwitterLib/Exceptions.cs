@@ -119,7 +119,7 @@ namespace TwitterLib
     }
 
     /// <summary>
-    /// Custom exception for when the Twitter API is freaking out.
+    /// Custom exception for when the Twitter API is freaking out.  ZOMG, FAIL WHALE!
     /// </summary>
     [Serializable]
     public class BadGatewayException : Exception
