@@ -1109,6 +1109,29 @@ namespace Witty
             }
         }
 
+        private void HashtagClickedInTweet(object sender, RoutedEventArgs reArgs)
+        {
+            if (reArgs.OriginalSource is System.Windows.Documents.Hyperlink)
+            {
+                Hyperlink h = reArgs.OriginalSource as Hyperlink;
+
+                string hashtag = h.Tag.ToString();
+                string hashtagUrl = String.Format(Settings.Default.HashtagUrl, Uri.EscapeDataString(hashtag));
+
+                try
+                {
+                    System.Diagnostics.Process.Start(hashtagUrl);
+                }
+                catch
+                {
+                    // TODO: Warn the user? Log the error? Do nothing since Witty itself is not affected?
+                }
+
+                reArgs.Handled = true;
+            }
+        }
+
+
         private void createDirectMessage()
         {
             Tweet selectedTweet = SelectedTweet as Tweet;

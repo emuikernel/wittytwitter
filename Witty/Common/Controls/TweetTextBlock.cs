@@ -90,11 +90,19 @@ namespace Common.Controls
                             hashtag = foundHashtag.Groups[1].Captures[0].Value;
                             Hyperlink tag = new Hyperlink();
                             tag.Inlines.Add(hashtag);
-                            tag.NavigateUri = new Uri("http://twemes.com/" + hashtag);
-                            tag.ToolTip = "Show this hashtag on Twemes.com";
+
+                            string hashtagUrl = "http://search.twitter.com/search?q=%23{0}";
+                            
+                            // The main application has access to the Settings class, where a 
+                            // user-defined hashtagUrl can be stored.  This hardcoded one that
+                            // is used to set the NavigateUri is just a default behavior that
+                            // will be used if the click event is not handled for some reason.
+
+                            tag.NavigateUri = new Uri(String.Format(hashtagUrl, hashtag));
+                            tag.ToolTip = "Show statuses that include this hashtag";
                             tag.Tag = hashtag;
 
-                            tag.Click += new RoutedEventHandler(link_Click);
+                            tag.Click += new RoutedEventHandler(hashtag_Click);
 
                             textblock.Inlines.Add("#");
                             textblock.Inlines.Add(tag);
@@ -111,11 +119,38 @@ namespace Common.Controls
             }
         }
 
-        static void link_Click(object sender, RoutedEventArgs e)
+
+        #region Clickable #hashtag
+
+        public static readonly RoutedEvent HashtagClickEvent = EventManager.RegisterRoutedEvent(
+            "HashtagClick", RoutingStrategy.Bubble, typeof(RoutedEventHandler), typeof(TweetTextBlock));
+
+        public event RoutedEventHandler HashtagClick
+        {
+            add { AddHandler(HashtagClickEvent, value); }
+            remove { RemoveHandler(HashtagClickEvent, value); }
+        }
+
+        static void hashtag_Click(object sender, RoutedEventArgs e)
         {
             try
             {
+                if (e.OriginalSource is Hyperlink)
+                {
+                    Hyperlink h = e.OriginalSource as Hyperlink;
+                    if (h.Parent is TweetTextBlock)
+                    {
+                        TweetTextBlock p = h.Parent as TweetTextBlock;
+                        p.RaiseEvent(new RoutedEventArgs(HashtagClickEvent, h));
+                        return;
+                    }
+                }
+
+                // As a fallback (i.e., if the event is not handled), we launch the hyperlink's
+                // URL in a web browser
+
                 System.Diagnostics.Process.Start(((Hyperlink)sender).NavigateUri.ToString());
+
             }
             catch
             {
@@ -123,6 +158,8 @@ namespace Common.Controls
                 MessageBox.Show("There was a problem launching the specified URL.", "Error", MessageBoxButton.OK, MessageBoxImage.Exclamation);
             }
         }
+        #endregion
+
 
         #region Clickable @name
 
@@ -137,7 +174,9 @@ namespace Common.Controls
 
         static void name_Click(object sender, RoutedEventArgs e)
         {
-            //TODO: this should be configurable to show the user Witty or open in browser.
+            // The event handler in the main application can handle the click event in a custom
+            // fashion (i.e., show the tweets in Witty or launch a URL, etc).  That behavior is
+            // not implemented here.
             try
             {
                 if (e.OriginalSource is Hyperlink)
@@ -151,8 +190,28 @@ namespace Common.Controls
                     }
                 }
 
+                // As a fallback (i.e., if the event is not handled), we launch the hyperlink's
+                // URL in a web browser
+
                 System.Diagnostics.Process.Start(((Hyperlink)sender).NavigateUri.ToString());
 
+            }
+            catch
+            {
+                //TODO: Log specific URL that caused error
+                MessageBox.Show("There was a problem launching the specified URL.", "Error", MessageBoxButton.OK, MessageBoxImage.Exclamation);
+            }
+        }
+
+        #endregion
+
+        #region Regular Hyperlink Click
+
+        static void link_Click(object sender, RoutedEventArgs e)
+        {
+            try
+            {
+                System.Diagnostics.Process.Start(((Hyperlink)sender).NavigateUri.ToString());
             }
             catch
             {

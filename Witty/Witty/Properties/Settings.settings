@@ -74,5 +74,8 @@
     <Setting Name="TwitterHost" Type="System.String" Scope="User">
       <Value Profile="(Default)">http://twitter.com/</Value>
     </Setting>
+    <Setting Name="HashtagUrl" Type="System.String" Scope="User">
+      <Value Profile="(Default)">http://search.twitter.com/search?q=%23{0}</Value>
+    </Setting>
   </Settings>
 </SettingsFile>

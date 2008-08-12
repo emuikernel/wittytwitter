@@ -92,7 +92,8 @@
         <TabItem Header="Recent" Padding="2,1,2,1" x:Name="RecentTab">
           <Grid x:Name="Recent">
             <ListBox x:Name="TweetsListBox" ScrollViewer.CanContentScroll="False" IsSynchronizedWithCurrentItem="True" ItemTemplate="{DynamicResource TweetsTemplate}" ItemsSource="{Binding Mode=OneWay}" ScrollViewer.HorizontalScrollBarVisibility="Disabled" Margin="0,0,0,20" MouseLeftButtonUp="TweetsListBox_MouseLeftButtonUp" BorderThickness="0,0,0,0" 
-              controls:TweetTextBlock.NameClick="NameClickedInTweet">
+              controls:TweetTextBlock.NameClick="NameClickedInTweet"
+              controls:TweetTextBlock.HashtagClick="HashtagClickedInTweet" >
               <ListBox.ContextMenu>
                 <ContextMenu Name="recentContextMenu">
                   <MenuItem Header="Reply" Click="ContextMenuReply_Click"></MenuItem>
@@ -132,7 +133,8 @@
         <!-- Replies Tab -->
         <TabItem Header="Replies" Padding="2,1,2,1" x:Name="RepliesTab">
           <ListBox x:Name="RepliesListBox" ScrollViewer.CanContentScroll="False" IsSynchronizedWithCurrentItem="True" ItemTemplate="{DynamicResource TweetsTemplate}" ScrollViewer.HorizontalScrollBarVisibility="Disabled" MouseLeftButtonUp="TweetsListBox_MouseLeftButtonUp" BorderThickness="0,0,0,0" 
-              controls:TweetTextBlock.NameClick="NameClickedInTweet">
+              controls:TweetTextBlock.NameClick="NameClickedInTweet"
+              controls:TweetTextBlock.HashtagClick="HashtagClickedInTweet" >
             <ListBox.ContextMenu>
               <ContextMenu Name="RepliesContextMenu">
                 <MenuItem Header="Reply" Click="ContextMenuReply_Click"></MenuItem>
@@ -191,7 +193,8 @@
               </Grid>
             </Border>
             <ListBox x:Name="UserTimelineListBox" ItemsSource="{Binding Mode=OneWay}" ScrollViewer.CanContentScroll="False" IsSynchronizedWithCurrentItem="True" ItemTemplate="{DynamicResource UserTimeLineTemplate}" ScrollViewer.HorizontalScrollBarVisibility="Disabled" MouseLeftButtonUp="TweetsListBox_MouseLeftButtonUp" BorderThickness="0,0,0,0" DockPanel.Dock="Bottom" 
-              controls:TweetTextBlock.NameClick="NameClickedInTweet">
+              controls:TweetTextBlock.NameClick="NameClickedInTweet"
+              controls:TweetTextBlock.HashtagClick="HashtagClickedInTweet" >
 				<ListBox.ContextMenu>
 					<ContextMenu Name="UserContextMenu">
 						<MenuItem Header="Reply" Click="ContextMenuReply_Click"></MenuItem>
@@ -210,7 +213,8 @@
         <TabItem Header="Messages" Padding="2,1,2,1" x:Name="MessagesTab">
           <Grid x:Name="Messages">
             <ListBox x:Name="MessagesListBox" ScrollViewer.CanContentScroll="False" IsSynchronizedWithCurrentItem="True" ItemTemplate="{DynamicResource MessagesTemplate}" ItemsSource="{Binding Mode=OneWay}" ScrollViewer.HorizontalScrollBarVisibility="Disabled" Margin="0,0,0,20" MouseLeftButtonUp="MessagesListBox_MouseLeftButtonUp" BorderThickness="0,0,0,0"
-              controls:TweetTextBlock.NameClick="NameClickedInTweet">
+              controls:TweetTextBlock.NameClick="NameClickedInTweet"
+              controls:TweetTextBlock.HashtagClick="HashtagClickedInTweet" >
                 <ListBox.ContextMenu>
                     <ContextMenu Name="MessagesContextMenu">
                         <MenuItem Header="Reply" Click="ContextMenuReply_Click"></MenuItem>

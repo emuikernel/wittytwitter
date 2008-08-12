@@ -304,5 +304,17 @@ namespace Witty.Properties {
                 this["TwitterHost"] = value;
             }
         }
+        
+        [global::System.Configuration.UserScopedSettingAttribute()]
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+        [global::System.Configuration.DefaultSettingValueAttribute("http://search.twitter.com/search?q=%23{0}")]
+        public string HashtagUrl {
+            get {
+                return ((string)(this["HashtagUrl"]));
+            }
+            set {
+                this["HashtagUrl"] = value;
+            }
+        }
     }
 }
