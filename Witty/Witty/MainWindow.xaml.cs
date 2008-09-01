@@ -15,6 +15,7 @@ using TwitterLib.Utilities;
 using Witty.ClickOnce;
 using Witty.Properties;
 using System.Windows.Documents;
+using System.Windows.Media;
 
 namespace Witty
 {
@@ -839,10 +840,13 @@ namespace Witty
         private void UpdateUsersTimelineInterface(TweetCollection newTweets)
         {
             StatusTextBlock.Text = displayUser + "'s Timeline Updated: " + repliesLastUpdated.ToLongTimeString();
+            User u = null;
 
             for (int i = newTweets.Count - 1; i >= 0; i--)
             {
                 Tweet tweet = newTweets[i];
+                u = tweet.User;
+
                 if (!userTweets.Contains(tweet))
                 {
                     userTweets.Insert(0, tweet);
@@ -857,6 +861,23 @@ namespace Witty
 
             if (userTweets.Count > 0)
                 UserTimelineListBox.SelectedIndex = 0;
+
+
+
+            // JMF: There's an issue with binding where the wrong user's header is sometimes 
+            // being displayed.  I think it is related to the fact that these header elements
+            // are bound to a property found in each list item, and are probably picking up
+            // the object from a previous list before the current list is updated (i.e., a
+            // binding race condition?).
+
+            // Manually setting header here as a workaround....
+            UserImage.Source = new ImageSourceConverter().ConvertFromString(u.ImageUrl) as ImageSource;
+            FullName.Text = u.FullName;
+            Description.Text = u.Description;
+            SiteUrl.Text = u.SiteUrl;
+            Location.Text = u.Location;
+
+
 
             StopStoryboard("Fetching");
         }
