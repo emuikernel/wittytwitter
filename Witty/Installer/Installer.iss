@@ -3,8 +3,8 @@
 [Setup]
 AppName=Witty - Nightly Build
 AppVerName=Witty Nightly
-AppVersion=0.1.8 Nightly
-VersionInfoVersion=0.1.8.99
+AppVersion=1.9 Nightly
+VersionInfoVersion=1.9.0
 OutputBaseFilename=Setup-Witty-Nightly
 AppPublisherURL=http://code.google.com/p/wittytwitter/
 AppSupportURL=http://code.google.com/p/wittytwitter/
@@ -54,9 +54,14 @@ const
 //version = '2.0';
 
 //Use these values for .NET 3.0
-dotnetRedistURL = 'http://download.microsoft.com/download/4/d/a/4da3a5fa-ee6a-42b8-8bfa-ea5c4a458a7d/dotnetfx3setup.exe';
-dotnetRegKey = 'SOFTWARE\Microsoft\Net Framework Setup\NDP\v3.0';
-version = '3.0';
+//dotnetRedistURL = 'http://download.microsoft.com/download/4/d/a/4da3a5fa-ee6a-42b8-8bfa-ea5c4a458a7d/dotnetfx3setup.exe';
+//dotnetRegKey = 'SOFTWARE\Microsoft\Net Framework Setup\NDP\v3.0';
+//version = '3.0';
+
+//Use these values for .NET 3.5
+dotnetRedistURL = 'http://www.microsoft.com/downloads/details.aspx?FamilyID=333325FD-AE52-4E35-B531-508D977D32A6';
+dotnetRegKey = 'SOFTWARE\Microsoft\Net Framework Setup\NDP\v3.5';
+version = '3.5';
 
 //Use these values to test for install prompt
 //dotnetRedistURL = 'http://pretend.microsoft.com/dotnetfx4setup.exe';

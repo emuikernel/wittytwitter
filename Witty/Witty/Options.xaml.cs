@@ -52,14 +52,14 @@ namespace Witty
             MinimizeToTray = AppSettings.MinimizeToTray;
             MinimizeOnClose = AppSettings.MinimizeOnClose;
             PersistLogin = AppSettings.PersistLogin;
-
-            #endregion
-
             SmoothScrollingCheckBox.IsChecked = AppSettings.SmoothScrolling;
             UseProxyCheckBox.IsChecked = AppSettings.UseProxy;
             ProxyServerTextBox.Text = AppSettings.ProxyServer;
             ProxyPortTextBox.Text = AppSettings.ProxyPort.ToString();
             ProxyUsernameTextBox.Text = AppSettings.ProxyUsername;
+            FilterRegex.Text = AppSettings.FilterRegex;
+
+            #endregion
 
             // JMF: Thinking about the user experience here, rolling out something that
             //      may very well invalidate their stored settings.  I'll just flag
@@ -287,6 +287,7 @@ namespace Witty
 
                 AppSettings.MaximumIndividualAlerts = MaxIndTextBlock.Text;
                 AppSettings.NotificationDisplayTime = NotificationDisplayTimeTextBlock.Text;
+                AppSettings.FilterRegex = FilterRegex.Text;
 
                 int setting;
                 if (int.TryParse(((ComboBox)KeepLatestComboBox).Text, out setting))
@@ -296,20 +297,13 @@ namespace Witty
 
                 AppSettings.Save();
 
-
-
                 // Set (unset?) the default proxy here once and for all (should then be 
                 // used by WPF controls, like images that fetch their source from the 
                 // internet)
                 HttpWebRequest.DefaultWebProxy = WebProxyHelper.GetConfiguredWebProxy();
-                
-
-
 
                 DialogResult = true;
                 this.Close();
-
-
             }
         }
 
