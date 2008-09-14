@@ -16,6 +16,7 @@ using Witty.ClickOnce;
 using Witty.Properties;
 using System.Windows.Documents;
 using System.Windows.Media;
+using System.Text.RegularExpressions;
 
 namespace Witty
 {
@@ -308,6 +309,7 @@ namespace Witty
             AppSettings.LastUpdated = lastUpdated.ToString();
             AppSettings.Save();
 
+            FilterTweets(newTweets);
             UpdateExistingTweets();
 
             TweetCollection addedTweets = new TweetCollection();
@@ -362,8 +364,21 @@ namespace Witty
             }
 
             StopStoryboard("Fetching");
+        }
 
+        private void FilterTweets(TweetCollection tweets)
+        {
+            if(string.IsNullOrEmpty(AppSettings.FilterRegex))
+                return;
 
+            for (int i = tweets.Count - 1; i >= 0; i--)
+            {
+                Tweet tweet = tweets[i];
+                if (Regex.IsMatch(tweet.Text, AppSettings.FilterRegex, RegexOptions.IgnoreCase))
+                {
+                    tweets.Remove(tweet);
+                }
+            }
         }
 
         private void NotifyOnNewTweets(TweetCollection newTweets)
@@ -604,6 +619,7 @@ namespace Witty
             repliesLastUpdated = DateTime.Now;
             StatusTextBlock.Text = "Replies Updated: " + repliesLastUpdated.ToLongTimeString();
 
+            FilterTweets(newReplies);
             UpdateExistingTweets(replies);
 
             for (int i = newReplies.Count - 1; i >= 0; i--)

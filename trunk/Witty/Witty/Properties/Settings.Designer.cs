@@ -316,5 +316,20 @@ namespace Witty.Properties {
                 this["HashtagUrl"] = value;
             }
         }
+
+        [global::System.Configuration.UserScopedSettingAttribute()]
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+        [global::System.Configuration.DefaultSettingValueAttribute("")]
+        public string FilterRegex
+        {
+            get
+            {
+                return ((string)(this["FilterRegex"]));
+            }
+            set
+            {
+                this["FilterRegex"] = value;
+            }
+        }
     }
 }

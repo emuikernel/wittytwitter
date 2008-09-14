@@ -97,20 +97,11 @@
           <StackPanel Orientation="Horizontal" Margin="5,0,0,0">
             <Slider Width="200" Minimum="1" Maximum="30" SmallChange="1" LargeChange="5" TickPlacement="BottomRight" x:Name="RefreshSlider" AutoToolTipPlacement="TopLeft" TickFrequency="2"/>
             <TextBlock Text="{Binding Path=Value, Converter={StaticResource RoundConverter}, ElementName=RefreshSlider, Mode=Default}" TextWrapping="Wrap" VerticalAlignment="Center" x:Name="SliderValueTextBlock" Width="20" Margin="5,0,0,0"/>
-      			</StackPanel>
-          <GroupBox Header="Clear Tweets" Margin="0,15,0,0">
-            <StackPanel Margin="0,10,0,10" Orientation="Horizontal">
-                <Button x:Name="ClearTweetsButton" Width="120" Height="20" Content="Clear All Tweets" Click="ClearTweetsButton_Click" HorizontalAlignment="Left"/>
-                <Button x:Name="ClearRepliesButton" Width="120" Height="20" Content="Clear All Replies" Click="ClearRepliesButton_Click" HorizontalAlignment="Left" Margin="5"/>
-                <Label Target="{Binding ElementName=SkinsComboBox}" Content="Keep Latest" VerticalAlignment="Center" Margin="0,0,5,0"/>
-                <ComboBox x:Name="KeepLatestComboBox" Height="23" Width="120">
-                    <ComboBoxItem Content="10"/>
-                    <ComboBoxItem Content="50"/>
-                    <ComboBoxItem Content="100" Selector.IsSelected="True" />
-                    <ComboBoxItem Content="All"/>
-                </ComboBox>
-            </StackPanel>
-           </GroupBox>
+          </StackPanel>
+          <DockPanel HorizontalAlignment="Left" Margin="0,15,0,0">
+            <Label Content="_Skin" Target="{Binding ElementName=SkinsComboBox}" VerticalAlignment="Center" Margin="0,0,5,0"/>
+            <ComboBox x:Name="SkinsComboBox" SelectionChanged="SkinsComboBox_SelectionChanged" Width="Auto"/>
+          </DockPanel>
         </StackPanel>
       </Border>
 
@@ -159,12 +150,29 @@
         </StackPanel>
       </Border>
 
-      <Border Padding="15,15,15,15" Tag="Appearance">
+      <Border Padding="15,15,15,15" Tag="Tweets">
         <StackPanel>
-          <DockPanel HorizontalAlignment="Left" Margin="0,15,0,0">
-            <Label Content="_Skin" Target="{Binding ElementName=SkinsComboBox}" VerticalAlignment="Center" Margin="0,0,5,0"/>
-            <ComboBox x:Name="SkinsComboBox" SelectionChanged="SkinsComboBox_SelectionChanged" Width="Auto"/>
-          </DockPanel>
+            <GroupBox Header="Clear Tweets" Margin="0,15,0,0">
+                <StackPanel Margin="0,10,0,10" Orientation="Horizontal">
+                    <Button x:Name="ClearTweetsButton" Width="120" Height="20" Content="Clear All Tweets" Click="ClearTweetsButton_Click" HorizontalAlignment="Left"/>
+                    <Button x:Name="ClearRepliesButton" Width="120" Height="20" Content="Clear All Replies" Click="ClearRepliesButton_Click" HorizontalAlignment="Left" Margin="5"/>
+                    <Label Target="{Binding ElementName=SkinsComboBox}" Content="Keep Latest" VerticalAlignment="Center" Margin="0,0,5,0"/>
+                    <ComboBox x:Name="KeepLatestComboBox" Height="23" Width="120">
+                        <ComboBoxItem Content="10"/>
+                        <ComboBoxItem Content="50"/>
+                        <ComboBoxItem Content="100" Selector.IsSelected="True" />
+                        <ComboBoxItem Content="All"/>
+                    </ComboBox>
+                </StackPanel>
+            </GroupBox>
+            <GroupBox Header="Filter Tweets">
+            <StackPanel>
+                <TextBlock Foreground="Gray" FontStyle="Italic"  TextWrapping="Wrap">
+                    Hide tweets containing words or usernames you'd rather not see. Separate words with the pipe character, like this: politics|football|television. Nerds: you can use a regular expression here.
+                </TextBlock>
+                <TextBox x:Name="FilterRegex" TextWrapping="Wrap" Margin="5,2,20,2" IsEnabled="True" AutoWordSelection="True" MinLines="5" />
+            </StackPanel>
+          </GroupBox>
         </StackPanel>
       </Border>
 
@@ -182,7 +190,7 @@
                 <TextBlock Margin="10,5,10,5" x:Name="NotificationDisplayTimeTextBlock" VerticalAlignment="Top" Width="20" Height="20" Text="{Binding Path=Value, Converter={StaticResource RoundConverter}, ElementName=NotificationDisplayTimeSlider, Mode=Default}" TextAlignment="Center" TextWrapping="Wrap"/>
             </DockPanel>
         </StackPanel>
-    </Border>
+      </Border>
 
       <Border Padding="15,15,15,15" Tag="Updates">
         <StackPanel>

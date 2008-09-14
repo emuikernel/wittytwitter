@@ -15,7 +15,7 @@ using System.Windows;
 [assembly: AssemblyConfiguration("")]
 [assembly: AssemblyCompany("")]
 [assembly: AssemblyProduct("Witty")]
-[assembly: AssemblyCopyright("Copyright @  2007")]
+[assembly: AssemblyCopyright("Copyright @  2008")]
 [assembly: AssemblyTrademark("")]
 [assembly: AssemblyCulture("")]
 [assembly: ComVisible(false)]
@@ -58,5 +58,5 @@ using System.Windows;
 //
 // You can specify all the values or you can default the Revision and Build Numbers 
 // by using the '*' as shown below:
-[assembly: AssemblyVersion("0.1.8.*")]
+[assembly: AssemblyVersion("1.9.0.*")]
 [assembly: log4net.Config.DOMConfigurator(ConfigFile = "App", ConfigFileExtension = "config", Watch = false)]
