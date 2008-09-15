@@ -17,6 +17,8 @@ using Witty.Properties;
 using System.Windows.Documents;
 using System.Windows.Media;
 using System.Text.RegularExpressions;
+using System.Collections.Generic;
+using System.Collections;
 
 namespace Witty
 {
@@ -164,6 +166,8 @@ namespace Witty
         // Main collection of direct messages
         private DirectMessageCollection messages = new DirectMessageCollection();
 
+        private Dictionary<string, DateTime> ignoredUsers = new Dictionary<string, DateTime>();
+
         private DateTime messagesLastUpdated;
 
         // Main TwitterNet object used to make Twitter API calls
@@ -309,7 +313,7 @@ namespace Witty
             AppSettings.LastUpdated = lastUpdated.ToString();
             AppSettings.Save();
 
-            FilterTweets(newTweets);
+            FilterTweets(newTweets, true);
             UpdateExistingTweets();
 
             TweetCollection addedTweets = new TweetCollection();
@@ -366,19 +370,33 @@ namespace Witty
             StopStoryboard("Fetching");
         }
 
-        private void FilterTweets(TweetCollection tweets)
+        private void FilterTweets(TweetCollection tweets, bool filterUsers)
         {
-            if(string.IsNullOrEmpty(AppSettings.FilterRegex))
+            bool usersToFilter = filterUsers && (ignoredUsers.Count > 0);
+            if(string.IsNullOrEmpty(AppSettings.FilterRegex) && !usersToFilter)
                 return;
+
+            ParoleIgnoredUsers();
 
             for (int i = tweets.Count - 1; i >= 0; i--)
             {
                 Tweet tweet = tweets[i];
-                if (Regex.IsMatch(tweet.Text, AppSettings.FilterRegex, RegexOptions.IgnoreCase))
+                if (ignoredUsers.ContainsKey(tweet.User.Name) || Regex.IsMatch(tweet.Text, AppSettings.FilterRegex, RegexOptions.IgnoreCase))
                 {
                     tweets.Remove(tweet);
                 }
             }
+        }
+
+        private void ParoleIgnoredUsers()
+        {
+            List<string> paroledUsers = new List<string>();
+            foreach (KeyValuePair<string, DateTime> ignoredUser in ignoredUsers)
+            {
+                if (ignoredUser.Value < DateTime.Now)
+                    paroledUsers.Add(ignoredUser.Key);
+            }
+            paroledUsers.ForEach(userName => ignoredUsers.Remove(userName));
         }
 
         private void NotifyOnNewTweets(TweetCollection newTweets)
@@ -619,7 +637,7 @@ namespace Witty
             repliesLastUpdated = DateTime.Now;
             StatusTextBlock.Text = "Replies Updated: " + repliesLastUpdated.ToLongTimeString();
 
-            FilterTweets(newReplies);
+            FilterTweets(newReplies, false); // Don't filter ignored users on replies
             UpdateExistingTweets(replies);
 
             for (int i = newReplies.Count - 1; i >= 0; i--)
@@ -1561,6 +1579,21 @@ namespace Witty
         private void ContextMenuRetweet_Click(object sender, RoutedEventArgs e)
         {
             createRetweet();
+        }
+
+        private void ContextMenuIgnore_Click(object sender, RoutedEventArgs e)
+        {
+            IgnoreUser(60);
+            UpdateUserInterface(tweets);
+        }
+
+        private void IgnoreUser(int ignoreTime)
+        {
+            Tweet selectedTweet = SelectedTweet as Tweet;
+            if (selectedTweet != null)
+            {
+                ignoredUsers.Add(selectedTweet.User.Name, DateTime.Now.AddMinutes(ignoreTime));
+            }
         }
 
         private void createRetweet()

@@ -102,7 +102,8 @@
                   <MenuItem Header="Re-tweet" Click="ContextMenuRetweet_Click" IsEnabled="True"></MenuItem>
                   <MenuItem Header="Refresh" Click="RefreshButton_Click"></MenuItem>
                   <MenuItem Header="Clear All Tweets" Click="ContextMenuClear_Click"></MenuItem>
-                 </ContextMenu>
+                  <MenuItem Header="Temporariliy Ignore User" Click="ContextMenuIgnore_Click"></MenuItem>
+                </ContextMenu>
               </ListBox.ContextMenu>
             </ListBox>
             <Border Height="21" Background="{StaticResource UpdateBackgroundBrush}" VerticalAlignment="Bottom" Padding="10,0,10,0" x:Name="Update" MouseLeftButtonUp="Update_MouseLeftButtonUp" BorderBrush="{DynamicResource PrimaryBackgroundBrush}" BorderThickness="0,0,0,1" ToolTip="Display update panel">
