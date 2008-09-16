@@ -376,15 +376,13 @@ namespace Witty
             if(string.IsNullOrEmpty(AppSettings.FilterRegex) && !usersToFilter)
                 return;
 
-            ParoleIgnoredUsers();
-
             for (int i = tweets.Count - 1; i >= 0; i--)
             {
                 Tweet tweet = tweets[i];
-                if (ignoredUsers.ContainsKey(tweet.User.Name) || Regex.IsMatch(tweet.Text, AppSettings.FilterRegex, RegexOptions.IgnoreCase))
-                {
+                if (Regex.IsMatch(tweet.Text, AppSettings.FilterRegex, RegexOptions.IgnoreCase))
                     tweets.Remove(tweet);
-                }
+                else if(ignoredUsers.ContainsKey(tweet.User.Name) && ignoredUsers[tweet.User.Name] < DateTime.Now)
+                    tweets.Remove(tweet);
             }
         }
 
@@ -393,7 +391,7 @@ namespace Witty
             List<string> paroledUsers = new List<string>();
             foreach (KeyValuePair<string, DateTime> ignoredUser in ignoredUsers)
             {
-                if (ignoredUser.Value < DateTime.Now)
+                if (ignoredUser.Value < DateTime.Now.AddHours(6))
                     paroledUsers.Add(ignoredUser.Key);
             }
             paroledUsers.ForEach(userName => ignoredUsers.Remove(userName));
@@ -637,7 +635,6 @@ namespace Witty
             repliesLastUpdated = DateTime.Now;
             StatusTextBlock.Text = "Replies Updated: " + repliesLastUpdated.ToLongTimeString();
 
-            FilterTweets(newReplies, false); // Don't filter ignored users on replies
             UpdateExistingTweets(replies);
 
             for (int i = newReplies.Count - 1; i >= 0; i--)
