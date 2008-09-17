@@ -379,9 +379,9 @@ namespace Witty
             for (int i = tweets.Count - 1; i >= 0; i--)
             {
                 Tweet tweet = tweets[i];
-                if (Regex.IsMatch(tweet.Text, AppSettings.FilterRegex, RegexOptions.IgnoreCase))
+                if (!string.IsNullOrEmpty(AppSettings.FilterRegex) && Regex.IsMatch(tweet.Text, AppSettings.FilterRegex, RegexOptions.IgnoreCase))
                     tweets.Remove(tweet);
-                else if(ignoredUsers.ContainsKey(tweet.User.Name) && ignoredUsers[tweet.User.Name] < DateTime.Now)
+                else if(ignoredUsers.ContainsKey(tweet.User.ScreenName) && ignoredUsers[tweet.User.ScreenName] > DateTime.Now)
                     tweets.Remove(tweet);
             }
         }
@@ -1589,7 +1589,7 @@ namespace Witty
             Tweet selectedTweet = SelectedTweet as Tweet;
             if (selectedTweet != null)
             {
-                ignoredUsers.Add(selectedTweet.User.Name, DateTime.Now.AddMinutes(ignoreTime));
+                ignoredUsers[selectedTweet.User.ScreenName] = DateTime.Now.AddMinutes(ignoreTime);
             }
         }
 
