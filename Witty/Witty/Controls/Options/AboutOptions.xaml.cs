@@ -1,5 +1,5 @@
-﻿using System.Windows.Controls;
-using System.Deployment.Application;
+﻿using System.Deployment.Application;
+using System.Windows.Controls;
 
 namespace Witty.Controls.Options
 {

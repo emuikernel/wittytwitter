@@ -1,9 +1,9 @@
 ﻿using System;
+using System.Net;
 using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Input;
 using log4net;
-using System.Net;
 
 namespace Witty
 {
