@@ -4,7 +4,6 @@ using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Documents;
 using TwitterLib;
-using System.Windows.Input;
 
 namespace Common.Controls
 {
@@ -119,7 +118,6 @@ namespace Common.Controls
             }
         }
 
-
         #region Clickable #hashtag
 
         public static readonly RoutedEvent HashtagClickEvent = EventManager.RegisterRoutedEvent(
@@ -159,7 +157,6 @@ namespace Common.Controls
             }
         }
         #endregion
-
 
         #region Clickable @name
 
