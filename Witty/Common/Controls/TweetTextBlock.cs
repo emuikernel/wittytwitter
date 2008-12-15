@@ -40,7 +40,7 @@ namespace Common.Controls
                 foreach (string word in words)
                 {
                     // clickable hyperlinks
-                    if (TinyUrlHelper.IsUrl(word))
+                    if (UrlShorteningService.IsUrl(word))
                     {
                         try
                         {

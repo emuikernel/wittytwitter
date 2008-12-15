@@ -77,5 +77,11 @@
     <Setting Name="HashtagUrl" Type="System.String" Scope="User">
       <Value Profile="(Default)">http://search.twitter.com/search?q=%23{0}</Value>
     </Setting>
+    <Setting Name="FilterRegex" Type="System.String" Scope="User">
+      <Value Profile="(Default)" />
+    </Setting>
+    <Setting Name="UrlShorteningService" Type="System.String" Scope="User">
+      <Value Profile="(Default)">TinyUrl</Value>
+    </Setting>
   </Settings>
 </SettingsFile>

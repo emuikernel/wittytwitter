@@ -242,6 +242,10 @@ namespace Witty
                 {
                     if (null != MessagesListBox.SelectedItem) selectedTweet = ((DirectMessage)MessagesListBox.SelectedItem).ToTweet();
                 }
+                else if (this.currentView == CurrentView.User)
+                {
+                    if (null != UserTimelineListBox.SelectedItem) selectedTweet = (Tweet)UserTimelineListBox.SelectedItem;
+                }
                 else
                 {
                     if (null != TweetsListBox.SelectedItem) selectedTweet = (Tweet)TweetsListBox.SelectedItem;
@@ -408,16 +412,21 @@ namespace Witty
             }
         }
 
+        private void SetupPopupProps(Popup p)
+        {
+            p.FadeOutFinished += new FadeOutFinishedDelegate(RemovePopup);
+            p.ReplyClicked += new PopupReplyClickedDelegate(PopupReplyClicked);          
+            p.DirectMessageClicked += new PopupDirectMessageClickedDelegate(PopupDirectMessageClicked);
+            p.Clicked += new PopupClickedDelegate(PopupClicked);
+            p.CloseButtonClicked += new PopupCloseButtonClickedDelegate(RemovePopup);           
+        }
+
         private void PopUpNotify(TweetCollection newTweets)
         {
             if (newTweets.Count > Double.Parse(AppSettings.MaximumIndividualAlerts))
             {
                 Popup p = new Popup("New Tweets", BuiltNewTweetMessage(newTweets), twitter.CurrentlyLoggedInUser.ImageUrl, 0);
-                p.FadeOutFinished += new FadeOutFinishedDelegate(RemovePopup);
-                p.ReplyClicked += new PopupReplyClickedDelegate(PopupReplyClicked);
-                p.DirectMessageClicked += new PopupDirectMessageClickedDelegate(PopupDirectMessageClicked);
-                p.Clicked += new PopupClickedDelegate(PopupClicked);
-                p.CloseButtonClicked += new PopupCloseButtonClickedDelegate(RemovePopup);
+                SetupPopupProps(p);                
                 p.Show();
             }
             else
@@ -426,11 +435,7 @@ namespace Witty
                 foreach (Tweet tweet in newTweets)
                 {
                     Popup p = new Popup(tweet, index++);
-                    p.FadeOutFinished += new FadeOutFinishedDelegate(RemovePopup);
-                    p.ReplyClicked += new PopupReplyClickedDelegate(PopupReplyClicked);
-                    p.DirectMessageClicked += new PopupDirectMessageClickedDelegate(PopupDirectMessageClicked);
-                    p.Clicked += new PopupClickedDelegate(PopupClicked);
-                    p.CloseButtonClicked += new PopupCloseButtonClickedDelegate(RemovePopup);
+                    SetupPopupProps(p);
                     p.Show();
                 }
             }
@@ -443,9 +448,9 @@ namespace Witty
             {
                 message += " " + tweet.User.ScreenName;
             }
-            if (message.Length > 140)
+            if (message.Length > TwitterNet.CharacterLimit)
             {
-                message = message.Substring(0, 135);
+                message = message.Substring(0, (TwitterNet.CharacterLimit - 5));
                 int lastSpace = message.LastIndexOf(' ');
                 message = message.Substring(0, lastSpace) + "...";
             }
@@ -454,9 +459,9 @@ namespace Witty
 
         private static string TruncateMessage(string message)
         {
-            if (message.Length > 140)
+            if (message.Length > TwitterNet.CharacterLimit)
             {
-                message = message.Substring(0, 135);
+                message = message.Substring(0, (TwitterNet.CharacterLimit - 5));
                 int lastSpace = message.LastIndexOf(' ');
                 message = message.Substring(0, lastSpace) + "...";
             }
@@ -514,11 +519,17 @@ namespace Witty
             try
             {
                 //bmsullivan If tweet is short enough, leave real URLs for clarity
-                if (tweetText.Length > 140)
+                if (tweetText.Length > TwitterNet.CharacterLimit)
                 {
                     //parse the text here and tiny up any URLs found.
-                    TinyUrlHelper tinyUrls = new TinyUrlHelper();
-                    tweetText = tinyUrls.ConvertUrlsToTinyUrls(tweetText);
+                    ShorteningService service;
+                    if (!string.IsNullOrEmpty(AppSettings.UrlShorteningService))
+                        service = (ShorteningService)Enum.Parse(typeof(ShorteningService), AppSettings.UrlShorteningService);
+                    else
+                        service = ShorteningService.TinyUrl;
+
+                    UrlShorteningService urlHelper = new UrlShorteningService(service);
+                    tweetText = urlHelper.ShrinkUrls(tweetText);
                 }
                 Tweet tweet = twitter.AddTweet(tweetText); ;
 
@@ -901,13 +912,14 @@ namespace Witty
             // binding race condition?).
 
             // Manually setting header here as a workaround....
-            UserImage.Source = new ImageSourceConverter().ConvertFromString(u.ImageUrl) as ImageSource;
-            FullName.Text = u.FullName;
-            Description.Text = u.Description;
-            SiteUrl.Text = u.SiteUrl;
-            Location.Text = u.Location;
-
-
+            if (u != null)
+            {
+                UserImage.Source = new ImageSourceConverter().ConvertFromString(u.ImageUrl) as ImageSource;
+                FullName.Text = u.FullName;
+                Description.Text = u.Description;
+                SiteUrl.Text = u.SiteUrl;
+                Location.Text = u.Location;
+            }
 
             StopStoryboard("Fetching");
         }
@@ -1252,13 +1264,12 @@ namespace Witty
                                     new DeleteTweetDelegate(twitter.DestroyTweet), id);
                 }
                 if (tweets.Contains(SelectedTweet))
-                {
                     tweets.Remove(SelectedTweet);
-                }
                 else if (replies.Contains(SelectedTweet))
-                {
                     replies.Remove(SelectedTweet);
-                }
+
+                if (userTweets.Contains(SelectedTweet))
+                    userTweets.Remove(SelectedTweet);
             }
         }
 

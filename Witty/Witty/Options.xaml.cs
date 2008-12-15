@@ -4,6 +4,7 @@ using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Input;
 using log4net;
+using Screen = System.Windows.Forms.Screen;
 
 namespace Witty
 {
@@ -41,6 +42,12 @@ namespace Witty
             {
                 SkinsComboBox.SelectedItem = AppSettings.Skin;
             }
+
+            UrlServiceComboBox.ItemsSource = Enum.GetValues(typeof(TwitterLib.ShorteningService));
+            if (!string.IsNullOrEmpty(AppSettings.UrlShorteningService))
+                UrlServiceComboBox.Text = AppSettings.UrlShorteningService;
+            else
+                UrlServiceComboBox.Text = TwitterLib.ShorteningService.TinyUrl.ToString();
 
             // select number of tweets to keep
             KeepLatestComboBox.Text = AppSettings.KeepLatest.ToString();
@@ -330,6 +337,90 @@ namespace Witty
                 AppSettings.Skin = skin;
                 AppSettings.Save();
             }
+        }
+
+        private void UrlServiceComboBox_SelectionChanged(object sender, SelectionChangedEventArgs e)
+        {
+            if ((!(isInitializing)) && (e.AddedItems.Count >= 0))
+            {
+                AppSettings.UrlShorteningService = UrlServiceComboBox.SelectedValue.ToString();
+                AppSettings.Save();
+            }
+        }
+
+        /// <summary>
+        /// Handles the OnLoaded event of the Window control.
+        /// </summary>
+        /// <param name="sender">The source of the event.</param>
+        /// <param name="e">The <see cref="System.EventArgs"/> instance containing the event data.</param>
+        private void Window_OnLoaded(object sender, RoutedEventArgs e)
+        {
+            MoveWindowInFullView();
+        }
+
+        private void MoveWindowInFullView()
+        {
+            // If we are off the current screen, move back in view.
+            Point location = new Point(Left, Top);
+            Point referenceLocation = location;
+            if (Owner != null)
+            {
+                referenceLocation = new Point(Owner.Left, Owner.Top);
+            }
+
+            // If any edge of the window location is outside the bounds of the screen,
+            // move the window back in bounds entirely.
+            Rect workingArea = GetScreenWorkingArea(referenceLocation);
+            if (!workingArea.Contains(location.X, workingArea.Y))
+            {
+                Left = workingArea.Left;
+            }
+
+            if (!workingArea.Contains(workingArea.X, location.Y))
+            {
+                Top = workingArea.Top;
+            }
+
+            if (!workingArea.Contains(workingArea.X, location.Y + Height))
+            {
+                Top = workingArea.Bottom - Height;
+            }
+
+            if (!workingArea.Contains(location.X + Width, workingArea.Y))
+            {
+                Left = workingArea.Right - Width;
+            }
+        }
+
+        private Rect GetScreenWorkingArea(Point p)
+        {
+            // Get the screen rect associated with the point
+            Screen screen = Screen.FromPoint(ToDrawingPoint(p));
+            return ToRect(screen.WorkingArea);
+        }
+
+        // This method can go in an extension method repository, but I don't see any
+        // so I'm just leaving it inline here.
+        private static System.Drawing.Point ToDrawingPoint(Point p)
+        {
+            return new System.Drawing.Point()
+                       {
+                           X = Convert.ToInt32(p.X),
+                           Y = Convert.ToInt32(p.Y)
+                       };
+        }
+
+        // This method can go in an extension method repository, but I don't see any
+        // so I'm just leaving it inline here.
+        private static Rect ToRect(System.Drawing.Rectangle rect)
+        {
+            return new Rect()
+                       {
+                           X = Convert.ToDouble(rect.X),
+                           Y = Convert.ToDouble(rect.Y),
+                           Height = Convert.ToDouble(rect.Height),
+                           Width = Convert.ToDouble(rect.Width)
+                       };
         }
 
         /// <summary>
