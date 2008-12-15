@@ -182,7 +182,12 @@
     </Compile>
     <Compile Include="ClickOnce\Deployment.cs" />
     <Compile Include="ClickOnce\Utils.cs" />
-    <Compile Include="Misc\SnarlInterface.cs" />
+    <Compile Include="Misc\Snarl\M_RESULT.cs" />
+    <Compile Include="Misc\Snarl\SnarlConnector.cs" />
+    <Compile Include="Misc\Snarl\SNARLSTRUCT.cs" />
+    <Compile Include="Misc\Snarl\SNARLSTRUCTEX.cs" />
+    <Compile Include="Misc\Snarl\SNARL_COMMAND.cs" />
+    <Compile Include="Misc\Snarl\WindowsMessage.cs" />
     <Compile Include="Misc\WebProxyHelper.cs" />
     <Compile Include="Misc\Win32.cs" />
     <Compile Include="Popup.xaml.cs">

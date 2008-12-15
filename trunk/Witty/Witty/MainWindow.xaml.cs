@@ -122,12 +122,19 @@ namespace Witty
             ScrollViewer.SetCanContentScroll(TweetsListBox, !AppSettings.SmoothScrolling);
 
             //Register with Snarl if available
-            if (SnarlInterface.SnarlIsActive())
+            if (SnarlConnector.GetSnarlWindow().ToInt32() != 0)
             {
                 //We Create a Message Only window for communication
+
                 this.SnarlConfighWnd = Win32.CreateWindowEx(0, "Message", null, 0, 0, 0, 0, 0, new IntPtr(Win32.HWND_MESSAGE), IntPtr.Zero, IntPtr.Zero, IntPtr.Zero);
-                SnarlInterface.RegisterConfig("Witty", this.SnarlConfighWnd.ToInt32(), "");
-                SnarlInterface.RegisterAlert("Witty", "New Tweet");
+                WindowsMessage wndMsg = new WindowsMessage();
+                SnarlConnector.RegisterConfig(this.SnarlConfighWnd,"Witty",wndMsg);
+                
+                SnarlConnector.RegisterAlert("Witty", "New tweet");
+                SnarlConnector.RegisterAlert("Witty", "New tweets summarized");
+                SnarlConnector.RegisterAlert("Witty", "New reply");
+                SnarlConnector.RegisterAlert("Witty", "New direct message");
+                
             }
 
             
@@ -346,7 +353,7 @@ namespace Witty
             if (addedTweets.Count > 0)
             {
                 if (AppSettings.DisplayNotifications && !(bool)this.IsActive)
-                    NotifyOnNewTweets(addedTweets);                
+                    NotifyOnNewTweets(addedTweets,"tweet");                
 
                 if (AppSettings.PlaySounds)
                 {
@@ -400,11 +407,11 @@ namespace Witty
             paroledUsers.ForEach(userName => ignoredUsers.Remove(userName));
         }
 
-        private void NotifyOnNewTweets(TweetCollection newTweets)
+        private void NotifyOnNewTweets(TweetCollection newTweets, string type)
         {
-            if (SnarlInterface.SnarlIsActive())
+            if (SnarlConnector.GetSnarlWindow().ToInt32() != 0)
             {
-                SnarlNotify(newTweets);
+                SnarlNotify(newTweets,type);
             }
             else
             {
@@ -468,17 +475,70 @@ namespace Witty
             return message;
         }
 
-        private void SnarlNotify(TweetCollection newTweets)
+        private void SnarlNotify(TweetCollection newTweets, string type)
         {
+            string alertClass = "";
+            if (type == "reply")
+            {
+                alertClass = "New reply";
+            }
+            else if (type == "directMessage")
+            {
+                alertClass = "New direct message";
+            }
+            else
+            {
+                alertClass = "New tweet";
+            }
+
             if (newTweets.Count > Double.Parse(AppSettings.MaximumIndividualAlerts))
             {
-                SnarlInterface.SendMessage("New Tweets", BuiltNewTweetMessage(newTweets), "", 4);
+                    string defaultImage = "";
+                    string tempFile = System.IO.Path.GetTempFileName();
+                    WebClient client = new WebClient();
+                    try
+                    {
+                        client.DownloadFile(twitter.CurrentlyLoggedInUser.ImageUrl, tempFile);
+                    }
+                    catch (Exception ex)
+                    {
+                        Console.WriteLine(ex);
+                        tempFile = defaultImage;
+                    }
+                  
+  
+                WindowsMessage replyMsg = new WindowsMessage(); 
+                
+                SnarlConnector.ShowMessageEx("New tweets summarized", "You have new tweets!", BuiltNewTweetMessage(newTweets), int.Parse(Properties.Settings.Default.NotificationDisplayTime), tempFile, this.SnarlConfighWnd, replyMsg, "");
+                if (tempFile != defaultImage)
+                {
+                    System.IO.File.Delete(tempFile);
+                }
             }
             else
             {
                 foreach (Tweet tweet in newTweets)
                 {
-                    SnarlInterface.SendMessage(string.Format("New Tweet from {0}", tweet.User.ScreenName), string.Format("{0}\n\n{1}", tweet.Text, tweet.RelativeTime), "", 4);
+                    string defaultImage = "";
+                    
+                    string tempFile = System.IO.Path.GetTempFileName();
+                    WebClient client = new WebClient();
+                    try
+                    {
+                        client.DownloadFile(tweet.User.ImageUrl, tempFile);
+                    }
+                    catch (Exception ex)
+                    {
+                        Console.WriteLine(ex);
+                        tempFile = defaultImage;
+                    }
+                  
+                    WindowsMessage replyMsg = new WindowsMessage();
+                    SnarlConnector.ShowMessageEx(alertClass, tweet.User.ScreenName, string.Format("{0}\n\n{1}", tweet.Text, tweet.RelativeTime), int.Parse(Properties.Settings.Default.NotificationDisplayTime), tempFile, this.SnarlConfighWnd, replyMsg, "");
+                    if (tempFile != defaultImage)
+                    {
+                        System.IO.File.Delete(tempFile);
+                    }
                 }
             }
         }
@@ -646,6 +706,7 @@ namespace Witty
             StatusTextBlock.Text = "Replies Updated: " + repliesLastUpdated.ToLongTimeString();
 
             UpdateExistingTweets(replies);
+            TweetCollection addedReplies = new TweetCollection();
 
             for (int i = newReplies.Count - 1; i >= 0; i--)
             {
@@ -655,6 +716,34 @@ namespace Witty
                     replies.Insert(0, reply);
                     reply.Index = replies.Count;
                     reply.IsNew = true;
+                    addedReplies.Add(reply);
+                }
+            }
+
+            if (addedReplies.Count > 0)
+            {
+                if (AppSettings.DisplayNotifications && !(bool)this.IsActive)
+                    NotifyOnNewTweets(addedReplies, "reply");
+
+                if (AppSettings.PlaySounds)
+                {
+                    // Author: Keith Elder
+                    // I wrapped a try catch around this and added logging.
+                    // I found that the Popup screen and this were causing 
+                    // a threading issue.  At least that is my theory.  When
+                    // new items would come in, and play a sound as well as 
+                    // pop a new message there was no need to recreate and load
+                    // the wave file.  InitializeSoundPlayer() was added on load
+                    // to do that just once.
+                    try
+                    {
+                        // Play tweets found sound for new tweets
+                        _player.Play();
+                    }
+                    catch (Exception ex)
+                    {
+                        App.Logger.Error("Error playing sound", ex);
+                    }
                 }
             }
 
@@ -1790,9 +1879,12 @@ namespace Witty
             _notifyIcon.Dispose();
             _notifyIcon = null;
 
-            if (SnarlInterface.SnarlIsActive() && this.SnarlConfighWnd != null)
+            if (SnarlConnector.GetSnarlWindow().ToInt32() != 0 && this.SnarlConfighWnd != null)
             {
-                SnarlInterface.RevokeConfig(this.SnarlConfighWnd.ToInt32());
+                SnarlConnector.RevokeConfig(this.SnarlConfighWnd);
+            }
+            if(this.SnarlConfighWnd != null) 
+            {
                 Win32.DestroyWindow(this.SnarlConfighWnd);
             }
         }
