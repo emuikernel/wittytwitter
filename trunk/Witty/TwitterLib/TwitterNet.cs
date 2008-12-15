@@ -663,7 +663,7 @@ namespace TwitterLib
         /// <param name="id">id of the Tweet to delete</param>
         public void DestroyTweet(double id)
         {
-            string urlToCall = DestroyUrl + id + Format;
+            string urlToCall = string.Format("{0}{1:g}{2}", DestroyUrl, id, Format);
             MakeDestroyRequestCall(urlToCall);
         }
 
@@ -673,7 +673,7 @@ namespace TwitterLib
         /// <param name="id">id of the direct message to delete</param>
         public void DestroyDirectMessage(double id)
         {
-            string urlToCall = DestroyDirectMessageUrl + id + Format;
+            string urlToCall = string.Format("{0}{1:g}{2}", DestroyDirectMessageUrl, id, Format);
             MakeDestroyRequestCall(urlToCall);
         }
 
@@ -1329,7 +1329,16 @@ namespace TwitterLib
         /// <param name="urlToCall"></param>
         private void MakeDestroyRequestCall(string urlToCall)
         {
-            MakeTwitterApiCall(urlToCall);
+            MakeTwitterApiCall(urlToCall, "POST");
+        }
+
+        /// <summary>
+        /// Default Twitter API call uses GET
+        /// </summary>
+        /// <param name="urlToCall"></param>
+        private void MakeTwitterApiCall(string urlToCall)
+        {
+            MakeTwitterApiCall(urlToCall, "GET");
         }
 
         /// <summary>
@@ -1337,7 +1346,7 @@ namespace TwitterLib
         ///  and just want to make a succeed/fail call to the API.
         /// </summary>
         /// <param name="urlToCall"></param>
-        private void MakeTwitterApiCall(string urlToCall)
+        private void MakeTwitterApiCall(string urlToCall, string method)
         {
             //REMARK: We may want to refactor this to return the message returned by the API.
             // Create the web request  
@@ -1349,7 +1358,7 @@ namespace TwitterLib
             // Add configured web proxy
             request.Proxy = webProxy;
 
-            //request.Method = "GET";
+            request.Method = method;
 
             try
             {

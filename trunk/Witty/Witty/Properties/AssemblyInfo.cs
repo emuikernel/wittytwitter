@@ -58,5 +58,5 @@ using System.Windows;
 //
 // You can specify all the values or you can default the Revision and Build Numbers 
 // by using the '*' as shown below:
-[assembly: AssemblyVersion("1.9.0.*")]
+[assembly: AssemblyVersion("1.9.1.*")]
 [assembly: log4net.Config.DOMConfigurator(ConfigFile = "App", ConfigFileExtension = "config", Watch = false)]

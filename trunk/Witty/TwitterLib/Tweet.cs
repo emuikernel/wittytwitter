@@ -206,6 +206,47 @@ namespace TwitterLib
         #endregion
 
         /// <summary>
+        /// Calculates a friendly display string based on an input timespan
+        /// </summary>
+        public string CalculateRelativeTimeString(TimeSpan ts)
+        {
+            double delta = ts.TotalSeconds;
+
+            if (delta <= 1)
+            {
+                return "a second ago";
+            }
+            else if (delta < 60)
+            {
+                return ts.Seconds + " seconds ago";
+            }
+            else if (delta < 120)
+            {
+                return "about a minute ago";
+            }
+            else if (delta < (45 * 60))
+            {
+                return ts.Minutes + " minutes ago";
+            }
+            else if (delta < (90 * 60))
+            {
+                return "about an hour ago";
+            }
+            else if (delta < (24 * 60 * 60))
+            {
+                return "about " + ts.Hours + " hours ago";
+            }
+            else if (delta < (48 * 60 * 60))
+            {
+                return "1 day ago";
+            }
+            else
+            {
+                return ts.Days + " days ago";
+            }
+        }
+
+        /// <summary>
         /// Updates the relativeTime based on the DateCreated and DateTime.Now
         /// </summary>
         public void UpdateRelativeTime()
@@ -216,40 +257,7 @@ namespace TwitterLib
             DateTime StatusCreatedDate = (DateTime)dateCreated;
 
             TimeSpan ts = new TimeSpan(DateTime.Now.Ticks - StatusCreatedDate.Ticks);
-            double delta = ts.TotalSeconds;
-
-            if (delta <= 1)
-            {
-                RelativeTime = "a second ago";
-            }
-            else if (delta < 60)
-            {
-                RelativeTime = ts.Seconds + " seconds ago";
-            }
-            else if (delta < 120)
-            {
-                RelativeTime = "about a minute ago";
-            }
-            else if (delta < (45 * 60))
-            {
-                RelativeTime = ts.Minutes + " minutes ago";
-            }
-            else if (delta < (90 * 60))
-            {
-                RelativeTime = "about an hour ago";
-            }
-            else if (delta < (24 * 60 * 60))
-            {
-                RelativeTime = "about " + ts.Hours + " hours ago";
-            }
-            else if (delta < (48 * 60 * 60))
-            {
-                RelativeTime = "1 day ago";
-            }
-            else
-            {
-                RelativeTime = ts.Days + " days ago";
-            }
+            RelativeTime = CalculateRelativeTimeString(ts);
         }
     }
 
