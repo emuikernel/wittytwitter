@@ -574,6 +574,26 @@ namespace Witty
             }
         }
 
+        private void ParseTextHereAndTinyUpAnyURLsFound(ref string tweetText)
+        {
+            //parse the text here and tiny up any URLs found.
+            ShorteningService service;
+            if (!string.IsNullOrEmpty(AppSettings.UrlShorteningService))
+                service = (ShorteningService)Enum.Parse(typeof(ShorteningService), AppSettings.UrlShorteningService);
+            else
+                service = ShorteningService.TinyUrl;
+
+            UrlShorteningService urlHelper = new UrlShorteningService(service);
+            tweetText = urlHelper.ShrinkUrls(tweetText);
+        }
+
+        private void ScheduleUpdateFunctionInUIThread()
+        {
+            LayoutRoot.Dispatcher.BeginInvoke(
+                            DispatcherPriority.Normal,
+                            new AddTweetUpdateDelegate(UpdatePostUserInterface), tweet);
+        }
+
         private void AddTweet(string tweetText)
         {
             try
@@ -581,22 +601,12 @@ namespace Witty
                 //bmsullivan If tweet is short enough, leave real URLs for clarity
                 if (tweetText.Length > TwitterNet.CharacterLimit)
                 {
-                    //parse the text here and tiny up any URLs found.
-                    ShorteningService service;
-                    if (!string.IsNullOrEmpty(AppSettings.UrlShorteningService))
-                        service = (ShorteningService)Enum.Parse(typeof(ShorteningService), AppSettings.UrlShorteningService);
-                    else
-                        service = ShorteningService.TinyUrl;
-
-                    UrlShorteningService urlHelper = new UrlShorteningService(service);
-                    tweetText = urlHelper.ShrinkUrls(tweetText);
+                    ParseTextHereAndTinyUpAnyURLsFound(ref tweetText);
                 }
-                Tweet tweet = twitter.AddTweet(tweetText); ;
 
-                // Schedule the update function in the UI thread.
-                LayoutRoot.Dispatcher.BeginInvoke(
-                DispatcherPriority.Normal,
-                new AddTweetUpdateDelegate(UpdatePostUserInterface), tweet);
+                Tweet tweet = twitter.AddTweet(tweetText); ;
+               
+                ScheduleUpdateFunctionInUIThread();
             }
             catch (WebException ex)
             {
