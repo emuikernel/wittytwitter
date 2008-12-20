@@ -587,7 +587,7 @@ namespace Witty
             tweetText = urlHelper.ShrinkUrls(tweetText);
         }
 
-        private void ScheduleUpdateFunctionInUIThread()
+        private void ScheduleUpdateFunctionInUIThread(Tweet tweet)
         {
             LayoutRoot.Dispatcher.BeginInvoke(
                             DispatcherPriority.Normal,
@@ -606,7 +606,7 @@ namespace Witty
 
                 Tweet tweet = twitter.AddTweet(tweetText); ;
                
-                ScheduleUpdateFunctionInUIThread();
+                ScheduleUpdateFunctionInUIThread(tweet);
             }
             catch (WebException ex)
             {
