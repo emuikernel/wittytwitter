@@ -259,7 +259,7 @@ namespace Witty.Properties {
         
         [global::System.Configuration.UserScopedSettingAttribute()]
         [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
-        [global::System.Configuration.DefaultSettingValueAttribute("Aero")]
+        [global::System.Configuration.DefaultSettingValueAttribute("AeroCompact")]
         public string Skin {
             get {
                 return ((string)(this["Skin"]));
