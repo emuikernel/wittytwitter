@@ -63,7 +63,7 @@
       <Value Profile="(Default)">10</Value>
     </Setting>
     <Setting Name="Skin" Type="System.String" Scope="User">
-      <Value Profile="(Default)">Aero</Value>
+      <Value Profile="(Default)">AeroCompact</Value>
     </Setting>
     <Setting Name="KeepLatest" Type="System.Int32" Scope="User">
       <Value Profile="(Default)">100</Value>
