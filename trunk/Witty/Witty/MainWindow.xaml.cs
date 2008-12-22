@@ -24,139 +24,10 @@ namespace Witty
     public partial class MainWindow
     {
 
+        #region Fields and Properties
+
         private IntPtr SnarlConfighWnd;
         private bool reallyexit = false;
-
-        public MainWindow()
-        {
-            this.InitializeComponent();
-
-#if DEBUG
-            Title = Title + " Debug";
-#endif
-
-            // Trap unhandled exceptions
-            LayoutRoot.Dispatcher.UnhandledException += new DispatcherUnhandledExceptionEventHandler(Dispatcher_UnhandledException);
-
-            #region Minimize to tray setup
-
-            _notifyIcon = new System.Windows.Forms.NotifyIcon();
-            _notifyIcon.BalloonTipText = "Right-click for more options";
-            _notifyIcon.BalloonTipTitle = "Witty";
-            _notifyIcon.Text = "Witty - The WPF Twitter Client";
-            _notifyIcon.Icon = Witty.Properties.Resources.AppIcon;
-            _notifyIcon.DoubleClick += new EventHandler(m_notifyIcon_Click);
-
-            System.Windows.Forms.ContextMenu notifyMenu = new System.Windows.Forms.ContextMenu();
-            System.Windows.Forms.MenuItem openMenuItem = new System.Windows.Forms.MenuItem();
-            System.Windows.Forms.MenuItem exitMenuItem = new System.Windows.Forms.MenuItem();
-
-            notifyMenu.MenuItems.AddRange(new System.Windows.Forms.MenuItem[] { openMenuItem, exitMenuItem });
-            openMenuItem.Index = 0;
-            openMenuItem.Text = "Open";
-            openMenuItem.Click += new EventHandler(openMenuItem_Click);
-            exitMenuItem.Index = 1;
-            exitMenuItem.Text = "Exit";
-            exitMenuItem.Click += new EventHandler(exitMenuItem_Click);
-
-            _notifyIcon.ContextMenu = notifyMenu;
-            this.Closed += new EventHandler(OnClosed);
-            this.StateChanged += new EventHandler(OnStateChanged);
-            this.IsVisibleChanged += new DependencyPropertyChangedEventHandler(OnIsVisibleChanged);
-
-            // used to override closings and minimize instead
-            this.Closing += new CancelEventHandler(MainWindow_Closing);
-
-            #endregion
-
-            #region Single instance setup
-            // Enforce single instance for release mode
-#if !DEBUG
-            Application.Current.Exit += new ExitEventHandler(Current_Exit);
-            _instanceManager = new SingleInstanceManager(this, ShowApplication);
-#endif
-            #endregion
-
-            // Set the data context for all of the tabs
-            LayoutRoot.DataContext = tweets;
-            RepliesListBox.ItemsSource = replies;
-            UserTab.DataContext = userTweets;
-            MessagesListBox.ItemsSource = messages;
-
-            // Set how often to get updates from Twitter
-            refreshInterval = new TimeSpan(0, int.Parse(AppSettings.RefreshInterval), 0);
-
-            this.Topmost = AlwaysOnTopMenuItem.IsChecked = AppSettings.AlwaysOnTop;
-
-            // Does the user need to login?
-            if (string.IsNullOrEmpty(AppSettings.Username))
-            {
-                PlayStoryboard("ShowLogin");
-            }
-            else
-            {
-                LoginControl.Visibility = Visibility.Hidden;
-
-                System.Security.SecureString password = TwitterNet.DecryptString(AppSettings.Password);
-
-                // Jason Follas: Reworked Web Proxy - don't need to explicitly pass into TwitterNet ctor
-                //twitter = new TwitterNet(AppSettings.Username, password, WebProxyHelper.GetConfiguredWebProxy());
-                twitter = new TwitterNet(AppSettings.Username, password);
-
-                // Jason Follas: Twitter proxy servers, anyone?  (Network Nazis who block twitter.com annoy me)
-                twitter.TwitterServerUrl = AppSettings.TwitterHost;
-
-                // Let the user know what's going on
-                StatusTextBlock.Text = Properties.Resources.TryLogin;
-                PlayStoryboard("Fetching");
-
-                // Create a Dispatcher to attempt login on new thread
-                NoArgDelegate loginFetcher = new NoArgDelegate(this.TryLogin);
-                loginFetcher.BeginInvoke(null, null);
-            }
-
-            InitializeClickOnceTimer();
-
-            InitializeSoundPlayer();
-
-            ScrollViewer.SetCanContentScroll(TweetsListBox, !AppSettings.SmoothScrolling);
-
-            //Register with Snarl if available
-            if (SnarlConnector.GetSnarlWindow().ToInt32() != 0)
-            {
-                //We Create a Message Only window for communication
-
-                this.SnarlConfighWnd = Win32.CreateWindowEx(0, "Message", null, 0, 0, 0, 0, 0, new IntPtr(Win32.HWND_MESSAGE), IntPtr.Zero, IntPtr.Zero, IntPtr.Zero);
-                WindowsMessage wndMsg = new WindowsMessage();
-                SnarlConnector.RegisterConfig(this.SnarlConfighWnd,"Witty",wndMsg);
-                
-                SnarlConnector.RegisterAlert("Witty", "New tweet");
-                SnarlConnector.RegisterAlert("Witty", "New tweets summarized");
-                SnarlConnector.RegisterAlert("Witty", "New reply");
-                SnarlConnector.RegisterAlert("Witty", "New direct message");
-                
-            }
-
-            
-        }
-
-        void MainWindow_Closing(object sender, CancelEventArgs e)
-        {
-            // If the user selected to minimize on close and the window state is normal
-            // just minimize the app
-            if (AppSettings.MinimizeOnClose && this.reallyexit == false)
-            {
-                e.Cancel = true;
-                _storedWindowState = this.WindowState;
-                this.WindowState = WindowState.Minimized;
-                if (_notifyIcon != null)
-                {
-                    _notifyIcon.ShowBalloonTip(2000);
-                }
-            }
-        }
-
-        #region Fields and Properties
 
         // Main collection of tweets
         private TweetCollection tweets = new TweetCollection();
@@ -261,8 +132,51 @@ namespace Witty
             }
         }
 
-        SoundPlayer _player; 
+        SoundPlayer _player;
         #endregion
+
+        #region Constructor
+        public MainWindow()
+        {
+            this.InitializeComponent();
+
+            TrapUnhandledExceptions();
+
+            SetupNotifyIcon();
+            
+            SetupSingleInstance();
+
+            SetDataContextForAllOfTabs();
+            
+            SetHowOftenToGetUpdatesFromTwitter();
+
+            InitializeClickOnceTimer();
+
+            InitializeSoundPlayer();
+
+            InitializeMiscSettings();
+
+            RegisterWithSnarlIfAvailable();
+
+            DisplayLoginIfUserNotLoggedIn();
+        }
+        #endregion 
+
+        void MainWindow_Closing(object sender, CancelEventArgs e)
+        {
+            // If the user selected to minimize on close and the window state is normal
+            // just minimize the app
+            if (AppSettings.MinimizeOnClose && this.reallyexit == false)
+            {
+                e.Cancel = true;
+                _storedWindowState = this.WindowState;
+                this.WindowState = WindowState.Minimized;
+                if (_notifyIcon != null)
+                {
+                    _notifyIcon.ShowBalloonTip(2000);
+                }
+            }
+        }
 
         #region Retrieve new tweets
 
@@ -282,6 +196,15 @@ namespace Witty
 
             fetcher.BeginInvoke(null, null);
 
+        }
+
+        private void InitializeMiscSettings()
+        {
+            this.Topmost = AlwaysOnTopMenuItem.IsChecked = AppSettings.AlwaysOnTop;
+            ScrollViewer.SetCanContentScroll(TweetsListBox, !AppSettings.SmoothScrolling);
+#if DEBUG
+            Title = Title + " Debug";
+#endif
         }
 
         private void Timer_Elapsed(object sender, EventArgs e)
@@ -313,6 +236,87 @@ namespace Witty
                 MessageBox.Show(ex.Message);
             }
 
+        }
+
+        private void SetHowOftenToGetUpdatesFromTwitter()
+        {
+            // Set how often to get updates from Twitter
+            refreshInterval = new TimeSpan(0, int.Parse(AppSettings.RefreshInterval), 0);
+        }
+
+        private void SetDataContextForAllOfTabs()
+        {
+            // Set the data context for all of the tabs
+            LayoutRoot.DataContext = tweets;
+            RepliesListBox.ItemsSource = replies;
+            UserTab.DataContext = userTweets;
+            MessagesListBox.ItemsSource = messages;
+        }
+
+        private void TrapUnhandledExceptions()
+        {
+            LayoutRoot.Dispatcher.UnhandledException += new DispatcherUnhandledExceptionEventHandler(Dispatcher_UnhandledException);
+        }
+
+        /// <summary>
+        /// Enforce single instance for release mode
+        /// </summary>
+        private void SetupSingleInstance()
+        {
+#if !DEBUG
+            Application.Current.Exit += new ExitEventHandler(Current_Exit);
+            _instanceManager = new SingleInstanceManager(this, ShowApplication);
+#endif
+        }
+
+        private void DisplayLoginIfUserNotLoggedIn()
+        {
+            // Does the user need to login?
+            if (string.IsNullOrEmpty(AppSettings.Username))
+            {
+                PlayStoryboard("ShowLogin");
+            }
+            else
+            {
+                LoginControl.Visibility = Visibility.Hidden;
+
+                System.Security.SecureString password = TwitterNet.DecryptString(AppSettings.Password);
+
+                // Jason Follas: Reworked Web Proxy - don't need to explicitly pass into TwitterNet ctor
+                //twitter = new TwitterNet(AppSettings.Username, password, WebProxyHelper.GetConfiguredWebProxy());
+                twitter = new TwitterNet(AppSettings.Username, password);
+
+                // Jason Follas: Twitter proxy servers, anyone?  (Network Nazis who block twitter.com annoy me)
+                twitter.TwitterServerUrl = AppSettings.TwitterHost;
+
+                // Let the user know what's going on
+                StatusTextBlock.Text = Properties.Resources.TryLogin;
+                PlayStoryboard("Fetching");
+
+                // Create a Dispatcher to attempt login on new thread
+                NoArgDelegate loginFetcher = new NoArgDelegate(this.TryLogin);
+                loginFetcher.BeginInvoke(null, null);
+            }
+        }
+
+        private void RegisterWithSnarlIfAvailable()
+        {
+            if (SnarlConnector.GetSnarlWindow().ToInt32() != 0)
+            {
+                CreateSnarlMessageWindowForCommunication();
+            }
+        }
+
+        private void CreateSnarlMessageWindowForCommunication()
+        {
+            this.SnarlConfighWnd = Win32.CreateWindowEx(0, "Message", null, 0, 0, 0, 0, 0, new IntPtr(Win32.HWND_MESSAGE), IntPtr.Zero, IntPtr.Zero, IntPtr.Zero);
+            WindowsMessage wndMsg = new WindowsMessage();
+            SnarlConnector.RegisterConfig(this.SnarlConfighWnd, "Witty", wndMsg);
+
+            SnarlConnector.RegisterAlert("Witty", "New tweet");
+            SnarlConnector.RegisterAlert("Witty", "New tweets summarized");
+            SnarlConnector.RegisterAlert("Witty", "New reply");
+            SnarlConnector.RegisterAlert("Witty", "New direct message");
         }
 
         private void UpdateUserInterface(TweetCollection newTweets)
@@ -394,6 +398,35 @@ namespace Witty
                 else if(ignoredUsers.ContainsKey(tweet.User.ScreenName) && ignoredUsers[tweet.User.ScreenName] > DateTime.Now)
                     tweets.Remove(tweet);
             }
+        }
+
+        private void SetupNotifyIcon()
+        {
+            _notifyIcon = new System.Windows.Forms.NotifyIcon();
+            _notifyIcon.BalloonTipText = "Right-click for more options";
+            _notifyIcon.BalloonTipTitle = "Witty";
+            _notifyIcon.Text = "Witty - The WPF Twitter Client";
+            _notifyIcon.Icon = Witty.Properties.Resources.AppIcon;
+            _notifyIcon.DoubleClick += new EventHandler(m_notifyIcon_Click);
+
+            System.Windows.Forms.ContextMenu notifyMenu = new System.Windows.Forms.ContextMenu();
+            System.Windows.Forms.MenuItem openMenuItem = new System.Windows.Forms.MenuItem();
+            System.Windows.Forms.MenuItem exitMenuItem = new System.Windows.Forms.MenuItem();
+
+            notifyMenu.MenuItems.AddRange(new System.Windows.Forms.MenuItem[] { openMenuItem, exitMenuItem });
+            openMenuItem.Index = 0;
+            openMenuItem.Text = "Open";
+            openMenuItem.Click += new EventHandler(openMenuItem_Click);
+            exitMenuItem.Index = 1;
+            exitMenuItem.Text = "Exit";
+            exitMenuItem.Click += new EventHandler(exitMenuItem_Click);
+
+            _notifyIcon.ContextMenu = notifyMenu;
+
+            this.Closed += new EventHandler(OnClosed);
+            this.StateChanged += new EventHandler(OnStateChanged);
+            this.IsVisibleChanged += new DependencyPropertyChangedEventHandler(OnIsVisibleChanged);
+            OverrideClosing();
         }
 
         private void ParoleIgnoredUsers()
@@ -975,6 +1008,14 @@ namespace Witty
                 MessageBox.Show(ex.Message);
             }
 
+        }
+
+        /// <summary>
+        /// Used to override closings and minimize instead
+        /// </summary>
+        private void OverrideClosing()
+        {
+            this.Closing += new CancelEventHandler(MainWindow_Closing);
         }
 
         private void UpdateUsersTimelineInterface(TweetCollection newTweets)
