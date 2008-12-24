@@ -16,7 +16,7 @@ namespace Witty
 
         // bool to prevent endless recursion
         private bool isInitializing = false;
-
+        
         public Options()
         {
             this.InitializeComponent();
@@ -60,6 +60,8 @@ namespace Witty
             MinimizeOnClose = AppSettings.MinimizeOnClose;
             PersistLogin = AppSettings.PersistLogin;
             SmoothScrollingCheckBox.IsChecked = AppSettings.SmoothScrolling;
+            RunAtStartupCheckBox.IsChecked = AppSettings.RunAtStartup;
+            
             UseProxyCheckBox.IsChecked = AppSettings.UseProxy;
             ProxyServerTextBox.Text = AppSettings.ProxyServer;
             ProxyPortTextBox.Text = AppSettings.ProxyPort.ToString();
@@ -90,7 +92,10 @@ namespace Witty
                 NotificationDisplayTimeSlider.Value = Double.Parse(AppSettings.NotificationDisplayTime);
             }
 
-
+            //TODO:Figure out how to get auto-start working with ClickOnce and Vista
+            //Until then, don't show the auto-start option
+            if (Environment.OSVersion.Version.Major > 5 && ClickOnce.Utils.IsApplicationNetworkDeployed)
+                RunAtStartupCheckBox.Visibility = Visibility.Collapsed;
         }
 
         #region PlaySounds
@@ -286,6 +291,13 @@ namespace Witty
                     AppSettings.TwitterHost += "/";
 
                 AppSettings.SmoothScrolling = (bool)SmoothScrollingCheckBox.IsChecked;
+
+                if (AppSettings.RunAtStartup != (bool)RunAtStartupCheckBox.IsChecked)
+                {
+                    Shortcut.SetStartupGroupShortcut((bool)RunAtStartupCheckBox.IsChecked);
+                    AppSettings.RunAtStartup = (bool) RunAtStartupCheckBox.IsChecked;
+                }
+
                 AppSettings.UseProxy = (bool)UseProxyCheckBox.IsChecked;
                 AppSettings.ProxyServer = ProxyServerTextBox.Text;
                 AppSettings.ProxyPort = int.Parse(ProxyPortTextBox.Text);

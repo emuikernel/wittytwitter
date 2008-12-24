@@ -295,6 +295,18 @@ namespace Witty.Properties {
         
         [global::System.Configuration.UserScopedSettingAttribute()]
         [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+        [global::System.Configuration.DefaultSettingValueAttribute("False")]
+        public bool RunAtStartup {
+            get {
+                return ((bool)(this["RunAtStartup"]));
+            }
+            set {
+                this["RunAtStartup"] = value;
+            }
+        }
+        
+        [global::System.Configuration.UserScopedSettingAttribute()]
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
         [global::System.Configuration.DefaultSettingValueAttribute("http://twitter.com/")]
         public string TwitterHost {
             get {
