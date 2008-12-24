@@ -143,11 +143,11 @@ namespace Witty
             TrapUnhandledExceptions();
 
             SetupNotifyIcon();
-            
+
             SetupSingleInstance();
 
             SetDataContextForAllOfTabs();
-            
+
             SetHowOftenToGetUpdatesFromTwitter();
 
             InitializeClickOnceTimer();
@@ -160,7 +160,7 @@ namespace Witty
 
             DisplayLoginIfUserNotLoggedIn();
         }
-        #endregion 
+        #endregion
 
         void MainWindow_Closing(object sender, CancelEventArgs e)
         {
@@ -351,13 +351,13 @@ namespace Witty
             // tweets listbox ScrollViewer.CanContentScroll is set to "False", which means it scrolls more smooth,
             // However it disables Virtualization
             // Remove tweets pass 100 should improve performance reasons.
-            if(AppSettings.KeepLatest != 0)
+            if (AppSettings.KeepLatest != 0)
                 tweets.TruncateAfter(AppSettings.KeepLatest);
 
             if (addedTweets.Count > 0)
             {
                 if (AppSettings.DisplayNotifications && !(bool)this.IsActive)
-                    NotifyOnNewTweets(addedTweets,"tweet");                
+                    NotifyOnNewTweets(addedTweets, "tweet");
 
                 if (AppSettings.PlaySounds)
                 {
@@ -387,7 +387,7 @@ namespace Witty
         private void FilterTweets(TweetCollection tweets, bool filterUsers)
         {
             bool usersToFilter = filterUsers && (ignoredUsers.Count > 0);
-            if(string.IsNullOrEmpty(AppSettings.FilterRegex) && !usersToFilter)
+            if (string.IsNullOrEmpty(AppSettings.FilterRegex) && !usersToFilter)
                 return;
 
             for (int i = tweets.Count - 1; i >= 0; i--)
@@ -395,7 +395,7 @@ namespace Witty
                 Tweet tweet = tweets[i];
                 if (!string.IsNullOrEmpty(AppSettings.FilterRegex) && Regex.IsMatch(tweet.Text, AppSettings.FilterRegex, RegexOptions.IgnoreCase))
                     tweets.Remove(tweet);
-                else if(ignoredUsers.ContainsKey(tweet.User.ScreenName) && ignoredUsers[tweet.User.ScreenName] > DateTime.Now)
+                else if (ignoredUsers.ContainsKey(tweet.User.ScreenName) && ignoredUsers[tweet.User.ScreenName] > DateTime.Now)
                     tweets.Remove(tweet);
             }
         }
@@ -444,7 +444,7 @@ namespace Witty
         {
             if (SnarlConnector.GetSnarlWindow().ToInt32() != 0)
             {
-                SnarlNotify(newTweets,type);
+                SnarlNotify(newTweets, type);
             }
             else
             {
@@ -455,10 +455,10 @@ namespace Witty
         private void SetupPopupProps(Popup p)
         {
             p.FadeOutFinished += new FadeOutFinishedDelegate(RemovePopup);
-            p.ReplyClicked += new PopupReplyClickedDelegate(PopupReplyClicked);          
+            p.ReplyClicked += new PopupReplyClickedDelegate(PopupReplyClicked);
             p.DirectMessageClicked += new PopupDirectMessageClickedDelegate(PopupDirectMessageClicked);
             p.Clicked += new PopupClickedDelegate(PopupClicked);
-            p.CloseButtonClicked += new PopupCloseButtonClickedDelegate(RemovePopup);           
+            p.CloseButtonClicked += new PopupCloseButtonClickedDelegate(RemovePopup);
         }
 
         private void PopUpNotify(TweetCollection newTweets)
@@ -466,7 +466,7 @@ namespace Witty
             if (newTweets.Count > Double.Parse(AppSettings.MaximumIndividualAlerts))
             {
                 Popup p = new Popup("New Tweets", BuiltNewTweetMessage(newTweets), twitter.CurrentlyLoggedInUser.ImageUrl, 0);
-                SetupPopupProps(p);                
+                SetupPopupProps(p);
                 p.Show();
             }
             else
@@ -526,22 +526,22 @@ namespace Witty
 
             if (newTweets.Count > Double.Parse(AppSettings.MaximumIndividualAlerts))
             {
-                    string defaultImage = "";
-                    string tempFile = System.IO.Path.GetTempFileName();
-                    WebClient client = new WebClient();
-                    try
-                    {
-                        client.DownloadFile(twitter.CurrentlyLoggedInUser.ImageUrl, tempFile);
-                    }
-                    catch (Exception ex)
-                    {
-                        Console.WriteLine(ex);
-                        tempFile = defaultImage;
-                    }
-                  
-  
-                WindowsMessage replyMsg = new WindowsMessage(); 
-                
+                string defaultImage = "";
+                string tempFile = System.IO.Path.GetTempFileName();
+                WebClient client = new WebClient();
+                try
+                {
+                    client.DownloadFile(twitter.CurrentlyLoggedInUser.ImageUrl, tempFile);
+                }
+                catch (Exception ex)
+                {
+                    Console.WriteLine(ex);
+                    tempFile = defaultImage;
+                }
+
+
+                WindowsMessage replyMsg = new WindowsMessage();
+
                 SnarlConnector.ShowMessageEx("New tweets summarized", "You have new tweets!", BuiltNewTweetMessage(newTweets), int.Parse(Properties.Settings.Default.NotificationDisplayTime), tempFile, this.SnarlConfighWnd, replyMsg, "");
                 if (tempFile != defaultImage)
                 {
@@ -553,7 +553,7 @@ namespace Witty
                 foreach (Tweet tweet in newTweets)
                 {
                     string defaultImage = "";
-                    
+
                     string tempFile = System.IO.Path.GetTempFileName();
                     WebClient client = new WebClient();
                     try
@@ -565,7 +565,7 @@ namespace Witty
                         Console.WriteLine(ex);
                         tempFile = defaultImage;
                     }
-                  
+
                     WindowsMessage replyMsg = new WindowsMessage();
                     SnarlConnector.ShowMessageEx(alertClass, tweet.User.ScreenName, string.Format("{0}\n\n{1}", tweet.Text, tweet.RelativeTime), int.Parse(Properties.Settings.Default.NotificationDisplayTime), tempFile, this.SnarlConfighWnd, replyMsg, "");
                     if (tempFile != defaultImage)
@@ -576,20 +576,20 @@ namespace Witty
             }
         }
 
-         private void UpdateExistingTweets()
-         {
-             UpdateExistingTweets(tweets);
-         }
+        private void UpdateExistingTweets()
+        {
+            UpdateExistingTweets(tweets);
+        }
 
-         private static void UpdateExistingTweets(TweetCollection oldTweets)
-         {
-             // Update existing tweets
-             foreach (Tweet tweet in oldTweets)
-             {
-                 tweet.IsNew = false;
-                 tweet.UpdateRelativeTime();
-             }
-         }
+        private static void UpdateExistingTweets(TweetCollection oldTweets)
+        {
+            // Update existing tweets
+            foreach (Tweet tweet in oldTweets)
+            {
+                tweet.IsNew = false;
+                tweet.UpdateRelativeTime();
+            }
+        }
 
         #endregion
 
@@ -638,7 +638,7 @@ namespace Witty
                 }
 
                 Tweet tweet = twitter.AddTweet(tweetText); ;
-               
+
                 ScheduleUpdateFunctionInUIThread(tweet);
             }
             catch (WebException ex)
@@ -975,12 +975,12 @@ namespace Witty
             // Jason Follas: Added the following UI feedback behavior for when users weren't found.
             catch (UserNotFoundException userNotFoundEx)
             {
-                
+
                 TweetCollection fakeTweets = new TweetCollection();
                 fakeTweets.Add(new Tweet());
                 fakeTweets[0].Id = -1;
                 fakeTweets[0].Text = userNotFoundEx.Message;
-                fakeTweets[0].Source = "Witty Error Handler"; 
+                fakeTweets[0].Source = "Witty Error Handler";
                 fakeTweets[0].User = new User();
                 fakeTweets[0].User.ScreenName = "@" + userNotFoundEx.UserId;
                 fakeTweets[0].User.Description = userNotFoundEx.Message;
@@ -991,7 +991,7 @@ namespace Witty
                 this.UserContextMenu.IsEnabled = false;
 
                 UpdateUsersTimelineInterface(fakeTweets);
-                
+
             }
             catch (WebException ex)
             {
@@ -1133,8 +1133,8 @@ namespace Witty
         {
             // Jason Follas: Reworked Web Proxy - don't need to explicitly pass into TwitterNet ctor
             //twitter = new TwitterNet(AppSettings.Username, TwitterNet.DecryptString(AppSettings.Password), WebProxyHelper.GetConfiguredWebProxy());
-            twitter = new TwitterNet(AppSettings.Username, TwitterNet.DecryptString(AppSettings.Password)); 
-            
+            twitter = new TwitterNet(AppSettings.Username, TwitterNet.DecryptString(AppSettings.Password));
+
             // Jason Follas: Twitter proxy servers, anyone?  (Network Nazis who block twitter.com annoy me)
             twitter.TwitterServerUrl = AppSettings.TwitterHost;
 
@@ -1304,10 +1304,10 @@ namespace Witty
             if (reArgs.OriginalSource is System.Windows.Documents.Hyperlink)
             {
                 Hyperlink h = reArgs.OriginalSource as Hyperlink;
-                
+
                 string userId = h.Tag.ToString();
                 DelegateUserTimelineFetch(userId);
-                
+
                 reArgs.Handled = true;
             }
         }
@@ -1934,7 +1934,7 @@ namespace Witty
             {
                 SnarlConnector.RevokeConfig(this.SnarlConfighWnd);
             }
-            if(this.SnarlConfighWnd != null) 
+            if (this.SnarlConfighWnd != null)
             {
                 Win32.DestroyWindow(this.SnarlConfighWnd);
             }

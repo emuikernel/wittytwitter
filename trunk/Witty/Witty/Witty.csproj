@@ -9,7 +9,7 @@
     <WarningLevel>4</WarningLevel>
     <OutputType>winexe</OutputType>
     <MinFrameworkVersionRequired>3.0</MinFrameworkVersionRequired>
-    <IsWebBootstrapper>false</IsWebBootstrapper>
+    <IsWebBootstrapper>true</IsWebBootstrapper>
     <ApplicationIcon>Resources\AppIcon.ico</ApplicationIcon>
     <TargetFrameworkVersion>v3.0</TargetFrameworkVersion>
     <FileUpgradeFlags>
@@ -17,31 +17,38 @@
     <UpgradeBackupLocation>
     </UpgradeBackupLocation>
     <OldToolsVersion>2.0</OldToolsVersion>
-    <SignManifests>false</SignManifests>
-    <ManifestCertificateThumbprint>E05F24771154009EE3570775B54E71663F186186</ManifestCertificateThumbprint>
+    <SignManifests>true</SignManifests>
+    <ManifestCertificateThumbprint>F9BFAF6CA7B5DCF41452AA409D7F8963B9C8EC0C</ManifestCertificateThumbprint>
     <ManifestKeyFile>Witty_TemporaryKey.pfx</ManifestKeyFile>
     <TargetZone>Internet</TargetZone>
     <GenerateManifests>true</GenerateManifests>
     <ApplicationManifest>Properties\app.manifest</ApplicationManifest>
-    <PublishUrl>c:\projects\jon\WittyTwitter\</PublishUrl>
+    <TargetFrameworkSubset>
+    </TargetFrameworkSubset>
+    <StartupObject>Witty.App</StartupObject>
+    <PublishUrl>ftp://ftp.alanle.net/www/software/witty/</PublishUrl>
     <Install>true</Install>
-    <InstallFrom>Disk</InstallFrom>
+    <InstallFrom>Web</InstallFrom>
     <UpdateEnabled>true</UpdateEnabled>
-    <UpdateMode>Foreground</UpdateMode>
+    <UpdateMode>Background</UpdateMode>
     <UpdateInterval>1</UpdateInterval>
-    <UpdateIntervalUnits>Hours</UpdateIntervalUnits>
-    <UpdatePeriodically>false</UpdatePeriodically>
-    <UpdateRequired>false</UpdateRequired>
+    <UpdateIntervalUnits>Days</UpdateIntervalUnits>
+    <UpdatePeriodically>true</UpdatePeriodically>
+    <UpdateRequired>true</UpdateRequired>
     <MapFileExtensions>true</MapFileExtensions>
-    <UpdateUrl>http://keithelder.net/software/witty/witty.application/</UpdateUrl>
+    <InstallUrl>http://www.alanle.net/software/witty/</InstallUrl>
+    <UpdateUrl>http://alanle.net/software/witty/</UpdateUrl>
     <SupportUrl>http://code.google.com/p/wittytwitter/</SupportUrl>
     <ProductName>Witty</ProductName>
     <PublisherName>Witty Twitter</PublisherName>
-    <AutorunEnabled>true</AutorunEnabled>
-    <ApplicationRevision>12</ApplicationRevision>
-    <ApplicationVersion>1.9.0.%2a</ApplicationVersion>
+    <MinimumRequiredVersion>2.0.0.0</MinimumRequiredVersion>
+    <CreateWebPageOnPublish>true</CreateWebPageOnPublish>
+    <WebPage>publish.htm</WebPage>
+    <ApplicationRevision>2</ApplicationRevision>
+    <ApplicationVersion>2.0.0.%2a</ApplicationVersion>
     <UseApplicationTrust>false</UseApplicationTrust>
-    <BootstrapperEnabled>false</BootstrapperEnabled>
+    <PublishWizardCompleted>true</PublishWizardCompleted>
+    <BootstrapperEnabled>true</BootstrapperEnabled>
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
     <DebugSymbols>true</DebugSymbols>
