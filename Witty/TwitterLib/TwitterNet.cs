@@ -692,6 +692,7 @@ namespace TwitterLib
 
             // Create the web request  
             HttpWebRequest request = WebRequest.Create(UpdateUrl + Format) as HttpWebRequest;
+            request.ServicePoint.Expect100Continue = false;
 
             // Add authentication to request  
             request.Credentials = new NetworkCredential(username, TwitterNet.ToInsecureString(password));
@@ -1066,6 +1067,7 @@ namespace TwitterLib
 
             // Create the web request  
             HttpWebRequest request = WebRequest.Create(SendMessageUrl + Format) as HttpWebRequest;
+            request.ServicePoint.Expect100Continue = false;
 
             // Add authentication to request  
             request.Credentials = new NetworkCredential(username, TwitterNet.ToInsecureString(password));
@@ -1351,6 +1353,7 @@ namespace TwitterLib
             //REMARK: We may want to refactor this to return the message returned by the API.
             // Create the web request  
             HttpWebRequest request = WebRequest.Create(urlToCall) as HttpWebRequest;
+            request.ServicePoint.Expect100Continue = false;
 
             // Add authentication to request  
             request.Credentials = new NetworkCredential(username, TwitterNet.ToInsecureString(password));
