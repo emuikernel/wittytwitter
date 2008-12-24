@@ -189,6 +189,7 @@
     </Compile>
     <Compile Include="ClickOnce\Deployment.cs" />
     <Compile Include="ClickOnce\Utils.cs" />
+    <Compile Include="Misc\Shortcut.cs" />
     <Compile Include="Misc\Snarl\M_RESULT.cs" />
     <Compile Include="Misc\Snarl\SnarlConnector.cs" />
     <Compile Include="Misc\Snarl\SNARLSTRUCT.cs" />

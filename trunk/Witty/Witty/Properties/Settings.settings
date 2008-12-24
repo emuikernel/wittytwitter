@@ -71,6 +71,9 @@
     <Setting Name="SmoothScrolling" Type="System.Boolean" Scope="User">
       <Value Profile="(Default)">True</Value>
     </Setting>
+    <Setting Name="RunAtStartup" Type="System.Boolean" Scope="User">
+      <Value Profile="(Default)">False</Value>
+    </Setting>
     <Setting Name="TwitterHost" Type="System.String" Scope="User">
       <Value Profile="(Default)">http://twitter.com/</Value>
     </Setting>

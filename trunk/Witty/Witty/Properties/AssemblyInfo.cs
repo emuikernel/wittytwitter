@@ -14,7 +14,7 @@ using System.Resources;
 [assembly: AssemblyTitle("Witty")]
 [assembly: AssemblyDescription("Witty is a Twitter client for Windows Vista and XP that is powered by the Windows Presentation Foundation (WPF)")]
 [assembly: AssemblyConfiguration("")]
-[assembly: AssemblyCompany("")]
+[assembly: AssemblyCompany("Witty Twitter")]
 [assembly: AssemblyProduct("Witty Twitter")]
 [assembly: AssemblyCopyright("Copyright @  2008")]
 [assembly: AssemblyTrademark("")]
