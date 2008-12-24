@@ -17,7 +17,7 @@
     <UpgradeBackupLocation>
     </UpgradeBackupLocation>
     <OldToolsVersion>2.0</OldToolsVersion>
-    <SignManifests>true</SignManifests>
+    <SignManifests>false</SignManifests>
     <ManifestCertificateThumbprint>F9BFAF6CA7B5DCF41452AA409D7F8963B9C8EC0C</ManifestCertificateThumbprint>
     <ManifestKeyFile>Witty_TemporaryKey.pfx</ManifestKeyFile>
     <TargetZone>Internet</TargetZone>
