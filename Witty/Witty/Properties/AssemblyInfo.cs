@@ -4,6 +4,7 @@ using System;
 using System.Reflection;
 using System.Runtime.InteropServices;
 using System.Windows;
+using System.Resources;
 
 #endregion
 
@@ -14,7 +15,7 @@ using System.Windows;
 [assembly: AssemblyDescription("Witty is a Twitter client for Windows Vista and XP that is powered by the Windows Presentation Foundation (WPF)")]
 [assembly: AssemblyConfiguration("")]
 [assembly: AssemblyCompany("")]
-[assembly: AssemblyProduct("Witty")]
+[assembly: AssemblyProduct("Witty Twitter")]
 [assembly: AssemblyCopyright("Copyright @  2008")]
 [assembly: AssemblyTrademark("")]
 [assembly: AssemblyCulture("")]
@@ -58,5 +59,7 @@ using System.Windows;
 //
 // You can specify all the values or you can default the Revision and Build Numbers 
 // by using the '*' as shown below:
-[assembly: AssemblyVersion("1.9.1.*")]
+[assembly: AssemblyVersion("2.0.0.*")]
 [assembly: log4net.Config.DOMConfigurator(ConfigFile = "App", ConfigFileExtension = "config", Watch = false)]
+[assembly: GuidAttribute("E263B219-F3B5-4dd9-BC0D-39A5F2960459")]
+[assembly: NeutralResourcesLanguageAttribute("en")]
