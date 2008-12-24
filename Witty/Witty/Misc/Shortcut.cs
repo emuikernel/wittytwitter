@@ -1,5 +1,4 @@
 using System;
-using System.Deployment.Application;
 using System.IO;
 using System.Reflection;
 using Microsoft.Win32;
@@ -10,7 +9,8 @@ namespace Witty
     {
         public static void SetStartupGroupShortcut(bool enable)
         {
-            if (!ApplicationDeployment.IsNetworkDeployed)
+
+            if (!ClickOnce.Utils.IsApplicationNetworkDeployed)
             {
                 RegistryKey runKey = Registry.CurrentUser.OpenSubKey(@"SOFTWARE\\Microsoft\\Windows\\CurrentVersion\\Run", true);
 
@@ -25,16 +25,16 @@ namespace Witty
             }
             else
             {
-                //TODO What happens on clickonce updates?  Does this change the required .appref-ms reference?
+                //TODO BSG: What happens on clickonce updates?  Does this change the required .appref-ms reference?
                 Assembly assembly = Assembly.GetExecutingAssembly();
 
-                // Get the startup shortcut and delete file is disabled.
+                // Get the startup shortcut and delete file to disable.
                 string productName = GetProductName(assembly);
                 string startupShortcut = GetStartupShortcut(productName);
 
                 if (!enable) File.Delete(startupShortcut);
 
-                // Copy program files shortcut into the startup folder.
+                // Copy program files shortcut into the startup folder to enable.
                 string publisherName = GetPublisherName(assembly);
                 string programShortcut = GetProgramShortcut(productName, publisherName);
                 if (File.Exists(programShortcut))

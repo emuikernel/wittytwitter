@@ -83,6 +83,9 @@
     <Setting Name="FilterRegex" Type="System.String" Scope="User">
       <Value Profile="(Default)" />
     </Setting>
+    <Setting Name="HighlightRegex" Type="System.String" Scope="User">
+      <Value Profile="(Default)" />
+    </Setting>
     <Setting Name="UrlShorteningService" Type="System.String" Scope="User">
       <Value Profile="(Default)">TinyUrl</Value>
     </Setting>

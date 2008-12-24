@@ -202,8 +202,10 @@ namespace Witty
         {
             this.Topmost = AlwaysOnTopMenuItem.IsChecked = AppSettings.AlwaysOnTop;
             ScrollViewer.SetCanContentScroll(TweetsListBox, !AppSettings.SmoothScrolling);
+            Version version = System.Reflection.Assembly.GetExecutingAssembly().GetName().Version;
+            Title = string.Format("Witty {0}.{1}", version.Major, version.Minor);
 #if DEBUG
-            Title = Title + " Debug";
+            Title = Title + string.format("{0} Debug", version.Revision);
 #endif
         }
 
@@ -328,6 +330,7 @@ namespace Witty
             AppSettings.Save();
 
             FilterTweets(newTweets, true);
+            HighlightTweets(newTweets);
             UpdateExistingTweets();
 
             TweetCollection addedTweets = new TweetCollection();
@@ -397,6 +400,21 @@ namespace Witty
                     tweets.Remove(tweet);
                 else if (ignoredUsers.ContainsKey(tweet.User.ScreenName) && ignoredUsers[tweet.User.ScreenName] > DateTime.Now)
                     tweets.Remove(tweet);
+            }
+        }
+
+        private void HighlightTweets(TweetCollection tweets)
+        {
+            if (string.IsNullOrEmpty(AppSettings.HighlightRegex))
+                return;
+            
+            foreach (Tweet tweet in tweets)
+            {
+                if (Regex.IsMatch(tweet.Text, AppSettings.HighlightRegex, RegexOptions.IgnoreCase) ||
+                    Regex.IsMatch(tweet.User.ScreenName, AppSettings.HighlightRegex, RegexOptions.IgnoreCase))
+                {
+                    tweet.IsInteresting = true;
+                }
             }
         }
 

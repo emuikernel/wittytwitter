@@ -12,7 +12,7 @@
   xmlns:r="clr-namespace:Microsoft.Samples.KMoore.WPFSamples.Reveal;assembly=J832.Wpf.BagOTricksLib"
   x:Class="Witty.MainWindow" 
   x:Name="Window" 
-  Title="Witty 1.9" 
+  Title="Witty 2.0" 
   Width="330" Height="570" MinWidth="200" MinHeight="200" 
   WindowStyle="SingleBorderWindow"
   Witty:WindowSettings.Save="True" KeyDown="MainWindow_OnKeyDown" Left="800" Top="50"

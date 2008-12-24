@@ -67,6 +67,7 @@ namespace Witty
             ProxyPortTextBox.Text = AppSettings.ProxyPort.ToString();
             ProxyUsernameTextBox.Text = AppSettings.ProxyUsername;
             FilterRegex.Text = AppSettings.FilterRegex;
+            HightlightRegex.Text = AppSettings.HighlightRegex;
 
             #endregion
 
@@ -307,6 +308,7 @@ namespace Witty
                 AppSettings.MaximumIndividualAlerts = MaxIndTextBlock.Text;
                 AppSettings.NotificationDisplayTime = NotificationDisplayTimeTextBlock.Text;
                 AppSettings.FilterRegex = FilterRegex.Text;
+                AppSettings.HighlightRegex = HightlightRegex.Text;
 
                 int setting;
                 if (int.TryParse(((ComboBox)KeepLatestComboBox).Text, out setting))

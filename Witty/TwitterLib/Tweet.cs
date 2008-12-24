@@ -22,6 +22,7 @@ namespace TwitterLib
         private string source;
         private User user;
         private bool isNew;
+        private bool isInteresting;
         private int index;
         private bool isSearchResult;
 
@@ -139,6 +140,19 @@ namespace TwitterLib
             }
         }
 
+        public bool IsInteresting
+        {
+            get { return isInteresting; }
+            set
+            {
+                if (value != isInteresting)
+                {
+                    isInteresting = value;
+                    OnPropertyChanged("IsInteresting");
+                }
+            }
+        }
+
         public int Index
         {
             get { return index; }
@@ -208,7 +222,7 @@ namespace TwitterLib
         /// <summary>
         /// Calculates a friendly display string based on an input timespan
         /// </summary>
-        public string CalculateRelativeTimeString(TimeSpan ts)
+        public static string CalculateRelativeTimeString(TimeSpan ts)
         {
             double delta = ts.TotalSeconds;
 

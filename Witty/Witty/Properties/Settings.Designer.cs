@@ -343,6 +343,18 @@ namespace Witty.Properties {
         
         [global::System.Configuration.UserScopedSettingAttribute()]
         [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+        [global::System.Configuration.DefaultSettingValueAttribute("")]
+        public string HighlightRegex {
+            get {
+                return ((string)(this["HighlightRegex"]));
+            }
+            set {
+                this["HighlightRegex"] = value;
+            }
+        }
+        
+        [global::System.Configuration.UserScopedSettingAttribute()]
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
         [global::System.Configuration.DefaultSettingValueAttribute("TinyUrl")]
         public string UrlShorteningService {
             get {

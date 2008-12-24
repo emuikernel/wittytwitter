@@ -176,7 +176,15 @@
                             <TextBlock Foreground="Gray" FontStyle="Italic"  TextWrapping="Wrap">
                     Hide tweets containing words or usernames you'd rather not see. Separate words with the pipe character, like this: politics|football|television. Nerds: you can use a regular expression here.
                             </TextBlock>
-                            <TextBox x:Name="FilterRegex" TextWrapping="Wrap" Margin="5,2,20,2" IsEnabled="True" AutoWordSelection="True" MinLines="5" />
+                            <TextBox x:Name="FilterRegex" TextWrapping="Wrap" Margin="5,2,20,2" IsEnabled="True" AutoWordSelection="True" MinLines="2" />
+                        </StackPanel>
+                    </GroupBox>
+                    <GroupBox Header="Highlight Tweets">
+                        <StackPanel>
+                            <TextBlock Foreground="Gray" FontStyle="Italic"  TextWrapping="Wrap">
+                            Highlight tweets from users or containing words you find interesting. Separate words with the pipe character. Regular expressions are allowed. 
+                            </TextBlock>
+                            <TextBox x:Name="HightlightRegex" TextWrapping="Wrap" Margin="5,2,20,2" IsEnabled="True" AutoWordSelection="True" MinLines="2" />
                         </StackPanel>
                     </GroupBox>
                 </StackPanel>
