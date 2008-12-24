@@ -59,7 +59,7 @@ using System.Resources;
 //
 // You can specify all the values or you can default the Revision and Build Numbers 
 // by using the '*' as shown below:
-[assembly: AssemblyVersion("1.9.0.30")]
+[assembly: AssemblyVersion("2.0.0.*")]
 [assembly: log4net.Config.DOMConfigurator(ConfigFile = "App", ConfigFileExtension = "config", Watch = false)]
 [assembly: GuidAttribute("E263B219-F3B5-4dd9-BC0D-39A5F2960459")]
 [assembly: NeutralResourcesLanguageAttribute("en")]

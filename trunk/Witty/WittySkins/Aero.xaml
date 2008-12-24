@@ -50,6 +50,12 @@
           <SplineColorKeyFrame KeyTime="00:00:01" Value="#19FEFF76" />
         </ColorAnimationUsingKeyFrames>
       </Storyboard>
+      <Storyboard x:Key="YellowForever">
+        <ColorAnimationUsingKeyFrames BeginTime="00:00:00" Storyboard.TargetName="grid" Storyboard.TargetProperty="(Panel.Background).(SolidColorBrush.Color)">
+            <SplineColorKeyFrame KeyTime="00:00:00" Value="#FFFEFF76" />
+            <SplineColorKeyFrame KeyTime="00:00:01" Value="#FFFEFF76" />
+        </ColorAnimationUsingKeyFrames>
+      </Storyboard>
     </DataTemplate.Resources>
     <Grid x:Name="grid" Background="#01FFFFFF">
       <Grid.ColumnDefinitions>
@@ -96,9 +102,14 @@
           <BeginStoryboard Storyboard="{StaticResource YellowFade}" x:Name="YellowFade_BeginStoryboard" />
         </DataTrigger.EnterActions>
       </DataTrigger>
+      <DataTrigger Binding="{Binding Path=IsInteresting}" Value="True">
+        <DataTrigger.EnterActions>
+          <BeginStoryboard Storyboard="{StaticResource YellowForever}" x:Name="YellowForever_BeginStoryboard" />
+        </DataTrigger.EnterActions>
+      </DataTrigger>
       <!--<Trigger Property="IsMouseOver" Value="True">
-			<Setter Property="Visibility" TargetName="ReplyButton" Value="Visible"/>
-		</Trigger>-->
+	        <Setter Property="Visibility" TargetName="ReplyButton" Value="Visible"/>
+	      </Trigger>-->
     </DataTemplate.Triggers>
   </DataTemplate>
 

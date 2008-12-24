@@ -6,7 +6,7 @@
       <FlowDocument>
         <Section>
           <Paragraph Name="Version">
-            Witty v1.9
+            Witty v2.0
           </Paragraph>
           <Paragraph>
             <Hyperlink NavigateUri="http://code.google.com/p/wittytwitter/" >Witty Google Code Page</Hyperlink>
