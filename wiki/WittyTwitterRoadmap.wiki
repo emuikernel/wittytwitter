@@ -15,7 +15,9 @@ Version 2.0
 Futures
   * Less dev-centric application and more consumer friendly.
   * Refactor codebase to use MVVM.
-  * Skinning framework so users can create there own skins
   * Clickonce download for beta builds
   * Groups Feature
   * Track Feature
+  * Skinning framework so users can create there own skins
+  ** tutorial for writing a skin
+  ** skinning contest
