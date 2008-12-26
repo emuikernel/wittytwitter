@@ -18,6 +18,6 @@ Futures
   * Clickonce download for beta builds
   * Groups Feature
   * Track Feature
-  * Skinning framework so users can create there own skins
+  * Skinning framework so users can create their own skins
   ** tutorial for writing a skin
   ** skinning contest
