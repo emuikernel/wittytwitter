@@ -10,6 +10,10 @@ This roadmap describes the planned capabilities of the Witty Twitter client.
 Version 2.0
   * New Dark Skin
   * New website for Witty
+  * Easy install experience
 
-Future
-  * refactor codebase to use MVVM.
+Futures
+  * Less dev-centric application and more consumer friendly.
+  * Refactor codebase to use MVVM.
+  * Skinning framework so users can create there own skins
+  * Clickonce download for beta builds
