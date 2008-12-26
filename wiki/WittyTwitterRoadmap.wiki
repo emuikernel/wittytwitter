@@ -8,7 +8,7 @@ This roadmap describes the planned capabilities of the Witty Twitter client.
 = Details =
 
 Version 2.0
-  * New Dark Skin
+  * New Skins: Dark and Darker
   * New website for Witty
   * Easy install experience
 
