@@ -17,3 +17,5 @@ Futures
   * Refactor codebase to use MVVM.
   * Skinning framework so users can create there own skins
   * Clickonce download for beta builds
+  * Groups Feature
+  * Track Feature
