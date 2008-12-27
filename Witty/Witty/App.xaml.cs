@@ -4,6 +4,7 @@ using System.Windows.Threading;
 using log4net;
 using log4net.Config;
 using TwitterLib;
+using System.Configuration;
 
 namespace Witty
 {
@@ -23,6 +24,8 @@ namespace Witty
             DOMConfigurator.Configure();
 
             Logger.Info("Witty is starting.");
+
+            CheckForCorruptedConfigFile();
 
             Properties.Settings appSettings = Witty.Properties.Settings.Default;
             if (appSettings.UpgradeSettings)
@@ -53,6 +56,43 @@ namespace Witty
             }
 
             base.OnStartup(e);
+        }
+
+        /// <summary>
+        /// user.config can become corrupted due to crash, power loss, etc.
+        /// This checks user.config and deletes it if it's corrupted.
+        /// http://www.codeproject.com/KB/dotnet/CorruptUserConfig.aspx
+        /// </summary>
+        private static void CheckForCorruptedConfigFile()
+        {
+            try
+            {
+                Witty.Properties.Settings.Default.Reload();
+            }
+            catch (ConfigurationErrorsException ex)
+            { //(requires System.Configuration)
+                string filename = ((ConfigurationErrorsException)ex.InnerException).Filename;
+
+                if (MessageBox.Show("Witty has detected that your" +
+                                      " user settings file has become corrupted. " +
+                                      "This may be due to a crash or improper exiting" +
+                                      " of the program. Witty must reset your " +
+                                      "user settings in order to continue.\n\nClick" +
+                                      " Yes to reset your user settings and continue.\n\n" +
+                                      "Click No if you wish to attempt manual repair" +
+                                      " or to rescue information before proceeding.",
+                                      "Corrupt user settings",
+                                      MessageBoxButton.YesNo,
+                                      MessageBoxImage.Error) == MessageBoxResult.Yes)
+                {
+                    System.IO.File.Delete(filename);
+                    Witty.Properties.Settings.Default.Reload();
+                    // you could optionally restart the app instead
+                }
+                else
+                    System.Diagnostics.Process.GetCurrentProcess().Kill();
+                // avoid the inevitable crash
+            }
         }
 
         /// <summary>
