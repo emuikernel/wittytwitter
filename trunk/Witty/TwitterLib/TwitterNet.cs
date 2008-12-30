@@ -1138,7 +1138,7 @@ namespace TwitterLib
                 return;
 
             string followUrl = CreateFriendshipUrl + userName + Format;
-            MakeTwitterApiCall(followUrl);
+            MakeTwitterApiCall(followUrl, "POST");
         }
 
         #endregion
