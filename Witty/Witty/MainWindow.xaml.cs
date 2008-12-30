@@ -205,7 +205,7 @@ namespace Witty
             Version version = System.Reflection.Assembly.GetExecutingAssembly().GetName().Version;
             Title = string.Format("Witty {0}.{1}", version.Major, version.Minor);
 #if DEBUG
-            Title = Title + string.format("{0} Debug", version.Revision);
+            Title = Title + string.Format("{0} Debug", version.Revision);
 #endif
         }
 
