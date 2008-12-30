@@ -90,6 +90,7 @@ namespace Witty
                 if (result == 0)
                 {
                     m_Instance.Dispatcher.Invoke(System.Windows.Threading.DispatcherPriority.Normal, m_callback);
+                    ResetEvent(m_EventHandle);
                 }
                 else
                 {
