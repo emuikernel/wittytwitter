@@ -11,7 +11,7 @@ namespace TwitterLib
     /// Represents the status post for a Twitter User.
     /// </summary>
     [Serializable]
-    public class Tweet : INotifyPropertyChanged, IEquatable<Tweet>, TwitterLib.ITweet
+    public class Tweet : INotifyPropertyChanged, IEquatable<Tweet>, TwitterLib.IMessage
     {
         #region Private fields
 
