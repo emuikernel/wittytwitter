@@ -220,7 +220,7 @@ namespace Witty
             {
                 // Schedule the update function in the UI thread.
                 LayoutRoot.Dispatcher.BeginInvoke(
-                    DispatcherPriority.Normal,
+                    DispatcherPriority.Background,
                     new OneArgDelegate(UpdateUserInterface), twitter.GetFriendsTimeline());
             }
             catch (WebException ex)
@@ -620,7 +620,7 @@ namespace Witty
                 // Schedule posting the tweet
 
                 UpdateButton.Dispatcher.BeginInvoke(
-                    DispatcherPriority.Normal,
+                    DispatcherPriority.Background,
                     new OneStringArgDelegate(AddTweet), TweetTextBox.Text);
             }
         }
@@ -641,7 +641,7 @@ namespace Witty
         private void ScheduleUpdateFunctionInUIThread(Tweet tweet)
         {
             LayoutRoot.Dispatcher.BeginInvoke(
-                            DispatcherPriority.Normal,
+                            DispatcherPriority.Background,
                             new AddTweetUpdateDelegate(UpdatePostUserInterface), tweet);
         }
 
@@ -741,7 +741,7 @@ namespace Witty
             {
                 // Schedule the update function in the UI thread.
                 LayoutRoot.Dispatcher.BeginInvoke(
-                    DispatcherPriority.Normal,
+                    DispatcherPriority.Background,
                     new OneArgDelegate(UpdateRepliesInterface), twitter.GetReplies());
             }
             catch (WebException ex)
@@ -835,7 +835,7 @@ namespace Witty
             {
                 // Schedule the update function in the UI thread.
                 LayoutRoot.Dispatcher.BeginInvoke(
-                    DispatcherPriority.Normal,
+                    DispatcherPriority.Background,
                     new MessagesDelegate(UpdateMessagesInterface), twitter.RetrieveMessages());
             }
             catch (WebException ex)
@@ -888,7 +888,7 @@ namespace Witty
             {
                 // Schedule posting the tweet
                 UpdateButton.Dispatcher.BeginInvoke(
-                    DispatcherPriority.Normal,
+                    DispatcherPriority.Background,
                     new SendMessageDelegate(SendMessage), MessageUserTextBox.Text, MessageTextBox.Text);
             }
         }
@@ -901,7 +901,7 @@ namespace Witty
 
                 // Schedule the update function in the UI thread.
                 LayoutRoot.Dispatcher.BeginInvoke(
-                    DispatcherPriority.Normal,
+                    DispatcherPriority.Background,
                     new NoArgDelegate(UpdateMessageUserInterface));
             }
             catch (WebException ex)
@@ -976,7 +976,7 @@ namespace Witty
 
             // Create a Dispatcher to fetching new tweets
             LayoutRoot.Dispatcher.BeginInvoke(
-                DispatcherPriority.Normal,
+                DispatcherPriority.Background,
                 new OneStringArgDelegate(GetUserTimeline), userId);
         }
 
@@ -986,7 +986,7 @@ namespace Witty
             {
                 // Schedule the update function in the UI thread.
                 LayoutRoot.Dispatcher.BeginInvoke(
-                    DispatcherPriority.Normal,
+                    DispatcherPriority.Background,
                     new OneArgDelegate(UpdateUsersTimelineInterface), twitter.GetUserTimeline(userId));
             }
 
@@ -1092,7 +1092,7 @@ namespace Witty
             {
                 // Schedule the update function in the UI thread.
                 LayoutRoot.Dispatcher.BeginInvoke(
-                    DispatcherPriority.Normal,
+                    DispatcherPriority.Background,
                     new LoginDelegate(UpdatePostLoginInterface), twitter.Login());
             }
             catch (WebException ex)
@@ -1103,13 +1103,13 @@ namespace Witty
             {
                 App.Logger.Error("Incorrect proxy configuration.");
                 MessageBox.Show("Proxy server is configured incorrectly.  Please correct the settings on the Options menu.");
-                LayoutRoot.Dispatcher.BeginInvoke(DispatcherPriority.Normal, new NoArgDelegate(UpdateLoginFailedInterface));
+                LayoutRoot.Dispatcher.BeginInvoke(DispatcherPriority.Background, new NoArgDelegate(UpdateLoginFailedInterface));
             }
             catch (ProxyNotFoundException ex)
             {
                 App.Logger.Error("Incorrect proxy configuration.");
                 MessageBox.Show(ex.Message);
-                LayoutRoot.Dispatcher.BeginInvoke(DispatcherPriority.Normal, new NoArgDelegate(UpdateLoginFailedInterface));
+                LayoutRoot.Dispatcher.BeginInvoke(DispatcherPriority.Background, new NoArgDelegate(UpdateLoginFailedInterface));
             }
         }
 
@@ -1418,7 +1418,7 @@ namespace Witty
                 if (MessageBoxResult.Yes == MessageBox.Show("Are you sure you want to permanently delete your tweet?\nThis action is irreversible. Select No to only delete it from the application or Yes to delete permanently.", Settings.Default.ApplicationName, MessageBoxButton.YesNo, MessageBoxImage.Question))
                 {
                     LayoutRoot.Dispatcher.BeginInvoke(
-                                    DispatcherPriority.Normal,
+                                    DispatcherPriority.Background,
                                     new DeleteTweetDelegate(twitter.DestroyTweet), id);
                 }
                 if (tweets.Contains(SelectedTweet))
@@ -1441,7 +1441,7 @@ namespace Witty
 
         private void FollowUser(string username)
         {
-            LayoutRoot.Dispatcher.BeginInvoke(DispatcherPriority.Normal,
+            LayoutRoot.Dispatcher.BeginInvoke(DispatcherPriority.Background,
                 new OneStringArgDelegate(twitter.FollowUser), username);
         }
 

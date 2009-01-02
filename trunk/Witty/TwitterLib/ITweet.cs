@@ -1,7 +1,7 @@
 ﻿using System;
 namespace TwitterLib
 {
-    interface ITweet
+    interface IMessage
     {
         DateTime? DateCreated { get; set; }
         bool Equals(Tweet other);
