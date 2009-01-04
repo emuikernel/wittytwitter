@@ -8,6 +8,9 @@
 // </auto-generated>
 //------------------------------------------------------------------------------
 
+using System.Collections.Generic;
+using TwitterLib.Utilities;
+
 namespace Witty.Properties {
     
     
@@ -362,6 +365,43 @@ namespace Witty.Properties {
             }
             set {
                 this["UrlShorteningService"] = value;
+            }
+        }
+        
+        [global::System.Configuration.UserScopedSettingAttribute()]
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+        [global::System.Configuration.DefaultSettingValueAttribute("False")]
+        public bool AlertSelectedOnly {
+            get {
+                return ((bool)(this["AlertSelectedOnly"]));
+            }
+            set {
+                this["AlertSelectedOnly"] = value;
+            }
+        }
+        
+        [global::System.Configuration.UserScopedSettingAttribute()]
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+        [global::System.Configuration.DefaultSettingValueAttribute("")]
+        public string SerializedUserBehaviors {
+            get {
+                return ((string)(this["SerializedUserBehaviors"]));
+            }
+            set {
+                this["SerializedUserBehaviors"] = value;
+            }
+        }
+        
+        [global::System.Configuration.UserScopedSettingAttribute()]
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+        [global::System.Configuration.DefaultSettingValueAttribute("")]
+        public UserBehaviorManager UserBehaviorManager
+        {
+            get {
+                return ((UserBehaviorManager)(this["UserBehaviorManager"]));
+            }
+            set {
+                this["UserBehaviorManager"] = value;
             }
         }
     }

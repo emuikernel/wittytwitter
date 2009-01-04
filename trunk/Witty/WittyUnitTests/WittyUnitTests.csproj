@@ -3,7 +3,7 @@
   <PropertyGroup>
     <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
     <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
-    <ProductVersion>9.0.21022</ProductVersion>
+    <ProductVersion>9.0.30729</ProductVersion>
     <SchemaVersion>2.0</SchemaVersion>
     <ProjectGuid>{1DC7F2FB-9B66-4FCA-B8F4-6A4DEE880A68}</ProjectGuid>
     <OutputType>Library</OutputType>
@@ -55,6 +55,7 @@
     <Compile Include="TinyUrlHelperTests.cs" />
     <Compile Include="TweetTest.cs" />
     <Compile Include="TwitterNetTest.cs" />
+    <Compile Include="UserBehaviorManagerTests.cs" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\TwitterLib\TwitterLib.csproj">
