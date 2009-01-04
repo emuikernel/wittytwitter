@@ -25,6 +25,10 @@ namespace TwitterLib
                     requestTemplate = "http://bit.ly/api?url={0}";
                     baseUrl = "bit.ly";
                     break;
+                case ShorteningService.Cligs:
+                    requestTemplate = "http://cli.gs/api/v1/cligs/create?url={0}&appid=WittyTwitter";
+                    baseUrl = "cli.gs";
+                    break;
                 case ShorteningService.TinyUrl:
                 default:
                     requestTemplate = "http://tinyurl.com/api-create.php?url={0}";
@@ -58,7 +62,21 @@ namespace TwitterLib
 
             // reassemble if we found at least 1 url, otherwise return unaltered
                 return foundUrl ? String.Join(" ", textSplitIntoWords) : text;
-        }        
+        }
+
+        /// <summary>
+        /// This can definitely be refactored
+        /// </summary>
+        /// <param name="sourceUrl"></param>
+        /// <returns></returns>
+        public bool IsShortenedUrl(string sourceUrl)
+        {
+            return              
+                sourceUrl.Contains("http://tinyurl.com") ||
+                sourceUrl.Contains("http://bit.ly") ||
+                sourceUrl.Contains("http://is.gd") ||
+                sourceUrl.Contains("http://cli.gs");
+        }
 
         public string GetNewShortUrl(string sourceUrl, IWebProxy webProxy)
         {
@@ -70,7 +88,7 @@ namespace TwitterLib
             //Added 11/3/2007 scottckoon
             //20 is the shortest a tinyURl can be (http://tinyurl.com/a)
             //so if the sourceUrl is shorter than that, don't make a request to TinyURL
-            if (sourceUrl.Length > 20 && !sourceUrl.Contains("http://tinyurl.com") && !sourceUrl.Contains("http://bit.ly") && !sourceUrl.Contains("http://is.gd"))
+            if (sourceUrl.Length > 20 && !IsShortenedUrl(sourceUrl))
             {
                 // tinyurl doesn't like urls w/o protocols so we'll ensure we have at least http
                 string requestUrl = string.Format(this.requestTemplate,(EnsureMinimalProtocol(sourceUrl)));
@@ -125,6 +143,6 @@ namespace TwitterLib
     }
     public enum ShorteningService
     {
-        TinyUrl, Bitly, isgd
+        TinyUrl, Bitly, isgd, Cligs
     }
 }
