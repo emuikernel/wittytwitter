@@ -648,6 +648,12 @@ namespace Witty
             }
         }
 
+        private void CancelButton_Click(object sender, RoutedEventArgs e)
+        {
+            TweetTextBox.Text = string.Empty;
+            ToggleUpdate();
+        }
+
         private void ParseTextHereAndTinyUpAnyURLsFound(ref string tweetText)
         {
             //parse the text here and tiny up any URLs found.
@@ -730,12 +736,14 @@ namespace Witty
                 if (!isExpanded)
                 {
                     PlayStoryboard("ExpandUpdate");
+                    Update.ToolTip = "Hide update panel";
                     TweetTextBox.Focus();
                     isExpanded = true;
                 }
                 else
                 {
                     PlayStoryboard("CollapseUpdate");
+                    Update.ToolTip = "Display update panel";
                     isExpanded = false;
                 }
             }

@@ -109,22 +109,23 @@
             <Border Height="21" Background="{StaticResource UpdateBackgroundBrush}" VerticalAlignment="Bottom" Padding="10,0,10,0" x:Name="Update" MouseLeftButtonUp="Update_MouseLeftButtonUp" BorderBrush="{DynamicResource PrimaryBackgroundBrush}" BorderThickness="0,0,0,1" ToolTip="Display update panel">
               <DockPanel OpacityMask="#FF000000" x:Name="dockPanel">
                 <TextBlock HorizontalAlignment="Center" DockPanel.Dock="Top" Text="Update" TextWrapping="Wrap" VerticalAlignment="Top" x:Name="UpdateTextBlock" Margin="0,2,0,0" />
-                <Grid Margin="0,5,0,10">
+                <Grid Margin="0,5,0,0">
                   <Grid.ColumnDefinitions>
                     <ColumnDefinition Width="*" />
                     <ColumnDefinition Width="Auto" />
                   </Grid.ColumnDefinitions>
-                  <TextBox Text="" TextWrapping="Wrap" x:Name="TweetTextBox" SpellCheck.IsEnabled="True" />
-                  <TextBlock	Text="{Binding Path=Text.Length, Converter={StaticResource CharRemainingConverter}, ElementName=TweetTextBox, Mode=Default}" 
+                  <TextBox Text="" TextWrapping="Wrap" x:Name="TweetTextBox" SpellCheck.IsEnabled="True" Margin="0,0,0,5" ToolTip="Enter update with 140 character limit"/>
+                  <TextBlock Text="{Binding Path=Text.Length, Converter={StaticResource CharRemainingConverter}, ElementName=TweetTextBox, Mode=Default}" 
 								FontSize="18" 
 								Grid.Column="1" 
 								VerticalAlignment="Top" 
 								HorizontalAlignment="Left" 
-								Margin="10,0,0,0" 
+								Margin="10,-2,0,0" 
 								FontFamily="Georgia" 
-								x:Name="CharRemainingCounter" 
+								x:Name="CharRemainingCounter"                                 
 								Foreground="{Binding Path=Text.Length, ElementName=TweetTextBox, Converter={StaticResource CharRemainingColorConverter}}" />
-				  <Button VerticalAlignment="Bottom" Width="75" Height="23" Content="Update" Grid.Column="1" x:Name="UpdateButton" Click="UpdateButton_Click" Margin="10,0,0,0" IsDefault="True" />
+				  <Button Width="75" Height="23" Content="Update" Grid.Column="1" x:Name="UpdateButton" Click="UpdateButton_Click" Margin="10,0,0,10" IsDefault="True" ToolTip="Submit update" />
+                  <Button VerticalAlignment="Bottom" Width="75" Height="23" Content="Cancel" Grid.Column="1" x:Name="CancelButton" Click="CancelButton_Click" Margin="10,0,0,5" ToolTip="Clear text and hide update panel" />
                 </Grid>
               </DockPanel>
             </Border>
