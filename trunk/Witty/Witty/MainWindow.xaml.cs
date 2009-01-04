@@ -1374,6 +1374,7 @@ namespace Witty
             TweetTextBox.Text = "D ";
 
             TweetTextBox.Text += screenName;
+            TweetTextBox.Text += " ";
             TweetTextBox.Select(TweetTextBox.Text.Length, 0);
         }
 
