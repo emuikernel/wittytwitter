@@ -1,10 +1,10 @@
 ;Requires Inno Setup - http://www.jrsoftware.org/isinfo.php
 
 [Setup]
-AppName=Witty - Nightly Build
-AppVerName=Witty Nightly
-AppVersion=1.9 Nightly
-VersionInfoVersion=1.9.1
+AppName=Witty Twitter
+AppVerName=Witty 2.0
+AppVersion=2.0
+VersionInfoVersion=2.0.0.39
 OutputBaseFilename=Setup-Witty-Nightly
 AppPublisherURL=http://code.google.com/p/wittytwitter/
 AppSupportURL=http://code.google.com/p/wittytwitter/
@@ -29,7 +29,7 @@ Name: quicklaunchicon; Description: {cm:CreateQuickLaunchIcon}; GroupDescription
 
 [Files]
 Source: Witty.exe; DestDir: {app}; Flags: ignoreversion
-Source: *; DestDir: {app}; Flags: ignoreversion recursesubdirs createallsubdirs
+Source: *; Excludes: "\app.publish\Application Files\*"; DestDir: {app}; Flags: ignoreversion recursesubdirs createallsubdirs
 ; NOTE: Don't use "Flags: ignoreversion" on any shared system files
 
 [Icons]
