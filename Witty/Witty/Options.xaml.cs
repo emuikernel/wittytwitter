@@ -1,9 +1,12 @@
 ﻿using System;
+using System.Collections.Generic;
 using System.Net;
 using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Input;
 using log4net;
+using TwitterLib;
+using TwitterLib.Utilities;
 using Screen = System.Windows.Forms.Screen;
 
 namespace Witty
@@ -16,10 +19,31 @@ namespace Witty
 
         // bool to prevent endless recursion
         private bool isInitializing = false;
+        private delegate void NoArgDelegate();
+
+        private List<User> allFriends;
+        private static string allFriendsFromUserName;  // needed to detect when a user has logged out.
+        private readonly TwitterNet twitter;
         
+        
+        private List<User> GetFriends()
+        {
+            if (allFriends == null || allFriendsFromUserName != AppSettings.Username)
+            {
+                UserCollection friends = twitter.GetFriends();
+                var sortedFriends = new List<User>(friends);
+                sortedFriends.Sort((u, u2) => u.Name.CompareTo(u2.Name));
+                allFriends = sortedFriends;
+            }
+            return allFriends;
+        }
+
         public Options()
         {
             this.InitializeComponent();
+            AlertSelectedOnlyCheckBox.IsChecked = AppSettings.AlertSelectedOnly;
+            twitter = new TwitterNet(AppSettings.Username, TwitterNet.DecryptString(AppSettings.Password));
+            LayoutRoot.Dispatcher.BeginInvoke(System.Windows.Threading.DispatcherPriority.Background, new NoArgDelegate(BindFriendsDropDown));            
 
             #region Initialize Options
 
@@ -307,6 +331,7 @@ namespace Witty
 
                 AppSettings.MaximumIndividualAlerts = MaxIndTextBlock.Text;
                 AppSettings.NotificationDisplayTime = NotificationDisplayTimeTextBlock.Text;
+                AppSettings.AlertSelectedOnly = (bool) AlertSelectedOnlyCheckBox.IsChecked;
                 AppSettings.FilterRegex = FilterRegex.Text;
                 AppSettings.HighlightRegex = HightlightRegex.Text;
 
@@ -489,5 +514,71 @@ namespace Witty
                 System.Security.Cryptography.DataProtectionScope.CurrentUser);
             return Convert.ToBase64String(encryptedData);
         }
+
+        private User SelectedFriend
+        {
+            get
+            {
+                return (User)FriendsOptionsComboBox.SelectedItem;   
+            }            
+        }
+
+
+
+        private void FriendsOptionsComboBox_SelectionChanged(object sender, SelectionChangedEventArgs e)
+        {
+            
+            UserBehaviorManager manager = AppSettings.UserBehaviorManager;            
+            FriendIgnoreCheckBox.IsChecked = manager.HasBehavior(SelectedFriend.Name, UserBehavior.Ignore);
+            FriendAlwaysAlertCheckbox.IsChecked = manager.HasBehavior(SelectedFriend.Name, UserBehavior.AlwaysAlert);
+            FriendNeverAlertCheckbox.IsChecked = manager.HasBehavior(SelectedFriend.Name, UserBehavior.NeverAlert);
+            
+        }
+
+        private void FriendAlwaysAlertCheckbox_Clicked(object sender, RoutedEventArgs e)
+        {
+
+            UpdateStatus(SelectedFriend, UserBehavior.AlwaysAlert);
+        }
+
+        private void FriendIgnoreCheckBox_Clicked(object sender, RoutedEventArgs e)
+        {
+            UpdateStatus(SelectedFriend, UserBehavior.Ignore);
+        }
+
+        private void FriendNeverAlertCheckbox_Clicked(object sender, RoutedEventArgs e)
+        {
+            UpdateStatus(SelectedFriend, UserBehavior.NeverAlert);
+        }
+
+        private void BindFriendsDropDown()
+        {
+            FriendsOptionsComboBox.ItemsSource = GetFriends();
+            FriendsOptionsComboBox.DisplayMemberPath = "Name";                
+        }
+
+        private void UpdateStatus(User user, UserBehavior behavior)
+        {
+            if (user == null) return;            
+            AppSettings.UserBehaviorManager.AddBehavior(user.Name, behavior);
+            UpdateUserBehaviorAppSetting();
+            FriendIgnoreCheckBox.IsChecked = (behavior == UserBehavior.Ignore);
+            FriendAlwaysAlertCheckbox.IsChecked = (behavior == UserBehavior.AlwaysAlert);
+            FriendNeverAlertCheckbox.IsChecked = (behavior == UserBehavior.NeverAlert);
+        }
+
+        private void ClearBehaviors(object sender, RoutedEventArgs e)
+        {
+            if (SelectedFriend == null) return;
+            AppSettings.UserBehaviorManager.RemoveBehavior(SelectedFriend.Name);
+            UpdateUserBehaviorAppSetting();
+        }
+
+        private void UpdateUserBehaviorAppSetting()
+        {
+            AppSettings.SerializedUserBehaviors = AppSettings.UserBehaviorManager.Serialize();
+            AppSettings.Save();
+        }
+
     }
 }

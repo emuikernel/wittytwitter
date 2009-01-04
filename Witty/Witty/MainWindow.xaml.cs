@@ -27,7 +27,7 @@ namespace Witty
         #region Fields and Properties
 
         private IntPtr SnarlConfighWnd;
-        private bool reallyexit = false;
+        private bool reallyexit = false;        
 
         // Main collection of tweets
         private TweetCollection tweets = new TweetCollection();
@@ -138,7 +138,7 @@ namespace Witty
         #region Constructor
         public MainWindow()
         {
-            this.InitializeComponent();
+            this.InitializeComponent();            
 
             TrapUnhandledExceptions();
 
@@ -158,7 +158,7 @@ namespace Witty
 
             RegisterWithSnarlIfAvailable();
 
-            DisplayLoginIfUserNotLoggedIn();
+            DisplayLoginIfUserNotLoggedIn();            
         }
         #endregion
 
@@ -200,6 +200,7 @@ namespace Witty
 
         private void InitializeMiscSettings()
         {
+            AppSettings.UserBehaviorManager = new UserBehaviorManager(AppSettings.SerializedUserBehaviors);
             this.Topmost = AlwaysOnTopMenuItem.IsChecked = AppSettings.AlwaysOnTop;
             ScrollViewer.SetCanContentScroll(TweetsListBox, !AppSettings.SmoothScrolling);
             Version version = System.Reflection.Assembly.GetExecutingAssembly().GetName().Version;
@@ -342,7 +343,7 @@ namespace Witty
             for (int i = newTweets.Count - 1; i >= 0; i--)
             {
                 Tweet tweet = newTweets[i];
-                if (!tweets.Contains(tweet))
+                if (!tweets.Contains(tweet) && !HasBehavior(tweet, UserBehavior.Ignore))
                 {
                     tweets.Insert(0, tweet);
                     tweet.Index = tweets.Count;
@@ -479,18 +480,40 @@ namespace Witty
             p.CloseButtonClicked += new PopupCloseButtonClickedDelegate(RemovePopup);
         }
 
+        private bool ShouldPopUp(Tweet tweet)
+        {
+            if (AppSettings.AlertSelectedOnly)            
+                return HasBehavior(tweet, UserBehavior.AlwaysAlert);
+
+            return (!HasBehavior(tweet, UserBehavior.NeverAlert) || HasBehavior(tweet, UserBehavior.Ignore));
+
+        }
+
+        private bool HasBehavior(Tweet tweet, UserBehavior behavior)
+        {
+            return AppSettings.UserBehaviorManager.HasBehavior(tweet.User.Name, behavior);
+        }
+
         private void PopUpNotify(TweetCollection newTweets)
         {
-            if (newTweets.Count > Double.Parse(AppSettings.MaximumIndividualAlerts))
+            TweetCollection popUpTweets = new TweetCollection();
+            
+            foreach (var tweet in newTweets)
             {
-                Popup p = new Popup("New Tweets", BuiltNewTweetMessage(newTweets), twitter.CurrentlyLoggedInUser.ImageUrl, 0);
+                if (ShouldPopUp(tweet))
+                    popUpTweets.Add(tweet);
+            }
+
+            if (popUpTweets.Count > Double.Parse(AppSettings.MaximumIndividualAlerts))
+            {
+                Popup p = new Popup("New Tweets", BuiltNewTweetMessage(popUpTweets), twitter.CurrentlyLoggedInUser.ImageUrl, 0);
                 SetupPopupProps(p);
                 p.Show();
             }
             else
             {
                 int index = 0;
-                foreach (Tweet tweet in newTweets)
+                foreach (Tweet tweet in popUpTweets)
                 {
                     Popup p = new Popup(tweet, index++);
                     SetupPopupProps(p);

@@ -62,6 +62,7 @@
     <Compile Include="User.cs" />
     <Compile Include="Utilities\UrlShorteningService.cs" />
     <Compile Include="Utilities\TweetScanHelper.cs" />
+    <Compile Include="Utilities\UserBehaviorManager.cs" />
   </ItemGroup>
   <ItemGroup>
     <None Include="TwitterLib.cd" />

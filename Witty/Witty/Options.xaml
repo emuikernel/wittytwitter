@@ -203,6 +203,23 @@
                         <Slider x:Name="NotificationDisplayTimeSlider" VerticalAlignment="Top" Width="Auto" Height="Auto" LargeChange="5" Maximum="60" Minimum="1" SmallChange="1" TickFrequency="5" TickPlacement="BottomRight"/>
                         <TextBlock Margin="10,5,10,5" x:Name="NotificationDisplayTimeTextBlock" VerticalAlignment="Top" Width="20" Height="20" Text="{Binding Path=Value, Converter={StaticResource RoundConverter}, ElementName=NotificationDisplayTimeSlider, Mode=Default}" TextAlignment="Center" TextWrapping="Wrap"/>
                     </DockPanel>
+                    <DockPanel LastChildFill="False" Margin="10, 10, 0, 10">
+                        <CheckBox x:Name="AlertSelectedOnlyCheckBox">Alert Selected Users Only</CheckBox>
+                    </DockPanel>
+                    <GroupBox Header="Friend Options">
+                        <DockPanel LastChildFill="False">
+                            <ComboBox x:Name="FriendsOptionsComboBox" VerticalAlignment="Top" SelectionChanged="FriendsOptionsComboBox_SelectionChanged" Margin="10,10,10,10" />
+                            <CheckBox x:Name="FriendIgnoreCheckBox" Margin="10, 10, 10, 10" 
+						Checked="FriendIgnoreCheckBox_Clicked" Unchecked="ClearBehaviors">
+                                Ignore</CheckBox>
+                            <CheckBox x:Name="FriendNeverAlertCheckbox" Margin="10, 10, 10, 10"
+						Checked="FriendNeverAlertCheckbox_Clicked" Unchecked="ClearBehaviors">
+                                Never Alert</CheckBox>
+                            <CheckBox x:Name="FriendAlwaysAlertCheckbox" Margin="10, 10, 10, 10" 
+						Checked="FriendAlwaysAlertCheckbox_Clicked" Unchecked="ClearBehaviors">
+                                Always Alert</CheckBox>
+                        </DockPanel>
+                    </GroupBox>
                 </StackPanel>
             </Border>
 
