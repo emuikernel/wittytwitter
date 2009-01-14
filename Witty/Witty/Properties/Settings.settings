@@ -89,13 +89,13 @@
     <Setting Name="UrlShorteningService" Type="System.String" Scope="User">
       <Value Profile="(Default)">TinyUrl</Value>
     </Setting>
-    <Setting Name="AlertSelectedOnly" Type="System.String" Scope="User">
-      <Value Profile="(Default)">True</Value>
+    <Setting Name="AlertSelectedOnly" Type="System.Boolean" Scope="User">
+      <Value Profile="(Default)">False</Value>
     </Setting>
     <Setting Name="SerializedUserActions" Type="System.String" Scope="User">
       <Value Profile="(Default)" />
     </Setting>
-    <Setting Name="UserActions" Type="object" Scope="User">
+    <Setting Name="UserActions" Type="System.Object" Scope="User">
       <Value Profile="(Default)" />
     </Setting>
   </Settings>
