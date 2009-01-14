@@ -8,6 +8,7 @@
 // </auto-generated>
 //------------------------------------------------------------------------------
 
+using TwitterLib.Utilities;
 namespace Witty.Properties {
     
     
@@ -380,23 +381,25 @@ namespace Witty.Properties {
         [global::System.Configuration.UserScopedSettingAttribute()]
         [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
         [global::System.Configuration.DefaultSettingValueAttribute("")]
-        public string SerializedUserActions {
+        public string SerializedUserBehaviors {
             get {
-                return ((string)(this["SerializedUserActions"]));
+                return ((string)(this["SerializedUserBehaviors"]));
             }
             set {
-                this["SerializedUserActions"] = value;
+                this["SerializedUserBehaviors"] = value;
             }
         }
         
         [global::System.Configuration.UserScopedSettingAttribute()]
         [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
-        public object UserActions {
+        [global::System.Configuration.DefaultSettingValueAttribute("")]
+        public UserBehaviorManager UserBehaviorManager
+        {
             get {
-                return ((object)(this["UserActions"]));
+                return ((UserBehaviorManager)(this["UserBehaviorManager"]));
             }
             set {
-                this["UserActions"] = value;
+                this["UserBehaviorManager"] = value;
             }
         }
     }
