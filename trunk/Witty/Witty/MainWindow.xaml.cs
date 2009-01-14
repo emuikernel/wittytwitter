@@ -55,6 +55,13 @@ namespace Witty
 
         // How often the automatic tweet updates occur.  TODO: Make this configurable
         private TimeSpan refreshInterval;
+        private TimeSpan friendsRefreshInterval = new TimeSpan(0, 20, 0);
+
+        private DispatcherTimer friendsRefreshTimer = new DispatcherTimer();
+
+        private UserCollection friends = new UserCollection();
+
+        private DateTime lastFriendsUpdate = DateTime.MinValue;
 
         // Delegates for placing jobs onto the thread dispatcher.  
         // Used for making asynchronous calls to Twitter so that the UI does not lock up.
@@ -74,6 +81,8 @@ namespace Witty
         private bool isExpanded;
         private bool isLoggedIn;
         private bool isMessageExpanded;
+        private bool ignoreKey;
+        private bool isInAutocompleteMode;
 
         private enum CurrentView
         {
@@ -158,8 +167,11 @@ namespace Witty
 
             RegisterWithSnarlIfAvailable();
 
-            DisplayLoginIfUserNotLoggedIn();            
+            DisplayLoginIfUserNotLoggedIn();
+
+            SetupFriendsListTimer();
         }
+
         #endregion
 
         void MainWindow_Closing(object sender, CancelEventArgs e)
@@ -299,6 +311,7 @@ namespace Witty
                 // Create a Dispatcher to attempt login on new thread
                 NoArgDelegate loginFetcher = new NoArgDelegate(this.TryLogin);
                 loginFetcher.BeginInvoke(null, null);
+
             }
         }
 
@@ -650,6 +663,12 @@ namespace Witty
 
         private void CancelButton_Click(object sender, RoutedEventArgs e)
         {
+            CancelTweet();
+        }
+
+        private void CancelTweet()
+        {
+            isInAutocompleteMode = false;
             TweetTextBox.Text = string.Empty;
             ToggleUpdate();
         }
@@ -735,6 +754,11 @@ namespace Witty
             {
                 if (!isExpanded)
                 {
+                    NoArgDelegate fetcher = new NoArgDelegate(
+                        this.UpdateFriendsList);
+
+                    fetcher.BeginInvoke(null, null);
+
                     PlayStoryboard("ExpandUpdate");
                     Update.ToolTip = "Hide update panel";
                     TweetTextBox.Focus();
@@ -742,6 +766,7 @@ namespace Witty
                 }
                 else
                 {
+                    Keyboard.Focus(CancelButton); 
                     PlayStoryboard("CollapseUpdate");
                     Update.ToolTip = "Display update panel";
                     isExpanded = false;
@@ -1344,7 +1369,10 @@ namespace Witty
             {
                 if (e.Key == Key.F5) { this.Refresh(); };
 
-                if (e.Key == Key.Escape) { this.WindowState = WindowState.Minimized; };
+                if (e.Key == Key.Escape)
+                {
+                    this.WindowState = WindowState.Minimized;
+                }
             }
         }
 
@@ -1383,6 +1411,12 @@ namespace Witty
             }
         }
 
+        private void ShowStatus(string status)
+        {
+            StatusTextBlock.Text = status;
+        }
+
+
 
         private void createDirectMessage()
         {
@@ -1401,12 +1435,17 @@ namespace Witty
                 this.Tabs.SelectedIndex = 0;
                 ToggleUpdate();
             }
-            TweetTextBox.Text = "";
+            TweetTextBox.Text = string.Empty;
             TweetTextBox.Text = "D ";
 
             TweetTextBox.Text += screenName;
             TweetTextBox.Text += " ";
-            TweetTextBox.Select(TweetTextBox.Text.Length, 0);
+            moveTweetTextBoxCursorToEnd();
+        }
+
+        private void moveTweetTextBoxCursorToEnd()
+        {
+                    TweetTextBox.Select(TweetTextBox.Text.Length, 0);
         }
 
         private void createReply()
@@ -1425,7 +1464,7 @@ namespace Witty
                 this.Tabs.SelectedIndex = 0;
                 ToggleUpdate();
             }
-            TweetTextBox.Text = "";
+            TweetTextBox.Text = string.Empty;
             TweetTextBox.Text = "@" + screenName + " ";
             TweetTextBox.Select(TweetTextBox.Text.Length, 0);
         }
@@ -1475,6 +1514,7 @@ namespace Witty
         {
             LayoutRoot.Dispatcher.BeginInvoke(DispatcherPriority.Background,
                 new OneStringArgDelegate(twitter.FollowUser), username);
+            DispatchFriendsList();
         }
 
         private void deleteDirectMessage()
@@ -2107,5 +2147,143 @@ namespace Witty
 
         #endregion
 
+        #region Autocomplete Friends
+        private void UpdateFriendsList()
+        {
+            if (isLoggedIn)
+            {
+                friends = twitter.GetFriends();
+                lastFriendsUpdate = DateTime.Now;
+            }
+        }
+
+        private void SetupFriendsListTimer()
+        {
+            DispatchFriendsList();
+            friendsRefreshTimer.Interval = friendsRefreshInterval;
+            friendsRefreshTimer.IsEnabled = true;
+            friendsRefreshTimer.Start();
+            friendsRefreshTimer.Tick += new EventHandler(friendsRefreshTimer_Tick);
+        }
+
+        private void DispatchFriendsList()
+        {
+            LayoutRoot.Dispatcher.BeginInvoke(DispatcherPriority.Background, new NoArgDelegate(UpdateFriendsList));
+        }
+
+        void friendsRefreshTimer_Tick(object sender, EventArgs e)
+        {
+            DispatchFriendsList();
+        }
+
+        private void TweetTextBox_PreviewKeyDown(object sender, KeyEventArgs e)
+        {
+            if(Key.Escape == e.Key)
+            {
+                CancelTweet();
+                e.Handled = true;
+            }
+            else if (Keyboard.Modifiers == ModifierKeys.Control && Key.Space == e.Key)
+            {
+                isInAutocompleteMode = true;
+                Suggest(TweetTextBox, AutoSuggestPattern, 0);
+                e.Handled = true;
+            }
+
+            if (!isInAutocompleteMode) return;
+
+            ShowStatus(string.Empty);
+
+            if (Key.Tab == e.Key)
+            {
+                ignoreKey = true;
+                TweetTextBox.Select(TweetTextBox.Text.Length, 0);
+                TweetTextBox.Text += " ";
+                e.Handled = true;
+                TweetTextBox.Select(TweetTextBox.Text.Length, 0);
+            } 
+            //HACK: need to ignore the keypress for backspace
+            else if (Key.Back == e.Key)
+            {
+                ignoreKey = true;
+            }
+            else if (Key.Up == e.Key)
+            {
+                Suggest(TweetTextBox, AutoSuggestPattern, -1);
+                e.Handled = true;
+            }
+            else if (Key.Down == e.Key)
+            {
+                Suggest(TweetTextBox, AutoSuggestPattern, 1);
+                e.Handled = true;
+            }
+            else
+            {
+                ignoreKey = false;
+            }
+        }
+
+        static Regex AutoSuggestPattern = new Regex(@"(^.*@|^d )(\w*)$");
+        private void TweetTextBox_TextChanged(object sender, TextChangedEventArgs e)
+        {
+            Suggest(TweetTextBox, AutoSuggestPattern, 0);
+        }
+
+        private void Suggest(TextBox textBox, Regex matchAndReplace, int offset)
+        {
+            if (ignoreKey || friends == null) return;
+
+            List<String> currentFriends = new List<string>();
+            string selectedText = string.Empty;
+            Match matchedText = Match.Empty;
+            if (isInAutocompleteMode)
+            {
+                ignoreKey = true;
+                selectedText = textBox.SelectedText;
+                textBox.SelectedText = string.Empty;
+                ignoreKey = false;
+            }
+
+            int length = textBox.Text.Length;
+            isInAutocompleteMode = matchAndReplace.IsMatch(textBox.Text);
+            if (!isInAutocompleteMode)
+            {
+                ShowStatus(string.Empty);
+                return;
+            }
+
+            matchedText = matchAndReplace.Match(textBox.Text);
+            int selectedIndex = 0;
+            if (matchedText.Success)
+            {
+                string userEnteredText = matchedText.Groups[2].Value;
+                {
+                    foreach (User friend in friends)
+                    {
+                        if (friend.ScreenName.StartsWith(userEnteredText, StringComparison.CurrentCultureIgnoreCase) || userEnteredText.Length == 0)
+                            currentFriends.Add(friend.ScreenName);
+                    }
+                }
+                if (currentFriends.Count != 0)
+                {
+                    currentFriends.Sort();
+
+                    selectedIndex = currentFriends.IndexOf(userEnteredText + selectedText);
+                    if (selectedIndex < 0) selectedIndex = 0;
+                    selectedIndex += offset;
+                    if (selectedIndex < 0) selectedIndex = currentFriends.Count - 1;
+                    else if (selectedIndex > (currentFriends.Count - 1)) selectedIndex = 0;
+
+                    ignoreKey = true;
+                    textBox.Text = matchAndReplace.Replace(textBox.Text, String.Format("$1{0}", currentFriends[selectedIndex]));
+                    textBox.Select(length, textBox.Text.Length - length);
+                    ignoreKey = false;
+
+                    ShowStatus(string.Format("{0} matching - [Up/Down] to cycle, [Tab] to select",currentFriends.Count));
+                }
+            }
+        }
+        #endregion
     }
+
 }
