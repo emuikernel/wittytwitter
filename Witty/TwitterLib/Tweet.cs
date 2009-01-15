@@ -25,6 +25,8 @@ namespace TwitterLib
         private bool isInteresting;
         private int index;
         private bool isSearchResult;
+        private Timeline timeline = Timeline.Friends;
+        private bool isReply = false;
 
         #endregion
 
@@ -219,6 +221,21 @@ namespace TwitterLib
 
         #endregion
 
+        public override bool Equals(object obj)
+        {
+            Tweet tweet = obj as Tweet;
+            if (tweet != null)
+            {
+                return Equals(tweet);
+            }
+            else
+            {
+                return false;
+            }
+
+        }
+
+
         /// <summary>
         /// Calculates a friendly display string based on an input timespan
         /// </summary>
@@ -272,6 +289,35 @@ namespace TwitterLib
 
             TimeSpan ts = new TimeSpan(DateTime.Now.Ticks - StatusCreatedDate.Ticks);
             RelativeTime = CalculateRelativeTimeString(ts);
+        }
+
+        public Timeline Timeline
+        {
+            get
+            {
+                return timeline;
+            }
+            set
+            {
+                timeline = value;
+            }
+        }
+
+        public bool IsReply
+        {
+            get
+            {
+                return isReply;
+            }
+
+            set
+            {
+                if (value != isReply)
+                {
+                    isReply = value;
+                    OnPropertyChanged("IsReply");
+                }
+            }
         }
     }
 

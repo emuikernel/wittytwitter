@@ -198,6 +198,7 @@ namespace TwitterLib
             tweet.DateCreated = this.DateCreated;
             tweet.User = this.Sender;
             tweet.Text = this.Text;
+            tweet.Timeline = Timeline.DirectMessages;
             tweet.Id = this.Id;
             return tweet;
         }
@@ -205,5 +206,17 @@ namespace TwitterLib
 
     public class DirectMessageCollection : ObservableCollection<DirectMessage>
     {
+        public TweetCollection ToTweetCollection()
+        {
+            TweetCollection tweets = new TweetCollection();
+
+            foreach (DirectMessage directMessage in this)
+            {
+                tweets.Add(directMessage.ToTweet());
+            }
+
+
+            return tweets;
+        }
     }
 }

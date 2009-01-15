@@ -1261,6 +1261,8 @@ namespace TwitterLib
                         XmlNode userNode = node.SelectSingleNode("user");
                         User user = CreateUser(userNode);
                         tweet.User = user;
+                        tweet.Timeline = timeline;
+                        tweet.IsReply = IsReplyTweet(this.CurrentlyLoggedInUser.ScreenName, tweet);
 
                         tweets.Add(tweet);
                     }
@@ -1323,6 +1325,20 @@ namespace TwitterLib
                 }
             }
             return tweets;
+        }
+
+        private bool IsReplyTweet(string userId, Tweet tweet)
+        {
+            if (tweet.Timeline == Timeline.Replies)
+                return true;
+
+            if (tweet.Timeline == Timeline.Friends)
+            {
+                if (tweet.Text.Contains("@" + userId))
+                    return true;
+            }
+
+            return false;
         }
 
         /// <summary>
