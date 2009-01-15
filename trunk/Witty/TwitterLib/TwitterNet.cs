@@ -30,6 +30,8 @@ namespace TwitterLib
         private string destroyUrl;
         private string destroyDirectMessageUrl;
         private string createFriendshipUrl;
+        private string rateLimitStatusUrl;
+        private string verifyCredentialsUrl;
         private string format;
         private IWebProxy webProxy = HttpWebRequest.DefaultWebProxy;  // Jason Follas: Added initialization
         private string twitterServerUrl;                              // Jason Follas
@@ -349,6 +351,56 @@ namespace TwitterLib
             set { createFriendshipUrl = value; }
         }
 
+
+        /// <summary>
+        /// Returns the remaining number of API requests available to the requesting user before the API limit is reached for the current hour. 
+        /// Calls to rate_limit_status do not count against the rate limit.  If authentication credentials are provided, the rate limit status 
+        /// for the authenticating user is returned.  Otherwise, the rate limit status for the requester's IP address is returned. Defaults to 
+        /// http://twitter.com/direct_messages/account/rate_limit_status
+        /// </summary>
+        /// <remarks>
+        /// This value should only be changed if Twitter API urls have been changed on http://groups.google.com/group/twitter-development-talk/web/api-documentation
+        /// </remarks>
+        public string RateLimitStatusUrl
+        {
+            get
+            {
+                if (string.IsNullOrEmpty(rateLimitStatusUrl))
+                {
+                    return TwitterServerUrl + "account/rate_limit_status";
+                }
+                else
+                {
+                    return rateLimitStatusUrl;
+                }
+            }
+            set { rateLimitStatusUrl = value; }
+        }
+        
+        /// <summary>
+        /// Returns an HTTP 200 OK response code and a representation of the requesting user if authentication was successful; returns a 401 status
+        /// code and an error message if not.  Use this method to test if supplied user credentials are valid. Defaults to
+        /// http://twitter.com/account/verify_credentials
+        /// </summary>
+        /// <remarks>
+        /// This value should only be changed if Twitter API urls have been changed on http://groups.google.com/group/twitter-development-talk/web/api-documentation
+        /// </remarks>
+        public string VerifyCredentialsUrl
+        {
+            get
+            {
+                if (string.IsNullOrEmpty(verifyCredentialsUrl))
+                {
+                    return TwitterServerUrl + "account/verify_credentials";
+                }
+                else
+                {
+                    return verifyCredentialsUrl;
+                }
+            }
+            set { verifyCredentialsUrl = value; }
+        }
+
         /// <summary>
         /// The format of the results from the twitter API. Ex: .xml, .json, .rss, .atom. Defaults to ".xml"
         /// </summary>
@@ -493,7 +545,7 @@ namespace TwitterLib
 
         public TweetCollection GetUserTimeline(string userId)
         {
-            return RetrieveTimeline(Timeline.User, "", userId);
+            return RetrieveTimeline(Timeline.User, string.Empty, userId);
         }
 
         public TweetCollection GetReplies()
@@ -547,10 +599,7 @@ namespace TwitterLib
                 pageRequestUrl = requestURL + "?page=" + count;
 
                 // Create the web request
-                HttpWebRequest request = WebRequest.Create(pageRequestUrl) as HttpWebRequest;
-
-                // Add credendtials to request  
-                request.Credentials = new NetworkCredential(username, TwitterNet.ToInsecureString(password));
+                HttpWebRequest request = CreateTwitterRequest(pageRequestUrl);
 
                 try
                 {
@@ -595,7 +644,8 @@ namespace TwitterLib
                                 break;
 
                             case 400: // rate limit exceeded
-                                throw new RateLimitException("Rate limit exceeded. Clients may not make more than 70 requests per hour. Please try again in a few minutes.");
+                                string message = String.Format("Rate limit exceeded. You have used {0} of your requests. Please try again in a few minutes", RetrieveRateLimitStatus());
+                                throw new RateLimitException(message);
 
                             case 401: // unauthorized
                                 throw new SecurityException("Not Authorized.");
@@ -627,14 +677,7 @@ namespace TwitterLib
             // Twitter expects http://twitter.com/users/show/12345.xml
             string requestURL = UserShowUrl  + userId + Format;
 
-            // Create the web request
-            HttpWebRequest request = WebRequest.Create(requestURL) as HttpWebRequest;
-
-            // Add credendtials to request  
-            request.Credentials = new NetworkCredential(username, TwitterNet.ToInsecureString(password));
-
-            // Add configured web proxy
-            request.Proxy = webProxy;
+            HttpWebRequest request = CreateTwitterRequest(requestURL);
 
             using (HttpWebResponse response = request.GetResponse() as HttpWebResponse)
             {
@@ -691,14 +734,9 @@ namespace TwitterLib
             text = HttpUtility.UrlEncode(text);
 
             // Create the web request  
-            HttpWebRequest request = WebRequest.Create(UpdateUrl + Format) as HttpWebRequest;
+            HttpWebRequest request = CreateTwitterRequest(UpdateUrl + Format);
+
             request.ServicePoint.Expect100Continue = false;
-
-            // Add authentication to request  
-            request.Credentials = new NetworkCredential(username, TwitterNet.ToInsecureString(password));
-
-            // Add configured web proxy
-            request.Proxy = webProxy;
 
             request.Method = "POST";
 
@@ -821,19 +859,11 @@ namespace TwitterLib
         /// <returns></returns>
         public User Login()
         {
-            string timelineUrl = UserShowUrl + username + Format;
-
             User user = new User();
 
             // Create the web request
-            HttpWebRequest request = WebRequest.Create(timelineUrl) as HttpWebRequest;
-
-            // Add credendtials to request  
-            request.Credentials = new NetworkCredential(username, TwitterNet.ToInsecureString(password));
-
-            // Add configured web proxy
-            request.Proxy = webProxy;
-
+            HttpWebRequest request = CreateTwitterRequest(VerifyCredentialsUrl + Format);
+           
             try
             {
                 using (HttpWebResponse response = request.GetResponse() as HttpWebResponse)
@@ -869,7 +899,8 @@ namespace TwitterLib
                     switch ((int)httpResponse.StatusCode)
                     {
                         case 400: // rate limit exceeded
-                            throw new RateLimitException("Rate limit exceeded. Clients may not make more than 70 requests per hour. Please try again in a few minutes.");
+                            string message = String.Format("Rate limit exceeded. You have used {0} of your requests. Please try again in a few minutes", RetrieveRateLimitStatus());
+                            throw new RateLimitException(message);
 
                         case 401: // unauthorized
                             return null;
@@ -960,6 +991,62 @@ namespace TwitterLib
         }
 
         /// <summary>
+        /// Get rate limit status for the user
+        /// </summary>
+        /// <returns>String with the number of usages left out over the total, e.g. "93/100"</returns>
+        public string RetrieveRateLimitStatus()
+        {
+            HttpWebRequest request = CreateTwitterRequest(RateLimitStatusUrl + Format);
+            string result = String.Empty;
+
+            try
+            {
+                using (HttpWebResponse response = request.GetResponse() as HttpWebResponse)
+                {
+                    StreamReader reader = new StreamReader(response.GetResponseStream());
+
+                    XmlDocument doc = new XmlDocument();
+                    doc.Load(reader);
+
+                    XmlNode limit = doc.SelectSingleNode("/hash/hourly-limit");
+                    XmlNode remaining = doc.SelectSingleNode("/hash/remaining-hits");
+                    result = limit.InnerText + "/" + remaining.InnerText;
+                }
+            }
+            catch (WebException webExcp)
+            {
+                // Get the WebException status code.
+                WebExceptionStatus status = webExcp.Status;
+                // If status is WebExceptionStatus.ProtocolError, 
+                //   there has been a protocol error and a WebResponse 
+                //   should exist. Display the protocol error.
+                if (status == WebExceptionStatus.ProtocolError)
+                {
+                    // Get HttpWebResponse so that you can check the HTTP status code.
+                    HttpWebResponse httpResponse = (HttpWebResponse)webExcp.Response;
+
+                    switch ((int)httpResponse.StatusCode)
+                    {
+                        case 401: // unauthorized
+                            throw new SecurityException("Not Authorized.");
+
+                        case 502: //Bad Gateway, Twitter is freaking out.
+                            throw new BadGatewayException("Fail Whale!  There was a problem calling the Twitter API.  Please try again in a few minutes.");
+
+                        default:
+                            throw;
+                    }
+                }
+                else if (status == WebExceptionStatus.ProxyNameResolutionFailure)
+                {
+                    throw new ProxyNotFoundException("The proxy server could not be found.  Check that it was entered correctly in the Options dialog.  You may need to disable your web proxy in the Options, if for instance you use a proxy server at work and are now at home.");
+                }
+
+            }
+            return result;
+        }
+
+        /// <summary>
         /// Gets direct messages for the user
         /// </summary>
         /// <returns>Collection of direct messages</returns>
@@ -967,14 +1054,7 @@ namespace TwitterLib
         {
             DirectMessageCollection messages = new DirectMessageCollection();
 
-            // Create the web request
-            HttpWebRequest request = WebRequest.Create(DirectMessagesUrl + Format) as HttpWebRequest;
-
-            // Add credendtials to request  
-            request.Credentials = new NetworkCredential(username, TwitterNet.ToInsecureString(password));
-
-            // Add configured web proxy
-            request.Proxy = webProxy;
+            HttpWebRequest request = CreateTwitterRequest(DirectMessagesUrl + Format);
 
             try
             {
@@ -1033,7 +1113,8 @@ namespace TwitterLib
                     switch ((int)httpResponse.StatusCode)
                     {
                         case 400: // rate limit exceeded
-                            throw new RateLimitException("Rate limit exceeded. Clients may not make more than 70 requests per hour. Please try again in a few minutes.");
+                            string message = String.Format("Rate limit exceeded. You have used {0} of your requests. Please try again in a few minutes", RetrieveRateLimitStatus());
+                            throw new RateLimitException(message);
 
                         case 401: // unauthorized
                             throw new SecurityException("Not Authorized.");
@@ -1054,6 +1135,7 @@ namespace TwitterLib
             return messages;
         }
 
+
         public void SendMessage(string user, string text)
         {
             // Jason Follas: Make sure that the user isn't trying to DM themselves.
@@ -1066,14 +1148,8 @@ namespace TwitterLib
             text = HttpUtility.UrlEncode(text);
 
             // Create the web request  
-            HttpWebRequest request = WebRequest.Create(SendMessageUrl + Format) as HttpWebRequest;
+            HttpWebRequest request = CreateTwitterRequest(SendMessageUrl + Format);
             request.ServicePoint.Expect100Continue = false;
-
-            // Add authentication to request  
-            request.Credentials = new NetworkCredential(username, TwitterNet.ToInsecureString(password));
-
-            // Add configured web proxy
-            request.Proxy = webProxy;
 
             request.Method = "POST";
 
@@ -1209,20 +1285,7 @@ namespace TwitterLib
             }
 
             // Create the web request
-            HttpWebRequest request = WebRequest.Create(timelineUrl) as HttpWebRequest;
-
-            // Add configured web proxy
-            request.Proxy = webProxy;
-
-            // Begin JMF Edits: Authenticate for all timelines so you can get protected tweets
-            //if (timeline == Timeline.Friends || timeline == Timeline.Replies)
-
-            // Add credentials to request  
-            request.Credentials = new NetworkCredential(username, TwitterNet.ToInsecureString(password));
-
-            // End JMF Edits
-
-
+            HttpWebRequest request = CreateTwitterRequest(timelineUrl);
 
             // moved this out of the try catch to use it later on in the XMLException
             // trying to fix a bug someone report
@@ -1295,7 +1358,8 @@ namespace TwitterLib
                             break;
 
                         case 400: // rate limit exceeded
-                            throw new RateLimitException("Rate limit exceeded. Clients may not make more than 70 requests per hour. Please try again in a few minutes.");
+                            string message = String.Format("Rate limit exceeded. You have used {0} of your requests. Please try again in a few minutes", RetrieveRateLimitStatus());
+                            throw new RateLimitException(message);
 
                         case 404: // Not Found = specified user does not exist
                             if (timeline == Timeline.User)
@@ -1368,14 +1432,8 @@ namespace TwitterLib
         {
             //REMARK: We may want to refactor this to return the message returned by the API.
             // Create the web request  
-            HttpWebRequest request = WebRequest.Create(urlToCall) as HttpWebRequest;
+            HttpWebRequest request = CreateTwitterRequest(urlToCall);
             request.ServicePoint.Expect100Continue = false;
-
-            // Add authentication to request  
-            request.Credentials = new NetworkCredential(username, TwitterNet.ToInsecureString(password));
-
-            // Add configured web proxy
-            request.Proxy = webProxy;
 
             request.Method = method;
 
@@ -1414,6 +1472,20 @@ namespace TwitterLib
                 }
 
             }
+        }
+
+
+        private HttpWebRequest CreateTwitterRequest(string Uri)
+        {
+            // Create the web request
+            HttpWebRequest request = WebRequest.Create(Uri) as HttpWebRequest;
+
+            // Add credentials to request  
+            request.Credentials = new NetworkCredential(username, TwitterNet.ToInsecureString(password));
+
+            // Add configured web proxy
+            request.Proxy = webProxy;
+            return request;
         }
 
         #endregion
