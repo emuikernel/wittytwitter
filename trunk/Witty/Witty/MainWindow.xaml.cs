@@ -170,8 +170,16 @@ namespace Witty
             DisplayLoginIfUserNotLoggedIn();
 
             SetupFriendsListTimer();
+
+            SetTweetSorting();
+
         }
 
+        private void SetTweetSorting()
+        {
+            ICollectionView collectionView = CollectionViewSource.GetDefaultView(tweets);
+            collectionView.SortDescriptions.Add(new SortDescription("DateCreated", ListSortDirection.Descending));
+        }
         #endregion
 
         void MainWindow_Closing(object sender, CancelEventArgs e)
@@ -231,10 +239,18 @@ namespace Witty
         {
             try
             {
-                // Schedule the update function in the UI thread.
+                // Schedule the update functions in the UI thread.
                 LayoutRoot.Dispatcher.BeginInvoke(
                     DispatcherPriority.Background,
                     new OneArgDelegate(UpdateUserInterface), twitter.GetFriendsTimeline());
+                
+                LayoutRoot.Dispatcher.BeginInvoke(
+                    DispatcherPriority.Normal,
+                    new OneArgDelegate(UpdateUserInterface), twitter.GetReplies());
+
+                LayoutRoot.Dispatcher.BeginInvoke(
+                    DispatcherPriority.Normal,
+                    new OneArgDelegate(UpdateUserInterface), twitter.RetrieveMessages().ToTweetCollection());
             }
             catch (WebException ex)
             {
@@ -923,6 +939,7 @@ namespace Witty
                 {
                     messages.Insert(0, message);
                     message.IsNew = true;
+
                 }
                 else
                 {

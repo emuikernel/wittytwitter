@@ -75,6 +75,48 @@ namespace WittyUnitTests
         //    _tweets.Last().Id.ShouldEqual(16);
         //}
     }
+
+
+    [TestFixture]
+    public class when_direct_message_collections_is_converted_to_tweet_collection : ContextSpecification
+    {
+        private DirectMessageCollection _directMessages;
+        private int _directMessageCount = 3;
+
+        private TweetCollection _tweets;
+
+        protected override void Context()
+        {
+            _directMessages = new DirectMessageCollection();
+
+            for (int i = 1; i <= _directMessageCount; i++)
+            {
+                var directMessage = new DirectMessage { Id = i };
+                _directMessages.Insert(0, directMessage);
+            }
+        }
+
+        protected override void Because()
+        {
+            _tweets = _directMessages.ToTweetCollection();
+        }
+
+        //        [Observation]
+        [Test]
+        public void then_should_contain_tweets_for_direct_messages()
+        {
+            _tweets.Count.ShouldEqual(_directMessageCount);
+
+            for (int i = 0; i < _tweets.Count; i++)
+            {
+                DirectMessage message = _directMessages[i];
+                Tweet tweet = _tweets[i];
+
+                tweet.ShouldEqual(message.ToTweet());
+            }
+        }
+    }
+
 }
 
 

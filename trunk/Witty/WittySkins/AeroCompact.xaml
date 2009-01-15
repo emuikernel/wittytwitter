@@ -85,7 +85,20 @@
          <BeginStoryboard Storyboard="{StaticResource YellowForever}" x:Name="YellowForever_BeginStoryboard" />
         </DataTrigger.EnterActions>
       </DataTrigger>
-      <!--<Trigger Property="IsMouseOver" Value="True">
+
+      <DataTrigger Binding="{Binding Path=IsReply}" Value="true">
+          <DataTrigger.Setters>
+              <Setter Property="Background" Value="{StaticResource ReplyTweetBrush}" TargetName="grid"/>
+          </DataTrigger.Setters>
+      </DataTrigger>
+
+      <DataTrigger Binding="{Binding Path=Timeline}" Value="DirectMessages">
+          <DataTrigger.Setters>
+              <Setter Property="Background" Value="{StaticResource DirectMessageBrush}" TargetName="grid"/>
+          </DataTrigger.Setters>
+      </DataTrigger>
+
+        <!--<Trigger Property="IsMouseOver" Value="True">
 			<Setter Property="Visibility" TargetName="ReplyButton" Value="Visible"/>
 		  </Trigger>-->
     </DataTemplate.Triggers>
@@ -137,7 +150,11 @@
   <SolidColorBrush x:Key="AlternatingBackgroundBrush" Color="#EAEDF1" />
 
   <SolidColorBrush x:Key="UpdateBackgroundBrush" Color="#FFA8B9C6" />
-
+    
+  <SolidColorBrush  x:Key="ReplyTweetBrush" Color="#FFF5F59A"/>
+  
+  <SolidColorBrush  x:Key="DirectMessageBrush" Color="#FFD5DCE1"/>
+  
   <Style x:Key="{x:Type ListBoxItem}" TargetType="ListBoxItem">
     <Setter Property="SnapsToDevicePixels" Value="true" />
     <Setter Property="OverridesDefaultStyle" Value="true" />
