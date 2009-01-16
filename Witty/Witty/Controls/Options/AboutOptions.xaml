@@ -40,7 +40,6 @@
             <LineBreak/>
             *
             <Bold>F5</Bold> - refresh. It seemed best to stick with IE/Firefox's refresh key.
-            <LineBreak/>
           </Paragraph>
         </Section>
       </FlowDocument>
