@@ -6,6 +6,7 @@ using System.Security;
 using System.Text.RegularExpressions;
 using System.Web;
 using System.Xml;
+using System.Text;
 
 namespace TwitterLib
 {
@@ -644,7 +645,7 @@ namespace TwitterLib
                                 break;
 
                             case 400: // rate limit exceeded
-                                string message = String.Format("Rate limit exceeded. You have used {0} of your requests. Please try again in a few minutes", RetrieveRateLimitStatus());
+                                string message = String.Format("Rate limit exceeded. You have {0} of your requests left. Please try again in a few minutes", RetrieveRateLimitStatus());
                                 throw new RateLimitException(message);
 
                             case 401: // unauthorized
@@ -899,7 +900,7 @@ namespace TwitterLib
                     switch ((int)httpResponse.StatusCode)
                     {
                         case 400: // rate limit exceeded
-                            string message = String.Format("Rate limit exceeded. You have used {0} of your requests. Please try again in a few minutes", RetrieveRateLimitStatus());
+                            string message = String.Format("Rate limit exceeded. You have {0} of your requests left. Please try again in a few minutes", RetrieveRateLimitStatus());
                             throw new RateLimitException(message);
 
                         case 401: // unauthorized
@@ -1010,7 +1011,7 @@ namespace TwitterLib
 
                     XmlNode limit = doc.SelectSingleNode("/hash/hourly-limit");
                     XmlNode remaining = doc.SelectSingleNode("/hash/remaining-hits");
-                    result = limit.InnerText + "/" + remaining.InnerText;
+                    result = remaining.InnerText + "/" + limit.InnerText;
                 }
             }
             catch (WebException webExcp)
@@ -1113,7 +1114,7 @@ namespace TwitterLib
                     switch ((int)httpResponse.StatusCode)
                     {
                         case 400: // rate limit exceeded
-                            string message = String.Format("Rate limit exceeded. You have used {0} of your requests. Please try again in a few minutes", RetrieveRateLimitStatus());
+                            string message = String.Format("Rate limit exceeded. You have {0} of your requests left. Please try again in a few minutes", RetrieveRateLimitStatus());
                             throw new RateLimitException(message);
 
                         case 401: // unauthorized
@@ -1358,7 +1359,7 @@ namespace TwitterLib
                             break;
 
                         case 400: // rate limit exceeded
-                            string message = String.Format("Rate limit exceeded. You have used {0} of your requests. Please try again in a few minutes", RetrieveRateLimitStatus());
+                            string message = String.Format("Rate limit exceeded. You have {0} of your requests left. Please try again in a few minutes", RetrieveRateLimitStatus());
                             throw new RateLimitException(message);
 
                         case 404: // Not Found = specified user does not exist
@@ -1459,6 +1460,7 @@ namespace TwitterLib
                         case 401: // unauthorized
                             throw new SecurityException("Not Authorized.", webExcp);
 
+
                         case 502: //Bad Gateway, Twitter is freaking out.
                             throw new BadGatewayException("Fail Whale!  There was a problem calling the Twitter API.  Please try again in a few minutes.");
 
@@ -1481,7 +1483,8 @@ namespace TwitterLib
             HttpWebRequest request = WebRequest.Create(Uri) as HttpWebRequest;
 
             // Add credentials to request  
-            request.Credentials = new NetworkCredential(username, TwitterNet.ToInsecureString(password));
+            byte[] authBytes = Encoding.UTF8.GetBytes(String.Format("{0}:{1}",username,TwitterNet.ToInsecureString(password)).ToCharArray());
+            request.Headers["Authorization"] = "Basic " + Convert.ToBase64String(authBytes);
 
             // Add configured web proxy
             request.Proxy = webProxy;
