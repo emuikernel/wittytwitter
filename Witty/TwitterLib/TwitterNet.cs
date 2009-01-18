@@ -629,42 +629,7 @@ namespace TwitterLib
                 }
                 catch (WebException webExcp)
                 {
-                    // Get the WebException status code.
-                    WebExceptionStatus status = webExcp.Status;
-                    // If status is WebExceptionStatus.ProtocolError, 
-                    //   there has been a protocol error and a WebResponse 
-                    //   should exist. Display the protocol error.
-                    if (status == WebExceptionStatus.ProtocolError)
-                    {
-                        // Get HttpWebResponse so that you can check the HTTP status code.
-                        HttpWebResponse httpResponse = (HttpWebResponse)webExcp.Response;
-
-                        switch ((int)httpResponse.StatusCode)
-                        {
-                            case 304: // 304 Not modified = no new tweets so ignore error.
-                                break;
-
-                            case 400: // rate limit exceeded
-                                string message = String.Format("Rate limit exceeded. You have {0} of your requests left. Please try again in a few minutes", RetrieveRateLimitStatus());
-                                throw new RateLimitException(message);
-
-                            case 401: // unauthorized
-                                throw new SecurityException("Not Authorized.");
-
-                            case 407: // proxy authentication required
-                                throw new ProxyAuthenticationRequiredException("Proxy authentication required.");
-
-                            case 502: //Bad Gateway, Twitter is freaking out.
-                                throw new BadGatewayException("Fail Whale!  There was a problem calling the Twitter API.  Please try again in a few minutes.");
-
-                            default:
-                                throw;
-                        }
-                    }
-                    else if (status == WebExceptionStatus.ProxyNameResolutionFailure)
-                    {
-                        throw new ProxyNotFoundException("The proxy server could not be found.  Check that it was entered correctly in the Options dialog.  You may need to disable your web proxy in the Options, if for instance you use a proxy server at work and are now at home.");
-                    }
+                    ParseWebException(webExcp);
 
                 }
             }
@@ -887,47 +852,13 @@ namespace TwitterLib
             }
             catch (WebException webExcp)
             {
-                // Get the WebException status code.
-                WebExceptionStatus status = webExcp.Status;
-                // If status is WebExceptionStatus.ProtocolError, 
-                // there has been a protocol error and a WebResponse 
-                // should exist. Display the protocol error.
-                if (status == WebExceptionStatus.ProtocolError)
-                {
-                    // Get HttpWebResponse so that you can check the HTTP status code.
-                    HttpWebResponse httpResponse = (HttpWebResponse)webExcp.Response;
-
-                    switch ((int)httpResponse.StatusCode)
-                    {
-                        case 400: // rate limit exceeded
-                            string message = String.Format("Rate limit exceeded. You have {0} of your requests left. Please try again in a few minutes", RetrieveRateLimitStatus());
-                            throw new RateLimitException(message);
-
-                        case 401: // unauthorized
-                            return null;
-
-                        case 407: // proxy authentication required
-                            throw new ProxyAuthenticationRequiredException("Proxy authentication required.");
-
-                        case 502 : //Bad Gateway, Twitter is freaking out.
-                            throw new BadGatewayException("Fail Whale!  There was a problem calling the Twitter API.  Please try again in a few minutes.");
-
-                        default:
-                            throw;
-                    }
-                }
-                else if (status == WebExceptionStatus.ProxyNameResolutionFailure)
-                {
-                    throw new ProxyNotFoundException("The proxy server could not be found.  Check that it was entered correctly in the Options dialog.  You may need to disable your web proxy in the Options, if for instance you use a proxy server at work and are now at home.");
-                }
-
-                else
-                    throw;
+                ParseWebException(webExcp);
             }
             currentLoggedInUser = user;
             return user;
         }
 
+        #region Secure String Members
         static byte[] entropy = System.Text.Encoding.Unicode.GetBytes("WittyPasswordSalt");
 
         /// <summary>
@@ -990,6 +921,7 @@ namespace TwitterLib
                 return new SecureString();
             }
         }
+        #endregion
 
         /// <summary>
         /// Get rate limit status for the user
@@ -1016,33 +948,7 @@ namespace TwitterLib
             }
             catch (WebException webExcp)
             {
-                // Get the WebException status code.
-                WebExceptionStatus status = webExcp.Status;
-                // If status is WebExceptionStatus.ProtocolError, 
-                //   there has been a protocol error and a WebResponse 
-                //   should exist. Display the protocol error.
-                if (status == WebExceptionStatus.ProtocolError)
-                {
-                    // Get HttpWebResponse so that you can check the HTTP status code.
-                    HttpWebResponse httpResponse = (HttpWebResponse)webExcp.Response;
-
-                    switch ((int)httpResponse.StatusCode)
-                    {
-                        case 401: // unauthorized
-                            throw new SecurityException("Not Authorized.");
-
-                        case 502: //Bad Gateway, Twitter is freaking out.
-                            throw new BadGatewayException("Fail Whale!  There was a problem calling the Twitter API.  Please try again in a few minutes.");
-
-                        default:
-                            throw;
-                    }
-                }
-                else if (status == WebExceptionStatus.ProxyNameResolutionFailure)
-                {
-                    throw new ProxyNotFoundException("The proxy server could not be found.  Check that it was entered correctly in the Options dialog.  You may need to disable your web proxy in the Options, if for instance you use a proxy server at work and are now at home.");
-                }
-
+                ParseWebException(webExcp);
             }
             return result;
         }
@@ -1101,37 +1007,7 @@ namespace TwitterLib
             }
             catch (WebException webExcp)
             {
-                // Get the WebException status code.
-                WebExceptionStatus status = webExcp.Status;
-                // If status is WebExceptionStatus.ProtocolError, 
-                //   there has been a protocol error and a WebResponse 
-                //   should exist. Display the protocol error.
-                if (status == WebExceptionStatus.ProtocolError)
-                {
-                    // Get HttpWebResponse so that you can check the HTTP status code.
-                    HttpWebResponse httpResponse = (HttpWebResponse)webExcp.Response;
-
-                    switch ((int)httpResponse.StatusCode)
-                    {
-                        case 400: // rate limit exceeded
-                            string message = String.Format("Rate limit exceeded. You have {0} of your requests left. Please try again in a few minutes", RetrieveRateLimitStatus());
-                            throw new RateLimitException(message);
-
-                        case 401: // unauthorized
-                            throw new SecurityException("Not Authorized.");
-
-                        case 502: //Bad Gateway, Twitter is freaking out.
-                            throw new BadGatewayException("Fail Whale!  There was a problem calling the Twitter API.  Please try again in a few minutes.");
-
-                        default:
-                            throw;
-                    }
-                }
-                else if (status == WebExceptionStatus.ProxyNameResolutionFailure)
-                {
-                    throw new ProxyNotFoundException("The proxy server could not be found.  Check that it was entered correctly in the Options dialog.  You may need to disable your web proxy in the Options, if for instance you use a proxy server at work and are now at home." );
-                }
-
+                ParseWebException(webExcp);
             }
             return messages;
         }
@@ -1173,33 +1049,7 @@ namespace TwitterLib
             }
             catch (WebException webExcp)
             {
-                // Get the WebException status code.
-                WebExceptionStatus status = webExcp.Status;
-                // If status is WebExceptionStatus.ProtocolError, 
-                //   there has been a protocol error and a WebResponse 
-                //   should exist. Display the protocol error.
-                if (status == WebExceptionStatus.ProtocolError)
-                {
-                    // Get HttpWebResponse so that you can check the HTTP status code.
-                    HttpWebResponse httpResponse = (HttpWebResponse)webExcp.Response;
-
-                    switch ((int)httpResponse.StatusCode)
-                    {
-                        case 401: // unauthorized
-                            throw new SecurityException("Not Authorized.");
-
-                        case 502: //Bad Gateway, Twitter is freaking out.
-                            throw new BadGatewayException("Fail Whale!  There was a problem calling the Twitter API.  Please try again in a few minutes.");
-
-                        default:
-                            throw;
-                    }
-                }
-                else if (status == WebExceptionStatus.ProxyNameResolutionFailure)
-                {
-                    throw new ProxyNotFoundException("The proxy server could not be found.  Check that it was entered correctly in the Options dialog.  You may need to disable your web proxy in the Options, if for instance you use a proxy server at work and are now at home.");
-                }
-
+                ParseWebException(webExcp);
             }
 
         }
@@ -1343,51 +1193,7 @@ namespace TwitterLib
             }
             catch (WebException webExcp)
             {
-                // Get the WebException status code.
-                WebExceptionStatus status = webExcp.Status;
-                // If status is WebExceptionStatus.ProtocolError, 
-                //   there has been a protocol error and a WebResponse 
-                //   should exist. Display the protocol error.
-                if (status == WebExceptionStatus.ProtocolError)
-                {
-                    // Get HttpWebResponse so that you can check the HTTP status code.
-                    HttpWebResponse httpResponse = (HttpWebResponse)webExcp.Response;
-
-                    switch ((int)httpResponse.StatusCode)
-                    {
-                        case 304:  // 304 Not modified = no new tweets so ignore error.
-                            break;
-
-                        case 400: // rate limit exceeded
-                            string message = String.Format("Rate limit exceeded. You have {0} of your requests left. Please try again in a few minutes", RetrieveRateLimitStatus());
-                            throw new RateLimitException(message);
-
-                        case 404: // Not Found = specified user does not exist
-                            if (timeline == Timeline.User)
-                                throw new UserNotFoundException(userId, "@" + userId + " does not exist (probably mispelled)");
-                            else // what if a 404 happens to occur in another scenario?
-                                throw;
-
-                        case 407: // proxy authentication required
-                            throw new ProxyAuthenticationRequiredException("Proxy authentication required.");
-
-                        case 401: // unauthorized, but is this because the user's password
-                                  // is wrong, or because user is trying to access protected
-                                  // tweets...  Since we got this far, I'm going to assume
-                                  // that the password is correct.
-                            throw new SecurityException("Not Authorized.", webExcp);
-
-                        case 502: //Bad Gateway, Twitter is freaking out.
-                            throw new BadGatewayException("Fail Whale!  There was a problem calling the Twitter API.  Please try again in a few minutes.");
-
-                        default:
-                            throw;
-                    }
-                }
-                else if (status == WebExceptionStatus.ProxyNameResolutionFailure)
-                {
-                    throw new ProxyNotFoundException("The proxy server could not be found.  Check that it was entered correctly in the Options dialog.  You may need to disable your web proxy in the Options, if for instance you use a proxy server at work and are now at home.");
-                }
+                ParseWebException(webExcp, timeline, userId);
             }
             return tweets;
         }
@@ -1445,34 +1251,7 @@ namespace TwitterLib
             }
             catch (WebException webExcp)
             {
-                // Get the WebException status code.
-                WebExceptionStatus status = webExcp.Status;
-                // If status is WebExceptionStatus.ProtocolError, 
-                //   there has been a protocol error and a WebResponse 
-                //   should exist. Display the protocol error.
-                if (status == WebExceptionStatus.ProtocolError)
-                {
-                    // Get HttpWebResponse so that you can check the HTTP status code.
-                    HttpWebResponse httpResponse = (HttpWebResponse)webExcp.Response;
-
-                    switch ((int)httpResponse.StatusCode)
-                    {
-                        case 401: // unauthorized
-                            throw new SecurityException("Not Authorized.", webExcp);
-
-
-                        case 502: //Bad Gateway, Twitter is freaking out.
-                            throw new BadGatewayException("Fail Whale!  There was a problem calling the Twitter API.  Please try again in a few minutes.");
-
-                        default:
-                            throw;
-                    }
-                }
-                else if (status == WebExceptionStatus.ProxyNameResolutionFailure)
-                {
-                    throw new ProxyNotFoundException("The proxy server could not be found.  Check that it was entered correctly in the Options dialog.  You may need to disable your web proxy in the Options, if for instance you use a proxy server at work and are now at home.");
-                }
-
+                ParseWebException(webExcp);
             }
         }
 
@@ -1489,6 +1268,59 @@ namespace TwitterLib
             // Add configured web proxy
             request.Proxy = webProxy;
             return request;
+        }
+
+        private void ParseWebException(WebException webExcp)
+        {
+            ParseWebException(webExcp, null, null);
+        }
+
+        private void ParseWebException(WebException webExcp, Timeline? timeline, string userId)
+        {
+            // Get the WebException status code.
+            WebExceptionStatus status = webExcp.Status;
+            // If status is WebExceptionStatus.ProtocolError, 
+            //   there has been a protocol error and a WebResponse 
+            //   should exist. Display the protocol error.
+            if (status == WebExceptionStatus.ProtocolError)
+            {
+                // Get HttpWebResponse so that you can check the HTTP status code.
+                HttpWebResponse httpResponse = (HttpWebResponse)webExcp.Response;
+
+                switch ((int)httpResponse.StatusCode)
+                {
+                    case 304: // 304 Not modified = no new tweets so ignore error.
+                        break;
+
+                    case 400: // rate limit exceeded
+                        string message = String.Format("Rate limit exceeded. You have {0} of your requests left. Please try again in a few minutes", RetrieveRateLimitStatus());
+                        throw new RateLimitException(message);
+
+                    case 401: // unauthorized
+                        throw new SecurityException("Not Authorized.");
+
+
+                    case 404: // Not Found = specified user does not exist
+                        if (timeline == Timeline.User)
+                            throw new UserNotFoundException(userId, "@" + userId + " does not exist (probably mispelled)");
+                        else // what if a 404 happens to occur in another scenario?
+                            throw webExcp;
+
+                    case 407: // proxy authentication required
+                        throw new ProxyAuthenticationRequiredException("Proxy authentication required.");
+
+                    case 502: //Bad Gateway, Twitter is freaking out.
+                        throw new BadGatewayException("Fail Whale!  There was a problem calling the Twitter API.  Please try again in a few minutes.");
+
+                    default:
+                        throw webExcp;
+                }
+            }
+            else if (status == WebExceptionStatus.ProxyNameResolutionFailure)
+            {
+                throw new ProxyNotFoundException("The proxy server could not be found.  Check that it was entered correctly in the Options dialog.  You may need to disable your web proxy in the Options, if for instance you use a proxy server at work and are now at home.");
+            }
+            else throw webExcp;
         }
 
         #endregion
