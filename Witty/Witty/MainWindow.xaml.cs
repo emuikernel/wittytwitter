@@ -252,6 +252,13 @@ namespace Witty
                     DispatcherPriority.Normal,
                     new OneArgDelegate(UpdateUserInterface), twitter.RetrieveMessages().ToTweetCollection());
             }
+            catch (RateLimitException ex)
+            {
+                App.Logger.Debug(String.Format("There was a problem fetching new tweets from Twitter.com: {0}", ex.ToString()));
+                LayoutRoot.Dispatcher.BeginInvoke(
+                    DispatcherPriority.Normal,
+                    new OneStringArgDelegate(ShowStatus), ex.Message);
+            }
             catch (WebException ex)
             {
                 App.Logger.Debug(String.Format("There was a problem fetching new tweets from Twitter.com: {0}", ex.ToString()));
@@ -1614,6 +1621,10 @@ namespace Witty
             if (tabs.SelectedIndex == 0)
             {
                 displayUser = string.Empty;
+
+                //Scroll to the top of recent list
+                if(TweetsListBox.Items.Count > 0)
+                    TweetsListBox.ScrollIntoView(TweetsListBox.Items[0]);
             }
 
             if (tabs.SelectedIndex == 1 && isLoggedIn)
