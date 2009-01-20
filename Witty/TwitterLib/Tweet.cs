@@ -361,6 +361,7 @@ namespace TwitterLib
         #endregion
 
         #region Methods
+        private static readonly object syncLock = new object();
 
         /// <summary>
         /// Persist the current list of Twitter Tweets to disk.
@@ -369,14 +370,16 @@ namespace TwitterLib
         {
             try
             {
-                XmlWriterSettings settings = new XmlWriterSettings();
-                settings.Indent = true;
-                using (XmlWriter writer = XmlWriter.Create(SaveFileAbsolutePath, settings))
+                lock (syncLock)
                 {
-                    XamlWriter.Save(this, writer);
-                    writer.Close();
+                    XmlWriterSettings settings = new XmlWriterSettings();
+                    settings.Indent = true;
+                    using (XmlWriter writer = XmlWriter.Create(SaveFileAbsolutePath, settings))
+                    {
+                        XamlWriter.Save(this, writer);
+                        writer.Close();
+                    }
                 }
-
             }
             catch (Exception ex)
             {
@@ -396,13 +399,14 @@ namespace TwitterLib
             if (!File.Exists(SaveFileAbsolutePath))
                 return new TweetCollection();
 
-            TweetCollection tweets;
-
-            XmlReader xmlReader = XmlReader.Create(SaveFileAbsolutePath);
-            tweets = XamlReader.Load(xmlReader) as TweetCollection;
-            xmlReader.Close();
-
-            return tweets;
+            lock (syncLock)
+            {
+                TweetCollection tweets;
+                XmlReader xmlReader = XmlReader.Create(SaveFileAbsolutePath);
+                tweets = XamlReader.Load(xmlReader) as TweetCollection;
+                xmlReader.Close();
+                return tweets;
+            }
         }
 
 
