@@ -2054,7 +2054,7 @@ namespace Witty
             {
                 SnarlConnector.RevokeConfig(this.SnarlConfighWnd);
             }
-            if (this.SnarlConfighWnd != null)
+            if (this.SnarlConfighWnd != null && snarlComWindow != null)
             {
                 snarlComWindow.DestroyHandle();
             }
