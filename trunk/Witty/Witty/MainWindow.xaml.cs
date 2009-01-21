@@ -1625,7 +1625,7 @@ namespace Witty
                 displayUser = string.Empty;
 
                 //Scroll to the top of recent list
-                if(TweetsListBox.Items.Count > 0)
+                if (e.Source == Tabs && TweetsListBox.Items.Count > 0)
                     TweetsListBox.ScrollIntoView(TweetsListBox.Items[0]);
             }
 
