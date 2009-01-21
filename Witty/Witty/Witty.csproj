@@ -196,6 +196,7 @@
     <Compile Include="Misc\Snarl\SNARLSTRUCTEX.cs" />
     <Compile Include="Misc\Snarl\SNARL_COMMAND.cs" />
     <Compile Include="Misc\Snarl\WindowsMessage.cs" />
+    <Compile Include="Misc\Snarl\WittySnarlMsgWnd.cs" />
     <Compile Include="Misc\WebProxyHelper.cs" />
     <Compile Include="Misc\Win32.cs" />
     <Compile Include="Popup.xaml.cs">

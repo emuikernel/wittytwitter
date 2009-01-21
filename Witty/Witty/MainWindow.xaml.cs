@@ -27,6 +27,7 @@ namespace Witty
         #region Fields and Properties
 
         private IntPtr SnarlConfighWnd;
+        private NativeWindowApplication.WittySnarlMsgWnd snarlComWindow;
         private bool reallyexit = false;        
 
         // Main collection of tweets
@@ -348,9 +349,10 @@ namespace Witty
 
         private void CreateSnarlMessageWindowForCommunication()
         {
-            this.SnarlConfighWnd = Win32.CreateWindowEx(0, "Message", null, 0, 0, 0, 0, 0, new IntPtr(Win32.HWND_MESSAGE), IntPtr.Zero, IntPtr.Zero, IntPtr.Zero);
-            WindowsMessage wndMsg = new WindowsMessage();
-            SnarlConnector.RegisterConfig(this.SnarlConfighWnd, "Witty", wndMsg);
+            this.snarlComWindow = new NativeWindowApplication.WittySnarlMsgWnd();
+            this.SnarlConfighWnd = snarlComWindow.Handle;
+            
+            SnarlConnector.RegisterConfig(this.SnarlConfighWnd, "Witty", Snarl.WindowsMessage.WM_USER + 55);
 
             SnarlConnector.RegisterAlert("Witty", "New tweet");
             SnarlConnector.RegisterAlert("Witty", "New tweets summarized");
@@ -2054,7 +2056,7 @@ namespace Witty
             }
             if (this.SnarlConfighWnd != null)
             {
-                Win32.DestroyWindow(this.SnarlConfighWnd);
+                snarlComWindow.DestroyHandle();
             }
         }
 
