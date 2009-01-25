@@ -109,12 +109,12 @@
             <Border Height="21" Background="{StaticResource UpdateBackgroundBrush}" VerticalAlignment="Bottom" Padding="10,0,10,0" x:Name="Update" MouseLeftButtonUp="Update_MouseLeftButtonUp" BorderBrush="{DynamicResource PrimaryBackgroundBrush}" BorderThickness="0,0,0,1" ToolTip="Display update panel">
               <DockPanel OpacityMask="#FF000000" x:Name="dockPanel">
                 <TextBlock HorizontalAlignment="Center" DockPanel.Dock="Top" Text="Update" TextWrapping="Wrap" VerticalAlignment="Top" x:Name="UpdateTextBlock" Margin="0,2,0,0" />
-                <Grid Margin="0,5,0,0">
+                <Grid Margin="0,2,0,0">
                   <Grid.ColumnDefinitions>
                     <ColumnDefinition Width="152*" /><ColumnDefinition Width="49*" />
                     <ColumnDefinition Width="Auto" />
                   </Grid.ColumnDefinitions>
-                  <TextBox Text="" TextWrapping="Wrap" x:Name="TweetTextBox" SpellCheck.IsEnabled="True" ToolTip="Enter update with 140 character limit" PreviewKeyDown="TweetTextBox_PreviewKeyDown" TextChanged="TweetTextBox_TextChanged" Grid.ColumnSpan="2" />
+                  <TextBox Text="" TextWrapping="Wrap" x:Name="TweetTextBox" SpellCheck.IsEnabled="True" ToolTip="Enter update with 140 character limit" PreviewKeyDown="TweetTextBox_PreviewKeyDown" TextChanged="TweetTextBox_TextChanged" Grid.ColumnSpan="2" Height="66" />
                   <TextBlock Text="{Binding Path=Text.Length, Converter={StaticResource CharRemainingConverter}, ElementName=TweetTextBox, Mode=Default}" 
 								FontSize="18" 
 								Grid.Column="2" 
