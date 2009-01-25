@@ -169,11 +169,8 @@ namespace Witty
             RegisterWithSnarlIfAvailable();
 
             DisplayLoginIfUserNotLoggedIn();
-
-            SetupFriendsListTimer();
-
+            
             SetTweetSorting();
-
         }
 
         private void SetTweetSorting()
@@ -1213,6 +1210,9 @@ namespace Witty
                 refreshTimer.Interval = refreshInterval;
                 refreshTimer.Tick += new EventHandler(Timer_Elapsed);
                 refreshTimer.Start();
+
+                // Setup friendslist timer for AutoSuggestPattern matching support
+                SetupFriendsListTimer();
             }
             else
             {
@@ -1245,6 +1245,9 @@ namespace Witty
             refreshTimer.Interval = refreshInterval;
             refreshTimer.Tick += new EventHandler(Timer_Elapsed);
             refreshTimer.Start();
+
+            // Setup friendslist timer for AutoSuggestPattern matching support
+            SetupFriendsListTimer();
 
             PlayStoryboard("HideLogin");
 
@@ -2190,6 +2193,7 @@ namespace Witty
         private void SetupFriendsListTimer()
         {
             DispatchFriendsList();
+
             friendsRefreshTimer.Interval = friendsRefreshInterval;
             friendsRefreshTimer.IsEnabled = true;
             friendsRefreshTimer.Start();
