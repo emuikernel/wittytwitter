@@ -241,14 +241,19 @@ namespace Witty
                 LayoutRoot.Dispatcher.BeginInvoke(
                     DispatcherPriority.Background,
                     new OneArgDelegate(UpdateUserInterface), twitter.GetFriendsTimeline());
-                
-                LayoutRoot.Dispatcher.BeginInvoke(
-                    DispatcherPriority.Normal,
-                    new OneArgDelegate(UpdateUserInterface), twitter.GetReplies());
+
+                // Limiting fetch of direct messages and replies based on the refresh interval
+                // though it might make sense to extend this to an arbitrary value like 1 hour to allow for more 
+                // DMs and Replies to make in onto the recent tab when the application first launches.
+                string since = DateTime.Now.AddMinutes(int.Parse(AppSettings.RefreshInterval) * -1).ToString();
 
                 LayoutRoot.Dispatcher.BeginInvoke(
                     DispatcherPriority.Normal,
-                    new OneArgDelegate(UpdateUserInterface), twitter.RetrieveMessages().ToTweetCollection());
+                    new OneArgDelegate(UpdateUserInterface), twitter.GetReplies(since));
+
+                LayoutRoot.Dispatcher.BeginInvoke(
+                    DispatcherPriority.Normal,
+                    new OneArgDelegate(UpdateUserInterface), twitter.RetrieveMessages(since).ToTweetCollection());
             }
             catch (RateLimitException ex)
             {
