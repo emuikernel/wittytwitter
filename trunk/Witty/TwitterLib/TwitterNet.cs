@@ -73,7 +73,7 @@ namespace TwitterLib
         {
             get { return (null == currentLoggedInUser ? currentLoggedInUser.Name: String.Empty) ; }
         }
-
+        
         /// <summary>
         /// Twitter password
         /// </summary>
@@ -554,6 +554,11 @@ namespace TwitterLib
             return RetrieveTimeline(Timeline.Replies);
         }
 
+        public TweetCollection GetReplies(string since)
+        {
+            return RetrieveTimeline(Timeline.Replies, since);
+        }
+
         #endregion
 
         /// <summary>
@@ -953,16 +958,34 @@ namespace TwitterLib
             return result;
         }
 
+        public DirectMessageCollection RetrieveMessages()
+        {
+            return RetrieveMessages(string.Empty);
+        }
+
         /// <summary>
         /// Gets direct messages for the user
         /// </summary>
         /// <returns>Collection of direct messages</returns>
-        public DirectMessageCollection RetrieveMessages()
+        public DirectMessageCollection RetrieveMessages(string since)
         {
             DirectMessageCollection messages = new DirectMessageCollection();
 
-            HttpWebRequest request = CreateTwitterRequest(DirectMessagesUrl + Format);
+            string url = DirectMessagesUrl + Format;
 
+            if (!string.IsNullOrEmpty(since))
+            {
+                DateTime sinceDate;
+                DateTime.TryParse(since, out sinceDate);
+
+                // Go back a minute to compensate for latency.
+                sinceDate = sinceDate.AddMinutes(-1);
+                string sinceDateString = sinceDate.ToString(twitterSinceDateFormat);
+                url += "?since=" + sinceDateString;
+            }
+
+            HttpWebRequest request = CreateTwitterRequest(url);
+            
             try
             {
                 // Get the Response  

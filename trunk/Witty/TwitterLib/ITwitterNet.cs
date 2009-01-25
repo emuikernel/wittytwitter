@@ -38,8 +38,10 @@
         TweetCollection GetPublicTimeline(string since);
         TweetCollection GetPublicTimeline();
         TweetCollection GetReplies();
+        TweetCollection GetReplies(string since);
         TweetCollection GetUserTimeline(string userId);
         DirectMessageCollection RetrieveMessages();
+        DirectMessageCollection RetrieveMessages(string since);
 
         System.Security.SecureString Password { get; set; }
         System.Net.IWebProxy WebProxy { get; set; }
