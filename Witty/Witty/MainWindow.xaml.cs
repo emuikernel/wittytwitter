@@ -242,10 +242,12 @@ namespace Witty
                     DispatcherPriority.Background,
                     new OneArgDelegate(UpdateUserInterface), twitter.GetFriendsTimeline());
 
-                // Limiting fetch of direct messages and replies based on the refresh interval
-                // though it might make sense to extend this to an arbitrary value like 1 hour to allow for more 
-                // DMs and Replies to make in onto the recent tab when the application first launches.
-                string since = DateTime.Now.AddMinutes(int.Parse(AppSettings.RefreshInterval) * -1).ToString();
+                // Direct message and replies < 70 hours old will be displayed on the recent tab.
+                // Once this somewhat arbitrary (Friday, 5pm - Monday, 9am + 6 hours) threshold is met, 
+                // users will still be able to access there direct messages and replies via their
+                // respective tabs.  
+                //TODO: Make DM and Reply threshold configurable.  Rework this logic once concept of viewed tweets is introduced to Witty.
+                string since = DateTime.Now.AddHours(-70).ToString();
 
                 LayoutRoot.Dispatcher.BeginInvoke(
                     DispatcherPriority.Normal,
