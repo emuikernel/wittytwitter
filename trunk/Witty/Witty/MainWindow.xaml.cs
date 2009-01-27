@@ -1636,7 +1636,12 @@ namespace Witty
 
                 //Scroll to the top of recent list
                 if (e.Source == Tabs && TweetsListBox.Items.Count > 0)
-                    TweetsListBox.ScrollIntoView(TweetsListBox.Items[0]);
+                {
+                    //Scroll to top
+                    TweetsListBox.SelectedIndex = 0;
+                    UpdateLayout();
+                    TweetsListBox.ScrollIntoView(TweetsListBox.SelectedItem);
+                }
             }
 
             if (tabs.SelectedIndex == 1 && isLoggedIn)
