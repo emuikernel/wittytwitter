@@ -2,9 +2,9 @@
 
 [Setup]
 AppName=Witty Twitter
-AppVerName=Witty 2.0
-AppVersion=2.0
-VersionInfoVersion=2.0.0.39
+AppVerName=Witty 2.1
+AppVersion=2.1.0.540
+VersionInfoVersion=2.1.0.540
 OutputBaseFilename=Setup-Witty-Nightly
 AppPublisherURL=http://code.google.com/p/wittytwitter/
 AppSupportURL=http://code.google.com/p/wittytwitter/
