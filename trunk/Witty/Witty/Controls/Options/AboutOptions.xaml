@@ -45,14 +45,13 @@
             <Bold>Esc</Bold> - minimize. If you are in a tweet, it minimizes the tweet. Otherwise, it minimizes the Witty window.
           </Paragraph>
           <Paragraph BreakPageBefore="True">
-            <Bold>Inline AutoCompletion</Bold>
+            <Bold>Inline Autocompletion</Bold>
             <LineBreak/>
-            Witty now includes support for inline auto-completion. It is triggered when you start
-            a tweet with <Bold>d</Bold> or <Bold>D</Bold>, followed by a space, or when you type @ 
-            anywhere in the tweet. After Witty has downloaded your friend list, you can navigate 
-            through the matching friends using the &#x25b2; and &#x25bc; arrows. To select the 
-            currently matched friend, hit the tab key. If you end up without autocompletion, and 
-            you want it, you can hit <Bold>Ctrl+Space</Bold>, to start autocompletion.
+            Witty AutoCompletion fills in names from your friends list when it sees you start a reply or a direct 
+            message. It is triggered when you start a tweet with <Bold>d</Bold> or <Bold>D</Bold>, followed 
+            by a space, or when you type @ anywhere in the tweet. After Witty has downloaded your friend list, 
+            you can navigate through the matching friends using the &#x25b2; and &#x25bc; arrows. To select the 
+            currently matched friend, hit the tab key. To trigger AutoCompletion, press <Bold>Ctrl+Space</Bold>.
           </Paragraph>
         </Section>
       </FlowDocument>
