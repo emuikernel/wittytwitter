@@ -56,7 +56,7 @@ namespace Witty
 
         // How often the automatic tweet updates occur.  TODO: Make this configurable
         private TimeSpan refreshInterval;
-        private TimeSpan friendsRefreshInterval = new TimeSpan(0, 20, 0);
+        private TimeSpan friendsRefreshInterval = new TimeSpan(0, 35, 0);
 
         private DispatcherTimer friendsRefreshTimer = new DispatcherTimer();
 
