@@ -1,6 +1,8 @@
 ﻿using NUnit.Framework;
 using SpecUnit;
 using TwitterLib;
+using System;
+using NUnit.Framework.SyntaxHelpers;
 
 namespace WittyUnitTests
 {
@@ -31,6 +33,65 @@ namespace WittyUnitTests
             Assert.AreEqual(count, tweets.Count);
             Assert.AreEqual(tweets[0].Id, 19);
         }
+
+        [Test]
+        public void Tweet_added_to_empty_collection_succeeds()
+        {
+            TweetCollection tweets = new TweetCollection();
+            Tweet tweet = new Tweet() { DateCreated = DateTime.Now, Id = 1 };
+            tweets.Add(tweet);
+            Assert.That(tweets.Contains(tweet));
+            Assert.That(tweets.Count == 1);
+        }
+
+        [Test]
+        public void Tweet_added_to_collection_in_sorted_order_with_descending_sort()
+        {
+            TweetCollection tweets = new TweetCollection(SortOrder.Descending);
+            Tweet tweet1 = new Tweet() { DateCreated = DateTime.Now, Id = 1 };
+            Tweet tweet2 = new Tweet() { DateCreated = tweet1.DateCreated.Value.Subtract(TimeSpan.FromMinutes(5)), Id = 2 };
+            Tweet tweet3 = new Tweet() { DateCreated = tweet1.DateCreated.Value.Subtract(TimeSpan.FromMinutes(2)), Id = 2 };
+
+            tweets.Add(tweet1);
+            tweets.Add(tweet2);
+            tweets.Add(tweet3);
+            Assert.That(tweets[0], Is.EqualTo(tweet1));
+            Assert.That(tweets[1], Is.EqualTo(tweet3));
+            Assert.That(tweets[2], Is.EqualTo(tweet2));
+        }
+
+        [Test]
+        public void Tweet_added_to_collection_in_sorted_order_with_ascending_sort()
+        {
+            TweetCollection tweets = new TweetCollection(SortOrder.Ascending);
+            Tweet tweet1 = new Tweet() { DateCreated = DateTime.Now, Id = 1 };
+            Tweet tweet2 = new Tweet() { DateCreated = tweet1.DateCreated.Value.Subtract(TimeSpan.FromMinutes(5)), Id = 2 };
+            Tweet tweet3 = new Tweet() { DateCreated = tweet1.DateCreated.Value.Subtract(TimeSpan.FromMinutes(2)), Id = 2 };
+
+            tweets.Add(tweet1);
+            tweets.Add(tweet2);
+            tweets.Add(tweet3);
+            Assert.That(tweets[0], Is.EqualTo(tweet2));
+            Assert.That(tweets[1], Is.EqualTo(tweet3));
+            Assert.That(tweets[2], Is.EqualTo(tweet1));
+        }
+
+        [Test]
+        public void Tweet_added_to_collection_unsorted()
+        {
+            TweetCollection tweets = new TweetCollection(SortOrder.None);
+            Tweet tweet1 = new Tweet() { DateCreated = DateTime.Now, Id = 1 };
+            Tweet tweet2 = new Tweet() { DateCreated = tweet1.DateCreated.Value.Subtract(TimeSpan.FromMinutes(5)), Id = 2 };
+            Tweet tweet3 = new Tweet() { DateCreated = tweet1.DateCreated.Value.Subtract(TimeSpan.FromMinutes(2)), Id = 2 };
+
+            tweets.Add(tweet1);
+            tweets.Add(tweet2);
+            tweets.Add(tweet3);
+            Assert.That(tweets[0], Is.EqualTo(tweet1));
+            Assert.That(tweets[1], Is.EqualTo(tweet2));
+            Assert.That(tweets[2], Is.EqualTo(tweet3));
+        }
+
     }
     /*
 
@@ -116,6 +177,30 @@ namespace WittyUnitTests
             }
         }
     }
+
+    [TestFixture]
+    public class when_a_tweet_is_added_to_collection : ContextSpecification
+    {
+        private TweetCollection _tweets;
+        private int _totalTweets, _keepCount;
+        protected override void Context()
+        {
+            _tweets = new TweetCollection();
+        }
+
+        protected override void Because()
+        {
+            //_tweets.Add
+        }
+
+        //        [Observation]
+        [Test]
+        public void then_()
+        {
+            
+        }
+    }
+
 
 }
 
