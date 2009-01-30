@@ -85,6 +85,8 @@ namespace Witty
         private bool ignoreKey;
         private bool isInAutocompleteMode;
 
+        private DateTime? lastTruncatedTweetTime;
+
         private enum CurrentView
         {
             Recent, Replies, User, Messages
@@ -385,20 +387,26 @@ namespace Witty
             for (int i = newTweets.Count - 1; i >= 0; i--)
             {
                 Tweet tweet = newTweets[i];
-                if (!tweets.Contains(tweet) && !HasBehavior(tweet, UserBehavior.Ignore))
-                {
-                    tweets.Insert(0, tweet);
-                    tweet.Index = tweets.Count;
-                    tweet.IsNew = true;
-                    addedTweets.Add(tweet);
-                }
+
+                if (tweets.Contains(tweet) || HasBehavior(tweet, UserBehavior.Ignore) || IsTruncatedTweet(tweet))
+                    continue;
+
+                tweets.Add(tweet);
+                tweet.Index = tweets.Count;
+                tweet.IsNew = true;
+                addedTweets.Add(tweet);
             }
 
             // tweets listbox ScrollViewer.CanContentScroll is set to "False", which means it scrolls more smooth,
             // However it disables Virtualization
             // Remove tweets pass 100 should improve performance reasons.
             if (AppSettings.KeepLatest != 0)
+            {
+                if (tweets.Count > AppSettings.KeepLatest)
+                    lastTruncatedTweetTime = tweets[tweets.Count - 1].DateCreated;
+
                 tweets.TruncateAfter(AppSettings.KeepLatest);
+            }
 
             if (addedTweets.Count > 0)
             {
@@ -428,6 +436,14 @@ namespace Witty
             }
 
             StopStoryboard("Fetching");
+        }
+
+        private bool IsTruncatedTweet(Tweet tweet)
+        {
+            if (tweet.DateCreated < lastTruncatedTweetTime)
+                return true;
+
+            return false;
         }
 
         private void FilterTweets(TweetCollection tweets, bool filterUsers)

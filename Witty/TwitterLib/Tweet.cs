@@ -4,6 +4,7 @@ using System.ComponentModel;
 using System.IO;
 using System.Windows.Markup;
 using System.Xml;
+using System.Diagnostics;
 
 namespace TwitterLib
 {
@@ -11,6 +12,7 @@ namespace TwitterLib
     /// Represents the status post for a Twitter User.
     /// </summary>
     [Serializable]
+    [DebuggerDisplay("CreatedOn = {DateCreated}, Text = {Text}")]
     public class Tweet : INotifyPropertyChanged, IEquatable<Tweet>, TwitterLib.IMessage
     {
         #region Private fields
@@ -321,12 +323,21 @@ namespace TwitterLib
         }
     }
 
+    public enum SortOrder
+    {
+        None,
+        Ascending,
+        Descending
+    }
+ 
     /// <summary>
     /// Collection of Tweets
     /// </summary>
     [Serializable]
     public class TweetCollection : ObservableCollection<Tweet>
     {
+        private SortOrder _sortOrder;
+
         #region Class Constants
 
         private class Const
@@ -389,6 +400,7 @@ namespace TwitterLib
                 // Rethrow so we know about the error
                 throw;
             }
+
         }
 
         /// <summary>
@@ -407,6 +419,43 @@ namespace TwitterLib
                 xmlReader.Close();
                 return tweets;
             }
+            
+            
+        }
+
+        protected override void InsertItem(int index, Tweet item)
+        {
+            switch (_sortOrder)
+            {
+                case SortOrder.None:
+                    base.InsertItem(index, item);
+                    return;
+                    break;
+                
+                case SortOrder.Descending:
+                    for (int i = 0; i < Count; i++)
+                    {
+                        if (item.DateCreated > this[i].DateCreated)
+                        {
+                            base.InsertItem(i, item);
+                            return;
+                        }
+                    }
+                    break;
+                
+                case SortOrder.Ascending:
+                    for (int i = 0; i < Count; i++)
+                    {
+                        if (item.DateCreated < this[i].DateCreated)
+                        {
+                            base.InsertItem(i, item);
+                            return;
+                        }
+                    }
+                    break;
+            }
+
+            base.InsertItem(index, item);
         }
 
 
@@ -426,7 +475,17 @@ namespace TwitterLib
                 }
             }
         }
+
         #endregion
+
+        public TweetCollection() : this(SortOrder.Descending)
+        {
+        }
+
+        public TweetCollection(SortOrder sortOrder)
+        {
+            _sortOrder = sortOrder;
+        }
     }
 
 }
