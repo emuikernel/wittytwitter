@@ -403,7 +403,7 @@ namespace Witty
             if (AppSettings.KeepLatest != 0)
             {
                 if (tweets.Count > AppSettings.KeepLatest)
-                    lastTruncatedTweetTime = tweets[tweets.Count - 1].DateCreated;
+                    lastTruncatedTweetTime = tweets[AppSettings.KeepLatest - 1].DateCreated;
 
                 tweets.TruncateAfter(AppSettings.KeepLatest);
             }
