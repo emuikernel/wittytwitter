@@ -799,10 +799,13 @@ namespace Witty
             {
                 if (!isExpanded)
                 {
-                    NoArgDelegate fetcher = new NoArgDelegate(
+                    if (null == friends)
+                    {
+                        NoArgDelegate fetcher = new NoArgDelegate(
                         this.UpdateFriendsList);
 
-                    fetcher.BeginInvoke(null, null);
+                        fetcher.BeginInvoke(null, null);
+                    }
 
                     PlayStoryboard("ExpandUpdate");
                     Update.ToolTip = "Hide update panel";
