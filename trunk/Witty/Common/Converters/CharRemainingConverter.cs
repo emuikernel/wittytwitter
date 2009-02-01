@@ -6,12 +6,14 @@ namespace Common.Converters
 {
     public class CharRemainingValueConverter : IValueConverter
     {
-
         #region IValueConverter Members
 
         public object Convert(object value, Type targetType, object parameter, System.Globalization.CultureInfo culture)
         {
-            return TwitterNet.CharacterLimit - (int)value;
+            string[] statuses = TweetSplitter.SplitTweet((string) value);
+            if (statuses.Length == 0) return TwitterNet.CharacterLimit;
+            if (statuses.Length == 1) return TwitterNet.CharacterLimit - statuses[0].Length;
+            return string.Format("{1}: {0}", statuses[statuses.Length - 1].Length % TwitterNet.CharacterLimit, statuses.Length);
         }
 
         public object ConvertBack(object value, Type targetType, object parameter, System.Globalization.CultureInfo culture)

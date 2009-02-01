@@ -58,6 +58,7 @@
     <Compile Include="IUser.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Tweet.cs" />
+    <Compile Include="TweetSplitter.cs" />
     <Compile Include="TwitterNet.cs" />
     <Compile Include="User.cs" />
     <Compile Include="Utilities\UrlShorteningService.cs" />

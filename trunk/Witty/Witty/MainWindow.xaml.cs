@@ -69,7 +69,7 @@ namespace Witty
         private delegate void NoArgDelegate();
         private delegate void OneArgDelegate(TweetCollection arg);
         private delegate void OneStringArgDelegate(string arg);
-        private delegate void AddTweetUpdateDelegate(Tweet arg);
+        private delegate void AddTweetsUpdateDelegate(TweetCollection arg);
         private delegate void MessagesDelegate(DirectMessageCollection arg);
         private delegate void SendMessageDelegate(string user, string text);
         private delegate void LoginDelegate(User arg);
@@ -83,6 +83,7 @@ namespace Witty
         private bool isLoggedIn;
         private bool isMessageExpanded;
         private bool ignoreKey;
+        private bool tweetFormattingMayBeRequired;
         private bool isInAutocompleteMode;
 
         private DateTime? lastTruncatedTweetTime;
@@ -731,26 +732,36 @@ namespace Witty
             tweetText = urlHelper.ShrinkUrls(tweetText);
         }
 
-        private void ScheduleUpdateFunctionInUIThread(Tweet tweet)
+        private void ScheduleUpdateFunctionInUIThread(TweetCollection addedTweets)
         {
             LayoutRoot.Dispatcher.BeginInvoke(
                             DispatcherPriority.Background,
-                            new AddTweetUpdateDelegate(UpdatePostUserInterface), tweet);
+                            new AddTweetsUpdateDelegate(UpdatePostUserInterface), addedTweets);
         }
 
         private void AddTweet(string tweetText)
         {
             try
             {
-                //bmsullivan If tweet is short enough, leave real URLs for clarity
-                if (tweetText.Length > TwitterNet.CharacterLimit)
+                //bgriswold: Keeping check in place in case final character string is URL and it wasn't reformatted on the fly.
+                if (tweetText.Length > TwitterNet.CharacterLimit) 
                 {
                     ParseTextHereAndTinyUpAnyURLsFound(ref tweetText);
                 }
 
-                Tweet tweet = twitter.AddTweet(tweetText); ;
+                var addedTweets = new TweetCollection();
 
-                ScheduleUpdateFunctionInUIThread(tweet);
+                string[] statuses = TweetSplitter.SplitTweet(tweetText);
+                foreach (string status in statuses)
+                {
+                    addedTweets.Add(twitter.AddTweet(status));
+                }
+
+                if (statuses.Length > 0)
+                {
+                    ScheduleUpdateFunctionInUIThread(addedTweets);
+                }
+
             }
             catch (WebException ex)
             {
@@ -770,16 +781,20 @@ namespace Witty
 
         }
 
-        private void UpdatePostUserInterface(Tweet newlyAdded)
+        private void UpdatePostUserInterface(TweetCollection addedTweets)
         {
-            if (newlyAdded != null)
+            if (addedTweets != null)
             {
                 UpdateTextBlock.Text = "Update";
                 StatusTextBlock.Text = "Status Updated!";
                 PlayStoryboard("CollapseUpdate");
                 isExpanded = false;
                 TweetTextBox.Clear();
-                tweets.Insert(0, newlyAdded);
+
+                foreach (Tweet tweet in addedTweets)
+                {
+                    tweets.Insert(0, tweet);
+                }
             }
             else
             {
@@ -2288,12 +2303,39 @@ namespace Witty
             }
         }
 
+        private void TweetTextBox_OnTextInput(Object sender, TextCompositionEventArgs e)
+        {
+            // Account for space entered within or at the end of current tweet text. 
+            tweetFormattingMayBeRequired = e.Text.EndsWith(" ");
+        }
+
+        private void TweetTextBox_OnPaste(object sender, DataObjectPastingEventArgs e)
+        {
+            tweetFormattingMayBeRequired = false;
+
+            if (!e.DataObject.GetDataPresent(typeof(String))) return;
+
+            // Account for space at the end of the paste text. Unlikely, but it is still a trigger.
+            tweetFormattingMayBeRequired = ((String)e.DataObject.GetData(typeof(String))).EndsWith(" ");
+        }
+
         static Regex AutoSuggestPattern = new Regex(@"(^.*@|^d )(\w*)$");
+
         private void TweetTextBox_TextChanged(object sender, TextChangedEventArgs e)
         {
             Suggest(TweetTextBox, AutoSuggestPattern, 0);
-        }
 
+            if (tweetFormattingMayBeRequired && TweetTextBox.Text.Length > TwitterNet.CharacterLimit)
+            {
+                // bgriswold: This routine is executed after a trailing space is entered or pasted. 
+                // This implies that a URL which is entered as the final character string will not be reformatted. 
+                // It can be assumed, however, that users will quickly come to realized that adding a space 
+                // after URLs will trigger reformatting and they will begin doing it intuitively.  
+                // Enough rambling about a minor point...
+                AttemptTinyURLFormatting(TweetTextBox);
+            }
+        }
+        
         private void Suggest(TextBox textBox, Regex matchAndReplace, int offset)
         {
             if (ignoreKey || friends == null) return;
@@ -2346,6 +2388,21 @@ namespace Witty
 
                     ShowStatus(string.Format("{0} matching - [Up/Down] to cycle, [Tab] to select",currentFriends.Count));
                 }
+            }
+        }
+
+        public void AttemptTinyURLFormatting(TextBox textBox)
+        {
+            string tweetText = textBox.Text;
+
+            if (tweetText.Length < 140 || !tweetFormattingMayBeRequired) return;
+
+            ParseTextHereAndTinyUpAnyURLsFound(ref tweetText);
+
+            if (tweetText != textBox.Text)
+            {
+                textBox.Text = tweetText;
+                textBox.SelectionStart = textBox.Text.Length;
             }
         }
         #endregion
