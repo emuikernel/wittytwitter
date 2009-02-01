@@ -2395,7 +2395,7 @@ namespace Witty
         {
             string tweetText = textBox.Text;
 
-            if (tweetText.Length < 140 || !tweetFormattingMayBeRequired) return;
+            if (tweetText.Length < TwitterNet.CharacterLimit || !tweetFormattingMayBeRequired) return;
 
             ParseTextHereAndTinyUpAnyURLsFound(ref tweetText);
 
