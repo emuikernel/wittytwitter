@@ -51,6 +51,7 @@
     </Reference>
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="TweetSplitterTest.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="TinyUrlHelperTests.cs" />
     <Compile Include="TweetTest.cs" />
