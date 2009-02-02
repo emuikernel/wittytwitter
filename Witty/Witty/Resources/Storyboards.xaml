@@ -80,10 +80,9 @@
       <SplineDoubleKeyFrame KeyTime="00:00:00.5000000" Value="1"/>
     </DoubleAnimationUsingKeyFrames>
     <ObjectAnimationUsingKeyFrames BeginTime="00:00:00" Storyboard.TargetName="LoginControl" Storyboard.TargetProperty="(UIElement.Visibility)">
-      <DiscreteObjectKeyFrame KeyTime="00:00:00" Value="{x:Static Visibility.Visible}"/>
-      <DiscreteObjectKeyFrame KeyTime="00:00:00.4000000" Value="{x:Static Visibility.Hidden}"/>
-      <DiscreteObjectKeyFrame KeyTime="00:00:00.6000000" Value="{x:Static Visibility.Hidden}"/>
-    </ObjectAnimationUsingKeyFrames>
+            <DiscreteObjectKeyFrame KeyTime="0:0:0" Value="{x:Static Visibility.Visible}" />
+            <DiscreteObjectKeyFrame KeyTime="0:0:0.3000000" Value="{x:Static Visibility.Hidden}" />            
+        </ObjectAnimationUsingKeyFrames>
     <BooleanAnimationUsingKeyFrames BeginTime="00:00:00" Duration="00:00:00.0010000" Storyboard.TargetName="RefreshButton" Storyboard.TargetProperty="(UIElement.IsEnabled)">
       <DiscreteBooleanKeyFrame KeyTime="00:00:00" Value="True"/>
     </BooleanAnimationUsingKeyFrames>
