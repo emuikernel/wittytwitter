@@ -115,7 +115,7 @@
                     <ColumnDefinition Width="Auto" />
                   </Grid.ColumnDefinitions>
                   <TextBox Text="" TextWrapping="Wrap" x:Name="TweetTextBox" SpellCheck.IsEnabled="True" ToolTip="Enter update with 140 character limit" PreviewKeyDown="TweetTextBox_PreviewKeyDown" 
-                          PreviewTextInput="TweetTextBox_OnTextInput" DataObject.Pasting="TweetTextBox_OnPaste" TextChanged="TweetTextBox_TextChanged" Grid.ColumnSpan="2" Height="66" />
+                          DataObject.Pasting="TweetTextBox_OnPaste" TextChanged="TweetTextBox_TextChanged" Grid.ColumnSpan="2" Height="66" />
                   <TextBlock Text="{Binding Path=Text, Converter={StaticResource CharRemainingConverter}, ElementName=TweetTextBox, Mode=Default}" 
 								FontSize="18" 
 								Grid.Column="2" 
