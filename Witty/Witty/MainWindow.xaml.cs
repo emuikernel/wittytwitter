@@ -1667,6 +1667,7 @@ namespace Witty
             if (tabs.SelectedIndex == 0)
             {
                 displayUser = string.Empty;
+                ShowStatus(string.Empty);
 
                 //Scroll to the top of recent list
                 if (e.Source == Tabs && TweetsListBox.Items.Count > 0)
@@ -2303,20 +2304,17 @@ namespace Witty
             }
         }
 
-        private void TweetTextBox_OnTextInput(Object sender, TextCompositionEventArgs e)
-        {
-            // Account for space entered within or at the end of current tweet text. 
-            tweetFormattingMayBeRequired = e.Text.EndsWith(" ");
-        }
-
         private void TweetTextBox_OnPaste(object sender, DataObjectPastingEventArgs e)
         {
-            tweetFormattingMayBeRequired = false;
-
             if (!e.DataObject.GetDataPresent(typeof(String))) return;
+            string pastedText = ((String)e.DataObject.GetData(typeof(String)));
 
-            // Account for space at the end of the paste text. Unlikely, but it is still a trigger.
-            tweetFormattingMayBeRequired = ((String)e.DataObject.GetData(typeof(String))).EndsWith(" ");
+            // If a URL was pasted and we're over the limit, shorten it
+            if (UrlShorteningService.IsUrl(pastedText) && (TweetTextBox.Text.Length + pastedText.Length) > TwitterNet.CharacterLimit)
+            {
+                if(AttemptTinyURLFormatting(TweetTextBox, TweetTextBox.Text + pastedText))
+                    e.CancelCommand();
+            }
         }
 
         static Regex AutoSuggestPattern = new Regex(@"(^.*@|^d )(\w*)$");
@@ -2325,14 +2323,14 @@ namespace Witty
         {
             Suggest(TweetTextBox, AutoSuggestPattern, 0);
 
-            if (tweetFormattingMayBeRequired && TweetTextBox.Text.Length > TwitterNet.CharacterLimit)
+            if (TweetTextBox.Text.EndsWith(" ") && TweetTextBox.Text.Length > TwitterNet.CharacterLimit)
             {
                 // bgriswold: This routine is executed after a trailing space is entered or pasted. 
                 // This implies that a URL which is entered as the final character string will not be reformatted. 
                 // It can be assumed, however, that users will quickly come to realized that adding a space 
                 // after URLs will trigger reformatting and they will begin doing it intuitively.  
                 // Enough rambling about a minor point...
-                AttemptTinyURLFormatting(TweetTextBox);
+                AttemptTinyURLFormatting(TweetTextBox, null);
             }
         }
         
@@ -2391,11 +2389,12 @@ namespace Witty
             }
         }
 
-        public void AttemptTinyURLFormatting(TextBox textBox)
+        public bool AttemptTinyURLFormatting(TextBox textBox, string tweetText)
         {
-            string tweetText = textBox.Text;
+            if(string.IsNullOrEmpty(tweetText))
+                tweetText = textBox.Text;
 
-            if (tweetText.Length < TwitterNet.CharacterLimit || !tweetFormattingMayBeRequired) return;
+            if (tweetText.Length < TwitterNet.CharacterLimit) return false;
 
             ParseTextHereAndTinyUpAnyURLsFound(ref tweetText);
 
@@ -2403,7 +2402,9 @@ namespace Witty
             {
                 textBox.Text = tweetText;
                 textBox.SelectionStart = textBox.Text.Length;
+                return true;
             }
+            return false;
         }
         #endregion
     }
