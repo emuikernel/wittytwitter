@@ -56,7 +56,7 @@ namespace Witty
 
         // How often the automatic tweet updates occur.  TODO: Make this configurable
         private TimeSpan refreshInterval;
-        private TimeSpan friendsRefreshInterval = new TimeSpan(0, 35, 0);
+        private TimeSpan friendsRefreshInterval = new TimeSpan(0, 45, 0);
 
         private DispatcherTimer friendsRefreshTimer = new DispatcherTimer();
 
@@ -2382,7 +2382,7 @@ namespace Witty
                     else if (selectedIndex > (currentFriends.Count - 1)) selectedIndex = 0;
 
                     ignoreKey = true;
-                    textBox.Text = matchAndReplace.Replace(textBox.Text, String.Format("$1{0}", currentFriends[selectedIndex]));
+                    textBox.Text = matchAndReplace.Replace(textBox.Text, String.Format("${{1}}{0}", currentFriends[selectedIndex]));
                     textBox.Select(length, textBox.Text.Length - length);
                     ignoreKey = false;
 
