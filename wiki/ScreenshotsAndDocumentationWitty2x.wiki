@@ -1,0 +1,11 @@
+#summary Screenshots and documentation for Witty 2.x.
+#labels Documentation,Featured
+
+InstallationShots
+
+OptionShots
+
+MainScreenShots
+
+
+
