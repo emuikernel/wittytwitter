@@ -33,3 +33,5 @@ You'll see new Tweets flashing up on your screen occasionally. The frequency of 
 http://wittytwitter.googlecode.com/svn/wiki/Shots-Witty-2.x/Tweets.png 
 
 You can right-click on any of these update messages to reply or direct message the Tweep sending the message.
+
+http://wittytwitter.googlecode.com/svn/wiki/Shots-Witty-2.x/TweetContext.png 
