@@ -1,5 +1,5 @@
 #summary Collection of Witty Screenshots
-#labels Documentation,Featured
+#labels Documentation
 
 = Screenshots =
 
