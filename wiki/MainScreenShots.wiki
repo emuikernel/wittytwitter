@@ -31,7 +31,7 @@ The context menu options are fairly self-explanatory, but here's a short blurb o
 
 * Clear All Tweets* Clears Witty of all Tweets.
 
-* Temporarily Ignore User* Also called the Hot Head filter. Ignores Tweets from this person for a short time.
+* Temporarily Ignore User* Also called the Hot Head filter. Ignores Tweets from this person for an hour. (An hour's hardwired in. Sorry. Submit a patch if you'd like it configurable.)
 
 You'll see new Tweets flashing up on your screen occasionally. The frequency of updates is controlled in the Option panel, as is the duration of the pop up notifications.
 
@@ -48,5 +48,3 @@ http://wittytwitter.googlecode.com/svn/wiki/Shots-Witty-2.x/URLShortening01.png
 The resulting Tweet will display the shortened URL.
 
 http://wittytwitter.googlecode.com/svn/wiki/Shots-Witty-2.x/URLShortening02.png 
-
-
