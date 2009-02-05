@@ -1398,19 +1398,19 @@ namespace Witty
                     switch (e.Key)
                     {
                         case Key.D:
-                            createDirectMessage();
+                            CreateDirectMessage();
                             break;
                         case Key.U:
                             ToggleUpdate();
                             break;
                         case Key.R:
-                            createReply();
+                            CreateReply();
                             break;
                         case Key.F:
                             createRetweet();
                             break;
                         case Key.O:
-                            showOptions();
+                            ShowOptions();
                             break;
                         case Key.D1:
                             //show the "Recent" tab
@@ -1488,16 +1488,16 @@ namespace Witty
 
 
 
-        private void createDirectMessage()
+        private void CreateDirectMessage()
         {
             Tweet selectedTweet = SelectedTweet as Tweet;
             if (null != selectedTweet)
             {
-                createDirectMessage(selectedTweet.User.ScreenName);
+                CreateDirectMessage(selectedTweet.User.ScreenName);
             }
         }
 
-        private void createDirectMessage(string screenName)
+        private void CreateDirectMessage(string screenName)
         {
             //Direct message to user
             if (!isExpanded)
@@ -1510,24 +1510,24 @@ namespace Witty
 
             TweetTextBox.Text += screenName;
             TweetTextBox.Text += " ";
-            moveTweetTextBoxCursorToEnd();
+            MoveTweetTextBoxCursorToEnd();
         }
 
-        private void moveTweetTextBoxCursorToEnd()
+        private void MoveTweetTextBoxCursorToEnd()
         {
                     TweetTextBox.Select(TweetTextBox.Text.Length, 0);
         }
 
-        private void createReply()
+        private void CreateReply()
         {
             //reply to user
             if (null != SelectedTweet)
             {
-                createReply(SelectedTweet.User.ScreenName);
+                CreateReply(SelectedTweet.User.ScreenName);
             }
         }
 
-        private void createReply(string screenName)
+        private void CreateReply(string screenName)
         {
             if (!isExpanded)
             {
@@ -1539,15 +1539,56 @@ namespace Witty
             TweetTextBox.Select(TweetTextBox.Text.Length, 0);
         }
 
-        private void deleteTweet()
+        private void CreateReplyAll()
+        {
+            List<string> screenNames = new List<string>();
+
+            //reply to users
+            if (null != SelectedTweet)
+            {                
+                screenNames.Add(SelectedTweet.User.ScreenName);
+
+                string[] words = SelectedTweet.Text.Split(' ');
+
+                foreach (string word in words)
+                {
+                    if (word.StartsWith("@"))
+                    {
+                        screenNames.Add(word.Replace("@", ""));           
+                    }
+                }
+
+                CreateReplyAll(screenNames);
+            }            
+
+        }
+
+        private void CreateReplyAll(List<string> screenNames)
+        {
+            if (!isExpanded)
+            {
+                this.Tabs.SelectedIndex = 0;
+                ToggleUpdate();
+            }
+            TweetTextBox.Text = string.Empty;
+
+            foreach (string screenName in screenNames)
+            {
+                TweetTextBox.Text += "@" + screenName + " ";
+            }
+
+            TweetTextBox.Select(TweetTextBox.Text.Length, 0);
+        }
+
+        private void DeleteTweet()
         {
             if (null != SelectedTweet)
             {
-                deleteTweet(SelectedTweet.Id);
+                DeleteTweet(SelectedTweet.Id);
             }
         }
 
-        private void deleteTweet(double id)
+        private void DeleteTweet(double id)
         {
 
             /* By: Keith Elder
@@ -1587,12 +1628,12 @@ namespace Witty
             DispatchFriendsList();
         }
 
-        private void deleteDirectMessage()
+        private void DeleteDirectMessage()
         {
             DirectMessage message = MessagesListBox.SelectedItem as DirectMessage;
             if (message != null)
             {
-                deleteDirectMessage(message.Id);
+                DeleteDirectMessage(message.Id);
                 if (messages.Contains(message))
                 {
                     messages.Remove(message);
@@ -1600,7 +1641,7 @@ namespace Witty
             }
         }
 
-        private void deleteDirectMessage(double id)
+        private void DeleteDirectMessage(double id)
         {
             twitter.DestroyDirectMessage(id);
         }
@@ -1829,10 +1870,10 @@ namespace Witty
 
         private void OptionsButton_Click(object sender, RoutedEventArgs e)
         {
-            showOptions();
+            ShowOptions();
         }
 
-        private void showOptions()
+        private void ShowOptions()
         {
             Options options = new Options();
 
@@ -1890,7 +1931,12 @@ namespace Witty
 
         private void ContextMenuReply_Click(object sender, RoutedEventArgs e)
         {
-            createReply();
+            CreateReply();
+        }
+
+        private void ContextMenuReplyAll_Click(object sender, RoutedEventArgs e)
+        {
+            CreateReplyAll();
         }
 
         private void ContextMenuRetweet_Click(object sender, RoutedEventArgs e)
@@ -1933,13 +1979,13 @@ namespace Witty
 
         private void ContextMenuDeleteMessage_Click(object sender, RoutedEventArgs e)
         {
-            deleteDirectMessage();
+            DeleteDirectMessage();
         }
 
 
         private void ContextMenuDirectMessage_Click(object sender, RoutedEventArgs e)
         {
-            createDirectMessage();
+            CreateDirectMessage();
         }
 
         private void ContextMenuFollow_Click(object sender, RoutedEventArgs e)
@@ -1949,7 +1995,7 @@ namespace Witty
 
         private void ContextMenuDelete_Click(object sender, RoutedEventArgs e)
         {
-            deleteTweet();
+            DeleteTweet();
         }
 
         private void ContextMenuClear_Click(object sender, RoutedEventArgs e)
@@ -1975,7 +2021,7 @@ namespace Witty
                 Show();
                 WindowState = _storedWindowState;
             }
-            createReply(screenName);
+            CreateReply(screenName);
         }
 
         private void PopupDirectMessageClicked(string screenName)
@@ -1985,7 +2031,7 @@ namespace Witty
                 Show();
                 WindowState = _storedWindowState;
             }
-            createDirectMessage(screenName);
+            CreateDirectMessage(screenName);
         }
 
         void PopupClicked(Tweet tweet)
