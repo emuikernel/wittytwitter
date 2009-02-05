@@ -97,6 +97,7 @@
               <ListBox.ContextMenu>
                 <ContextMenu Name="recentContextMenu">
                   <MenuItem Header="Reply" Click="ContextMenuReply_Click"></MenuItem>
+                  <MenuItem Header="Reply to All" Click="ContextMenuReplyAll_Click"></MenuItem>
                   <MenuItem Header="Send Direct Message" Click="ContextMenuDirectMessage_Click"></MenuItem>
                   <MenuItem Header="Delete" Click="ContextMenuDelete_Click" IsEnabled="True"></MenuItem>
                   <MenuItem Header="Re-tweet" Click="ContextMenuRetweet_Click" IsEnabled="True"></MenuItem>
@@ -141,6 +142,7 @@
             <ListBox.ContextMenu>
               <ContextMenu Name="RepliesContextMenu">
                 <MenuItem Header="Reply" Click="ContextMenuReply_Click"></MenuItem>
+                <MenuItem Header="Reply to All" Click="ContextMenuReplyAll_Click"></MenuItem>
                 <MenuItem Header="Follow" Click="ContextMenuFollow_Click" IsEnabled="True"></MenuItem>
                 <MenuItem Header="Send Direct Message" Click="ContextMenuDirectMessage_Click"></MenuItem>
                 <MenuItem Header="Re-tweet" Click="ContextMenuRetweet_Click" IsEnabled="True"></MenuItem>
@@ -201,6 +203,7 @@
 				<ListBox.ContextMenu>
 					<ContextMenu Name="UserContextMenu">
 						<MenuItem Header="Reply" Click="ContextMenuReply_Click"></MenuItem>
+                        <MenuItem Header="Reply to All" Click="ContextMenuReplyAll_Click"></MenuItem>
 						<MenuItem Header="Follow" Click="ContextMenuFollow_Click" IsEnabled="True"></MenuItem>
 						<MenuItem Header="Send Direct Message" Click="ContextMenuDirectMessage_Click"></MenuItem>
                         <MenuItem Header="Delete" Click="ContextMenuDelete_Click" IsEnabled="True"></MenuItem>
