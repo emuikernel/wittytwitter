@@ -8,6 +8,11 @@ If you want to fire off a Tweet, click the Update bar at the bottom of Witty.
 
 http://wittytwitter.googlecode.com/svn/wiki/Shots-Witty-2.x/Updates.png 
 
+The Update/Reply window will help you call out other Tweeps you're following via auto complete. After you type the @ character Witty will start looking through the list of people you follow and suggest matches to you. Use the Up/Down arrows to cycle through matching items. The Tab key will accept your current selection.
+
+http://wittytwitter.googlecode.com/svn/wiki/Shots-Witty-2.x/ReplyCompletion.png 
+
+
 Interacting with the activity stream in Witty is simple. Just right-click on Witty and choose one of the options on the context menu.
 
 http://wittytwitter.googlecode.com/svn/wiki/Shots-Witty-2.x/MainContext01.png 
@@ -35,3 +40,13 @@ http://wittytwitter.googlecode.com/svn/wiki/Shots-Witty-2.x/Tweets.png
 You can right-click on any of these update messages to reply or direct message the Tweep sending the message.
 
 http://wittytwitter.googlecode.com/svn/wiki/Shots-Witty-2.x/TweetContext.png 
+
+Witty also helps you out with automatic URL shortening. You can select a number of different URL shortening services in the General tab of the [OptionShots Options] page. Witty will automatically shorten URLs for you when the content of your Update/Reply window is over 140 characters.
+
+http://wittytwitter.googlecode.com/svn/wiki/Shots-Witty-2.x/URLShortening01.png 
+
+The resulting Tweet will display the shortened URL.
+
+http://wittytwitter.googlecode.com/svn/wiki/Shots-Witty-2.x/URLShortening02.png 
+
+
