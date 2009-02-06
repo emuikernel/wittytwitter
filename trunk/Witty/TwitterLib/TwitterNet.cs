@@ -71,7 +71,7 @@ namespace TwitterLib
         /// </summary>
         public string UserName
         {
-            get { return (null == currentLoggedInUser ? currentLoggedInUser.Name: String.Empty) ; }
+            get { return (null == currentLoggedInUser ? String.Empty : currentLoggedInUser.Name) ; }
         }
         
         /// <summary>
