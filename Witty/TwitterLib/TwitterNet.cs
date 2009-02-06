@@ -697,6 +697,11 @@ namespace TwitterLib
         /// <returns>newly added tweet</returns>
         public Tweet AddTweet(string text)
         {
+            return AddTweet(text, 0);
+        }
+
+        public Tweet AddTweet(string text, double replyid)
+        {
             bool isDirectMessage = (text.StartsWith("d ", StringComparison.CurrentCultureIgnoreCase));
 
             if (string.IsNullOrEmpty(text))
@@ -714,13 +719,22 @@ namespace TwitterLib
             // Set values for the request back
             request.ContentType = "application/x-www-form-urlencoded";
             string param = "status=" + text;
+            string replyParam = "&in_reply_to_status_id=" + replyid.ToString();
             string sourceParam = "&source=" + ClientName;
             request.ContentLength = param.Length + sourceParam.Length;
+            if (replyid > 0)
+            {
+                request.ContentLength += replyParam.Length;
+            }
 
             // Write the request paramater
             StreamWriter stOut = new StreamWriter(request.GetRequestStream(), System.Text.Encoding.ASCII);
             stOut.Write(param);
             stOut.Write(sourceParam);
+            if (replyid > 0)
+            {
+                stOut.Write(replyParam);
+            }
             stOut.Close();
 
             Tweet tweet;
