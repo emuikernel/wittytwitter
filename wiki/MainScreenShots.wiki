@@ -41,7 +41,7 @@ You can right-click on any of these update messages to reply or direct message t
 
 http://wittytwitter.googlecode.com/svn/wiki/Shots-Witty-2.x/TweetContext.png 
 
-Witty also helps you out with automatic URL shortening. You can select a number of different URL shortening services in the General tab of the [OptionShots Options] page. Witty will automatically shorten URLs for you when the content of your Update/Reply window is over 140 characters.
+Witty also helps you out with automatic URL shortening. You can select a number of different URL shortening services in the General tab of the [OptionShots Options] page. Witty will automatically shorten URLs for you when the content of your Update/Reply window is over 140 characters. Witty will even automatically shorten URLs when you paste into the Update panel!
 
 http://wittytwitter.googlecode.com/svn/wiki/Shots-Witty-2.x/URLShortening01.png 
 
