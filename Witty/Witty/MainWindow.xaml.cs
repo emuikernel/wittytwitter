@@ -226,10 +226,18 @@ namespace Witty
             this.Topmost = AlwaysOnTopMenuItem.IsChecked = AppSettings.AlwaysOnTop;
             ScrollViewer.SetCanContentScroll(TweetsListBox, !AppSettings.SmoothScrolling);
             Version version = System.Reflection.Assembly.GetExecutingAssembly().GetName().Version;
-            Title = string.Format("Witty {0}.{1}", version.Major, version.Minor);
+            if (!ApplicationDeployment.IsNetworkDeployed)
+            {
+                Title = string.Format("Witty {0}.{1}", version.Major, version.Minor);
 #if DEBUG
-            Title = Title + string.Format("{0} Debug", version.Revision);
+                Title = Title + string.Format("{0} Debug", version.Revision);
 #endif
+            }
+            else
+            {
+                // update window with clickonce version number
+                this.Title = AppSettings.ApplicationName + " " + ApplicationDeployment.CurrentDeployment.CurrentVersion.ToString();
+            }
         }
 
         private void Timer_Elapsed(object sender, EventArgs e)
@@ -1354,9 +1362,6 @@ namespace Witty
                 _clickOnceUpdateTimer.IsEnabled = true;
                 _clickOnceUpdateTimer.Start();
                 _clickOnceUpdateTimer.Tick += new EventHandler(_clickOnceUpdateTimer_Tick);
-
-                // update window with clickonce version number
-                this.Title = AppSettings.ApplicationName + " " + ApplicationDeployment.CurrentDeployment.CurrentVersion.ToString();
             }
         }
 
