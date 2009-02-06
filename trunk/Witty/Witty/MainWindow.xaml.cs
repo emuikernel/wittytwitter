@@ -81,6 +81,7 @@ namespace Witty
         // booleans to keep track of state
         private bool isExpanded;
         private bool isLoggedIn;
+        private bool isReplyMessage;
         private bool isMessageExpanded;
         private bool ignoreKey;
         private bool tweetFormattingMayBeRequired;
@@ -754,7 +755,14 @@ namespace Witty
                 string[] statuses = TweetSplitter.SplitTweet(tweetText);
                 foreach (string status in statuses)
                 {
-                    addedTweets.Add(twitter.AddTweet(status));
+                    if (isReplyMessage)
+                    {
+                        addedTweets.Add(twitter.AddTweet(status, SelectedTweet.Id));
+                    }
+                    else 
+                    {
+                        addedTweets.Add(twitter.AddTweet(status));
+                    }
                 }
 
                 if (statuses.Length > 0)
@@ -789,6 +797,7 @@ namespace Witty
                 StatusTextBlock.Text = "Status Updated!";
                 PlayStoryboard("CollapseUpdate");
                 isExpanded = false;
+                isReplyMessage = false;
                 TweetTextBox.Clear();
 
                 foreach (Tweet tweet in addedTweets)
@@ -833,6 +842,7 @@ namespace Witty
                     PlayStoryboard("CollapseUpdate");
                     Update.ToolTip = "Display update panel";
                     isExpanded = false;
+                    isReplyMessage = false;
                 }
             }
         }
@@ -1534,6 +1544,7 @@ namespace Witty
                 this.Tabs.SelectedIndex = 0;
                 ToggleUpdate();
             }
+            isReplyMessage = true;
             TweetTextBox.Text = string.Empty;
             TweetTextBox.Text = "@" + screenName + " ";
             TweetTextBox.Select(TweetTextBox.Text.Length, 0);
@@ -1570,6 +1581,7 @@ namespace Witty
                 this.Tabs.SelectedIndex = 0;
                 ToggleUpdate();
             }
+            isReplyMessage = true;
             TweetTextBox.Text = string.Empty;
 
             foreach (string screenName in screenNames)

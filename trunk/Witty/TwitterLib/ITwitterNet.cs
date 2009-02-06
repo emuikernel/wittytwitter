@@ -3,6 +3,7 @@
     public interface IServiceApi
     {
         Tweet AddTweet(string text);
+        Tweet AddTweet(string text, double replyid);
 
         string ClientName { get; set; }
         string CreateFriendshipUrl { get; set; }

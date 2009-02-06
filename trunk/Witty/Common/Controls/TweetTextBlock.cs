@@ -3,6 +3,8 @@ using System.Text.RegularExpressions;
 using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Documents;
+using System.Windows.Input;
+using System.Windows.Media;
 using TwitterLib;
 
 namespace Common.Controls
@@ -12,6 +14,29 @@ namespace Common.Controls
     /// </summary>
     public class TweetTextBlock : TextBlock
     {
+        #region Private fields
+
+        private TextPointer startpointer;
+        private TextPointer endpointer;
+        private bool selectingText = false;
+        private object previousbackgroundcolor;
+
+        #endregion
+        
+        #region Contructors
+
+        public TweetTextBlock()
+        {
+            previousbackgroundcolor = this.GetValue(TextElement.BackgroundProperty);
+
+            this.MouseLeftButtonDown += new MouseButtonEventHandler(TweetTextBlock_MouseLeftButtonDown);
+            this.MouseLeftButtonUp += new MouseButtonEventHandler(TweetTextBlock_MouseLeftButtonUp);
+            this.MouseMove += new MouseEventHandler(TweetTextBlock_MouseMove);
+            this.MouseLeave += new MouseEventHandler(TweetTextBlock_MouseLeave);
+        }                     
+
+        #endregion
+
         #region Dependency properties
 
         public string TweetText
@@ -25,10 +50,61 @@ namespace Common.Controls
             DependencyProperty.Register("TweetText", typeof(string), typeof(TweetTextBlock),
             new FrameworkPropertyMetadata(string.Empty, new PropertyChangedCallback(OnTweetTextChanged)));
 
-        #endregion
+        #endregion   
+     
+        void TweetTextBlock_MouseLeftButtonDown(object sender, MouseButtonEventArgs e)
+        {
+            startpointer = this.GetPositionFromPoint(Mouse.GetPosition(this), true);
+            TextRange highlighttext = new TextRange(startpointer, startpointer);                            
+            selectingText = true;            
+        }
+
+        void TweetTextBlock_MouseLeftButtonUp(object sender, MouseButtonEventArgs e)
+        {
+            endpointer = this.GetPositionFromPoint(Mouse.GetPosition(this), true);
+            selectingText = false;
+
+            try
+            {
+                TextRange clipboardtext = new TextRange(startpointer, endpointer);
+                Clipboard.SetText(clipboardtext.Text);
+            }
+            catch (Exception err)
+            {
+                MessageBox.Show("Unable to select text across tweets", "Text Select", MessageBoxButton.OK, MessageBoxImage.Warning);
+            }
+            
+            TextRange documenttext = new TextRange(this.ContentStart, this.ContentEnd);
+            documenttext.ApplyPropertyValue(TextElement.BackgroundProperty, previousbackgroundcolor);
+        }
+
+        void TweetTextBlock_MouseMove(object sender, MouseEventArgs e)
+        {
+            if (selectingText)
+            {                                                
+                TextPointer currentpointer = this.GetPositionFromPoint(Mouse.GetPosition(this), true);
+
+                try
+                {
+                    TextRange highlighttext = new TextRange(startpointer, currentpointer);
+                    highlighttext.ApplyPropertyValue(TextElement.BackgroundProperty, new SolidColorBrush(Colors.LightGoldenrodYellow));
+                }
+                catch (Exception err)
+                {
+                    MessageBox.Show(err.ToString(), "Error", MessageBoxButton.OK, MessageBoxImage.Error);
+                }                
+            }
+        }
+
+        void TweetTextBlock_MouseLeave(object sender, MouseEventArgs e)
+        {
+            TextRange documenttext = new TextRange(this.ContentStart, this.ContentEnd);
+            documenttext.ApplyPropertyValue(TextElement.BackgroundProperty, previousbackgroundcolor);
+            selectingText = false;
+        }
 
         private static void OnTweetTextChanged(DependencyObject obj, DependencyPropertyChangedEventArgs args)
-        {
+        {            
             string text = args.NewValue as string;
             if (!string.IsNullOrEmpty(text))
             {
