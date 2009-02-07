@@ -111,7 +111,6 @@ namespace Common.Controls
                 TweetTextBlock textblock = (TweetTextBlock)obj;
                 textblock.Inlines.Clear();
 
-                //string[] words = text.Split(' ');
                 string[] words = Regex.Split(text, @"([ \(\)\{\}\[\]])");
 
                 foreach (string word in words)
