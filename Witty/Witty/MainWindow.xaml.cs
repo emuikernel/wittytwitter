@@ -1591,6 +1591,10 @@ namespace Witty
 
             foreach (string screenName in screenNames)
             {
+                if (App.LoggedInUser.ScreenName == screenName)
+                {
+                    continue;
+                }
                 TweetTextBox.Text += "@" + screenName + " ";
             }
 
