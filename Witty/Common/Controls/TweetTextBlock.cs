@@ -189,6 +189,8 @@ namespace Common.Controls
                         textblock.Inlines.Add(word);
                     }
                 }
+
+                textblock.Inlines.Add(" ");
             }
         }
 
