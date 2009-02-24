@@ -1149,9 +1149,15 @@ namespace Witty
                 UpdateUsersTimelineInterface(fakeTweets);
 
             }
+            catch (System.Security.SecurityException ex)
+            {
+                App.Logger.DebugFormat("User not allowed to get protected tweets from {0}. Exception details: {1}", userId, ex.ToString());
+                StatusTextBlock.Text = userId + "'s updates are protected.";
+                StopStoryboard("Fetching");
+            }
             catch (WebException ex)
             {
-                App.Logger.Debug(String.Format("There was a problem fetching the user's timeline from Twitter.com: {0}", ex.ToString()));
+                App.Logger.DebugFormat("There was a problem fetching the user's timeline from Twitter.com: {0}", ex.ToString());
             }
             catch (ProxyAuthenticationRequiredException ex)
             {

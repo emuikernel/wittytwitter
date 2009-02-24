@@ -119,6 +119,21 @@ namespace TwitterLib
     }
 
     /// <summary>
+    /// Custom exception for a timeout
+    /// </summary>
+    [Serializable]
+    public class RequestTimeoutException : Exception
+    {
+        public RequestTimeoutException() { }
+
+        public RequestTimeoutException(string message) : base(message) {}
+
+        public RequestTimeoutException(string message, Exception inner) : base(message, inner) { }
+
+        protected RequestTimeoutException(SerializationInfo info, StreamingContext context) : base(info, context) { }
+    }
+
+    /// <summary>
     /// Custom exception for when the Twitter API is freaking out.  ZOMG, FAIL WHALE!
     /// </summary>
     [Serializable]

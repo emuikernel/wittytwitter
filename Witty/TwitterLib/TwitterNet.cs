@@ -1324,29 +1324,32 @@ namespace TwitterLib
                 // Get HttpWebResponse so that you can check the HTTP status code.
                 HttpWebResponse httpResponse = (HttpWebResponse)webExcp.Response;
 
-                switch ((int)httpResponse.StatusCode)
+                switch (httpResponse.StatusCode)
                 {
-                    case 304: // 304 Not modified = no new tweets so ignore error.
+                    case HttpStatusCode.NotModified: // no new tweets so ignore error.
                         break;
 
-                    case 400: // rate limit exceeded
+                    case HttpStatusCode.BadRequest: // rate limit exceeded
                         string message = String.Format("Rate limit exceeded. You have {0} of your requests left. Please try again in a few minutes", RetrieveRateLimitStatus());
                         throw new RateLimitException(message);
 
-                    case 401: // unauthorized
+                    case HttpStatusCode.Unauthorized:
                         throw new SecurityException("Not Authorized.");
 
 
-                    case 404: // Not Found = specified user does not exist
+                    case HttpStatusCode.NotFound: // specified user does not exist
                         if (timeline == Timeline.User)
                             throw new UserNotFoundException(userId, "@" + userId + " does not exist (probably mispelled)");
                         else // what if a 404 happens to occur in another scenario?
                             throw webExcp;
 
-                    case 407: // proxy authentication required
+                    case HttpStatusCode.ProxyAuthenticationRequired: 
                         throw new ProxyAuthenticationRequiredException("Proxy authentication required.");
 
-                    case 502: //Bad Gateway, Twitter is freaking out.
+                    case HttpStatusCode.RequestTimeout:
+                        throw new RequestTimeoutException("Request timed out. We'll try again in a few minutes");
+
+                    case HttpStatusCode.BadGateway: //Twitter is freaking out.
                         throw new BadGatewayException("Fail Whale!  There was a problem calling the Twitter API.  Please try again in a few minutes.");
 
                     default:
