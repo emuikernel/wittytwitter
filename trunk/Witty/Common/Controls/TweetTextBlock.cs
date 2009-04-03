@@ -110,6 +110,7 @@ namespace Common.Controls
             {
                 TweetTextBlock textblock = (TweetTextBlock)obj;
                 textblock.Inlines.Clear();
+                textblock.Inlines.Add(" ");
 
                 string[] words = Regex.Split(text, @"([ \(\)\{\}\[\]])");
 
