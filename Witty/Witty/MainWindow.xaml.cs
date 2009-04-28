@@ -14,10 +14,13 @@ using System.Windows.Media;
 using System.Windows.Media.Animation;
 using System.Windows.Threading;
 using Snarl;
+using Witty.Misc.Growl;
 using TwitterLib;
 using TwitterLib.Utilities;
 using Witty.ClickOnce;
 using Witty.Properties;
+using System.Windows.Interop;
+using System.Runtime.InteropServices;
 
 namespace Witty
 {
@@ -172,6 +175,8 @@ namespace Witty
 
             RegisterWithSnarlIfAvailable();
 
+            RegisterWithGrowlIfAvailable();
+
             DisplayLoginIfUserNotLoggedIn();
             
             SetTweetSorting();
@@ -197,6 +202,27 @@ namespace Witty
                 {
                     _notifyIcon.ShowBalloonTip(2000);
                 }
+            }
+        }
+
+        protected override Decorator GetWindowButtonsPlaceholder()
+        {
+            return WindowButtonsPlaceholder;
+        }
+
+        private void Header_MouseMove(object sender, System.Windows.Input.MouseEventArgs e)
+        {
+            if (e.LeftButton == System.Windows.Input.MouseButtonState.Pressed)
+                this.DragMove();
+        }
+
+        private void Thumb_DragCompleted(object sender, System.Windows.Controls.Primitives.DragCompletedEventArgs e)
+        {
+            Point position = Mouse.GetPosition(Application.Current.MainWindow);
+            if (position.X > 10 && position.Y > 10)
+            {
+                this.Width = position.X;
+                this.Height = position.Y;
             }
         }
 
@@ -251,7 +277,7 @@ namespace Witty
             {
                 // Schedule the update functions in the UI thread.
                 LayoutRoot.Dispatcher.BeginInvoke(
-                    DispatcherPriority.Background,
+                    DispatcherPriority.Normal,
                     new OneArgDelegate(UpdateUserInterface), twitter.GetFriendsTimeline());
 
                 // Direct message and replies < 70 hours old will be displayed on the recent tab.
@@ -262,18 +288,18 @@ namespace Witty
                 string since = DateTime.Now.AddHours(-70).ToString();
 
                 LayoutRoot.Dispatcher.BeginInvoke(
-                    DispatcherPriority.Normal,
+                    DispatcherPriority.Loaded,
                     new OneArgDelegate(UpdateUserInterface), twitter.GetReplies(since));
 
                 LayoutRoot.Dispatcher.BeginInvoke(
-                    DispatcherPriority.Normal,
+                    DispatcherPriority.Loaded,
                     new OneArgDelegate(UpdateUserInterface), twitter.RetrieveMessages(since).ToTweetCollection());
             }
             catch (RateLimitException ex)
             {
                 App.Logger.Debug(String.Format("There was a problem fetching new tweets from Twitter.com: {0}", ex.ToString()));
                 LayoutRoot.Dispatcher.BeginInvoke(
-                    DispatcherPriority.Normal,
+                    DispatcherPriority.ApplicationIdle,
                     new OneStringArgDelegate(ShowStatus), ex.Message);
             }
             catch (WebException ex)
@@ -374,6 +400,11 @@ namespace Witty
             SnarlConnector.RegisterAlert("Witty", "New tweets summarized");
             SnarlConnector.RegisterAlert("Witty", "New reply");
             SnarlConnector.RegisterAlert("Witty", "New direct message");
+        }
+
+        private void RegisterWithGrowlIfAvailable()
+        {
+            GrowlCommunicator.Register();
         }
 
         private void UpdateUserInterface(TweetCollection newTweets)
@@ -513,8 +544,23 @@ namespace Witty
             this.Closed += new EventHandler(OnClosed);
             this.StateChanged += new EventHandler(OnStateChanged);
             this.IsVisibleChanged += new DependencyPropertyChangedEventHandler(OnIsVisibleChanged);
+            //this.Loaded += new RoutedEventHandler(OnLoaded);
             OverrideClosing();
         }
+
+        //[DllImport("user32.dll")]
+        //static extern int GetWindowLong(IntPtr hWnd, int nIndex);
+
+        //[DllImport("user32.dll")]
+        //static extern int SetWindowLong(IntPtr hWnd, int nIndex, int dwNewLong);
+
+        //void OnLoaded(object sender, RoutedEventArgs e)
+        //{
+        //    WindowInteropHelper wndHelper = new WindowInteropHelper(this); 
+        //    int exStyle = (int)GetWindowLong(wndHelper.Handle, (int)GetWindowLongFields.GWL_EXSTYLE); 
+        //    exStyle |= (int)ExtendedWindowStyles.WS_EX_TOOLWINDOW; 
+        //    SetWindowLong(wndHelper.Handle, (int)GetWindowLongFields.GWL_EXSTYLE, (IntPtr)exStyle);
+        //}
 
         private void ParoleIgnoredUsers()
         {
@@ -529,7 +575,11 @@ namespace Witty
 
         private void NotifyOnNewTweets(TweetCollection newTweets, string type)
         {
-            if (SnarlConnector.GetSnarlWindow().ToInt32() != 0)
+            if (GrowlCommunicator.IsRunning())
+            {
+                GrowlNotify(newTweets, type);
+            }
+            else if (SnarlConnector.GetSnarlWindow().ToInt32() != 0)
             {
                 SnarlNotify(newTweets, type);
             }
@@ -685,6 +735,39 @@ namespace Witty
             }
         }
 
+        private void GrowlNotify(TweetCollection newTweets, string type)
+        {
+            Growl.Connector.NotificationType notificationType = null;
+            if (type == "reply")
+            {
+                notificationType = GrowlCommunicator.NewReply;
+            }
+            else if (type == "directMessage")
+            {
+                notificationType = GrowlCommunicator.NewDirectMessage;
+            }
+            else if (newTweets.Count > Double.Parse(AppSettings.MaximumIndividualAlerts))
+            {
+                notificationType = GrowlCommunicator.NewTweetsSummary;
+            }
+            else
+            {
+                notificationType = GrowlCommunicator.NewTweet;
+            }
+
+            if (newTweets.Count > Double.Parse(AppSettings.MaximumIndividualAlerts))
+            {
+                GrowlCommunicator.Notify(notificationType, "You have new tweets!", BuiltNewTweetMessage(newTweets), twitter.CurrentlyLoggedInUser.ImageUrl);
+            }
+            else
+            {
+                foreach (Tweet tweet in newTweets)
+                {
+                    GrowlCommunicator.Notify(notificationType, tweet.User.ScreenName, String.Format("{0}\n\n{1}", tweet.Text, tweet.RelativeTime), tweet.User.ImageUrl);
+                }
+            }
+        }
+
         private void UpdateExistingTweets()
         {
             UpdateExistingTweets(tweets);
@@ -833,10 +916,7 @@ namespace Witty
                 {
                     if (null == friends)
                     {
-                        NoArgDelegate fetcher = new NoArgDelegate(
-                        this.UpdateFriendsList);
-
-                        fetcher.BeginInvoke(null, null);
+                        DispatchFriendsList();
                     }
 
                     PlayStoryboard("ExpandUpdate");
@@ -2312,9 +2392,7 @@ namespace Witty
 
         private void SetupFriendsListTimer()
         {
-            DispatchFriendsList();
-
-            friendsRefreshTimer.Interval = friendsRefreshInterval;
+            friendsRefreshTimer.Interval = new TimeSpan(0,0,20);
             friendsRefreshTimer.IsEnabled = true;
             friendsRefreshTimer.Start();
             friendsRefreshTimer.Tick += new EventHandler(friendsRefreshTimer_Tick);
@@ -2322,11 +2400,12 @@ namespace Witty
 
         private void DispatchFriendsList()
         {
-            LayoutRoot.Dispatcher.BeginInvoke(DispatcherPriority.Background, new NoArgDelegate(UpdateFriendsList));
+            LayoutRoot.Dispatcher.BeginInvoke(DispatcherPriority.ApplicationIdle, new NoArgDelegate(UpdateFriendsList));
         }
 
         void friendsRefreshTimer_Tick(object sender, EventArgs e)
         {
+            friendsRefreshTimer.Interval = friendsRefreshInterval;
             DispatchFriendsList();
         }
 

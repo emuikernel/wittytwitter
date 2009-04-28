@@ -7,6 +7,11 @@ using System.Text.RegularExpressions;
 using System.Web;
 using System.Xml;
 using System.Text;
+using Dimebrain.TweetSharp.Core;
+using Dimebrain.TweetSharp.Fluent;
+using Dimebrain.TweetSharp.Extensions;
+using Dimebrain.TweetSharp.Model;
+using System.Collections.Generic;
 
 namespace TwitterLib
 {
@@ -575,16 +580,8 @@ namespace TwitterLib
         public UserCollection GetFriends(int userId)
         {
             UserCollection users = new UserCollection();
+            int friendsCount;
 
-            // Twitter expects http://twitter.com/statuses/friends/12345.xml
-            string requestURL = FriendsUrl + "/" + userId + Format;
-
-            int friendsCount = 0;
-
-            // Since the API docs state "Returns up to 100 of the authenticating user's friends", we need
-            // to use the page param and to fetch ALL of the users friends. We can find out how many pages
-            // we need by dividing the # of friends by 100 and rounding any remainder up.
-            // merging the responses from each request may be tricky.
             if (currentLoggedInUser != null && currentLoggedInUser.Id == userId)
             {
                 friendsCount = CurrentlyLoggedInUser.FollowingCount;
@@ -596,48 +593,22 @@ namespace TwitterLib
                 friendsCount = user.FollowingCount;
             }
 
-            int numberOfPagesToFetch = (friendsCount / 100) + 1;
-
-            string pageRequestUrl = requestURL;
-
-            for (int count = 1; count <= numberOfPagesToFetch; count++)
+            var ceiling = Math.Ceiling(friendsCount / 100m);
+            var results = new List<TwitterUser>();
+            for (var i = 1; i <= ceiling; i++)
             {
-                pageRequestUrl = requestURL + "?page=" + count;
+                var followers = FluentTwitter.CreateRequest(new Dimebrain.TweetSharp.TwitterClientInfo() { ClientName = "Witty" })
+                    .AuthenticateAs(username, ToInsecureString(password))
+                    .Users().GetFollowers().For(userId)
+                    .Skip(i).AsJson()
+                    .Request().AsUsers();
 
-                // Create the web request
-                HttpWebRequest request = CreateTwitterRequest(pageRequestUrl);
-
-                try
-                {
-                    // Get the Response  
-                    using (HttpWebResponse response = request.GetResponse() as HttpWebResponse)
-                    {
-                        // Get the response stream  
-                        StreamReader reader = new StreamReader(response.GetResponseStream());
-
-                        // Create a new XmlDocument  
-                        XmlDocument doc = new XmlDocument();
-
-                        // Load data  
-                        doc.Load(reader);
-
-                        // Get statuses with XPath  
-                        XmlNodeList nodes = doc.SelectNodes("/users/user");
-
-                        foreach (XmlNode node in nodes)
-                        {
-                            User user = CreateUser(node);
-                            users.Add(user);
-                        }
-
-                    }
-                }
-                catch (WebException webExcp)
-                {
-                    ParseWebException(webExcp);
-
-                }
+                results.AddRange(followers);
             }
+
+            foreach (TwitterUser user in results)
+                users.Add(CreateUser(user));
+
             return users;
         }
 
@@ -833,6 +804,34 @@ namespace TwitterLib
                 temp = 0;
                 int.TryParse(GetPropertyFromXml(userNode, "followers_count"), out temp);
                 user.FollowersCount = temp;
+            }
+
+            return user;
+        }
+
+        private User CreateUser(TwitterUser twitterUser)
+        {
+            User user = new User();
+
+            if (twitterUser != null)
+            {
+                user.Id = twitterUser.Id;
+
+                user.Name = twitterUser.Name;
+                user.ScreenName = twitterUser.ScreenName;
+                user.ImageUrl = twitterUser.ProfileImageUrl;
+                user.SiteUrl = twitterUser.Url;
+                user.Location = twitterUser.Location;
+                user.Description = twitterUser.Description;
+                user.BackgroundColor = twitterUser.ProfileBackgroundColor;
+                user.TextColor = twitterUser.ProfileTextColor;
+                user.LinkColor = twitterUser.ProfileLinkColor;
+                user.SidebarBorderColor = twitterUser.ProfileSidebarBorderColor;
+                user.SidebarFillColor = twitterUser.ProfileSidebarFillColor;
+                user.FollowingCount = twitterUser.FriendsCount;
+                user.FavoritesCount = twitterUser.FavouritesCount;
+                user.StatusesCount = twitterUser.StatusesCount;
+                user.FollowersCount = twitterUser.FollowersCount;
             }
 
             return user;

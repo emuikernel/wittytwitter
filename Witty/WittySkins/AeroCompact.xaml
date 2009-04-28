@@ -137,9 +137,7 @@
   </DataTemplate>
 
   <SolidColorBrush x:Key="ForegroundBrush" Color="#FF000000" />
-
   <SolidColorBrush x:Key="HeaderForegroundBrush" Color="#FFFFFFFF" />
-
   <SolidColorBrush x:Key="DisabledForegroundBrush" Color="#888" />
 
   <LinearGradientBrush x:Key="ListHoverBrush" StartPoint="0,0" EndPoint="0,1">
@@ -147,12 +145,8 @@
     <GradientStop Color="#FFC7E0FB" Offset="1" />
   </LinearGradientBrush>
 
-  <SolidColorBrush x:Key="AlternatingBackgroundBrush" Color="#EAEDF1" />
-
   <SolidColorBrush x:Key="UpdateBackgroundBrush" Color="#FFA8B9C6" />
-    
   <SolidColorBrush  x:Key="ReplyTweetBrush" Color="#FFF5F59A"/>
-  
   <SolidColorBrush  x:Key="DirectMessageBrush" Color="#FFD5DCE1"/>
   
   <Style x:Key="{x:Type ListBoxItem}" TargetType="ListBoxItem">
@@ -347,7 +341,7 @@
     <Setter Property="SnapsToDevicePixels" Value="true" />
     <Setter Property="OverridesDefaultStyle" Value="true" />
     <Setter Property="FocusVisualStyle" Value="{StaticResource ButtonFocusVisual}" />
-    <Setter Property="Background" Value="{StaticResource NormalBrush}" />
+    <Setter Property="Background" Value="{StaticResource ForegroundBrush}" />
     <Setter Property="BorderBrush" Value="{StaticResource NormalBorderBrush}" />
     <Setter Property="Foreground" Value="{StaticResource ButtonForegroundBrush}" />
     <Setter Property="Template">
