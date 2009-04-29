@@ -2,9 +2,9 @@
 
 [Setup]
 AppName=Witty Twitter
-AppVerName=Witty 2.1
-AppVersion=2.1.0.540
-VersionInfoVersion=2.1.0.540
+AppVerName=Witty 2.2 - Nightly Build
+AppVersion=2.2.0.23807
+VersionInfoVersion=2.2.0.23807
 OutputBaseFilename=Setup-Witty-Nightly
 AppPublisherURL=http://code.google.com/p/wittytwitter/
 AppSupportURL=http://code.google.com/p/wittytwitter/
@@ -29,7 +29,7 @@ Name: quicklaunchicon; Description: {cm:CreateQuickLaunchIcon}; GroupDescription
 
 [Files]
 Source: Witty.exe; DestDir: {app}; Flags: ignoreversion
-Source: *; Excludes: "\app.publish\Application Files\*"; DestDir: {app}; Flags: ignoreversion recursesubdirs createallsubdirs
+Source: *; Excludes: \app.publish\Application Files\*; DestDir: {app}; Flags: ignoreversion recursesubdirs createallsubdirs
 ; NOTE: Don't use "Flags: ignoreversion" on any shared system files
 
 [Icons]
