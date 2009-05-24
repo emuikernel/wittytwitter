@@ -23,6 +23,7 @@ namespace TwitterLib
         private string text;
         private string source;
         private User user;
+        private double? inReplyTo = null;
         private bool isNew;
         private bool isInteresting;
         private int index;
@@ -66,6 +67,7 @@ namespace TwitterLib
                 }
             }
         }
+        
 
         /// <summary>
         /// The Tweet text
@@ -99,6 +101,21 @@ namespace TwitterLib
             }
         }
 
+        /// <summary>
+        /// The id of the tweet it is a reply to
+        /// </summary>
+        public double? InReplyTo
+        {
+            get { return inReplyTo; }
+            set
+            {
+                if (value != inReplyTo)
+                {
+                    inReplyTo = value;
+                    OnPropertyChanged("InReplyTo");
+                }
+            }
+        }
         /// <summary>
         /// Twitter User associated with the Tweet
         /// </summary>
@@ -422,6 +439,7 @@ namespace TwitterLib
             
             
         }
+
 
         protected override void InsertItem(int index, Tweet item)
         {

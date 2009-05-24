@@ -86,9 +86,6 @@
     <Setting Name="HighlightRegex" Type="System.String" Scope="User">
       <Value Profile="(Default)" />
     </Setting>
-    <Setting Name="UrlShorteningService" Type="System.String" Scope="User">
-      <Value Profile="(Default)">TinyUrl</Value>
-    </Setting>
     <Setting Name="AlertSelectedOnly" Type="System.Boolean" Scope="User">
       <Value Profile="(Default)">False</Value>
     </Setting>
@@ -96,6 +93,18 @@
       <Value Profile="(Default)" />
     </Setting>
     <Setting Name="UserActions" Type="System.Object" Scope="User">
+      <Value Profile="(Default)" />
+    </Setting>
+    <Setting Name="UrlShorteningService" Type="System.String" Scope="User">
+      <Value Profile="(Default)">isgd</Value>
+    </Setting>
+    <Setting Name="RetweetPrefix" Type="System.String" Scope="User">
+      <Value Profile="(Default)">RT</Value>
+    </Setting>
+    <Setting Name="UserBehaviorManager" Type="TwitterLib.Utilities.UserBehaviorManager" Scope="User">
+      <Value Profile="(Default)" />
+    </Setting>
+    <Setting Name="SerializedUserBehaviors" Type="System.String" Scope="User">
       <Value Profile="(Default)" />
     </Setting>
   </Settings>

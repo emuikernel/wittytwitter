@@ -31,8 +31,11 @@ namespace Witty
 
         private IntPtr SnarlConfighWnd;
         private NativeWindowApplication.WittySnarlMsgWnd snarlComWindow;
-        private bool reallyexit = false;        
+        private bool reallyexit = false;
 
+        //for conversation
+        private double conversationStartId;
+    
         // Main collection of tweets
         private TweetCollection tweets = new TweetCollection();
 
@@ -43,6 +46,9 @@ namespace Witty
 
         // Main collection of user Tweets
         private TweetCollection userTweets = new TweetCollection();
+
+        // Main collection of "more" Tweets
+        private TweetCollection moreTweets = new TweetCollection();
 
         // Main collection of direct messages
         private DirectMessageCollection messages = new DirectMessageCollection();
@@ -63,8 +69,6 @@ namespace Witty
 
         private DispatcherTimer friendsRefreshTimer = new DispatcherTimer();
 
-        private UserCollection friends = new UserCollection();
-
         private DateTime lastFriendsUpdate = DateTime.MinValue;
 
         // Delegates for placing jobs onto the thread dispatcher.  
@@ -72,6 +76,7 @@ namespace Witty
         private delegate void NoArgDelegate();
         private delegate void OneArgDelegate(TweetCollection arg);
         private delegate void OneStringArgDelegate(string arg);
+        private delegate void OneDoubleArgDelegate(double id);
         private delegate void AddTweetsUpdateDelegate(TweetCollection arg);
         private delegate void MessagesDelegate(DirectMessageCollection arg);
         private delegate void SendMessageDelegate(string user, string text);
@@ -94,7 +99,13 @@ namespace Witty
 
         private enum CurrentView
         {
-            Recent, Replies, User, Messages
+            Recent, Replies, User, Messages, More
+        }
+
+        private UserCollection friends
+        {
+            get { return App.friends; }
+            set { App.friends = value; }
         }
 
         private CurrentView currentView
@@ -111,10 +122,17 @@ namespace Witty
                         return CurrentView.User;
                     case 3:
                         return CurrentView.Messages;
+                    case 4:
+                        return CurrentView.More;
                     default:
                         return CurrentView.Recent;
                 }
             }
+        }
+
+        private MoreResults moreResults
+        {
+            get { return MoreResults.Conversation; }
         }
 
         private string displayUser;
@@ -225,7 +243,7 @@ namespace Witty
                 this.Height = position.Y;
             }
         }
-
+        
         #region Retrieve new tweets
 
         /// <summary>
@@ -332,6 +350,7 @@ namespace Witty
             RepliesListBox.ItemsSource = replies;
             UserTab.DataContext = userTweets;
             MessagesListBox.ItemsSource = messages;
+            MoreListBox.DataContext = moreTweets;
         }
 
         private void TrapUnhandledExceptions()
@@ -479,6 +498,8 @@ namespace Witty
             StopStoryboard("Fetching");
         }
 
+       
+       
         private bool IsTruncatedTweet(Tweet tweet)
         {
             if (tweet.DateCreated < lastTruncatedTweetTime)
@@ -783,6 +804,8 @@ namespace Witty
             }
         }
 
+  
+
         #endregion
 
         #region Add new tweet update
@@ -818,7 +841,7 @@ namespace Witty
             if (!string.IsNullOrEmpty(AppSettings.UrlShorteningService))
                 service = (ShorteningService)Enum.Parse(typeof(ShorteningService), AppSettings.UrlShorteningService);
             else
-                service = ShorteningService.TinyUrl;
+                service = ShorteningService.isgd;
 
             UrlShorteningService urlHelper = new UrlShorteningService(service);
             tweetText = urlHelper.ShrinkUrls(tweetText);
@@ -1046,6 +1069,7 @@ namespace Witty
             fetcher.BeginInvoke(null, null);
         }
 
+     
         private void GetMessages()
         {
             try
@@ -1097,6 +1121,100 @@ namespace Witty
         }
 
         #endregion
+
+        #region More Tab (conversation, search...etc)
+        private enum MoreResults
+        {
+            Conversation
+        }
+
+        private void ViewConversation()
+        {
+            Tweet selectedTweet = SelectedTweet as Tweet;
+            conversationStartId = selectedTweet.Id;
+            //this.Tabs.SelectedIndex = 4;
+            DelegateConversationFetch(conversationStartId);
+
+
+        }
+
+        private void DelegateConversationFetch(double id)
+        {
+            MoreTab.IsSelected = true;
+            MoreContextMenu.IsEnabled = true; 
+
+            moreTweets.Clear();
+            // Let the user know what's going on
+            StatusTextBlock.Text = "Retrieving conversation...";
+
+            PlayStoryboard("Fetching");
+
+            // Create a Dispatcher to fetching new tweets
+            LayoutRoot.Dispatcher.BeginInvoke(
+                DispatcherPriority.Background,
+                new OneDoubleArgDelegate(GetConversation), id);
+
+        }
+
+        private void GetConversation(double id)
+        {
+            try
+            {
+
+
+                // Schedule the update function in the UI thread.
+                LayoutRoot.Dispatcher.BeginInvoke(
+                    DispatcherPriority.Background,
+                    new OneArgDelegate(UpdateMoreInterface), twitter.GetConversation(id));
+            }
+            catch (WebException ex)
+            {
+                App.Logger.Debug(String.Format("There was a problem fetching this conversation from Twitter.com. ", ex.Message));
+            }
+            catch (ProxyAuthenticationRequiredException ex)
+            {
+                App.Logger.Error("Incorrect proxy configuration.");
+                MessageBox.Show("Proxy server is configured incorrectly.  Please correct the settings on the Options menu.");
+            }
+            catch (ProxyNotFoundException ex)
+            {
+                App.Logger.Error("Incorrect proxy configuration.");
+                MessageBox.Show(ex.Message);
+            }
+
+        }
+        private void UpdateMoreInterface(TweetCollection newTweets)
+        {
+            StatusTextBlock.Text = "Viewing " + moreResults;
+           
+
+            for (int i = newTweets.Count - 1; i >= 0; i--)
+            {
+                Tweet tweet = newTweets[i];
+                
+
+                if (!moreTweets.Contains(tweet))
+                {
+                    moreTweets.Insert(0, tweet);
+                    tweet.IsNew = true;
+                }
+                else
+                {
+                    // update the relativetime for existing tweets
+                    moreTweets[i].UpdateRelativeTime();
+                }
+            }
+
+            if (moreTweets.Count > 0)
+                MoreListBox.SelectedIndex = 0;
+
+
+            StopStoryboard("Fetching");
+        }
+    
+
+
+        #endregion 
 
         #region Send messages
 
@@ -1779,6 +1897,15 @@ namespace Witty
                 case CurrentView.User:
                     DelegateUserTimelineFetch(displayUser);
                     break;
+                case CurrentView.More:
+                    switch (moreResults){
+                        case MoreResults.Conversation:
+                            DelegateConversationFetch(conversationStartId);
+                            break;
+                    }
+                    break;
+
+
             }
         }
 
@@ -1811,6 +1938,8 @@ namespace Witty
         private void Tabs_SelectionChanged(object sender, SelectionChangedEventArgs e)
         {
             TabControl tabs = (TabControl)sender;
+            if (e.Source != Tabs)
+                return;
 
             if (tabs.SelectedIndex == 0)
             {
@@ -1857,7 +1986,18 @@ namespace Witty
 
                 displayUser = string.Empty;
             }
+            if (tabs.SelectedIndex == 4 && isLoggedIn)
+            {
+                // limit updating replies to no more than once a minute
+                long ticks = DateTime.Now.Ticks - repliesLastUpdated.Ticks;
+                TimeSpan ts = new TimeSpan(ticks);
+                if (ts.TotalMinutes > 1)
+                {
+                    DelegateConversationFetch(conversationStartId);
+                }
 
+                displayUser = string.Empty;
+            }
             // clear the filter text since it isn't applied when switching tabs
             FilterTextBox.Text = string.Empty;
         }
@@ -1909,6 +2049,31 @@ namespace Witty
             }
         }
 
+
+
+
+        private void MoreTab_LostFocus(object sender, RoutedEventArgs e)
+        {
+            TabItem tab = (TabItem)sender;
+            tab.IsEnabled = false;
+            tab.Header = "More..";
+        }
+
+
+        private void UserTimelineListBox_MouseRightButtonUp(object sender, MouseButtonEventArgs e)
+        {
+            AddConversationMenuItem(sender);
+        }
+
+        private void RepliesListBox_MouseRightButtonUp(object sender, MouseButtonEventArgs e)
+        {
+            AddConversationMenuItem(sender);
+        }
+
+        private void TweetsListBox_MouseRightButtonUp(object sender, MouseButtonEventArgs e)
+        {
+           AddConversationMenuItem(sender);
+        }
         private void MessagesListBox_MouseLeftButtonUp(object sender, MouseButtonEventArgs e)
         {
             if (e.MouseDevice.DirectlyOver.GetType() == typeof(TextBlock))
@@ -2056,7 +2221,10 @@ namespace Witty
             IgnoreUser(60);
             UpdateUserInterface(tweets);
         }
-
+        private void ContextMenuConversation_Click(object sender, RoutedEventArgs e)
+        {
+            ViewConversation();
+        }
         private void IgnoreUser(int ignoreTime)
         {
             Tweet selectedTweet = SelectedTweet as Tweet;
@@ -2076,12 +2244,42 @@ namespace Witty
                     this.Tabs.SelectedIndex = 0;
                     ToggleUpdate();
                 }
-                string message = string.Format("retweet @{0}: {1}", selectedTweet.User.ScreenName, selectedTweet.Text);
+                string message = string.Format("{0} @{1}: {2}", AppSettings.RetweetPrefix, selectedTweet.User.ScreenName, selectedTweet.Text);
                 message = TruncateMessage(message);
                 TweetTextBox.Text = message;
                 TweetTextBox.Select(TweetTextBox.Text.Length, 0);
             }
 
+        }
+
+        private void AddConversationMenuItem(object sender)
+        {
+               try
+            {
+                ListBox listbox = (ListBox)sender;
+                if (listbox.SelectedItem != null && currentView == CurrentView.Recent)
+                {
+                    Tweet tweet = (Tweet)listbox.SelectedItem;
+                    MenuItem menuItem = (MenuItem)listbox.ContextMenu.Items.GetItemAt(5);
+
+                    if (tweet.InReplyTo != null)
+                    {
+                        menuItem.Visibility = Visibility.Visible;
+                       
+                     }
+                    else
+                    {
+                        menuItem.Visibility = Visibility.Collapsed;
+                        
+                    }
+                    
+                }
+
+            }
+            catch (Win32Exception ex)
+            {
+                App.Logger.Debug(String.Format("Exception: {0}", ex.ToString()));
+            }
         }
 
         private void ContextMenuDeleteMessage_Click(object sender, RoutedEventArgs e)
@@ -2385,7 +2583,7 @@ namespace Witty
         {
             if (isLoggedIn)
             {
-                friends = twitter.GetFriends();
+                friends = twitter.GetFriends() ?? friends;
                 lastFriendsUpdate = DateTime.Now;
             }
         }
@@ -2559,6 +2757,12 @@ namespace Witty
             return false;
         }
         #endregion
+
+        
+          
+
+       
+
     }
 
 }

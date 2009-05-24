@@ -32,7 +32,8 @@
         User CurrentlyLoggedInUser { get; set; }
         User GetUser(int userId);
         User Login();
-
+        Tweet RetrieveTweet(double id);
+        TweetCollection GetConversation(double id);
         TweetCollection GetFriendsTimeline();
         TweetCollection GetFriendsTimeline(string since, string userId);
         TweetCollection GetFriendsTimeline(string since);

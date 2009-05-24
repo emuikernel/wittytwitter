@@ -30,7 +30,7 @@ namespace Witty
         {
             if (allFriends == null || allFriendsFromUserName != AppSettings.Username)
             {
-                UserCollection friends = twitter.GetFriends();
+                UserCollection friends = App.friends;
                 var sortedFriends = new List<User>(friends);
                 sortedFriends.Sort((u, u2) => u.Name.CompareTo(u2.Name));
                 allFriends = sortedFriends;
@@ -51,11 +51,30 @@ namespace Witty
             PasswordTextBox.Password = AppSettings.Password;
             TwitterHostTextBox.Text = AppSettings.TwitterHost;
 
+            RefreshComboBox.Items.Add(1);
+            RefreshComboBox.Items.Add(2);
+            RefreshComboBox.Items.Add(5);
+            RefreshComboBox.Items.Add(10);
+            RefreshComboBox.Items.Add(15);
+            RefreshComboBox.Items.Add(20);
+            RefreshComboBox.Items.Add(30);
+            RefreshComboBox.Items.Add(60);
+
             if (!string.IsNullOrEmpty(AppSettings.RefreshInterval))
             {
                 Double refreshInterval = Double.Parse(AppSettings.RefreshInterval);
                 if (refreshInterval < 1) refreshInterval = 1; //Previously the options screen allowed setting to 0
-                RefreshSlider.Value = refreshInterval;
+                RefreshComboBox.Text = refreshInterval.ToString();
+            }
+
+            RetweetComboBox.Items.Add("RT");
+            RetweetComboBox.Items.Add("Retweet");
+            RetweetComboBox.Items.Add("\u267A");
+            RetweetComboBox.Items.Add("\u00BB");
+            
+            if (!string.IsNullOrEmpty(AppSettings.RetweetPrefix))
+            {
+                RetweetComboBox.Text = AppSettings.RetweetPrefix;
             }
 
             isInitializing = true;
@@ -306,7 +325,7 @@ namespace Witty
         {
             if (InputIsValid())
             {
-                AppSettings.RefreshInterval = SliderValueTextBlock.Text;
+                AppSettings.RefreshInterval = RefreshComboBox.Text;
 
                 NotifyIfRestartNeeded();
 
@@ -334,6 +353,9 @@ namespace Witty
                 AppSettings.AlertSelectedOnly = (bool) AlertSelectedOnlyCheckBox.IsChecked;
                 AppSettings.FilterRegex = FilterRegex.Text;
                 AppSettings.HighlightRegex = HightlightRegex.Text;
+                
+                if(!string.IsNullOrEmpty(RetweetComboBox.Text))
+                    AppSettings.RetweetPrefix = RetweetComboBox.Text;
 
                 int setting;
                 if (int.TryParse(((ComboBox)KeepLatestComboBox).Text, out setting))
@@ -579,6 +601,5 @@ namespace Witty
             AppSettings.SerializedUserBehaviors = AppSettings.UserBehaviorManager.Serialize();
             AppSettings.Save();
         }
-
     }
 }
