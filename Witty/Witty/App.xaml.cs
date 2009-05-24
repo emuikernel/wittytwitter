@@ -18,6 +18,7 @@ namespace Witty
 
         // Global variable for the user
         public static User LoggedInUser = null;
+        public static UserCollection friends = new UserCollection();
 
         protected override void OnStartup(StartupEventArgs e)
         {

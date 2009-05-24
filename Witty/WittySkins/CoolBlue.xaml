@@ -1,7 +1,5 @@
 ﻿<ResourceDictionary xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation" xmlns:controls="clr-namespace:Common.Controls;assembly=Common" xmlns:converters="clr-namespace:Common.Converters;assembly=Common" xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml" xmlns:local="clr-namespace:Witty">
 
-  <converters:IndexToIsAlternateRowConverter x:Key="IndexToIsAlternateRowConverter" />
-
   <SolidColorBrush x:Key="PrimaryBackgroundBrush" Color="#FF52626F" />
 
   <SolidColorBrush x:Key="SecondaryBackgroundBrush" Color="#FFA8B9C6" />
@@ -83,7 +81,77 @@
     </DataTemplate.Triggers>
   </DataTemplate>
 
-  <DataTemplate x:Key="MessagesTemplate">
+    <DataTemplate x:Key="MoreTemplate">
+        <DataTemplate.Resources>
+            <Storyboard x:Key="YellowFade">
+                <ColorAnimationUsingKeyFrames BeginTime="00:00:00" Storyboard.TargetName="grid" Storyboard.TargetProperty="(Panel.Background).(SolidColorBrush.Color)" FillBehavior="Stop">
+                    <SplineColorKeyFrame KeyTime="00:00:00" Value="#FFFEFF76" />
+                    <SplineColorKeyFrame KeyTime="00:00:01" Value="#19FEFF76" />
+                </ColorAnimationUsingKeyFrames>
+            </Storyboard>
+            <Storyboard x:Key="YellowForever">
+                <ColorAnimationUsingKeyFrames BeginTime="00:00:00" Storyboard.TargetName="grid" Storyboard.TargetProperty="(Panel.Background).(SolidColorBrush.Color)">
+                    <SplineColorKeyFrame KeyTime="00:00:00" Value="#FFFEFF76" />
+                    <SplineColorKeyFrame KeyTime="00:00:01" Value="#FFFEFF76" />
+                </ColorAnimationUsingKeyFrames>
+            </Storyboard>
+        </DataTemplate.Resources>
+        <Grid x:Name="grid" Background="#01FFFFFF">
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition Width="65" />
+                <ColumnDefinition Width="*" />
+            </Grid.ColumnDefinitions>
+            <Grid.RowDefinitions>
+                <RowDefinition Height="Auto" />
+                <RowDefinition Height="*" />
+            </Grid.RowDefinitions>
+            <Border Width="50" Height="50" Grid.RowSpan="2" BorderBrush="{DynamicResource ImageBorderBrush}" BorderThickness="2" HorizontalAlignment="Left" VerticalAlignment="Top" Margin="5,5,0,0">
+                <Image Width="48" Height="48" Source="{Binding Path=User.ImageUrl, Converter={StaticResource ImageConverter}}" x:Name="UserImage" />
+            </Border>
+            <DockPanel Grid.Row="0" Grid.Column="1" VerticalAlignment="Top">
+                <TextBlock Text="{Binding Path=User.ScreenName, FallbackValue=Screen Name}" FontWeight="Bold" FontSize="16" VerticalAlignment="Bottom" HorizontalAlignment="Left" x:Name="ScreenName" Cursor="Hand" ToolTip="View this user's recent tweets" />
+                <Button Width="20" Height="20" HorizontalAlignment="Right" Margin="0,0,5,0" Visibility="Collapsed" x:Name="ReplyButton">
+                    <TextBlock TextWrapping="Wrap" Text="@" VerticalAlignment="Center" />
+                </Button>
+            </DockPanel>
+            <WrapPanel Grid.Column="1" Grid.Row="1">
+                <controls:TweetTextBlock x:Name="TweetText" TweetText="{Binding Path=Text, FallbackValue=Tweet Text}" TextWrapping="Wrap" Margin="0,0,5,0" />
+                <TextBlock Text="{Binding Path=RelativeTime, FallbackValue=1 minute ago}" FontStyle="Italic" Margin="0,0,3.5,0" Foreground="{DynamicResource SubForegroundBrush}" ToolTip="{Binding Path=DateCreated, Mode=Default}" />
+                <TextBlock Text="{Binding Path=Source, Mode=Default, FallbackValue=from web}" FontStyle="Italic" TextTrimming="CharacterEllipsis" Foreground="{DynamicResource SubForegroundBrush}" />
+            </WrapPanel>
+        </Grid>
+        <DataTemplate.Triggers>
+            <DataTrigger Binding="{Binding Path=IsNew}" Value="True">
+                <DataTrigger.EnterActions>
+                    <BeginStoryboard Storyboard="{StaticResource YellowFade}" />
+                </DataTrigger.EnterActions>
+            </DataTrigger>
+            <DataTrigger Binding="{Binding Path=IsInteresting}" Value="True">
+                <DataTrigger.EnterActions>
+                    <BeginStoryboard Storyboard="{StaticResource YellowForever}" x:Name="YellowForever_BeginStoryboard" />
+                </DataTrigger.EnterActions>
+            </DataTrigger>
+
+            <DataTrigger Binding="{Binding Path=IsReply}" Value="true">
+                <DataTrigger.Setters>
+                    <Setter Property="Background" Value="{StaticResource ReplyTweetBrush}" TargetName="grid"/>
+                </DataTrigger.Setters>
+            </DataTrigger>
+
+            <DataTrigger Binding="{Binding Path=Timeline}" Value="DirectMessages">
+                <DataTrigger.Setters>
+                    <Setter Property="Background" Value="{StaticResource DirectMessageBrush}" TargetName="grid"/>
+                </DataTrigger.Setters>
+            </DataTrigger>
+
+            <!--<Trigger Property="IsMouseOver" Value="True">
+	        <Setter Property="Visibility" TargetName="ReplyButton" Value="Visible"/>
+		  </Trigger>-->
+        </DataTemplate.Triggers>
+    </DataTemplate>
+
+
+    <DataTemplate x:Key="MessagesTemplate">
     <DataTemplate.Resources>
       <Storyboard x:Key="YellowFade">
         <ColorAnimationUsingKeyFrames BeginTime="00:00:00" Storyboard.TargetName="grid" Storyboard.TargetProperty="(Panel.Background).(SolidColorBrush.Color)">
@@ -117,6 +185,11 @@
     </Grid>
     <DataTemplate.Triggers>
       <DataTrigger Binding="{Binding Path=IsNew}" Value="True">
+        <DataTrigger.EnterActions>
+          <BeginStoryboard Storyboard="{StaticResource YellowFade}" />
+        </DataTrigger.EnterActions>
+      </DataTrigger>
+         <DataTrigger Binding="{Binding Path=IsNew}" Value="True">
         <DataTrigger.EnterActions>
           <BeginStoryboard Storyboard="{StaticResource YellowFade}" />
         </DataTrigger.EnterActions>

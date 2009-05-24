@@ -38,6 +38,7 @@ namespace TwitterLib
         private string createFriendshipUrl;
         private string rateLimitStatusUrl;
         private string verifyCredentialsUrl;
+        private string tweetUrl;
         private string format;
         private IWebProxy webProxy = HttpWebRequest.DefaultWebProxy;  // Jason Follas: Added initialization
         private string twitterServerUrl;                              // Jason Follas
@@ -382,7 +383,28 @@ namespace TwitterLib
             }
             set { rateLimitStatusUrl = value; }
         }
-        
+
+        /// <summary>
+        ///This is the url to return an individual tweet. 
+        /// </summary>
+        /// <remarks>
+        /// Origionally done for "Conversations" but I'm sure it will be re-used.
+        /// </remarks>
+        public string TweetUrl
+        {
+            get
+            {
+                if (string.IsNullOrEmpty(tweetUrl))
+                {
+                    return TwitterServerUrl + "statuses/show/";
+                }
+                else
+                {
+                    return tweetUrl;
+                }
+            }
+            set { tweetUrl = value; }
+        }
         /// <summary>
         /// Returns an HTTP 200 OK response code and a representation of the requesting user if authentication was successful; returns a 401 status
         /// code and an error message if not.  Use this method to test if supplied user credentials are valid. Defaults to
@@ -424,6 +446,9 @@ namespace TwitterLib
             }
             set { format = value; }
         }
+
+        
+      
 
         /// <summary>
         /// The number of characters available for the Tweet text. Defaults to 140.
@@ -564,6 +589,21 @@ namespace TwitterLib
             return RetrieveTimeline(Timeline.Replies, since);
         }
 
+        public TweetCollection GetConversation(double id)
+        {
+            TweetCollection tweets = new TweetCollection();
+            Tweet tweet = RetrieveTweet(id);
+            while (tweet.InReplyTo != null)
+            {
+                tweets.Add(tweet);
+                id = (double)tweet.InReplyTo;
+                tweet = RetrieveTweet(id);
+            }
+
+            tweets.Add(tweet);
+            return tweets;
+        }
+
         #endregion
 
         /// <summary>
@@ -579,37 +619,44 @@ namespace TwitterLib
         /// </summary>
         public UserCollection GetFriends(int userId)
         {
-            UserCollection users = new UserCollection();
-            int friendsCount;
-
-            if (currentLoggedInUser != null && currentLoggedInUser.Id == userId)
+            try
             {
-                friendsCount = CurrentlyLoggedInUser.FollowingCount;
+                UserCollection users = new UserCollection();
+                int friendsCount;
+
+                if (currentLoggedInUser != null && currentLoggedInUser.Id == userId)
+                {
+                    friendsCount = CurrentlyLoggedInUser.FollowingCount;
+                }
+                else
+                {
+                    // need to make an extra call to twitter
+                    User user = GetUser(userId);
+                    friendsCount = user.FollowingCount;
+                }
+
+                var ceiling = Math.Ceiling(friendsCount / 100m);
+                var results = new List<TwitterUser>();
+                for (var i = 1; i <= ceiling; i++)
+                {
+                    var followers = FluentTwitter.CreateRequest(new Dimebrain.TweetSharp.TwitterClientInfo() { ClientName = "Witty" })
+                        .AuthenticateAs(username, ToInsecureString(password))
+                        .Users().GetFollowers().For(userId)
+                        .Skip(i).AsJson()
+                        .Request().AsUsers();
+
+                    results.AddRange(followers);
+                }
+
+                foreach (TwitterUser user in results)
+                    users.Add(CreateUser(user));
+
+                return users;
             }
-            else
+            catch
             {
-                // need to make an extra call to twitter
-                User user = GetUser(userId);
-                friendsCount = user.FollowingCount;
+                return null;
             }
-
-            var ceiling = Math.Ceiling(friendsCount / 100m);
-            var results = new List<TwitterUser>();
-            for (var i = 1; i <= ceiling; i++)
-            {
-                var followers = FluentTwitter.CreateRequest(new Dimebrain.TweetSharp.TwitterClientInfo() { ClientName = "Witty" })
-                    .AuthenticateAs(username, ToInsecureString(password))
-                    .Users().GetFollowers().For(userId)
-                    .Skip(i).AsJson()
-                    .Request().AsUsers();
-
-                results.AddRange(followers);
-            }
-
-            foreach (TwitterUser user in results)
-                users.Add(CreateUser(user));
-
-            return users;
         }
 
         public User GetUser(int userId)
@@ -742,6 +789,12 @@ namespace TwitterLib
                         dateString,
                         twitterCreatedAtDateFormat,
                         CultureInfo.GetCultureInfoByIetfLanguageTag("en-us"), DateTimeStyles.AllowWhiteSpaces);
+                }
+                string replyTo = HttpUtility.HtmlDecode(node.SelectSingleNode("in_reply_to_status_id").InnerText);
+                if (!string.IsNullOrEmpty(replyTo))
+                {
+                    tweet.InReplyTo = double.Parse(HttpUtility.HtmlDecode(node.SelectSingleNode("in_reply_to_status_id").InnerText));
+
                 }
                 tweet.IsNew = true;
 
@@ -1048,6 +1101,66 @@ namespace TwitterLib
             return messages;
         }
 
+        public Tweet RetrieveTweet(double id)
+        {
+            Tweet tweet = new Tweet();
+
+            string url = string.Format("{0}{1}{2}", TweetUrl, id, Format);
+            
+
+           
+
+            HttpWebRequest request = CreateTwitterRequest(url);
+            try
+            {
+                // Get the Response  
+                using (HttpWebResponse response = request.GetResponse() as HttpWebResponse)
+                {
+                    // Get the response stream  
+                    StreamReader reader = new StreamReader(response.GetResponseStream());
+
+                    // Load the response data into a XmlDocument  
+                    XmlDocument doc = new XmlDocument();
+                    doc.Load(reader);
+
+                    // Get statuses with XPath  
+                    XmlNode node = doc.SelectSingleNode("/status");
+
+                    tweet.Id = double.Parse(node.SelectSingleNode("id").InnerText);
+                    tweet.Text = HttpUtility.HtmlDecode(node.SelectSingleNode("text").InnerText);
+                    string source = HttpUtility.HtmlDecode(node.SelectSingleNode("source").InnerText);
+                    if (!string.IsNullOrEmpty(source))
+                        tweet.Source = Regex.Replace(source, @"<(.|\n)*?>", string.Empty);
+
+                    string dateString = node.SelectSingleNode("created_at").InnerText;
+                    if (!string.IsNullOrEmpty(dateString))
+                    {
+                        tweet.DateCreated = DateTime.ParseExact(
+                            dateString,
+                            twitterCreatedAtDateFormat,
+                            CultureInfo.GetCultureInfoByIetfLanguageTag("en-us"), DateTimeStyles.AllowWhiteSpaces);
+                    }
+                    string replyTo = HttpUtility.HtmlDecode(node.SelectSingleNode("in_reply_to_status_id").InnerText);
+                    if (!string.IsNullOrEmpty(replyTo))
+                    {
+                        tweet.InReplyTo = double.Parse(HttpUtility.HtmlDecode(node.SelectSingleNode("in_reply_to_status_id").InnerText));
+
+                    }
+                    XmlNode userNode = node.SelectSingleNode("user");
+                    User user = CreateUser(userNode);
+                    tweet.User = user;
+                    tweet.IsReply = IsReplyTweet(this.CurrentlyLoggedInUser.ScreenName, tweet);
+
+                
+                }
+            }
+            catch (WebException webExcp)
+            {
+                ParseWebException(webExcp);
+            }
+
+            return tweet;
+        }
 
         public void SendMessage(string user, string text)
         {
@@ -1207,7 +1320,12 @@ namespace TwitterLib
                                 twitterCreatedAtDateFormat,
                                 CultureInfo.GetCultureInfoByIetfLanguageTag("en-us"), DateTimeStyles.AllowWhiteSpaces);
                         }
+                        string replyTo = HttpUtility.HtmlDecode(node.SelectSingleNode("in_reply_to_status_id").InnerText);
+                        if (!string.IsNullOrEmpty(replyTo))
+                        {
+                            tweet.InReplyTo = double.Parse(HttpUtility.HtmlDecode(node.SelectSingleNode("in_reply_to_status_id").InnerText));
 
+                        }
                         XmlNode userNode = node.SelectSingleNode("user");
                         User user = CreateUser(userNode);
                         tweet.User = user;
@@ -1334,7 +1452,6 @@ namespace TwitterLib
 
                     case HttpStatusCode.Unauthorized:
                         throw new SecurityException("Not Authorized.");
-
 
                     case HttpStatusCode.NotFound: // specified user does not exist
                         if (timeline == Timeline.User)

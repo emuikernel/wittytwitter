@@ -104,7 +104,70 @@
     </DataTemplate.Triggers>
   </DataTemplate>
 
-  <DataTemplate x:Key="MessagesTemplate">
+
+    <DataTemplate x:Key="MoreTemplate">
+        <DataTemplate.Resources>
+            <Storyboard x:Key="YellowFade">
+                <ColorAnimationUsingKeyFrames BeginTime="00:00:00" Storyboard.TargetName="grid" Storyboard.TargetProperty="(Panel.Background).(SolidColorBrush.Color)" FillBehavior="Stop">
+                    <SplineColorKeyFrame KeyTime="00:00:00" Value="#FFFEFF76" />
+                    <SplineColorKeyFrame KeyTime="00:00:01" Value="#19FEFF76" />
+                </ColorAnimationUsingKeyFrames>
+            </Storyboard>
+            <Storyboard x:Key="YellowForever">
+                <ColorAnimationUsingKeyFrames BeginTime="00:00:00" Storyboard.TargetName="grid" Storyboard.TargetProperty="(Panel.Background).(SolidColorBrush.Color)">
+                    <SplineColorKeyFrame KeyTime="00:00:00" Value="#FFFEFF76" />
+                    <SplineColorKeyFrame KeyTime="00:00:01" Value="#FFFEFF76" />
+                </ColorAnimationUsingKeyFrames>
+            </Storyboard>
+        </DataTemplate.Resources>
+        <DockPanel x:Name="grid" Background="#01FFFFFF">
+            <Image DockPanel.Dock="Left" Width="35" Height="35" Margin="0,0,5,0" Source="{Binding Path=User.ImageUrl, Converter={StaticResource ImageConverter}}" x:Name="UserImage" />
+            <StackPanel DockPanel.Dock="Right" Width="Auto">
+                <DockPanel VerticalAlignment="Top">
+                    <TextBlock Text="{Binding Path=User.ScreenName, FallbackValue=Screen Name}" FontWeight="Bold" FontSize="12" VerticalAlignment="Bottom" HorizontalAlignment="Left" x:Name="ScreenName" Cursor="Hand" ToolTip="View this user's recent tweets" />
+                    <Button Width="20" Height="Auto" HorizontalAlignment="Right" Margin="0,0,2,0" Visibility="Collapsed" x:Name="ReplyButton">
+                        <TextBlock TextWrapping="Wrap" Text="@" VerticalAlignment="Center" x:Name="textBlock" />
+                    </Button>
+                    <TextBlock VerticalAlignment="Center" FontSize="9" Text="{Binding Path=RelativeTime, FallbackValue=1 minute ago}" FontStyle="Italic" Margin="2,2,2,2" Foreground="{DynamicResource SubForegroundBrush}" ToolTip="{Binding Path=DateCreated, Mode=Default}" />
+                    <TextBlock VerticalAlignment="Center" FontSize="9" Text="{Binding Path=Source, Mode=Default, FallbackValue=from web}" FontStyle="Italic" TextTrimming="CharacterEllipsis" Foreground="{DynamicResource SubForegroundBrush}" />
+                </DockPanel>
+                <controls:TweetTextBlock x:Name="TweetText" FontSize="11" TweetText="{Binding Path=Text, FallbackValue=Tweet Text}" TextWrapping="Wrap" Margin="0,0,1,0" />
+            </StackPanel>
+        </DockPanel>
+        <DataTemplate.Triggers>
+            <Trigger Property="IsMouseOver" Value="True" SourceName="ScreenName">
+                <Setter Property="Foreground" Value="#FF177E8C" TargetName="ScreenName"/>
+            </Trigger>
+            <DataTrigger Binding="{Binding Path=IsNew}" Value="True">
+                <DataTrigger.EnterActions>
+                    <BeginStoryboard Storyboard="{StaticResource YellowFade}" x:Name="YellowFade_BeginStoryboard" />
+                </DataTrigger.EnterActions>
+            </DataTrigger>
+            <DataTrigger Binding="{Binding Path=IsInteresting}" Value="True">
+                <DataTrigger.EnterActions>
+                    <BeginStoryboard Storyboard="{StaticResource YellowForever}" x:Name="YellowForever_BeginStoryboard" />
+                </DataTrigger.EnterActions>
+            </DataTrigger>
+
+            <DataTrigger Binding="{Binding Path=IsReply}" Value="true">
+                <DataTrigger.Setters>
+                    <Setter Property="Background" Value="{StaticResource ReplyTweetBrush}" TargetName="grid"/>
+                </DataTrigger.Setters>
+            </DataTrigger>
+
+            <DataTrigger Binding="{Binding Path=Timeline}" Value="DirectMessages">
+                <DataTrigger.Setters>
+                    <Setter Property="Background" Value="{StaticResource DirectMessageBrush}" TargetName="grid"/>
+                </DataTrigger.Setters>
+            </DataTrigger>
+
+            <!--<Trigger Property="IsMouseOver" Value="True">
+			<Setter Property="Visibility" TargetName="ReplyButton" Value="Visible"/>
+		  </Trigger>-->
+        </DataTemplate.Triggers>
+    </DataTemplate>
+
+    <DataTemplate x:Key="MessagesTemplate">
     <DataTemplate.Resources>
       <Storyboard x:Key="YellowFade">
         <ColorAnimationUsingKeyFrames BeginTime="00:00:00" Storyboard.TargetName="grid" Storyboard.TargetProperty="(Panel.Background).(SolidColorBrush.Color)">
@@ -162,9 +225,11 @@
             <!--<Trigger Property="IsSelected" Value="true">
                 <Setter Property="Background" Value="{StaticResource SelectedBackgroundBrush}"/>
             </Trigger>-->
+            <!--
             <DataTrigger Binding="{Binding Index, Converter={StaticResource IndexToIsAlternateRowConverter}}" Value="true">
               <Setter Property="Background" Value="{StaticResource AlternatingBackgroundBrush}" />
             </DataTrigger>
+            -->
             <Trigger Property="IsMouseOver" Value="true">
               <Setter Property="Background" Value="{StaticResource ListHoverBrush}" />
             </Trigger>
@@ -546,7 +611,7 @@
         <ControlTemplate TargetType="{x:Type TabItem}">
           <Grid>
             <Border x:Name="Border" Background="{TemplateBinding Background}" BorderBrush="{TemplateBinding BorderBrush}" BorderThickness="1,1,1,1" CornerRadius="5" Padding="{TemplateBinding Padding}" Margin="5,5,5,5">
-              <ContentPresenter x:Name="ContentSite" VerticalAlignment="Center" HorizontalAlignment="Center" ContentSource="Header" Margin="12,2,12,2" RecognizesAccessKey="True" />
+              <ContentPresenter x:Name="ContentSite" VerticalAlignment="Center" HorizontalAlignment="Center" ContentSource="Header" Margin="5,2,5,2" RecognizesAccessKey="True" />
             </Border>
           </Grid>
           <ControlTemplate.Triggers>
