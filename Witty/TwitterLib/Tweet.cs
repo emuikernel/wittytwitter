@@ -30,6 +30,7 @@ namespace TwitterLib
         private bool isSearchResult;
         private Timeline timeline = Timeline.Friends;
         private bool isReply = false;
+        private bool isDirectMessage;
 
         #endregion
 
@@ -336,6 +337,19 @@ namespace TwitterLib
                     isReply = value;
                     OnPropertyChanged("IsReply");
                 }
+            }
+        }
+
+        public bool IsDirectMessage
+        {
+            get { return isDirectMessage; }
+            set
+            {
+                if (value != isDirectMessage)
+                {
+                    isDirectMessage = value;
+                    OnPropertyChanged("IsDirectMessage");
+    }
             }
         }
     }
