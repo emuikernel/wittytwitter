@@ -720,7 +720,8 @@ namespace TwitterLib
 
         public Tweet AddTweet(string text, double replyid)
         {
-            bool isDirectMessage = (text.StartsWith("d ", StringComparison.CurrentCultureIgnoreCase));
+            Tweet tweet = new Tweet();
+            tweet.IsDirectMessage = (text.StartsWith("d ", StringComparison.CurrentCultureIgnoreCase));
 
             if (string.IsNullOrEmpty(text))
                 return null;
@@ -755,8 +756,6 @@ namespace TwitterLib
             }
             stOut.Close();
 
-            Tweet tweet;
-
             // Do the request to get the response
             using (HttpWebResponse response = request.GetResponse() as HttpWebResponse)
             {
@@ -767,15 +766,14 @@ namespace TwitterLib
                 XmlDocument doc = new XmlDocument();
                 doc.Load(reader);
 
-                XmlNode node = doc.SelectSingleNode("status");
+                 XmlNode node = doc.SelectSingleNode("status");
 
-                tweet = new Tweet();
-                tweet.Id = double.Parse(node.SelectSingleNode("id").InnerText);
-                //Defect 43 - Twitter incorrectly returns last tweet sent when you direct message someone.
-                if (isDirectMessage)
-                    tweet.Text = HttpUtility.UrlDecode(text);
-                else
-                    tweet.Text = HttpUtility.HtmlDecode(node.SelectSingleNode("text").InnerText);
+                 tweet.Id = double.Parse(node.SelectSingleNode("id").InnerText);
+
+                 //Defect 43 - Twitter incorrectly returns last tweet sent when you direct message someone.
+                 tweet.Text = tweet.IsDirectMessage
+                                    ? HttpUtility.UrlDecode(text)
+                                    : HttpUtility.HtmlDecode(node.SelectSingleNode("text").InnerText);
 
                 string source = HttpUtility.HtmlDecode(node.SelectSingleNode("source").InnerText);
                 // Remove html from the source string

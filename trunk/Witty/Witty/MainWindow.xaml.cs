@@ -916,14 +916,28 @@ namespace Witty
 
                 foreach (Tweet tweet in addedTweets)
                 {
+                    if (tweet.IsDirectMessage)
+                    {
+                        string dmTarget = GetDMTarget(tweet);
+                        StatusTextBlock.Text = string.Format("Direct message to {0} sent", dmTarget);
+                    }
+                    else
+                    {
                     tweets.Insert(0, tweet);
                 }
+            }
             }
             else
             {
                 App.Logger.Error("There was a problem posting your tweet to Twitter.com.");
                 MessageBox.Show("There was a problem posting your tweet to Twitter.com.");
             }
+        }
+
+        private string GetDMTarget(Tweet tweet)
+        {
+            Match m = Regex.Match(tweet.Text, @"\b[Dd]\s+(?<dmTarget>\w+)\s+");
+            return m.Groups["dmTarget"].Value;
         }
 
         private void Update_MouseLeftButtonUp(object sender, MouseButtonEventArgs e)
@@ -1938,6 +1952,8 @@ namespace Witty
         private void Tabs_SelectionChanged(object sender, SelectionChangedEventArgs e)
         {
             TabControl tabs = (TabControl)sender;
+
+            //Selection changed events bubble, which is rarely expected
             if (e.Source != Tabs)
                 return;
 
@@ -2748,14 +2764,13 @@ namespace Witty
 
             ParseTextHereAndTinyUpAnyURLsFound(ref tweetText);
 
-            if (tweetText != textBox.Text)
-            {
+            if (tweetText == textBox.Text) return false;
+            
                 textBox.Text = tweetText;
                 textBox.SelectionStart = textBox.Text.Length;
+            
                 return true;
             }
-            return false;
-        }
         #endregion
 
         

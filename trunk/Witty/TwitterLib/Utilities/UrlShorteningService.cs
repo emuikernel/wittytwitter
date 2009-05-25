@@ -29,6 +29,10 @@ namespace TwitterLib
                     requestTemplate = "http://cli.gs/api/v1/cligs/create?url={0}&appid=WittyTwitter";
                     baseUrl = "cli.gs";
                     break;
+                case ShorteningService.trim:
+                    requestTemplate = "http://api.tr.im/api/trim_simple?url={0}";
+                    baseUrl = "tr.im";
+                    break;
                 case ShorteningService.TinyUrl:
                 default:
                     requestTemplate = "http://tinyurl.com/api-create.php?url={0}";
@@ -61,7 +65,7 @@ namespace TwitterLib
             }
 
             // reassemble if we found at least 1 url, otherwise return unaltered
-                return foundUrl ? String.Join(" ", textSplitIntoWords) : text;
+            return foundUrl ? String.Join(" ", textSplitIntoWords) : text;
         }
 
         /// <summary>
@@ -75,7 +79,8 @@ namespace TwitterLib
                 sourceUrl.Contains("http://tinyurl.com") ||
                 sourceUrl.Contains("http://bit.ly") ||
                 sourceUrl.Contains("http://is.gd") ||
-                sourceUrl.Contains("http://cli.gs");
+                sourceUrl.Contains("http://cli.gs") ||
+                sourceUrl.Contains("http://tr.im");
         }
 
         public string GetNewShortUrl(string sourceUrl, IWebProxy webProxy)
@@ -93,7 +98,7 @@ namespace TwitterLib
                 // tinyurl doesn't like urls w/o protocols so we'll ensure we have at least http
                 string requestUrl = string.Format(this.requestTemplate,(EnsureMinimalProtocol(sourceUrl)));
                 WebRequest request = HttpWebRequest.Create(requestUrl);
-
+                
                 request.Proxy = webProxy;
 
                 try
@@ -143,6 +148,6 @@ namespace TwitterLib
     }
     public enum ShorteningService
     {
-        TinyUrl, Bitly, isgd, Cligs
+        TinyUrl, Bitly, isgd, Cligs, trim
     }
 }
