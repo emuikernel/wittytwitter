@@ -51,7 +51,7 @@ namespace Witty
                 m_EventHandle = CreateEvent(IntPtr.Zero, true, false, EVENT_NAME);
                 if (m_EventHandle != IntPtr.Zero) //if successfull
                 {
-                    Thread thread = new Thread(new ThreadStart(WaitForSignal));
+                    Thread thread = new Thread(new ThreadStart(WaitForSignal)) { Name = "Single instance manager" };
                     thread.Start();
                 }
             }
