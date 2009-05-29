@@ -2606,7 +2606,7 @@ namespace Witty
 
         private void SetupFriendsListTimer()
         {
-            friendsRefreshTimer.Interval = new TimeSpan(0,0,20);
+            friendsRefreshTimer.Interval = new TimeSpan(0,0,5);
             friendsRefreshTimer.IsEnabled = true;
             friendsRefreshTimer.Start();
             friendsRefreshTimer.Tick += new EventHandler(friendsRefreshTimer_Tick);
@@ -2614,7 +2614,7 @@ namespace Witty
 
         private void DispatchFriendsList()
         {
-            LayoutRoot.Dispatcher.BeginInvoke(DispatcherPriority.ApplicationIdle, new NoArgDelegate(UpdateFriendsList));
+            new NoArgDelegate(this.UpdateFriendsList).BeginInvoke(null, null);
         }
 
         void friendsRefreshTimer_Tick(object sender, EventArgs e)

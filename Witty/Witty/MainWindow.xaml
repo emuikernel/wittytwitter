@@ -281,7 +281,7 @@
                         </Grid>
                     </TabItem>
                 <!-- More Tab -->
-                <TabItem Header="More.." Padding="1,1,1,1" x:Name="MoreTab" LostFocus="MoreTab_LostFocus">
+                <TabItem Header="More..." Padding="1,1,1,1" x:Name="MoreTab" LostFocus="MoreTab_LostFocus">
                         <Grid x:Name="More">
                             <ListBox x:Name="MoreListBox" ScrollViewer.CanContentScroll="False" IsSynchronizedWithCurrentItem="True" ItemsSource="{Binding Mode=OneWay}" ItemTemplate="{DynamicResource MoreTemplate}"  ScrollViewer.HorizontalScrollBarVisibility="Disabled" Margin="0,0,0,20"  BorderThickness="0,0,0,0"
               controls:TweetTextBlock.NameClick="NameClickedInTweet"
