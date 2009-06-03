@@ -32,7 +32,7 @@ namespace Witty
             {
                 UserCollection friends = App.friends;
                 var sortedFriends = new List<User>(friends);
-                sortedFriends.Sort((u, u2) => u.Name.CompareTo(u2.Name));
+                sortedFriends.Sort((u, u2) => u.ScreenName.CompareTo(u2.ScreenName));
                 allFriends = sortedFriends;
             }
             return allFriends;
@@ -576,7 +576,7 @@ namespace Witty
         private void BindFriendsDropDown()
         {
             FriendsOptionsComboBox.ItemsSource = GetFriends();
-            FriendsOptionsComboBox.DisplayMemberPath = "Name";                
+            FriendsOptionsComboBox.DisplayMemberPath = "Username";                
         }
 
         private void UpdateStatus(User user, UserBehavior behavior)

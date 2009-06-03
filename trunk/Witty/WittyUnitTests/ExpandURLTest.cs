@@ -2,6 +2,7 @@
 using System.IO;
 using System.Net;
 using NUnit.Framework;
+using System.Runtime.Serialization.Json;
 
 namespace WittyUnitTests
 {
@@ -31,6 +32,7 @@ namespace WittyUnitTests
             {
                 // Insert fancy DataContractJsonSerializer in .NET 3.5 stuff here
                 jsonResponse = sr.ReadToEnd();
+                //new DataContractJsonSerializer(...)
             }
 
             /* 
