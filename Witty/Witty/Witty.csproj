@@ -64,6 +64,7 @@
     <OutputPath>.\bin\Release\</OutputPath>
     <DefineConstants>TRACE</DefineConstants>
     <UseVSHostingProcess>false</UseVSHostingProcess>
+    <PlatformTarget>x86</PlatformTarget>
   </PropertyGroup>
   <ItemGroup>
     <Reference Include="CustomWindow, Version=1.0.0.0, Culture=neutral, processorArchitecture=MSIL">
