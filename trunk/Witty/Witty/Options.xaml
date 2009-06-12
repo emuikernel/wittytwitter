@@ -124,6 +124,10 @@
                             <Label Content="_Retweet Prefix" Target="{Binding ElementName=RetweetComboBox}" VerticalAlignment="Center" Margin="0,0,5,0" Padding="5,2"/>
                             <ComboBox x:Name="RetweetComboBox"  Width="Auto" IsEditable="True"></ComboBox>
                         </DockPanel>
+                        <DockPanel HorizontalAlignment="Left" Margin="0,10,0,0">
+                            <Label Content="Re_ply Prefix" Target="{Binding ElementName=RetweetComboBox}" VerticalAlignment="Center" Margin="0,0,5,0" Padding="5,2"/>
+                            <ComboBox x:Name="ReplyComboBox"  Width="Auto" IsEditable="True"></ComboBox>
+                        </DockPanel>
                     </StackPanel>
                 </Border>
 

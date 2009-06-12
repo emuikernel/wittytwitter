@@ -434,5 +434,17 @@ namespace Witty.Properties {
                 this["SerializedUserBehaviors"] = value;
             }
         }
+        
+        [global::System.Configuration.UserScopedSettingAttribute()]
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+        [global::System.Configuration.DefaultSettingValueAttribute("r")]
+        public string ReplyPrefix {
+            get {
+                return ((string)(this["ReplyPrefix"]));
+            }
+            set {
+                this["ReplyPrefix"] = value;
+            }
+        }
     }
 }

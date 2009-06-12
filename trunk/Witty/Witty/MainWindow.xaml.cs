@@ -1769,7 +1769,9 @@ namespace Witty
             }
             isReplyMessage = true;
             TweetTextBox.Text = string.Empty;
-            TweetTextBox.Text = "@" + screenName + " ";
+            if(!string.IsNullOrEmpty(AppSettings.ReplyPrefix)) 
+                TweetTextBox.Text = AppSettings.ReplyPrefix + " ";
+            TweetTextBox.Text += "@" + screenName + " ";
             TweetTextBox.Select(TweetTextBox.Text.Length, 0);
         }
 
@@ -1806,6 +1808,8 @@ namespace Witty
             }
             isReplyMessage = true;
             TweetTextBox.Text = string.Empty;
+            if (!string.IsNullOrEmpty(AppSettings.ReplyPrefix))
+                TweetTextBox.Text = AppSettings.ReplyPrefix + " ";
 
             foreach (string screenName in screenNames)
             {
