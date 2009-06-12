@@ -71,11 +71,18 @@ namespace Witty
             RetweetComboBox.Items.Add("Retweet");
             RetweetComboBox.Items.Add("\u267A");
             RetweetComboBox.Items.Add("\u00BB");
-            
+
             if (!string.IsNullOrEmpty(AppSettings.RetweetPrefix))
-            {
                 RetweetComboBox.Text = AppSettings.RetweetPrefix;
-            }
+
+            ReplyComboBox.Items.Add("r");
+            ReplyComboBox.Items.Add("-");
+            ReplyComboBox.Items.Add(".");
+            ReplyComboBox.Items.Add(">");
+            ReplyComboBox.Items.Add("\u00BB");
+
+            if (!string.IsNullOrEmpty(AppSettings.ReplyPrefix))
+                ReplyComboBox.Text = AppSettings.ReplyPrefix;
 
             isInitializing = true;
             SkinsComboBox.ItemsSource = SkinsManager.GetSkins();
@@ -356,6 +363,9 @@ namespace Witty
                 
                 if(!string.IsNullOrEmpty(RetweetComboBox.Text))
                     AppSettings.RetweetPrefix = RetweetComboBox.Text;
+
+                if(!string.IsNullOrEmpty(ReplyComboBox.Text))
+                    AppSettings.ReplyPrefix = ReplyComboBox.Text;
 
                 int setting;
                 if (int.TryParse(((ComboBox)KeepLatestComboBox).Text, out setting))

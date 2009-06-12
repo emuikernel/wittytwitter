@@ -107,5 +107,8 @@
     <Setting Name="SerializedUserBehaviors" Type="System.String" Scope="User">
       <Value Profile="(Default)" />
     </Setting>
+    <Setting Name="ReplyPrefix" Type="System.String" Scope="User">
+      <Value Profile="(Default)">r</Value>
+    </Setting>
   </Settings>
 </SettingsFile>
