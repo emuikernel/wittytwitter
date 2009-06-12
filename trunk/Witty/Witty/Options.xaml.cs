@@ -576,7 +576,7 @@ namespace Witty
         private void BindFriendsDropDown()
         {
             FriendsOptionsComboBox.ItemsSource = GetFriends();
-            FriendsOptionsComboBox.DisplayMemberPath = "Username";                
+            FriendsOptionsComboBox.DisplayMemberPath = "ScreenName";                
         }
 
         private void UpdateStatus(User user, UserBehavior behavior)

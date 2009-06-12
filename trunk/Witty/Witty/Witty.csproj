@@ -75,10 +75,6 @@
       <SpecificVersion>False</SpecificVersion>
       <HintPath>..\..\ExternalDependencies\Dimebrain.TweetSharp.dll</HintPath>
     </Reference>
-    <Reference Include="FluidKit, Version=1.0.0.0, Culture=neutral, processorArchitecture=MSIL">
-      <SpecificVersion>False</SpecificVersion>
-      <HintPath>..\..\ExternalDependencies\FluidKit\FluidKit.dll</HintPath>
-    </Reference>
     <Reference Include="Growl.Connector, Version=2.0.0.0, Culture=neutral, PublicKeyToken=980c2339411be384, processorArchitecture=x86">
       <SpecificVersion>False</SpecificVersion>
       <HintPath>..\..\ExternalDependencies\Growl.Connector.dll</HintPath>

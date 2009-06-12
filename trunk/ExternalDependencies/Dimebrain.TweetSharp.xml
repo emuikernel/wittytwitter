@@ -4,6 +4,13 @@
         <name>Dimebrain.TweetSharp</name>
     </assembly>
     <members>
+        <member name="T:Dimebrain.TweetSharp.TwitterClientInfo">
+            <summary>
+             This class provides meta-data for your specific Twitter application, that is
+             used to identify your client to Twitter, store OAuth credentials for all future
+             request, and in some cases define a transparent proxy to redirect API calls to.
+            </summary>
+        </member>
         <member name="P:Dimebrain.TweetSharp.TwitterClientInfo.ClientName">
             <summary>
             This is the name of your client application. It is used to
@@ -32,7 +39,13 @@
             in every query.
             </summary>
         </member>
-        <!-- Badly formed XML comment ignored for member "P:Dimebrain.TweetSharp.TwitterClientInfo.ConsumerSecret" -->
+        <member name="P:Dimebrain.TweetSharp.TwitterClientInfo.ConsumerSecret">
+            <summary>
+            If your client is using OAuth authentication, this value should be set
+            to the value of your consumer secret. This avoids having to provide the secret
+            in every query.
+            </summary>
+        </member>
         <member name="T:Dimebrain.TweetSharp.Fluent.ITwitterLeafNode">
             <summary>
             The interface describing a Twitter leaf node in the fluent expression tree.
@@ -495,6 +508,12 @@
             <param name="instance"></param>
             <returns></returns>
         </member>
+        <member name="T:Dimebrain.TweetSharp.Fluent.FluentTwitter">
+            <summary>
+             This is the main fluent class for building expressions
+             bound for the Twitter API.
+            </summary>
+        </member>
         <member name="M:Dimebrain.TweetSharp.Fluent.FluentTwitter.CreateRequest(Dimebrain.TweetSharp.TwitterClientInfo)">
             <summary>
             Creates a new composable query, using a specified client and a default platform.
@@ -683,7 +702,7 @@
         </member>
         <member name="M:Dimebrain.TweetSharp.Extensions.TwitterExtensions.AsToken(System.String)">
             <summary>
-            This method attempts to cast a string response into an <see cref="T:Dimebrain.TweetSharp.Core.OAuth.OAuthToken"/>.
+            This method attempts to cast a string response into an <see cref="T:Dimebrain.TweetSharp.Model.OAuthToken"/>.
             If unsuccessful, null is returned.
             </summary>
             <param name="xmlOrJson">The XML or JSON input to convert</param>
@@ -750,19 +769,9 @@
             Uses a Unicode character (U2672) at the beginning of an update.
             </summary>
         </member>
-        <member name="T:Dimebrain.TweetSharp.Core.OAuth.OAuthToken">
+        <member name="F:Dimebrain.TweetSharp.Fluent.RetweetMode.Suffix">
             <summary>
-            A data class representing either a request or an access token returned during an OAuth session.
-            </summary>
-        </member>
-        <member name="P:Dimebrain.TweetSharp.Core.OAuth.OAuthToken.Token">
-            <summary>
-            Gets or sets the token.
-            </summary>
-        </member>
-        <member name="P:Dimebrain.TweetSharp.Core.OAuth.OAuthToken.TokenSecret">
-            <summary>
-            Gets or sets the token secret.
+            Uses 'via (@screen_name)' at the end of an update.
             </summary>
         </member>
         <member name="F:Dimebrain.TweetSharp.Core.Web.WebPlatform.Twitter">
@@ -891,6 +900,21 @@
             <summary>
             Sometimes Twitter returns "0" for "true", instead of true. For that,
             and possibly future issues, this converter exists.
+            </summary>
+        </member>
+        <member name="T:Dimebrain.TweetSharp.Model.OAuthToken">
+            <summary>
+            A data class representing either a request or an access token returned during an OAuth session.
+            </summary>
+        </member>
+        <member name="P:Dimebrain.TweetSharp.Model.OAuthToken.Token">
+            <summary>
+            Gets or sets the token.
+            </summary>
+        </member>
+        <member name="P:Dimebrain.TweetSharp.Model.OAuthToken.TokenSecret">
+            <summary>
+            Gets or sets the token secret.
             </summary>
         </member>
         <member name="T:Dimebrain.TweetSharp.Core.Web.WebQueryClient">
