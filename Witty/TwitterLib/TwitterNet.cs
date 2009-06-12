@@ -639,13 +639,13 @@ namespace TwitterLib
                 var results = new List<TwitterUser>();
                 for (var i = 1; i <= ceiling; i++)
                 {
-                    var followers = FluentTwitter.CreateRequest(new Dimebrain.TweetSharp.TwitterClientInfo() { ClientName = "Witty" })
+                    var friends = FluentTwitter.CreateRequest(new Dimebrain.TweetSharp.TwitterClientInfo() { ClientName = "Witty" })
                         .AuthenticateAs(username, ToInsecureString(password))
-                        .Users().GetFollowers().For(userId)
+                        .Users().GetFriends().For(userId)
                         .Skip(i).AsJson()
                         .Request().AsUsers();
 
-                    results.AddRange(followers);
+                    results.AddRange(friends);
                 }
 
                 foreach (TwitterUser user in results)
