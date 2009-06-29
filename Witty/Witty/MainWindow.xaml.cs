@@ -2777,11 +2777,29 @@ namespace Witty
             }
         #endregion
 
-        
-          
+        private void Recent_Drop(object sender, DragEventArgs e)
+        {
+            if (e.Data.GetDataPresent(DataFormats.FileDrop))
+            {
+                string[] droppedFilePaths =
+                e.Data.GetData(DataFormats.FileDrop, true) as string[];
 
-       
+                foreach (string droppedFilePath in droppedFilePaths)
+                {
+                    Dispatcher.BeginInvoke(DispatcherPriority.Input, new System.Threading.ThreadStart(() =>
+                    {
+                        twitter.PostPhoto(new System.IO.FileInfo(droppedFilePath), TweetTextBox.Text);
+                    }));
+                    
+                    ShowStatus(System.IO.Path.GetFileNameWithoutExtension(droppedFilePath));
+                }
+            }
+        }
 
+        private void Recent_PreviewDragOver(object sender, DragEventArgs e)
+        {
+            e.Effects = DragDropEffects.All;
+            e.Handled = true;
+        }
     }
-
 }

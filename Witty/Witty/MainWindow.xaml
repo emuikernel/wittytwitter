@@ -95,7 +95,7 @@
             </Border>
 
             <!-- Main Content -->
-            <Grid x:Name="Content">
+            <Grid x:Name="Content"  AllowDrop="True" PreviewDragEnter="Recent_PreviewDragOver" PreviewDragOver="Recent_PreviewDragOver" PreviewDrop="Recent_Drop" >
                 <TabControl x:Name="Tabs" IsSynchronizedWithCurrentItem="True" DockPanel.Dock="Top" SelectionChanged="Tabs_SelectionChanged">
 
                     <!-- Recent Tab -->
@@ -129,16 +129,16 @@
                                             <ColumnDefinition Width="Auto" />
                                         </Grid.ColumnDefinitions>
                                         <TextBox Text="" TextWrapping="Wrap" x:Name="TweetTextBox" SpellCheck.IsEnabled="True" ToolTip="Enter tweet (140 character limit)" PreviewKeyDown="TweetTextBox_PreviewKeyDown" 
-                          DataObject.Pasting="TweetTextBox_OnPaste" TextChanged="TweetTextBox_TextChanged" Grid.ColumnSpan="2" Height="66" TabIndex="1" />
+                                          DataObject.Pasting="TweetTextBox_OnPaste" TextChanged="TweetTextBox_TextChanged" Grid.ColumnSpan="2" Height="66" TabIndex="1" AllowDrop="True" PreviewDragEnter="Recent_PreviewDragOver" PreviewDragOver="Recent_PreviewDragOver" PreviewDrop="Recent_Drop" />
                                         <TextBlock Text="{Binding Path=Text, Converter={StaticResource CharRemainingConverter}, ElementName=TweetTextBox, Mode=Default}" 
-								FontSize="18" 
-								Grid.Column="2" 
-								VerticalAlignment="Top" 
-								HorizontalAlignment="Left" 
-								Margin="10,-2,0,0" 
-								FontFamily="Georgia" 
-								x:Name="CharRemainingCounter"                                 
-								Foreground="{Binding Path=Text.Length, ElementName=TweetTextBox, Converter={StaticResource CharRemainingColorConverter}}" />
+								            FontSize="18" 
+								            Grid.Column="2" 
+								            VerticalAlignment="Top" 
+								            HorizontalAlignment="Left" 
+								            Margin="10,-2,0,0" 
+								            FontFamily="Georgia" 
+								            x:Name="CharRemainingCounter"                                 
+								            Foreground="{Binding Path=Text.Length, ElementName=TweetTextBox, Converter={StaticResource CharRemainingColorConverter}}" />
                                         <Button Width="75" Height="23" Content="Update" Grid.Column="2" x:Name="UpdateButton" Click="UpdateButton_Click" Margin="10,0,0,10" IsDefault="True" ToolTip="Submit update" TabIndex="2" />
                                         <Button VerticalAlignment="Bottom" Width="75" Height="23" Content="Cancel" Grid.Column="2" x:Name="CancelButton" Click="CancelButton_Click" Margin="10,0,0,5" ToolTip="Clear text and hide update panel" TabIndex="3" />
                                     </Grid>
