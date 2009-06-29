@@ -18,8 +18,8 @@ namespace TwitterLib
             switch (shorteningService)
             {
                 case ShorteningService.isgd:
-                    requestTemplate = "http://is.gd/api.php?longurl={0}";
-                    baseUrl = "is.gd";
+                    requestTemplate = "http://tinyurl.com/api-create.php?url={0}";
+                    baseUrl = "tinyurl.com";
                     break;
                 case ShorteningService.Bitly:
                     requestTemplate = "http://bit.ly/api?url={0}";
@@ -33,10 +33,14 @@ namespace TwitterLib
                     requestTemplate = "http://api.tr.im/api/trim_simple?url={0}";
                     baseUrl = "tr.im";
                     break;
+                case ShorteningService.unu:
+                    requestTemplate = "http://u.nu/unu-api-simple?url={0}";
+                    baseUrl = "u.nu";
+                    break;
                 case ShorteningService.TinyUrl:
                 default:
-                    requestTemplate = "http://tinyurl.com/api-create.php?url={0}";
-                    baseUrl = "tinyurl.com";
+                    requestTemplate = "http://is.gd/api.php?longurl={0}";
+                    baseUrl = "is.gd";
                     break;
             }
         }
@@ -80,7 +84,8 @@ namespace TwitterLib
                 sourceUrl.Contains("http://bit.ly") ||
                 sourceUrl.Contains("http://is.gd") ||
                 sourceUrl.Contains("http://cli.gs") ||
-                sourceUrl.Contains("http://tr.im");
+                sourceUrl.Contains("http://tr.im") ||
+                sourceUrl.Contains("http://u.nu");
         }
 
         public string GetNewShortUrl(string sourceUrl, IWebProxy webProxy)
@@ -148,6 +153,6 @@ namespace TwitterLib
     }
     public enum ShorteningService
     {
-        TinyUrl, Bitly, isgd, Cligs, trim
+        TinyUrl, Bitly, isgd, Cligs, trim, unu
     }
 }
