@@ -689,6 +689,26 @@ namespace TwitterLib
             return user;
         }
 
+        public void PostPhoto(System.IO.FileInfo file, string text)
+        {
+
+            //var twitter = FluentTwitter.CreateRequest()
+            //.AuthenticateAs(username, ToInsecureString(password))
+            //.Statuses().Update("test")  
+            //.AsJson();  
+
+            //var response = twitter.Request();
+            System.Net.ServicePointManager.Expect100Continue = false;
+
+            var request = FluentTwitter.CreateRequest(new Dimebrain.TweetSharp.TwitterClientInfo() { ClientName = "Witty" })
+            .AuthenticateAs(username, ToInsecureString(password))
+            .Photos().PostPhoto(file.FullName, Dimebrain.TweetSharp.Fluent.Services.SendPhotoServiceProvider.TwitGoo)
+            .Statuses().Update(text)
+            .AsJson();
+            var response = request.Request();
+            string monkey = response.AsStatus().Text;
+        }
+
         /// <summary>
         /// Delete a tweet from a users timeline
         /// </summary>

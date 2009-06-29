@@ -49,5 +49,7 @@
         System.Net.IWebProxy WebProxy { get; set; }
 
         string TwitterServerUrl { get; set; }
+
+        void PostPhoto(System.IO.FileInfo fileInfo, string text);
     }
 }
