@@ -17,8 +17,8 @@
     <UpgradeBackupLocation>
     </UpgradeBackupLocation>
     <OldToolsVersion>2.0</OldToolsVersion>
-    <SignManifests>false</SignManifests>
-    <ManifestCertificateThumbprint>F9BFAF6CA7B5DCF41452AA409D7F8963B9C8EC0C</ManifestCertificateThumbprint>
+    <SignManifests>true</SignManifests>
+    <ManifestCertificateThumbprint>E1FE51D3F40B171F8D51C5EAF911A0E59797AA2A</ManifestCertificateThumbprint>
     <ManifestKeyFile>Witty_TemporaryKey.pfx</ManifestKeyFile>
     <TargetZone>Internet</TargetZone>
     <GenerateManifests>true</GenerateManifests>
@@ -26,7 +26,7 @@
     <TargetFrameworkSubset>
     </TargetFrameworkSubset>
     <StartupObject>Witty.App</StartupObject>
-    <PublishUrl>ftp://ftp.alanle.net/www/software/witty/</PublishUrl>
+    <PublishUrl>ftp://ftp.alanle.net/install/</PublishUrl>
     <Install>true</Install>
     <InstallFrom>Web</InstallFrom>
     <UpdateEnabled>true</UpdateEnabled>
@@ -36,16 +36,16 @@
     <UpdatePeriodically>true</UpdatePeriodically>
     <UpdateRequired>true</UpdateRequired>
     <MapFileExtensions>true</MapFileExtensions>
-    <InstallUrl>http://www.alanle.net/software/witty/</InstallUrl>
-    <UpdateUrl>http://alanle.net/software/witty/</UpdateUrl>
+    <InstallUrl>http://www.wittytwitter.com/install/</InstallUrl>
+    <UpdateUrl>http://www.wittytwitter.com/install/</UpdateUrl>
     <SupportUrl>http://code.google.com/p/wittytwitter/</SupportUrl>
     <ProductName>Witty</ProductName>
     <PublisherName>Witty Twitter</PublisherName>
     <MinimumRequiredVersion>2.0.0.0</MinimumRequiredVersion>
     <CreateWebPageOnPublish>true</CreateWebPageOnPublish>
     <WebPage>publish.htm</WebPage>
-    <ApplicationRevision>2</ApplicationRevision>
-    <ApplicationVersion>2.0.0.%2a</ApplicationVersion>
+    <ApplicationRevision>0</ApplicationRevision>
+    <ApplicationVersion>2.3.0.%2a</ApplicationVersion>
     <UseApplicationTrust>false</UseApplicationTrust>
     <PublishWizardCompleted>true</PublishWizardCompleted>
     <BootstrapperEnabled>true</BootstrapperEnabled>
