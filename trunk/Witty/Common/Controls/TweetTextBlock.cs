@@ -1,4 +1,5 @@
 using System;
+using System.Collections;
 using System.Text.RegularExpressions;
 using System.Windows;
 using System.Windows.Controls;
@@ -111,8 +112,16 @@ namespace Common.Controls
                 TweetTextBlock textblock = (TweetTextBlock)obj;
                 textblock.Inlines.Clear();
                 textblock.Inlines.Add(" ");
-
+              
                 string[] words = Regex.Split(text, @"([ \(\)\{\}\[\]])");
+                
+                string possibleUserName = words[0].ToString();
+
+                if((possibleUserName.Length > 1) && (possibleUserName.Substring(1, 1) == "@" ))
+                {
+                    textblock = FormatName(textblock, possibleUserName);
+                    words.SetValue("", 0);
+                }
 
                 foreach (string word in words)
                 {
@@ -137,23 +146,8 @@ namespace Common.Controls
                     // clickable @name
                     else if (word.StartsWith("@"))
                     {
-                        string userName = String.Empty;
-                        Match foundUsername = Regex.Match(word, @"@(\w+)(?<suffix>.*)");
-                        if (foundUsername.Success)
-                        {
-                            userName = foundUsername.Groups[1].Captures[0].Value;
-                            Hyperlink name = new Hyperlink();
-                            name.Inlines.Add(userName);
-                            name.NavigateUri = new Uri("http://twitter.com/" + userName);
-                            name.ToolTip = "View @" + userName + "'s recent tweets";
-                            name.Tag = userName;
-
-                            name.Click += new RoutedEventHandler(name_Click);
-
-                            textblock.Inlines.Add("@");
-                            textblock.Inlines.Add(name);
-                            textblock.Inlines.Add(foundUsername.Groups["suffix"].Captures[0].Value);
-                        }
+                        textblock = FormatName(textblock, word);
+                        
                     }
 
                     // clickable #hashtag
@@ -193,6 +187,36 @@ namespace Common.Controls
 
                 textblock.Inlines.Add(" ");
             }
+        }
+
+        public static TweetTextBlock FormatName(TweetTextBlock textblock, string word)
+        {
+            string userName = String.Empty;
+            string firstLetter = word.Substring(0, 1);
+
+            Match foundUsername = Regex.Match(word, @"@(\w+)(?<suffix>.*)");
+          
+              
+
+            if (foundUsername.Success)
+            {
+                userName = foundUsername.Groups[1].Captures[0].Value;
+                Hyperlink name = new Hyperlink();
+                name.Inlines.Add(userName);
+                name.NavigateUri = new Uri("http://twitter.com/" + userName);
+                name.ToolTip = "View @" + userName + "'s recent tweets";
+                name.Tag = userName;
+
+                name.Click += new RoutedEventHandler(name_Click);
+
+                if (firstLetter != "@")
+                    textblock.Inlines.Add(firstLetter);
+
+                textblock.Inlines.Add("@");
+                textblock.Inlines.Add(name);
+                textblock.Inlines.Add(foundUsername.Groups["suffix"].Captures[0].Value);
+            }
+            return textblock;
         }
 
         #region Clickable #hashtag
