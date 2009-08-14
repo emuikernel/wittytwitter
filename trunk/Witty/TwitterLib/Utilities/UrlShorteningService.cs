@@ -29,10 +29,6 @@ namespace TwitterLib
                     requestTemplate = "http://cli.gs/api/v1/cligs/create?url={0}&appid=WittyTwitter";
                     baseUrl = "cli.gs";
                     break;
-                case ShorteningService.trim:
-                    requestTemplate = "http://api.tr.im/api/trim_simple?url={0}";
-                    baseUrl = "tr.im";
-                    break;
                 case ShorteningService.unu:
                     requestTemplate = "http://u.nu/unu-api-simple?url={0}";
                     baseUrl = "u.nu";
@@ -153,6 +149,6 @@ namespace TwitterLib
     }
     public enum ShorteningService
     {
-        TinyUrl, Bitly, isgd, Cligs, trim, unu
+        TinyUrl, Bitly, isgd, Cligs, unu
     }
 }
