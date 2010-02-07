@@ -1,0 +1,268 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<feed xmlns:google="http://base.google.com/ns/1.0" xml:lang="en-US" xmlns:openSearch="http://a9.com/-/spec/opensearch/1.1/" xmlns="http://www.w3.org/2005/Atom" xmlns:twitter="http://api.twitter.com/">
+  <id>tag:search.twitter.com,2005:search/odetocode</id>
+  <link type="text/html" href="http://search.twitter.com/search?q=odetocode" rel="alternate"/>
+  <link type="application/atom+xml" href="http://search.twitter.com/search.atom?q=odetocode" rel="self"/>
+  <title>odetocode - Twitter Search</title>
+  <link type="application/opensearchdescription+xml" href="http://search.twitter.com/opensearch.xml" rel="search"/>
+  <link type="application/atom+xml" href="http://search.twitter.com/search.atom?q=odetocode&amp;since_id=8400087468" rel="refresh"/>
+  <twitter:warning>since_id removed for pagination.</twitter:warning>
+  <updated>2010-01-29T23:46:46Z</updated>
+  <openSearch:itemsPerPage>15</openSearch:itemsPerPage>
+  <link type="application/atom+xml" href="http://search.twitter.com/search.atom?max_id=8400087468&amp;page=2&amp;q=odetocode" rel="next"/>
+  <entry>
+    <id>tag:search.twitter.com,2005:8389415663</id>
+    <published>2010-01-29T23:46:46Z</published>
+    <link type="text/html" href="http://twitter.com/OdeToCode/statuses/8389415663" rel="alternate"/>
+    <title>Tonight is a wolf moon - the closest, brightest moon of 2010   http://is.gd/7k1Fs</title>
+    <content type="html">Tonight is a wolf moon - the closest, brightest moon of 2010   &lt;a href=&quot;http://is.gd/7k1Fs&quot;&gt;http://is.gd/7k1Fs&lt;/a&gt;</content>
+    <updated>2010-01-29T23:46:46Z</updated>
+    <link type="image/png" href="http://a3.twimg.com/profile_images/318634155/scott_allen_2_normal.jpg" rel="image"/>
+    <twitter:geo>
+    </twitter:geo>
+    <twitter:source>&lt;a href=&quot;http://www.seesmic.com/&quot; rel=&quot;nofollow&quot;&gt;Seesmic&lt;/a&gt;</twitter:source>
+    <twitter:lang>en</twitter:lang>
+    <author>
+      <name>OdeToCode (K. Scott Allen)</name>
+      <uri>http://twitter.com/OdeToCode</uri>
+    </author>
+  </entry>
+  <entry>
+    <id>tag:search.twitter.com,2005:8368231998</id>
+    <published>2010-01-29T13:54:01Z</published>
+    <link type="text/html" href="http://twitter.com/pluralsight/statuses/8368231998" rel="alternate"/>
+    <title>RT @julielermanvt: RT @fritzonion: previewing some great new C# content from Scott Allen (@odetocode) for #pluralsight on-demand!</title>
+    <content type="html">RT &lt;a href=&quot;http://twitter.com/julielermanvt&quot;&gt;@julielermanvt&lt;/a&gt;: RT &lt;a href=&quot;http://twitter.com/fritzonion&quot;&gt;@fritzonion&lt;/a&gt;: previewing some great new C# content from Scott Allen (&lt;a href=&quot;http://twitter.com/odetocode&quot;&gt;@&lt;b&gt;odetocode&lt;/b&gt;&lt;/a&gt;) for &lt;a href=&quot;http://search.twitter.com/search?q=%23pluralsight&quot;&gt;#pluralsight&lt;/a&gt; on-demand!</content>
+    <updated>2010-01-29T13:54:01Z</updated>
+    <link type="image/png" href="http://a1.twimg.com/profile_images/570050808/see-eye_normal.png" rel="image"/>
+    <twitter:geo>
+    </twitter:geo>
+    <twitter:source>&lt;a href=&quot;http://apiwiki.twitter.com/&quot; rel=&quot;nofollow&quot;&gt;API&lt;/a&gt;</twitter:source>
+    <twitter:lang>en</twitter:lang>
+    <author>
+      <name>pluralsight (Pluralsight )</name>
+      <uri>http://twitter.com/pluralsight</uri>
+    </author>
+  </entry>
+  <entry>
+    <id>tag:search.twitter.com,2005:8368209989</id>
+    <published>2010-01-29T13:53:22Z</published>
+    <link type="text/html" href="http://twitter.com/julielermanvt/statuses/8368209989" rel="alternate"/>
+    <title>RT @fritzonion: previewing some great new C# content from Scott Allen (@odetocode) for #pluralsight on-demand!</title>
+    <content type="html">RT &lt;a href=&quot;http://twitter.com/fritzonion&quot;&gt;@fritzonion&lt;/a&gt;: previewing some great new C# content from Scott Allen (&lt;a href=&quot;http://twitter.com/odetocode&quot;&gt;@&lt;b&gt;odetocode&lt;/b&gt;&lt;/a&gt;) for &lt;a href=&quot;http://search.twitter.com/search?q=%23pluralsight&quot;&gt;#pluralsight&lt;/a&gt; on-demand!</content>
+    <updated>2010-01-29T13:53:22Z</updated>
+    <link type="image/png" href="http://a1.twimg.com/profile_images/403016366/oreillyjulie_normal.jpg" rel="image"/>
+    <twitter:geo>
+    </twitter:geo>
+    <twitter:source>&lt;a href=&quot;http://www.tweetdeck.com/&quot; rel=&quot;nofollow&quot;&gt;TweetDeck&lt;/a&gt;</twitter:source>
+    <twitter:lang>en</twitter:lang>
+    <author>
+      <name>julielermanvt (Julie Lerman)</name>
+      <uri>http://twitter.com/julielermanvt</uri>
+    </author>
+  </entry>
+  <entry>
+    <id>tag:search.twitter.com,2005:8368032430</id>
+    <published>2010-01-29T13:47:57Z</published>
+    <link type="text/html" href="http://twitter.com/fritzonion/statuses/8368032430" rel="alternate"/>
+    <title>previewing some great new C# content from Scott Allen (@odetocode) for #pluralsight on-demand!</title>
+    <content type="html">previewing some great new C# content from Scott Allen (&lt;a href=&quot;http://twitter.com/odetocode&quot;&gt;@&lt;b&gt;odetocode&lt;/b&gt;&lt;/a&gt;) for &lt;a href=&quot;http://search.twitter.com/search?q=%23pluralsight&quot;&gt;#pluralsight&lt;/a&gt; on-demand!</content>
+    <updated>2010-01-29T13:47:57Z</updated>
+    <link type="image/png" href="http://a1.twimg.com/profile_images/657376246/twitterProfilePhoto_normal.jpg" rel="image"/>
+    <twitter:geo>
+    </twitter:geo>
+    <twitter:source>&lt;a href=&quot;http://www.tweetdeck.com/&quot; rel=&quot;nofollow&quot;&gt;TweetDeck&lt;/a&gt;</twitter:source>
+    <twitter:lang>en</twitter:lang>
+    <author>
+      <name>fritzonion (fritzonion)</name>
+      <uri>http://twitter.com/fritzonion</uri>
+    </author>
+  </entry>
+  <entry>
+    <id>tag:search.twitter.com,2005:8322951958</id>
+    <published>2010-01-28T13:48:19Z</published>
+    <link type="text/html" href="http://twitter.com/OdeToCode/statuses/8322951958" rel="alternate"/>
+    <title>@BlessYahu It wasn't recorded, unfortuantely.</title>
+    <content type="html">&lt;a href=&quot;http://twitter.com/BlessYahu&quot;&gt;@BlessYahu&lt;/a&gt; It wasn&amp;apos;t recorded, unfortuantely.</content>
+    <updated>2010-01-28T13:48:19Z</updated>
+    <link type="image/png" href="http://a3.twimg.com/profile_images/318634155/scott_allen_2_normal.jpg" rel="image"/>
+    <twitter:geo>
+    </twitter:geo>
+    <twitter:source>&lt;a href=&quot;http://www.seesmic.com/&quot; rel=&quot;nofollow&quot;&gt;Seesmic&lt;/a&gt;</twitter:source>
+    <twitter:lang>en</twitter:lang>
+    <author>
+      <name>OdeToCode (K. Scott Allen)</name>
+      <uri>http://twitter.com/OdeToCode</uri>
+    </author>
+  </entry>
+  <entry>
+    <id>tag:search.twitter.com,2005:8302641147</id>
+    <published>2010-01-28T01:04:46Z</published>
+    <link type="text/html" href="http://twitter.com/OdeToCode/statuses/8302641147" rel="alternate"/>
+    <title>Watching @craigandera hack on Clojure. http://twitpic.com/102vup</title>
+    <content type="html">Watching &lt;a href=&quot;http://twitter.com/craigandera&quot;&gt;@craigandera&lt;/a&gt; hack on Clojure. &lt;a href=&quot;http://twitpic.com/102vup&quot;&gt;http://twitpic.com/102vup&lt;/a&gt;</content>
+    <updated>2010-01-28T01:04:46Z</updated>
+    <link type="image/png" href="http://a3.twimg.com/profile_images/318634155/scott_allen_2_normal.jpg" rel="image"/>
+    <twitter:geo>
+    </twitter:geo>
+    <twitter:source>&lt;a href=&quot;http://www.seesmic.com/&quot; rel=&quot;nofollow&quot;&gt;Seesmic&lt;/a&gt;</twitter:source>
+    <twitter:lang>en</twitter:lang>
+    <author>
+      <name>OdeToCode (K. Scott Allen)</name>
+      <uri>http://twitter.com/OdeToCode</uri>
+    </author>
+  </entry>
+  <entry>
+    <id>tag:search.twitter.com,2005:8302601907</id>
+    <published>2010-01-28T01:03:39Z</published>
+    <link type="text/html" href="http://twitter.com/mattpodwysocki/statuses/8302601907" rel="alternate"/>
+    <title>Ah @OdeToCode has decided to join the #clojure love</title>
+    <content type="html">Ah &lt;a href=&quot;http://twitter.com/OdeToCode&quot;&gt;@&lt;b&gt;OdeToCode&lt;/b&gt;&lt;/a&gt; has decided to join the &lt;a href=&quot;http://search.twitter.com/search?q=%23clojure&quot;&gt;#clojure&lt;/a&gt; love</content>
+    <updated>2010-01-28T01:03:39Z</updated>
+    <link type="image/png" href="http://a1.twimg.com/profile_images/52905264/matthewp_477_small_normal.jpg" rel="image"/>
+    <twitter:geo>
+    </twitter:geo>
+    <twitter:source>&lt;a href=&quot;http://m.twitter.com/&quot; rel=&quot;nofollow&quot;&gt;mobile web&lt;/a&gt;</twitter:source>
+    <twitter:lang>en</twitter:lang>
+    <author>
+      <name>mattpodwysocki (Matthew Podwysocki)</name>
+      <uri>http://twitter.com/mattpodwysocki</uri>
+    </author>
+  </entry>
+  <entry>
+    <id>tag:search.twitter.com,2005:8283837598</id>
+    <published>2010-01-27T15:55:33Z</published>
+    <link type="text/html" href="http://twitter.com/fogus/statuses/8283837598" rel="alternate"/>
+    <title>D.C. alt.net meeting tonight is Clojure with @craigandera. http://is.gd/79Dmn  It's gonna be def!!! (via @OdeToCode)</title>
+    <content type="html">D.C. alt.net meeting tonight is Clojure with &lt;a href=&quot;http://twitter.com/craigandera&quot;&gt;@craigandera&lt;/a&gt;. &lt;a href=&quot;http://is.gd/79Dmn&quot;&gt;http://is.gd/79Dmn&lt;/a&gt;  It&amp;apos;s gonna be def!!! (via &lt;a href=&quot;http://twitter.com/OdeToCode&quot;&gt;@&lt;b&gt;OdeToCode&lt;/b&gt;&lt;/a&gt;)</content>
+    <updated>2010-01-27T15:55:33Z</updated>
+    <link type="image/png" href="http://static.twitter.com/images/default_profile_normal.png" rel="image"/>
+    <twitter:geo>
+    </twitter:geo>
+    <twitter:source>&lt;a href=&quot;http://www.atebits.com/&quot; rel=&quot;nofollow&quot;&gt;Tweetie&lt;/a&gt;</twitter:source>
+    <twitter:lang>en</twitter:lang>
+    <author>
+      <name>fogus (fogus)</name>
+      <uri>http://twitter.com/fogus</uri>
+    </author>
+  </entry>
+  <entry>
+    <id>tag:search.twitter.com,2005:8283738084</id>
+    <published>2010-01-27T15:52:32Z</published>
+    <link type="text/html" href="http://twitter.com/BlessYahu/statuses/8283738084" rel="alternate"/>
+    <title>@mattpodwysocki @OdeToCode @craigandera possibility ALT.NET session getting recorded? Won't be able to drive up from Richmond.</title>
+    <content type="html">&lt;a href=&quot;http://twitter.com/mattpodwysocki&quot;&gt;@mattpodwysocki&lt;/a&gt; &lt;a href=&quot;http://twitter.com/OdeToCode&quot;&gt;@&lt;b&gt;OdeToCode&lt;/b&gt;&lt;/a&gt; &lt;a href=&quot;http://twitter.com/craigandera&quot;&gt;@craigandera&lt;/a&gt; possibility ALT.NET session getting recorded? Won&amp;apos;t be able to drive up from Richmond.</content>
+    <updated>2010-01-27T15:52:32Z</updated>
+    <link type="image/png" href="http://a3.twimg.com/profile_images/546738561/eyod_normal.jpg" rel="image"/>
+    <twitter:geo>
+    </twitter:geo>
+    <twitter:source>&lt;a href=&quot;http://www.tweetdeck.com/&quot; rel=&quot;nofollow&quot;&gt;TweetDeck&lt;/a&gt;</twitter:source>
+    <twitter:lang>en</twitter:lang>
+    <author>
+      <name>BlessYahu (A'braham Barakhyahu)</name>
+      <uri>http://twitter.com/BlessYahu</uri>
+    </author>
+  </entry>
+  <entry>
+    <id>tag:search.twitter.com,2005:8283530962</id>
+    <published>2010-01-27T15:46:35Z</published>
+    <link type="text/html" href="http://twitter.com/mattpodwysocki/statuses/8283530962" rel="alternate"/>
+    <title>RT: @OdeToCode: D.C. alt.net meeting tonight is Clojure with @craigandera. http://is.gd/79Dmn  It's gonna be def!!!</title>
+    <content type="html">RT: &lt;a href=&quot;http://twitter.com/OdeToCode&quot;&gt;@&lt;b&gt;OdeToCode&lt;/b&gt;&lt;/a&gt;: D.C. alt.net meeting tonight is Clojure with &lt;a href=&quot;http://twitter.com/craigandera&quot;&gt;@craigandera&lt;/a&gt;. &lt;a href=&quot;http://is.gd/79Dmn&quot;&gt;http://is.gd/79Dmn&lt;/a&gt;  It&amp;apos;s gonna be def!!!</content>
+    <updated>2010-01-27T15:46:35Z</updated>
+    <link type="image/png" href="http://a1.twimg.com/profile_images/52905264/matthewp_477_small_normal.jpg" rel="image"/>
+    <twitter:geo>
+    </twitter:geo>
+    <twitter:source>&lt;a href=&quot;http://echofon.com/&quot; rel=&quot;nofollow&quot;&gt;Echofon&lt;/a&gt;</twitter:source>
+    <twitter:lang>nl</twitter:lang>
+    <author>
+      <name>mattpodwysocki (Matthew Podwysocki)</name>
+      <uri>http://twitter.com/mattpodwysocki</uri>
+    </author>
+  </entry>
+  <entry>
+    <id>tag:search.twitter.com,2005:8282759640</id>
+    <published>2010-01-27T15:24:53Z</published>
+    <link type="text/html" href="http://twitter.com/jphamilton/statuses/8282759640" rel="alternate"/>
+    <title>@averyj @OdeToCode Clojure is so awesome...but emacs kinda scares me. I know, I'm a wuss.</title>
+    <content type="html">&lt;a href=&quot;http://twitter.com/averyj&quot;&gt;@averyj&lt;/a&gt; &lt;a href=&quot;http://twitter.com/OdeToCode&quot;&gt;@&lt;b&gt;OdeToCode&lt;/b&gt;&lt;/a&gt; Clojure is so awesome...but emacs kinda scares me. I know, I&amp;apos;m a wuss.</content>
+    <updated>2010-01-27T15:24:53Z</updated>
+    <link type="image/png" href="http://a3.twimg.com/profile_images/295970455/jp_normal.png" rel="image"/>
+    <twitter:geo>
+    </twitter:geo>
+    <twitter:source>&lt;a href=&quot;http://www.seesmic.com/&quot; rel=&quot;nofollow&quot;&gt;Seesmic&lt;/a&gt;</twitter:source>
+    <twitter:lang>en</twitter:lang>
+    <author>
+      <name>jphamilton (jphamilton)</name>
+      <uri>http://twitter.com/jphamilton</uri>
+    </author>
+  </entry>
+  <entry>
+    <id>tag:search.twitter.com,2005:8282511424</id>
+    <published>2010-01-27T15:17:42Z</published>
+    <link type="text/html" href="http://twitter.com/OdeToCode/statuses/8282511424" rel="alternate"/>
+    <title>D.C. alt.net meeting tonight is Clojure with @craigandera. http://is.gd/79Dmn  It's gonna be def!!!</title>
+    <content type="html">D.C. alt.net meeting tonight is Clojure with &lt;a href=&quot;http://twitter.com/craigandera&quot;&gt;@craigandera&lt;/a&gt;. &lt;a href=&quot;http://is.gd/79Dmn&quot;&gt;http://is.gd/79Dmn&lt;/a&gt;  It&amp;apos;s gonna be def!!!</content>
+    <updated>2010-01-27T15:17:42Z</updated>
+    <link type="image/png" href="http://a3.twimg.com/profile_images/318634155/scott_allen_2_normal.jpg" rel="image"/>
+    <twitter:geo>
+    </twitter:geo>
+    <twitter:source>&lt;a href=&quot;http://code.google.com/p/wittytwitter/&quot; rel=&quot;nofollow&quot;&gt;Witty&lt;/a&gt;</twitter:source>
+    <twitter:lang>en</twitter:lang>
+    <author>
+      <name>OdeToCode (K. Scott Allen)</name>
+      <uri>http://twitter.com/OdeToCode</uri>
+    </author>
+  </entry>
+  <entry>
+    <id>tag:search.twitter.com,2005:8280032593</id>
+    <published>2010-01-27T14:06:44Z</published>
+    <link type="text/html" href="http://twitter.com/speeceliat/statuses/8280032593" rel="alternate"/>
+    <title>OdeToCode It is crazy! I\'ll take SVNGit anyday over having my code littered with  \'onoff\' switches. !</title>
+    <content type="html">&lt;b&gt;OdeToCode&lt;/b&gt; It is crazy! I\&amp;apos;ll take SVNGit anyday over having my code littered with  \&amp;apos;onoff\&amp;apos; switches. !</content>
+    <updated>2010-01-27T14:06:44Z</updated>
+    <link type="image/png" href="http://s.twimg.com/a/1264119427/images/default_profile_5_normal.png" rel="image"/>
+    <twitter:geo>
+    </twitter:geo>
+    <twitter:source>&lt;a href=&quot;http://apiwiki.twitter.com/&quot; rel=&quot;nofollow&quot;&gt;API&lt;/a&gt;</twitter:source>
+    <twitter:lang>en</twitter:lang>
+    <author>
+      <name>speeceliat (Janet Reedqgt)</name>
+      <uri>http://twitter.com/speeceliat</uri>
+    </author>
+  </entry>
+  <entry>
+    <id>tag:search.twitter.com,2005:8278480844</id>
+    <published>2010-01-27T13:18:24Z</published>
+    <link type="text/html" href="http://twitter.com/OdeToCode/statuses/8278480844" rel="alternate"/>
+    <title>@richardcmcguire I hope that's it!</title>
+    <content type="html">&lt;a href=&quot;http://twitter.com/richardcmcguire&quot;&gt;@richardcmcguire&lt;/a&gt; I hope that&amp;apos;s it!</content>
+    <updated>2010-01-27T13:18:24Z</updated>
+    <link type="image/png" href="http://a3.twimg.com/profile_images/318634155/scott_allen_2_normal.jpg" rel="image"/>
+    <twitter:geo>
+    </twitter:geo>
+    <twitter:source>&lt;a href=&quot;http://twitter.com/&quot;&gt;web&lt;/a&gt;</twitter:source>
+    <twitter:lang>en</twitter:lang>
+    <author>
+      <name>OdeToCode (K. Scott Allen)</name>
+      <uri>http://twitter.com/OdeToCode</uri>
+    </author>
+  </entry>
+  <entry>
+    <id>tag:search.twitter.com,2005:8251028999</id>
+    <published>2010-01-26T21:22:40Z</published>
+    <link type="text/html" href="http://twitter.com/heads5150/statuses/8251028999" rel="alternate"/>
+    <title>RT @elijahmanor: &quot;KISS Your ASP.NET MVC Routes&quot; by @OdeToCode #tech #aspnetmvc http://j.mp/6fSXoZ</title>
+    <content type="html">RT &lt;a href=&quot;http://twitter.com/elijahmanor&quot;&gt;@elijahmanor&lt;/a&gt;: &amp;quot;KISS Your ASP.NET MVC Routes&amp;quot; by &lt;a href=&quot;http://twitter.com/OdeToCode&quot;&gt;@&lt;b&gt;OdeToCode&lt;/b&gt;&lt;/a&gt; &lt;a href=&quot;http://search.twitter.com/search?q=%23tech&quot;&gt;#tech&lt;/a&gt; &lt;a href=&quot;http://search.twitter.com/search?q=%23aspnetmvc&quot;&gt;#aspnetmvc&lt;/a&gt; &lt;a href=&quot;http://j.mp/6fSXoZ&quot;&gt;http://j.mp/6fSXoZ&lt;/a&gt;</content>
+    <updated>2010-01-26T21:22:40Z</updated>
+    <link type="image/png" href="http://a1.twimg.com/profile_images/321737382/avatarheads_normal.jpg" rel="image"/>
+    <twitter:geo>
+    </twitter:geo>
+    <twitter:source>&lt;a href=&quot;http://www.brizzly.com&quot; rel=&quot;nofollow&quot;&gt;Brizzly&lt;/a&gt;</twitter:source>
+    <twitter:lang>en</twitter:lang>
+    <author>
+      <name>heads5150 (Craig Taylor)</name>
+      <uri>http://twitter.com/heads5150</uri>
+    </author>
+  </entry>
+</feed>

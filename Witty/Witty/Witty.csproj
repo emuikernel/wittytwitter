@@ -110,8 +110,12 @@
     <Reference Include="System.Deployment" />
     <Reference Include="System.Drawing" />
     <Reference Include="System.Security" />
+    <Reference Include="System.Web" />
     <Reference Include="System.Windows.Forms" />
     <Reference Include="System.Xml" />
+    <Reference Include="System.Xml.Linq">
+      <RequiredTargetFramework>3.5</RequiredTargetFramework>
+    </Reference>
     <Reference Include="WindowsBase">
       <RequiredTargetFramework>3.0</RequiredTargetFramework>
     </Reference>
@@ -135,6 +139,10 @@
       <Generator>MSBuild:Compile</Generator>
     </Page>
     <Page Include="Controls\Options\ClickOnceOptions.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="Controls\Search\TweetHunt.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
@@ -209,6 +217,23 @@
     </Compile>
     <Compile Include="ClickOnce\Deployment.cs" />
     <Compile Include="ClickOnce\Utils.cs" />
+    <Compile Include="Controls\Search\ISearchTimer.cs" />
+    <Compile Include="Controls\Search\ITwitterSearchService.cs" />
+    <Compile Include="Controls\Search\SearchCompleteEventArgs.cs" />
+    <Compile Include="Controls\Search\SearchConfiguration.cs" />
+    <Compile Include="Controls\Search\SearchCoordinator.cs" />
+    <Compile Include="Controls\Search\SearchItem.cs" />
+    <Compile Include="Controls\Search\SearchItemCollection.cs" />
+    <Compile Include="Controls\Search\SearchResult.cs" />
+    <Compile Include="Controls\Search\SearchResultCollection.cs" />
+    <Compile Include="Controls\Search\SearchTimer.cs" />
+    <Compile Include="Controls\Search\SystemTime.cs" />
+    <Compile Include="Controls\Search\TweetHunt.xaml.cs">
+      <DependentUpon>TweetHunt.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Controls\Search\TweetHuntViewModel.cs" />
+    <Compile Include="Controls\Search\TwitterSearchAtomConverter.cs" />
+    <Compile Include="Controls\Search\TwitterSearchService.cs" />
     <Compile Include="Misc\Growl\GrowlCommunicator.cs" />
     <Compile Include="Misc\Shortcut.cs" />
     <Compile Include="Misc\Snarl\M_RESULT.cs" />
