@@ -1,0 +1,45 @@
+<UserControl x:Class="Witty.Controls.Search.TweetHunt"
+    xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"    
+    Loaded="OnLoad">
+    <DockPanel LastChildFill="true">
+        <StackPanel DockPanel.Dock="Top" Orientation="Horizontal" Height="30" 
+                    HorizontalAlignment="Right" Margin="2" >
+            <TextBox Width="150" Height="20"  
+                     VerticalAlignment="Center" 
+                     Text="{Binding CurrentWord, Mode=TwoWay}">
+            </TextBox>
+            <Button Margin="3" Click="OnAddSearchItem"  >Add Phrase</Button>
+        </StackPanel>
+        <ListBox ItemsSource="{Binding SearchItems}" DockPanel.Dock="Top">
+            <ListBox.ItemsPanel>
+                <ItemsPanelTemplate>
+                    <WrapPanel></WrapPanel>
+                </ItemsPanelTemplate>
+            </ListBox.ItemsPanel>
+            <ListBox.ItemTemplate>
+                <DataTemplate>
+                    <Border CornerRadius="5" Background="#FFCCCC99" Padding="2" BorderBrush="Black" BorderThickness="2" >
+                        <StackPanel Orientation="Horizontal" Height="20">
+                            <TextBlock Text="{Binding Phrase}" VerticalAlignment="Center">
+                        <Button Click="OnDeleteSearchItem" VerticalAlignment="Center">x</Button>
+                            </TextBlock>
+                        </StackPanel>
+                    </Border>
+                </DataTemplate>
+            </ListBox.ItemTemplate>
+        </ListBox>
+
+        <Grid>
+            <ListBox 
+                ScrollViewer.CanContentScroll="False" 
+                IsSynchronizedWithCurrentItem="True" 
+                ItemTemplate="{DynamicResource TweetsTemplate}" 
+                ItemsSource="{Binding SearchResults, Mode=OneWay}" 
+                ScrollViewer.HorizontalScrollBarVisibility="Disabled" 
+                Margin="0,0,0,20" 
+                BorderThickness="0,0,0,0">
+            </ListBox>
+        </Grid>
+    </DockPanel>
+</UserControl>

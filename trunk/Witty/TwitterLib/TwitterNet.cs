@@ -622,33 +622,10 @@ namespace TwitterLib
             try
             {
                 UserCollection users = new UserCollection();
-                int friendsCount;
 
-                if (currentLoggedInUser != null && currentLoggedInUser.Id == userId)
-                {
-                    friendsCount = CurrentlyLoggedInUser.FollowingCount;
-                }
-                else
-                {
-                    // need to make an extra call to twitter
-                    User user = GetUser(userId);
-                    friendsCount = user.FollowingCount;
-                }
-
-                var ceiling = Math.Ceiling(friendsCount / 100m);
-                var results = new List<TwitterUser>();
-                for (var i = 1; i <= ceiling; i++)
-                {
-                    var friends = FluentTwitter.CreateRequest(new Dimebrain.TweetSharp.TwitterClientInfo() { ClientName = "Witty" })
-                        .AuthenticateAs(username, ToInsecureString(password))
-                        .Users().GetFriends().For(userId)
-                        .Skip(i).AsJson()
-                        .Request().AsUsers();
-
-                    results.AddRange(friends);
-                }
-
-                foreach (TwitterUser user in results)
+				//This is ugly - we're mapping from TweetSharp users to our internal Twitter class
+				//This will all go away when we move wholesale to TweetSharp
+                foreach (TwitterUser user in GetFriendsInternal())
                     users.Add(CreateUser(user));
 
                 return users;
@@ -658,6 +635,39 @@ namespace TwitterLib
                 return null;
             }
         }
+
+		public IEnumerable<TwitterUser> GetFriendsInternal()
+		{
+			IEnumerable<TwitterUser> _friends;
+
+				var twitter = FluentTwitter.CreateRequest()
+							.AuthenticateAs(username, ToInsecureString(password))
+							.Configuration.UseGzipCompression() //now using compression for performance
+							.Users().GetFriends().For(username)
+							.CreateCursor()
+							.AsJson();
+				_friends = GetAllCursorValues(twitter, s => s.AsUsers());
+
+			return _friends; //return either the newly fetched list, or the cached copy
+		}
+
+		private static IEnumerable<T> GetAllCursorValues<T>(ITwitterLeafNode twitter, Func<TwitterResult, IEnumerable<T>> conversionMethod)
+		{
+		   long? nextCursor = -1 ;
+		   var ret = new List<T>();
+		   do
+		   {
+			   twitter.Root.Parameters.Cursor = nextCursor;
+			   var response = twitter.Request();
+			   IEnumerable<T> values = conversionMethod(response);
+			   if (values != null)
+			   {
+				   ret.AddRange(values);
+			   }
+			   nextCursor = response.AsNextCursor();
+		   } while (nextCursor.HasValue && nextCursor.Value != 0);
+		   return ret;
+		}
 
         public User GetUser(int userId)
         {

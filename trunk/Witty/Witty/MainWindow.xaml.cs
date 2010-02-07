@@ -1154,8 +1154,9 @@ namespace Witty
 
         private void DelegateConversationFetch(double id)
         {
-            MoreTab.IsSelected = true;
-            MoreContextMenu.IsEnabled = true; 
+			SearchTab.IsSelected = true;
+			MoreListBox.Visibility = Visibility.Visible;
+			SearchContent.Visibility = Visibility.Collapsed;
 
             moreTweets.Clear();
             // Let the user know what's going on
@@ -1174,8 +1175,6 @@ namespace Witty
         {
             try
             {
-
-
                 // Schedule the update function in the UI thread.
                 LayoutRoot.Dispatcher.BeginInvoke(
                     DispatcherPriority.Background,
@@ -2008,13 +2007,8 @@ namespace Witty
             }
             if (tabs.SelectedIndex == 4 && isLoggedIn)
             {
-                // limit updating replies to no more than once a minute
-                long ticks = DateTime.Now.Ticks - repliesLastUpdated.Ticks;
-                TimeSpan ts = new TimeSpan(ticks);
-                if (ts.TotalMinutes > 1)
-                {
-                    DelegateConversationFetch(conversationStartId);
-                }
+				SearchContent.Visibility = Visibility.Visible;
+				MoreListBox.Visibility = Visibility.Collapsed;
 
                 displayUser = string.Empty;
             }
