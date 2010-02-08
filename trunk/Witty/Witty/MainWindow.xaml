@@ -278,13 +278,13 @@
 					</TabItem>
 					<!-- Search Tab-->
 					<TabItem Header="Search" Padding="1,1,1,1" x:Name="SearchTab">
-						<StackPanel Margin="0">
+						<Grid>
 							<Search:TweetHunt x:Name="SearchContent" />
 							<ListBox x:Name="MoreListBox" ScrollViewer.CanContentScroll="False" IsSynchronizedWithCurrentItem="True" ItemsSource="{Binding Mode=OneWay}" ItemTemplate="{DynamicResource MoreTemplate}"  ScrollViewer.HorizontalScrollBarVisibility="Disabled" Margin="0,0,0,20"  BorderThickness="0,0,0,0"
               controls:TweetTextBlock.NameClick="NameClickedInTweet"
               controls:TweetTextBlock.HashtagClick="HashtagClickedInTweet" Visibility="Collapsed">
 							</ListBox>
-						</StackPanel>
+						</Grid>
 					</TabItem>
 				</TabControl>
 				<!-- Login Control -->
