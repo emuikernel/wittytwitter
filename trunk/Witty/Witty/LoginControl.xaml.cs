@@ -65,7 +65,7 @@ namespace Witty
             App.LoggedInUser = user;
             if (App.LoggedInUser != null)
             {
-                AppSettings.Username = UsernameTextBox.Text;
+                AppSettings.Username = user.ScreenName;
                 AppSettings.Password = TwitterNet.EncryptString(TwitterNet.ToSecureString(PasswordTextBox.Password));
                 AppSettings.LastUpdated = string.Empty;
 
